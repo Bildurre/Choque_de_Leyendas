@@ -1,0 +1,32 @@
+{
+  "name": "choque-de-leyendas-admin",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "type-check": "vue-tsc -b",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@edc-motor/admin-kit": "*",
+    "@edc-motor/ui": "*",
+    "@juego/shared": "*",
+    "@lucide/vue": "^1.0.0",
+    "pinia": "^3.0.0",
+    "vue": "^3.5.38",
+    "vue-i18n": "^11.4.6",
+    "vue-router": "^5.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.13.2",
+    "@vitejs/plugin-vue": "^6.0.7",
+    "@vue/tsconfig": "^0.9.1",
+    "sass-embedded": "^1.83.0",
+    "typescript": "~6.0.2",
+    "vite": "^8.1.0",
+    "vite-plugin-pwa": "^1.0.3",
+    "vue-tsc": "^3.3.5"
+  }
+}

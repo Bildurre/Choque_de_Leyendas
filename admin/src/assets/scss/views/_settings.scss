@@ -1,0 +1,138 @@
+@use "tokens" as *;
+
+// Configuración de la web: dos columnas EXPLÍCITAS (masonry determinista):
+// cada columna apila sus tarjetas pegadas (sin filas alineadas por alturas)
+// y el reparto lo decide la vista (Identidad + Pie | Apariencia), no el
+// navegador. En estrecho las columnas se apilan. Cada tarjeta es su propio
+// contenedor `content` para que sus interiores se adapten a la tarjeta.
+.settings-view {
+  &__columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-5;
+    align-items: start;
+
+    @container content (min-width: #{$bp-md}) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__col {
+    display: grid;
+    gap: $space-5;
+    min-width: 0;
+  }
+
+  &__section {
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    padding: $space-5;
+    display: grid;
+    gap: $space-4;
+    min-width: 0;
+    container-name: content;
+    container-type: inline-size;
+
+    h2 {
+      margin: 0;
+      font-size: $fs-16;
+      color: $text-2;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  &__uploads {
+    display: grid;
+    gap: $space-4;
+
+    @container content (min-width: #{$bp-sm}) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__hint {
+    margin: 0;
+    color: $text-3;
+    font-size: $fs-13;
+  }
+
+  // Candidatos del modo aleatorio: etiquetas compactas en fila con wrap.
+  &__colors {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+
+    li {
+      display: inline-flex;
+      align-items: center;
+      gap: $space-2;
+      border: 1px solid $border;
+      border-radius: $radius-pill;
+      padding: 2px $space-2;
+      font-size: $fs-12;
+
+      code { color: $text-2; }
+    }
+  }
+
+  &__swatch {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 1px solid $border-strong;
+    flex: 0 0 auto;
+  }
+
+  &__chip-remove {
+    display: inline-flex;
+    align-items: center;
+    border: none;
+    background: none;
+    padding: 2px;
+    color: $text-3;
+    cursor: pointer;
+
+    &:hover { color: $danger; }
+  }
+
+  &__add-color {
+    display: grid;
+    gap: $space-3;
+    justify-items: start;
+  }
+
+  &__fonts {
+    display: grid;
+    gap: $space-4;
+
+    @container content (min-width: #{$bp-sm}) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__font-preview {
+    margin: $space-2 0 0;
+    color: $text-2;
+    font-size: $fs-16;
+  }
+
+  // Subida de fuentes propias.
+  &__custom-fonts {
+    display: grid;
+    gap: $space-2;
+    border-top: 1px dashed $border;
+    padding-top: $space-4;
+  }
+
+  &__font-upload {
+    display: grid;
+    gap: $space-3;
+
+    .edc-button { justify-self: start; }
+  }
+}

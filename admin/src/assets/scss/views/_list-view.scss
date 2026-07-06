@@ -1,0 +1,4 @@
+@use "tokens" as *;
+
+// Barra superior común de los listados (botón "nuevo").
+.list-view__top { display: flex; justify-content: flex-end; margin-bottom: $space-4; }

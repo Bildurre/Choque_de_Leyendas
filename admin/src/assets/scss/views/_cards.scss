@@ -1,0 +1,65 @@
+@use "tokens" as *;
+
+// Miniatura genérica en la franja media de las tarjetas de listado.
+.card-art {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $surface-2;
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+
+  &__cost {
+    font-size: 2.4rem;
+    font-weight: $k-fw-bold;
+    color: $text-3;
+  }
+}
+
+// Botón "entrar" de las tarjetas con panel derecho: texto + flecha, la única
+// acción de la tarjeta (todo lo demás vive en el panel).
+.card-enter {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  background: none;
+  border: none;
+  padding: 2px $space-2;
+  border-radius: $radius-sm;
+  color: $accent-500;
+  font-size: $fs-13;
+  font-weight: $k-fw-semibold;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+
+  &:hover { background: color-mix(in srgb, $accent-500 12%, transparent); }
+}
+
+// Línea de estadísticas en la meta de las tarjetas de personaje.
+.stat-line {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-2;
+  font-variant-numeric: tabular-nums;
+}
+
+// Rejilla de estadísticas del formulario de personaje.
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $space-3;
+
+  @container content (min-width: #{$bp-sm}) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+.stats-derived {
+  display: flex;
+  gap: $space-4;
+  margin: 0;
+  color: $text-2;
+  font-size: $fs-14;
+}

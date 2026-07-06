@@ -1,0 +1,19 @@
+@use "tokens" as *;
+
+.login {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  &__box {
+    width: 360px;
+    max-width: 90vw;
+    padding: $space-8 $space-6;
+    border: 1px solid $color-border;
+    border-radius: $radius-lg;
+    background: $color-surface;
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+    h1 { margin: 0; font-size: 1.25rem; }
+  }
+}

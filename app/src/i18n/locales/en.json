@@ -1,0 +1,130 @@
+{
+  "nav": {
+    "home": "Home",
+    "account": "My account",
+    "login": "Log in",
+    "logout": "Log out",
+    "downloads": "Downloads",
+    "menu": "Menu",
+    "admin": "Admin"
+  },
+  "list": {
+    "empty": "Nothing to show yet."
+  },
+  "detail": {
+    "back": "Back",
+    "schemes": "House schemes",
+    "info": "Details",
+    "color": "Color",
+    "stats": {
+      "cost": "Cost",
+      "power": "Power",
+      "prestige": "Prestige",
+      "intrigue": "Intrigue",
+      "money": "Money",
+      "defense": "Defense"
+    }
+  },
+  "page": {
+    "notFound": "This page does not exist (or is no longer published)."
+  },
+  "auth": {
+    "login": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Log in",
+      "submitting": "Logging in…",
+      "noAccount": "Don't have an account?",
+      "register": "Sign up",
+      "error": "Could not log in.",
+      "forgot": "Forgot your password?"
+    },
+    "register": {
+      "title": "Create account",
+      "name": "Name",
+      "password2": "Repeat the password",
+      "submit": "Create account",
+      "submitting": "Creating…",
+      "hasAccount": "Already have an account?",
+      "login": "Log in",
+      "error": "Could not complete the registration.",
+      "privacyNote": "Your data (name and email) is used only to manage your account: it is never shared with third parties and you can request its deletion at any time.",
+      "privacyAccept": "I accept the processing of my data to manage my account."
+    },
+    "forgot": {
+      "title": "Recover password",
+      "intro": "Tell us your email and we will send you a reset link.",
+      "submit": "Send link",
+      "submitting": "Sending…",
+      "backToLogin": "Back to log in",
+      "error": "Could not send the link."
+    },
+    "reset": {
+      "title": "Reset password",
+      "newPassword": "New password",
+      "submit": "Reset",
+      "submitting": "Resetting…",
+      "done": "Password reset: you can log in now.",
+      "error": "Could not reset (has the link expired?)."
+    }
+  },
+  "account": {
+    "title": "My account",
+    "sections": {
+      "profile": "My details",
+      "security": "Password",
+      "print": "To print"
+    },
+    "profile": {
+      "role": "Role",
+      "justVerified": "Your email has been verified. Thanks!",
+      "unverified": "Your email {email} is not verified yet. Check your inbox or request the link again.",
+      "resend": "Resend verification email",
+      "resendOk": "We have sent you a verification email.",
+      "resendError": "Could not send the email.",
+      "name": "Name",
+      "email": "Email",
+      "save": "Save",
+      "saved": "Details saved.",
+      "saveError": "Could not save."
+    },
+    "security": {
+      "current": "Current password",
+      "new": "New password",
+      "repeat": "Repeat the new one",
+      "submit": "Update",
+      "ok": "Password updated.",
+      "error": "Could not change the password."
+    }
+  },
+  "downloads": {
+    "title": "Downloads",
+    "intro": "Every print-ready PDF, no sign-up needed: cards, tokens and game documents.",
+    "empty": "No downloads published yet.",
+    "types": {
+      "characters": "Characters",
+      "schemes": "Schemes",
+      "house-schemes": "Schemes by house",
+      "house-tokens": "House tokens",
+      "house-counters": "House counters",
+      "pages": "Documents"
+    },
+    "language": "Language"
+  },
+  "collection": {
+    "title": "Your collection",
+    "intro": "Add cards from the listings and generate your custom PDF; no sign-up needed (the collection lives in this browser and expires on its own).",
+    "empty": "Your collection is empty: add cards from the listings.",
+    "copies": "copies",
+    "remove": "Remove",
+    "clear": "Clear",
+    "generate": "Generate PDF",
+    "generating": "Generating…",
+    "download": "Download PDF",
+    "failed": "Could not generate the PDF.",
+    "error": "Could not update the collection.",
+    "add": "Add to your PDF",
+    "inCollection": "In your collection"
+  }
+}

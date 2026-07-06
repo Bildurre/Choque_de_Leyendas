@@ -1,0 +1,47 @@
+@use "tokens" as *;
+
+.single {
+  &__bar {
+    display: flex;
+    justify-content: space-between;
+    gap: $space-3;
+    margin-bottom: $space-5;
+    flex-wrap: wrap;
+  }
+
+  &__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-6;
+    align-items: start;
+
+    @container content (min-width: #{$bp-md}) {
+      grid-template-columns: auto 1fr;
+    }
+  }
+
+  &__preview { display: flex; justify-content: center; }
+
+  &__info {
+    min-width: 0;
+    h1 { margin: 0 0 $space-2; font-size: $fs-24; }
+  }
+
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    color: $text-2;
+    margin: 0 0 $space-4;
+    flex-wrap: wrap;
+  }
+
+  &__section {
+    margin: $space-7 0 $space-4;
+    font-size: $fs-18;
+    border-bottom: 1px solid $border;
+    padding-bottom: $space-2;
+  }
+
+  &__empty { color: $text-3; padding: $space-8; text-align: center; }
+}

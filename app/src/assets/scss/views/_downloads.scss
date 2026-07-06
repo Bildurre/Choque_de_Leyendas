@@ -1,0 +1,182 @@
+@use "tokens" as *;
+
+// Apartado público de Descargas (doc 10): grupos de PDFs permanentes +
+// "tu colección" debajo (gestor compartido con el panel de usuario).
+.downloads {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: $space-6;
+  display: grid;
+  gap: $space-5;
+
+  &__title { margin: 0; }
+
+  &__intro,
+  &__empty {
+    margin: 0;
+    color: $text-3;
+  }
+
+  &__group,
+  &__collection {
+    display: grid;
+    gap: $space-3;
+
+    h2 {
+      margin: 0;
+      border-left: 4px solid $accent-500;
+      padding-left: $space-3;
+      font-size: $fs-18;
+    }
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: $space-2;
+  }
+
+  // Filtro de idioma de los PDF.
+  &__filter {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  &__filter-label {
+    color: $text-3;
+    font-size: $fs-13;
+  }
+
+  &__filter-btn {
+    padding: 2px $space-3;
+    background: none;
+    border: 1px solid $border;
+    border-radius: $radius-pill;
+    color: $text-2;
+    font-size: $fs-13;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+
+    &:hover { color: $accent-500; border-color: $accent-500; }
+
+    &.is-active {
+      color: $accent-500;
+      border-color: $accent-500;
+      background: color-mix(in srgb, $accent-500 12%, transparent);
+    }
+  }
+
+  // Tarjeta de PDF. En estrecho: título arriba con el botón de descarga y
+  // los datos debajo; en ancho, todo en una fila.
+  &__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "name link"
+      "meta meta";
+    align-items: center;
+    gap: $space-1 $space-3;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    background: color-mix(in srgb, $surface 65%, transparent);
+    padding: $space-2 $space-3;
+
+    @media (min-width: #{$bp-sm}) {
+      display: flex;
+      gap: $space-3;
+    }
+  }
+
+  &__name {
+    grid-area: name;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__meta {
+    grid-area: meta;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    color: $text-3;
+    font-size: $fs-13;
+  }
+
+  // Botón de acción "descargar": sin padding ni caja, solo el icono.
+  &__link {
+    grid-area: link;
+    display: inline-flex;
+    align-items: center;
+    color: $accent-500;
+    transition: color 0.15s ease;
+
+    &:hover { color: $accent-400; }
+  }
+
+  &__collection { margin-top: $space-4; }
+}
+
+// Botón "añadir a la colección" (pdf-add): sin padding ni caja — el icono en
+// el color del TEXTO y coloreado (acento) en hover. Flotante sobre las
+// cartas de los listados o con etiqueta en los detalles.
+.add-to-collection {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  padding: 0;
+  background: none;
+  color: $text-2;
+  border: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover {
+    color: $accent-500;
+  }
+
+  &.is-added {
+    color: $success;
+    cursor: default;
+  }
+
+  &.has-label {
+    font-weight: 600;
+    justify-self: start;
+  }
+}
+
+// Slot del índice: el botón flota sobre la esquina de la carta.
+.entity-index__slot {
+  position: relative;
+}
+
+.entity-index__card-link {
+  display: block;
+  border-radius: $radius-lg;
+  color: inherit;
+  text-decoration: none;
+  transition: box-shadow 0.2s ease;
+
+  // Sin moverse: un halo alrededor (el acento marca que es clicable).
+  &:hover {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, $accent-500 55%, transparent),
+      0 8px 24px color-mix(in srgb, $accent-500 25%, transparent);
+  }
+}
+
+// Flotante FUERA de la carta (encima, a la derecha): sin caja, no pisa los
+// badges de las esquinas. El hueco vertical lo da el row-gap del grid.
+.entity-index__add {
+  position: absolute;
+  top: -38px;
+  right: 0;
+  z-index: 2;
+}

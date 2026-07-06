@@ -1,0 +1,151 @@
+@use "tokens" as *;
+
+// Panel de usuario (doc 10): menú lateral con las secciones registradas +
+// contenido. Mobile-first: apilado; dos columnas cuando cabe.
+.account {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: $space-6;
+  display: grid;
+  gap: $space-6;
+  align-items: start;
+
+  @media (min-width: 720px) {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  &__title {
+    margin: 0;
+    font-size: $fs-24;
+  }
+
+  &__who {
+    margin: 0;
+    color: $text-3;
+    font-size: $fs-13;
+  }
+
+  &__menu {
+    display: grid;
+    gap: $space-3;
+  }
+
+  &__nav {
+    display: grid;
+    gap: 2px;
+  }
+
+  &__link {
+    padding: $space-2 $space-3;
+    border-radius: $radius-md;
+    color: $text-2;
+    text-decoration: none;
+
+    &:hover { background: color-mix(in srgb, $accent-500 10%, transparent); }
+
+    &.is-active {
+      background: color-mix(in srgb, $accent-500 16%, transparent);
+      color: $accent-500;
+      font-weight: 600;
+    }
+  }
+
+  &__content { min-width: 0; }
+
+  // Las secciones reutilizan el layout .auth, pero sin re-centrarse.
+  .auth--section {
+    max-width: 480px;
+    margin: 0;
+    padding: 0;
+
+    h2 { margin-top: 0; }
+  }
+}
+
+// Sección "para imprimir" (doc 02): colección + selector de cartas.
+.print-section {
+  display: grid;
+  gap: $space-4;
+  justify-items: start;
+
+  h2, h3 { margin: 0; }
+
+  &__intro,
+  &__empty {
+    margin: 0;
+    color: $text-3;
+  }
+
+  &__items,
+  &__pick {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: $space-2;
+    width: 100%;
+    max-width: 520px;
+  }
+
+  &__item,
+  &__pick li {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    padding: $space-2 $space-3;
+
+    > span:first-child { flex: 1; }
+  }
+
+  &__thumb {
+    width: 36px;
+    border-radius: $radius-sm;
+  }
+
+  &__label { flex: 1; }
+
+  &__copies {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    color: $text-3;
+    font-size: $fs-13;
+
+    input {
+      width: 56px;
+      padding: 2px $space-1;
+      background: $surface-2;
+      color: $text-1;
+      border: 1px solid $border;
+      border-radius: $radius-sm;
+    }
+  }
+
+  &__remove {
+    display: inline-flex;
+    background: none;
+    border: none;
+    color: $text-3;
+    cursor: pointer;
+
+    &:hover { color: $danger; }
+  }
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-3;
+  }
+
+  &__download {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    color: $accent-500;
+  }
+
+  .error { color: $danger; margin: 0; }
+}

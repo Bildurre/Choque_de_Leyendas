@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Builds
+dist/
+api/public/build/
+
+# Env
+.env
+.env.*
+!.env.example
+# Los .env de los frontends solo llevan VITE_* (no secretos): se versionan.
+# Overrides locales en .env.local (ignorado).
+!app/.env
+!admin/.env
+
+# Laravel runtime
+api/storage/*.key
+api/storage/framework/cache/data/*
+api/storage/framework/sessions/*
+api/storage/framework/views/*
+api/storage/logs/*
+api/bootstrap/cache/*.php
+api/database/*.sqlite
+
+# Editor / OS
+.DS_Store
+*.log
+.vscode/
+.idea/

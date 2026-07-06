@@ -1,0 +1,45 @@
+@use "theme";
+@use "base";
+@use "forms";
+@use "shared-components";
+@use "shared";
+@use "components";
+@use "views";
+
+// Fuentes de la configuración de la web (doc 10): el store del sitio pone
+// --font-body / --font-headings en :root con la pila elegida en el admin.
+body {
+  font-family: var(--font-body, #{$k-font-sans});
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-headings, inherit);
+}
+
+// La página ocupa SIEMPRE al menos el alto de la ventana: el pie queda
+// pegado abajo aunque el contenido sea corto (columna flex + flex: 1).
+#app {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-content {
+  flex: 1 0 auto;
+}
+
+// Pie con el texto de la configuración.
+.app-footer {
+  margin-top: auto;
+  padding: $space-5 $space-6;
+  border-top: 1px solid $border;
+  background: $surface;
+  color: $text-3;
+  font-size: $fs-13;
+  text-align: center;
+}

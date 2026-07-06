@@ -1,0 +1,58 @@
+@use "tokens" as *;
+
+// Copias de seguridad: filas con el patrón de la lista de páginas.
+.backups-view {
+  display: grid;
+  gap: $space-4;
+
+  &__hint {
+    color: $text-3;
+    font-size: $fs-13;
+    margin: 0;
+  }
+
+  &__empty {
+    color: $text-3;
+    margin: 0;
+  }
+
+  // Tarjeta de la copia automática (misma piel que las secciones de
+  // Configuración): los campos en fila con wrap.
+  &__schedule {
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    padding: $space-5;
+    display: grid;
+    gap: $space-4;
+    justify-items: start;
+
+    h2 {
+      margin: 0;
+      font-size: $fs-16;
+      color: $text-2;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+  }
+
+  &__schedule-fields {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-3 $space-4;
+    align-items: flex-end;
+
+    > * { min-width: 140px; }
+  }
+
+  &__name {
+    color: $text-1;
+    font-size: $fs-13;
+  }
+
+  &__date {
+    color: $text-3;
+    font-size: $fs-13;
+    white-space: nowrap;
+  }
+}

@@ -1,0 +1,30 @@
+@use "tokens" as *;
+
+// Emblema de la casa en la franja "media" de la EntityCard.
+.house-emblem {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--c, transparent) 22%, $surface-2);
+
+  img { width: 100%; height: 100%; object-fit: cover; }
+
+  &__mono {
+    font-size: 2.2rem;
+    font-weight: $k-fw-bold;
+    color: color-mix(in srgb, var(--c, #{$text-2}) 65%, $text-1);
+  }
+}
+
+// Muestra del color en la meta de la tarjeta.
+.swatch {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  border-radius: 3px;
+  margin-right: $space-2;
+  vertical-align: middle;
+  border: 1px solid $border;
+}

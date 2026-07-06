@@ -1,0 +1,130 @@
+{
+  "nav": {
+    "home": "Hasiera",
+    "account": "Nire kontua",
+    "login": "Sartu",
+    "logout": "Irten",
+    "downloads": "Deskargak",
+    "menu": "Menua",
+    "admin": "Administrazioa"
+  },
+  "list": {
+    "empty": "Ez dago ezer erakusteko oraindik."
+  },
+  "detail": {
+    "back": "Itzuli",
+    "schemes": "Etxearen amarruak",
+    "info": "Fitxa",
+    "color": "Kolorea",
+    "stats": {
+      "cost": "Kostua",
+      "power": "Boterea",
+      "prestige": "Ospea",
+      "intrigue": "Azpijokoa",
+      "money": "Dirua",
+      "defense": "Defentsa"
+    }
+  },
+  "page": {
+    "notFound": "Orri hau ez da existitzen (edo ez dago argitaratuta jada)."
+  },
+  "auth": {
+    "login": {
+      "title": "Sartu",
+      "email": "Emaila",
+      "password": "Pasahitza",
+      "submit": "Sartu",
+      "submitting": "Sartzen…",
+      "noAccount": "Ez duzu konturik?",
+      "register": "Eman izena",
+      "error": "Ezin izan da saioa hasi.",
+      "forgot": "Pasahitza ahaztu duzu?"
+    },
+    "register": {
+      "title": "Sortu kontua",
+      "name": "Izena",
+      "password2": "Errepikatu pasahitza",
+      "submit": "Sortu kontua",
+      "submitting": "Sortzen…",
+      "hasAccount": "Baduzu kontua?",
+      "login": "Sartu",
+      "error": "Ezin izan da izen-ematea osatu.",
+      "privacyNote": "Zure datuak (izena eta emaila) zure kontua kudeatzeko baino ez dira erabiltzen: ez zaizkie hirugarrenei lagatzen eta ezabatzea eska dezakezu nahi duzunean.",
+      "privacyAccept": "Onartzen dut nire datuak nire kontua kudeatzeko tratatzea."
+    },
+    "forgot": {
+      "title": "Berreskuratu pasahitza",
+      "intro": "Esan zure emaila eta berrezartzeko esteka bidaliko dizugu.",
+      "submit": "Bidali esteka",
+      "submitting": "Bidaltzen…",
+      "backToLogin": "Itzuli sartzera",
+      "error": "Ezin izan da esteka bidali."
+    },
+    "reset": {
+      "title": "Berrezarri pasahitza",
+      "newPassword": "Pasahitz berria",
+      "submit": "Berrezarri",
+      "submitting": "Berrezartzen…",
+      "done": "Pasahitza berrezarrita: sartu zaitezke.",
+      "error": "Ezin izan da berrezarri (esteka iraungita?)."
+    }
+  },
+  "account": {
+    "title": "Nire kontua",
+    "sections": {
+      "profile": "Nire datuak",
+      "security": "Pasahitza",
+      "print": "Inprimatzeko"
+    },
+    "profile": {
+      "role": "Rola",
+      "justVerified": "Zure emaila egiaztatuta geratu da. Eskerrik asko!",
+      "unverified": "{email} emaila oraindik ez dago egiaztatuta. Begiratu posta edo eskatu esteka berriro.",
+      "resend": "Birbidali egiaztapen-mezua",
+      "resendOk": "Egiaztapen-mezu bat bidali dizugu.",
+      "resendError": "Ezin izan da mezua bidali.",
+      "name": "Izena",
+      "email": "Emaila",
+      "save": "Gorde",
+      "saved": "Datuak gordeta.",
+      "saveError": "Ezin izan da gorde."
+    },
+    "security": {
+      "current": "Oraingo pasahitza",
+      "new": "Pasahitz berria",
+      "repeat": "Errepikatu berria",
+      "submit": "Eguneratu",
+      "ok": "Pasahitza eguneratuta.",
+      "error": "Ezin izan da pasahitza aldatu."
+    }
+  },
+  "downloads": {
+    "title": "Deskargak",
+    "intro": "Inprimatzeko prest dauden PDF guztiak, izenik eman gabe: kartak, fitxak eta jokoaren dokumentuak.",
+    "empty": "Oraindik ez dago deskargarik argitaratuta.",
+    "types": {
+      "characters": "Pertsonaiak",
+      "schemes": "Amarruak",
+      "house-schemes": "Amarruak etxeka",
+      "house-tokens": "Etxeen fitxak",
+      "house-counters": "Etxeen kontagailuak",
+      "pages": "Dokumentuak"
+    },
+    "language": "Hizkuntza"
+  },
+  "collection": {
+    "title": "Zure bilduma",
+    "intro": "Gehitu kartak zerrendetatik eta sortu zure PDF pertsonalizatua; izenik eman gabe ere bai (bilduma nabigatzaile honetan bizi da eta berez iraungitzen da).",
+    "empty": "Zure bilduma hutsik dago: gehitu kartak zerrendetatik.",
+    "copies": "kopia",
+    "remove": "Kendu",
+    "clear": "Hustu",
+    "generate": "Sortu PDFa",
+    "generating": "Sortzen…",
+    "download": "Deskargatu PDFa",
+    "failed": "Ezin izan da PDFa sortu.",
+    "error": "Ezin izan da bilduma eguneratu.",
+    "add": "Gehitu zure PDFra",
+    "inCollection": "Zure bilduman"
+  }
+}

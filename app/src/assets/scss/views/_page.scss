@@ -1,0 +1,65 @@
+@use "tokens" as *;
+
+// Página pública del CRM: los estilos base de .block vienen del ui-kit; aquí
+// lo específico del juego (rejillas de cartas dentro de bloques).
+.page-view {
+  container-type: inline-size;
+  container-name: content;
+
+  &__missing {
+    text-align: center;
+    color: $text-3;
+    font-size: $fs-24;
+    padding: $space-8 0;
+  }
+
+  // Plantilla "landing": la anchura ya la decide CADA bloque (campo común
+  // `width`); la plantilla solo da aire de portada al primer bloque.
+  &--landing .block:first-child {
+    padding-block: $space-8;
+  }
+}
+
+.block__cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $space-4;
+  justify-content: center;
+}
+
+.block__card-slot {
+  // Las cartas del juego a tamaño natural (las dimensiona _play-card).
+  flex: 0 0 auto;
+}
+
+.block__house { display: grid; gap: $space-3; margin-top: $space-4; }
+.block__house-name {
+  margin: 0;
+  border-left: 4px solid var(--c, $accent-500);
+  padding-left: $space-3;
+}
+
+// Casa destacada (campo entity del DSL): escudo + texto con su color.
+.block__house-feature {
+  display: flex;
+  gap: $space-4;
+  align-items: flex-start;
+  border-left: 4px solid var(--c, $accent-500);
+  padding-left: $space-4;
+}
+
+.block__house-shield {
+  max-width: 96px;
+  border-radius: $radius-sm;
+  flex: 0 0 auto;
+}
+
+.block__house-body {
+  display: grid;
+  gap: $space-2;
+  min-width: 0;
+
+  h3 { margin: 0; }
+  a { color: var(--c, $accent-500); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+}

@@ -1,0 +1,13 @@
+@use "tokens" as *;
+
+.hform {
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: $space-4;
+}
+.hform__row { display: flex; align-items: center; gap: $space-3; }
+.hform__row label { color: $color-text-muted; font-size: 0.85rem; }
+.hform__check { display: flex; align-items: center; gap: $space-2; color: $color-text; }
+.hform__actions { display: flex; gap: $space-3; }
+.error { color: #ff6b6b; margin: 0; }

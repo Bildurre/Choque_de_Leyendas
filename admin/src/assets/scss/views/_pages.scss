@@ -1,0 +1,67 @@
+@use "tokens" as *;
+
+// Listado de páginas del CRM (pocas: lista simple, sin paginación).
+.pages-view {
+  display: grid;
+  gap: $space-4;
+
+  &__empty { color: $text-3; margin: 0; }
+
+  &__list { display: grid; gap: $space-2; }
+
+  // Fila de página: SIN wrap por elemento — en estrecho TODAS las filas
+  // cambian a la vez a un layout apilado (grid-areas por container query).
+  &__item {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "title  buttons"
+      "slug   slug"
+      "chips  chips";
+    align-items: center;
+    gap: $space-1 $space-2;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    background: $surface;
+    padding: $space-2 $space-3;
+    min-width: 0;
+    cursor: pointer; // toda la tarjeta selecciona (panel derecho)
+    transition: border-color 0.15s ease;
+
+    @container content (min-width: 640px) {
+      grid-template-columns: auto minmax(0, 1fr) auto auto;
+      grid-template-areas: "title slug chips buttons";
+    }
+
+    &:hover { border-color: $border-strong; }
+    &.is-active { border-color: $accent-500; }
+    &.is-child { margin-left: $space-6; }
+  }
+
+  &__title {
+    grid-area: title;
+    background: none;
+    border: 0;
+    padding: 0;
+    color: $text-1;
+    font-weight: $k-fw-semibold;
+    cursor: pointer;
+    text-align: left;
+    justify-self: start;
+
+    &:hover { color: $accent-500; }
+  }
+
+  &__slug {
+    grid-area: slug;
+    color: $text-3;
+    font-size: $fs-13;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__chips { grid-area: chips; display: flex; gap: $space-1; }
+
+  &__buttons { grid-area: buttons; margin-left: auto; display: flex; gap: $space-1; }
+}

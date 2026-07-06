@@ -1,0 +1,41 @@
+{
+  "name": "choque-de-leyendas",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/shared",
+    "admin",
+    "app"
+  ],
+  "dependencies": {
+    "@edc-motor/ui": "^0.2.0",
+    "@edc-motor/admin-kit": "^0.2.0"
+  },
+  "scripts": {
+    "dev": "concurrently -n app,admin,api,queue -c blue,green,red,yellow \"npm run dev -w app\" \"npm run dev -w admin\" \"npm run dev:api\" \"npm run dev:queue\"",
+    "dev:front": "concurrently -n app,admin -c blue,green \"npm run dev -w app\" \"npm run dev -w admin\"",
+    "dev:api": "cd api && php artisan serve --port=8010",
+    "dev:queue": "cd api && php artisan queue:listen --tries=1",
+    "build": "npm run build -w app && npm run build -w admin",
+    "type-check": "npm run type-check -w app && npm run type-check -w admin",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"admin/src/**/*.{ts,vue}\" \"app/src/**/*.{ts,vue}\" \"packages/shared/src/**/*.{ts,vue}\"",
+    "lint:php": "cd api && ./vendor/bin/pint --test",
+    "fix:php": "cd api && ./vendor/bin/pint",
+    "test:api": "cd api && php artisan test"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@vue/eslint-config-prettier": "^10.2.0",
+    "@vue/eslint-config-typescript": "^14.9.0",
+    "concurrently": "^9.1.0",
+    "eslint": "^10.6.0",
+    "eslint-plugin-vue": "^10.9.2",
+    "prettier": "^3.9.4"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
+  }
+}

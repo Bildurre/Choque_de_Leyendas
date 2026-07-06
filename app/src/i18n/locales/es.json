@@ -1,0 +1,130 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "account": "Mi cuenta",
+    "login": "Entrar",
+    "logout": "Salir",
+    "downloads": "Descargas",
+    "menu": "Menú",
+    "admin": "Administración"
+  },
+  "list": {
+    "empty": "No hay nada que mostrar todavía."
+  },
+  "detail": {
+    "back": "Volver",
+    "schemes": "Argucias de la casa",
+    "info": "Ficha",
+    "color": "Color",
+    "stats": {
+      "cost": "Coste",
+      "power": "Poder",
+      "prestige": "Prestigio",
+      "intrigue": "Intriga",
+      "money": "Dinero",
+      "defense": "Defensa"
+    }
+  },
+  "page": {
+    "notFound": "Esta página no existe (o ya no está publicada)."
+  },
+  "auth": {
+    "login": {
+      "title": "Entrar",
+      "email": "Email",
+      "password": "Contraseña",
+      "submit": "Entrar",
+      "submitting": "Entrando…",
+      "noAccount": "¿No tienes cuenta?",
+      "register": "Regístrate",
+      "error": "No se pudo iniciar sesión.",
+      "forgot": "¿Has olvidado la contraseña?"
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "name": "Nombre",
+      "password2": "Repite la contraseña",
+      "submit": "Crear cuenta",
+      "submitting": "Creando…",
+      "hasAccount": "¿Ya tienes cuenta?",
+      "login": "Entra",
+      "error": "No se pudo completar el registro.",
+      "privacyNote": "Tus datos (nombre y email) se usan solo para gestionar tu cuenta: no se ceden a terceros y puedes pedir su eliminación cuando quieras.",
+      "privacyAccept": "Acepto el tratamiento de mis datos para gestionar mi cuenta."
+    },
+    "forgot": {
+      "title": "Recuperar contraseña",
+      "intro": "Dinos tu email y te enviamos un enlace para restablecerla.",
+      "submit": "Enviar enlace",
+      "submitting": "Enviando…",
+      "backToLogin": "Volver a entrar",
+      "error": "No se pudo enviar el enlace."
+    },
+    "reset": {
+      "title": "Restablecer contraseña",
+      "newPassword": "Nueva contraseña",
+      "submit": "Restablecer",
+      "submitting": "Restableciendo…",
+      "done": "Contraseña restablecida: ya puedes entrar.",
+      "error": "No se pudo restablecer (¿el enlace ha caducado?)."
+    }
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "sections": {
+      "profile": "Mis datos",
+      "security": "Contraseña",
+      "print": "Para imprimir"
+    },
+    "profile": {
+      "role": "Rol",
+      "justVerified": "Tu email ha quedado verificado. ¡Gracias!",
+      "unverified": "Tu email {email} aún no está verificado. Revisa tu correo o vuelve a pedir el enlace.",
+      "resend": "Reenviar correo de verificación",
+      "resendOk": "Te hemos enviado un correo de verificación.",
+      "resendError": "No se pudo enviar el correo.",
+      "name": "Nombre",
+      "email": "Email",
+      "save": "Guardar",
+      "saved": "Datos guardados.",
+      "saveError": "No se pudo guardar."
+    },
+    "security": {
+      "current": "Contraseña actual",
+      "new": "Nueva contraseña",
+      "repeat": "Repite la nueva",
+      "submit": "Actualizar",
+      "ok": "Contraseña actualizada.",
+      "error": "No se pudo cambiar la contraseña."
+    }
+  },
+  "downloads": {
+    "title": "Descargas",
+    "intro": "Todos los PDF listos para imprimir, sin registro: cartas, tokens y documentos del juego.",
+    "empty": "Todavía no hay descargas publicadas.",
+    "types": {
+      "characters": "Personajes",
+      "schemes": "Argucias",
+      "house-schemes": "Argucias por casa",
+      "house-tokens": "Tokens de casa",
+      "house-counters": "Contadores de casa",
+      "pages": "Documentos"
+    },
+    "language": "Idioma"
+  },
+  "collection": {
+    "title": "Tu colección",
+    "intro": "Añade cartas desde los listados y genera tu PDF personalizado; también sin registrarte (la colección vive en este navegador y caduca sola).",
+    "empty": "Tu colección está vacía: añade cartas desde los listados.",
+    "copies": "copias",
+    "remove": "Quitar",
+    "clear": "Vaciar",
+    "generate": "Generar PDF",
+    "generating": "Generando…",
+    "download": "Descargar PDF",
+    "failed": "No se pudo generar el PDF.",
+    "error": "No se pudo actualizar la colección.",
+    "add": "Añadir a tu PDF",
+    "inCollection": "En tu colección"
+  }
+}

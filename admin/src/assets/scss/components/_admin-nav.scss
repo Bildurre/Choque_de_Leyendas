@@ -1,0 +1,66 @@
+@use "tokens" as *;
+
+// El layout (.nav-item, .sidebar*) lo aporta @edc-motor/admin-kit. Aquí solo el
+// bloque de usuario que rellena el slot #user del AdminLayout.
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: $space-3;
+  min-width: 0;
+
+  &__avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: $radius-sm;
+    background: color-mix(in srgb, $accent-500 25%, $surface-2);
+    color: $accent-700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $fs-13;
+    font-weight: $k-fw-bold;
+    flex-shrink: 0;
+  }
+
+  &__name {
+    font-size: $fs-14;
+    font-weight: $k-fw-medium;
+    color: $text-1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+// Enlace "Ver la web" de la barra superior (espejo del enlace a admin del
+// header público): botón de icono, sin texto.
+.navbar-viewsite {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: $accent-500;
+  border-radius: $radius-md;
+  text-decoration: none;
+
+  &:hover { background: color-mix(in srgb, $accent-500 10%, transparent); }
+}
+
+.who-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: $space-1;
+  color: $danger;
+  border-radius: $radius-md;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba($danger, 0.1);
+  }
+}

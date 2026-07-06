@@ -1,0 +1,395 @@
+{
+  "routes": {
+    "login": "sarrera",
+    "icons": "ikonoak",
+    "previews": "irudiak",
+    "pdfs": "pdfak",
+    "pages": "orriak",
+    "settings": "konfigurazioa",
+    "backups": "kopiak",
+    "users": "erabiltzaileak"
+  },
+  "breadcrumbs": {
+    "home": "Hasiera",
+    "icons": "Ikonoak",
+    "previews": "Irudiak",
+    "pdfs": "PDFak",
+    "pages": "Orriak",
+    "settings": "Konfigurazioa",
+    "backups": "Segurtasun-kopiak",
+    "users": "Erabiltzaileak"
+  },
+  "nav": {
+    "dashboard": "Panela",
+    "icons": "Ikonoak",
+    "previews": "Irudiak",
+    "pdfs": "PDFak",
+    "pages": "Orriak",
+    "settings": "Konfigurazioa",
+    "backups": "Kopiak",
+    "users": "Erabiltzaileak",
+    "viewSite": "Ikusi webgunea"
+  },
+  "icons": {
+    "title": "Ikonoak",
+    "new": "Ikono berria",
+    "nameLabel": "Izena",
+    "imageLabel": "Irudia (SVG/PNG)",
+    "imageHint": "SVG edo PNG · Geh. 2 MB",
+    "confirmDelete": {
+      "title": "Ezabatu ikonoa",
+      "message": "\"{name}\" ezabatu?"
+    },
+    "toast": {
+      "created": "Ikonoa sortua",
+      "deleted": "Ikonoa ezabatua",
+      "saveError": "Ezin izan da gorde.",
+      "updated": "Ikonoa eguneratu da."
+    },
+    "edit": "Editatu ikonoa",
+    "imageReplaceLabel": "Irudi berria (aukerakoa)"
+  },
+  "common": {
+    "save": "Gorde",
+    "cancel": "Utzi",
+    "search": "Bilatu…",
+    "empty": "Emaitzarik ez.",
+    "logout": "Irten",
+    "required": "Eremu hau beharrezkoa da.",
+    "fileTooLarge": "Fitxategia handiegia da.",
+    "fileType": "Fitxategi-formatu baliogabea.",
+    "actions": {
+      "open": "Ireki",
+      "edit": "Editatu",
+      "publish": "Argitaratu",
+      "unpublish": "Argitaratzea kendu",
+      "delete": "Ezabatu",
+      "restore": "Berreskuratu",
+      "forceDelete": "Betiko ezabatu",
+      "enter": "Sartu"
+    },
+    "errors": {
+      "action": "Ezin izan da eragiketa burutu.",
+      "load": "Ezin izan dira datuak kargatu."
+    },
+    "imageDrag": "Arrastatu irudi bat edo egin klik",
+    "close": "Itxi",
+    "imageHint": "Geh. 4 MB",
+    "confirm": "Berretsi"
+  },
+  "login": {
+    "title": "Panelerako sarrera",
+    "email": "Email",
+    "password": "Pasahitza",
+    "submit": "Sartu",
+    "submitting": "Sartzen…",
+    "denied": "Kontu honek ez du panelerako sarbiderik.",
+    "noAccess": "Kontu honek ezin du administrazio panelera sartu.",
+    "failed": "Ezin izan da saioa hasi."
+  },
+  "dashboard": {
+    "title": "Panela",
+    "connectedAs": "{name} gisa konektatuta ({roles}).",
+    "motor": "{name} v{version} · hizkuntzak {locales}"
+  },
+  "editor": {
+    "bold": "Lodia",
+    "italic": "Etzana",
+    "strike": "Marratua",
+    "heading": "Izenburua",
+    "bulletList": "Zerrenda",
+    "orderedList": "Zerrenda zenbakiduna",
+    "undo": "Desegin",
+    "redo": "Berregin",
+    "insertIcon": "Ikonoa txertatu",
+    "editHtml": "HTML editatu"
+  },
+  "previews": {
+    "title": "Sortutako PNGak",
+    "empty": "Oraindik ez dago PNGrik.",
+    "regenerate": "PNGak birsortu",
+    "refresh": "Eguneratu",
+    "queued": "Birsortzea ilaran; freskatu segundo batzuk barru."
+  },
+  "previewsManager": {
+    "refresh": "Eguneratu",
+    "clean": "Garbitu umezurtzak",
+    "total": "Guztira",
+    "generateMissing": "Sortu falta direnak",
+    "regenerateAll": "Birsortu dena",
+    "deleteAll": "Ezabatu dena",
+    "searchPlaceholder": "Bilatu…",
+    "noResults": "Emaitzarik ez.",
+    "loadMore": "Kargatu gehiago",
+    "panelEmpty": "Aukeratu txartel bat bere elementuak kudeatzeko.",
+    "detailTitle": "Elementuak",
+    "itemGenerateMissing": "Sortu falta direnak",
+    "itemRegenerate": "Birsortu",
+    "itemDelete": "Ezabatu PNGak",
+    "confirmRegenerateAll": "{'{'}type{'}'} guztien previewak birsortu?",
+    "confirmDeleteAll": "{'{'}type{'}'} guztien previewak ezabatu? PNGak diskotik ezabatzen dira.",
+    "confirmDeleteItem": "\"{'{'}name{'}'}\"(r)en PNGak ezabatu?",
+    "confirmClean": "Preview-fitxategi umezurtzak ezabatu (inongo entitatek erreferentziatu gabeak)?",
+    "confirm": "Berretsi",
+    "title": "Irudiak (previewak)",
+    "selectItem": "Aukeratu elementu bat…"
+  },
+  "pdfs": {
+    "generate": "Sortu",
+    "refresh": "Eguneratu",
+    "download": "Deskargatu",
+    "regenerate": "Birsortu",
+    "delete": "Ezabatu",
+    "confirmDelete": "\"{'{'}name{'}'}\" PDFa ezabatu?",
+    "empty": "Oraindik ez dago PDFrik.",
+    "statusPending": "Ilaran…",
+    "statusReady": "Prest",
+    "statusFailed": "Errorea",
+    "viewTitle": "PDFak",
+    "detailTitle": "PDFak",
+    "panelEmpty": "Aukeratu txartel bat bere PDFak kudeatzeko.",
+    "searchPlaceholder": "Bilatu…",
+    "noResults": "Emaitzarik ez.",
+    "generatedAt": "Sortze-data",
+    "selectSource": "Aukeratu elementu bat…",
+    "generateMissing": "Sortu falta direnak",
+    "regenerateAll": "Birsortu dena",
+    "deleteAll": "Ezabatu dena",
+    "confirmRegenerateAll": "{type} guztien PDFak birsortu?",
+    "confirmDeleteAll": "{type} guztien PDFak ezabatu?",
+    "types": {
+      "pages": "Orri inprimagarriak"
+    }
+  },
+  "pages": {
+    "title": "Orriak",
+    "new": "Orri berria",
+    "edit": "Editatu orria",
+    "homeChip": "Hasiera",
+    "published": "Argitaratuta",
+    "draft": "Zirriborroa",
+    "setHome": "Ezarri hasiera gisa",
+    "confirmDelete": "\"{name}\" zakarrontzira bidali?",
+    "fields": {
+      "title": "Izenburua",
+      "description": "Deskribapena",
+      "parent": "Orri gurasoa",
+      "template": "Txantiloia",
+      "backgroundImage": "Atzeko irudia",
+      "backgroundImageHint": "Edukiaren atzeko geruza finkoa, gaiaren arabera leunduta",
+      "metaTitle": "Meta izenburua (SEO)",
+      "metaDescription": "Meta deskribapena (SEO)",
+      "published": "Argitaratuta",
+      "printable": "Inprimagarria (PDF)"
+    },
+    "templates": {
+      "default": "Lehenetsia",
+      "landing": "Azala (zabalera osoa)"
+    },
+    "toast": {
+      "saved": "Orria gordeta.",
+      "deleted": "Orria zakarrontzira bidalita.",
+      "homeSet": "Orria hasiera gisa ezarrita.",
+      "saveError": "Ezin izan da gorde."
+    },
+    "blocks": {
+      "add": "Gehitu blokea",
+      "edit": "Editatu blokea",
+      "empty": "Orriak ez du blokerik oraindik.",
+      "printable": "Orriaren PDFan sartzen da",
+      "indexable": "Aurkibidean agertzen da",
+      "common": "Ezarpen komunak",
+      "confirmDelete": "Bloke hau ezabatu?",
+      "panelTitle": "Blokea",
+      "panelEmpty": "Aukeratu bloke bat bere ekintzak ikusteko.",
+      "panelContent": "Edukia"
+    },
+    "panelTitle": "Orria",
+    "panelEmpty": "Aukeratu orri bat bere ekintzak ikusteko.",
+    "panelBlocks": "Blokeak",
+    "open": "Ireki"
+  },
+  "blockTypes": {
+    "header": "Goiburua",
+    "text": "Testua",
+    "text-card": "Testu-txartela",
+    "quote": "Aipua",
+    "cta": "Ekintza-deia",
+    "characters-grid": "Pertsonaien sareta",
+    "houses-schemes": "Etxeak eta argukiak",
+    "index": "Aurkibide automatikoa"
+  },
+  "blockFields": {
+    "title": "Izenburua",
+    "subtitle": "Azpititulua",
+    "body": "Testua",
+    "label": "Etiketa",
+    "quote": "Aipua",
+    "author": "Egilea",
+    "button_text": "Botoiaren testua",
+    "button_url": "Botoiaren esteka",
+    "button_variant": "Botoiaren estiloa",
+    "image": "Irudia",
+    "image_position": "Irudiaren posizioa",
+    "limit": "Karta kopurua gehienez",
+    "order": "Ordena",
+    "intro": "Sarrera",
+    "show_empty": "Erakutsi argukirik gabeko etxeak",
+    "align": "Lerrokatzea",
+    "width": "Edukiaren zabalera",
+    "background": "Atzeko kolorea",
+    "numbered": "Zenbakituta",
+    "items": "Galderak",
+    "question": "Galdera",
+    "answer": "Erantzuna",
+    "house_id": "Etxea",
+    "show_schemes": "Erakutsi bere amarruak"
+  },
+  "blockOptions": {
+    "align": {
+      "left": "Ezkerrera",
+      "center": "Erdian",
+      "right": "Eskuinera",
+      "justify": "Justifikatuta"
+    },
+    "order": {
+      "recent": "Berrienak",
+      "cost": "Kostuaren arabera",
+      "name": "Izenaren arabera"
+    },
+    "width": {
+      "wide": "Zabala",
+      "full": "Zabalera osoa",
+      "narrow": "Estua"
+    },
+    "image_position": {
+      "top": "Goian",
+      "left": "Ezkerrean",
+      "right": "Eskuinean",
+      "bottom": "Behean",
+      "clear-left": "Ezkerrean (testuak inguratzen du)",
+      "clear-right": "Eskuinean (testuak inguratzen du)"
+    },
+    "button_variant": {
+      "primary": "Arrunta (azentu-hondoa)",
+      "secondary": "Alderantzizkoa (hondoaren kolorea)"
+    }
+  },
+  "settings": {
+    "title": "Konfigurazioa",
+    "sections": {
+      "identity": "Identitatea",
+      "appearance": "Itxura",
+      "footer": "Orri-oina"
+    },
+    "fields": {
+      "title": "Gunearen izenburua",
+      "description": "Deskribapena (meta lehenetsia)",
+      "logo": "Logoa (SVG/PNG)",
+      "logoHint": "Web publikoaren barran agertzen da",
+      "favicon": "Favicon-a (PNG/SVG)",
+      "faviconHint": "Nabigatzailearen fitxako ikonoa",
+      "accentMode": "Azentu-kolorea",
+      "accentColor": "Kolorea",
+      "accentColors": "Gehitu kolore hautagaia",
+      "accentColorsHint": "Kolore hauetako bat zozketatzen da weba kargatzean eta nabigatzean.",
+      "fontHeadings": "Izenburuen letra-tipoa",
+      "fontBody": "Testuaren letra-tipoa",
+      "footerText": "Oinaren testua",
+      "customFonts": "Letra-tipo propioak",
+      "fontName": "Letra-tipoaren izena",
+      "fontFileHint": "WOFF2/WOFF/TTF/OTF · Geh. 4 MB",
+      "fontDrag": "Arrastatu letra-tipo bat edo egin klik",
+      "fontSpecial": "Letra berezia (aipuak)"
+    },
+    "accentModes": {
+      "fixed": "Finkoa",
+      "random": "Ausazkoa (CDL erakoa)"
+    },
+    "addColor": "Gehitu",
+    "fontPreviewHeading": "Zazpi erresumak — Adibide izenburua",
+    "fontPreviewBody": "Nahastu sorta eta banatu bost karta jokalari bakoitzari.",
+    "fonts": {
+      "system": "Sistemakoa",
+      "serif": "Serif klasikoa",
+      "humanist": "Humanista",
+      "rounded": "Biribildua",
+      "mono": "Monoespaziatua"
+    },
+    "toast": {
+      "saved": "Konfigurazioa gordeta.",
+      "saveError": "Ezin izan da gorde."
+    },
+    "uploadFont": "Igo letra-tipoa",
+    "fontPreviewSpecial": "Jokatzen duzunean, irabazi edo hil baino ez."
+  },
+  "backups": {
+    "title": "Segurtasun-kopiak",
+    "create": "Sortu kopia",
+    "hint": "Kopia automatikoa behean konfiguratzen da; zaharrak berez garbitzen dira atxikipenaren arabera.",
+    "empty": "Oraindik ez dago kopiarik.",
+    "panelTitle": "Kopia",
+    "panelEmpty": "Hautatu kopia bat bere ekintzak ikusteko.",
+    "download": "Deskargatu",
+    "fields": {
+      "date": "Data",
+      "size": "Tamaina"
+    },
+    "confirmDelete": "\"{name}\" kopia ezabatu?",
+    "toast": {
+      "created": "Kopia sortuta.",
+      "deleted": "Kopia ezabatuta."
+    },
+    "schedule": {
+      "title": "Kopia automatikoa",
+      "auto": "Kopiak automatikoki egin",
+      "frequency": "Maiztasuna",
+      "daily": "Egunerokoa",
+      "weekly": "Astekoa",
+      "weekday": "Asteko eguna",
+      "time": "Ordua",
+      "keepDays": "Atxikipena (egunak)",
+      "saved": "Kopia automatikoa gordeta.",
+      "weekdays": {
+        "1": "Astelehena",
+        "2": "Asteartea",
+        "3": "Asteazkena",
+        "4": "Osteguna",
+        "5": "Ostirala",
+        "6": "Larunbata",
+        "7": "Igandea"
+      }
+    }
+  },
+  "users": {
+    "title": "Erabiltzaileak",
+    "new": "Erabiltzaile berria",
+    "edit": "Editatu erabiltzailea",
+    "panelTitle": "Erabiltzailea",
+    "panelEmpty": "Aukeratu erabiltzaile bat bere ekintzak ikusteko.",
+    "unverified": "Egiaztatu gabe",
+    "verified": "Email egiaztatua",
+    "selfHint": "Zure erabiltzailea da: ezin duzu ezabatu ez rola aldatu.",
+    "confirmDelete": "\"{name}\" erabiltzailea ezabatu?",
+    "fields": {
+      "name": "Izena",
+      "email": "Email",
+      "password": "Pasahitza",
+      "passwordOptional": "Pasahitza (hutsik = ez aldatu)",
+      "role": "Rola"
+    },
+    "roles": {
+      "admin": "Admin",
+      "editor": "Editorea",
+      "user": "Erabiltzailea"
+    },
+    "toast": {
+      "saved": "Erabiltzailea gordeta.",
+      "deleted": "Erabiltzailea ezabatuta.",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "blockEditor": {
+    "addRow": "Gehitu"
+  }
+}

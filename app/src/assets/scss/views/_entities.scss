@@ -1,0 +1,218 @@
+@use "tokens" as *;
+
+// Listados públicos de entidades (doc 10): índice en rejilla de tarjetas y
+// SINGLE estándar estilo CDL — imagen de fondo de página, banner con el
+// nombre + acción de añadir, y la ficha en dos columnas. Mobile-first.
+.entity-index {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: $space-6;
+  display: grid;
+  gap: $space-5;
+
+  &__title { margin: 0; }
+
+  &__empty { color: $text-3; margin: 0; }
+
+  &__grid {
+    display: flex;
+    flex-wrap: wrap;
+    // Hueco VERTICAL generoso: el pdf-add flota encima de cada carta (a
+    // -38px) y así no se monta con la fila anterior — queda claro de quién es.
+    gap: 48px $space-4;
+    justify-content: center;
+    margin-top: $space-7; // que el de la primera fila no pise el título
+  }
+
+  // El slot posiciona el botón de añadir; el hover vive en el enlace
+  // interior (.entity-index__card-link, en _downloads.scss).
+  &__slot {
+    flex: 0 0 auto;
+  }
+}
+
+// --- Single estándar (plantilla CDL) ---
+.entity-single {
+  &__missing {
+    text-align: center;
+    color: $text-3;
+    font-size: $fs-24;
+    padding: $space-8 0;
+  }
+
+  // Banner: tintado y desenfocado sobre el fondo de página, a lo ancho.
+  &__banner {
+    background: color-mix(in srgb, $surface 72%, transparent);
+    backdrop-filter: blur(8px);
+    border-block: 1px solid $border;
+    padding: $space-6 0;
+  }
+
+  &__banner-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 $space-6;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-4;
+  }
+
+  &__heading {
+    display: grid;
+    gap: $space-2;
+    min-width: 0;
+  }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    color: $text-3;
+    text-decoration: none;
+    font-size: $fs-13;
+    justify-self: start;
+
+    &:hover { color: $accent-500; }
+  }
+
+  &__title {
+    margin: 0;
+    font-size: $fs-28;
+    line-height: 1.1;
+  }
+
+  &__subtitle {
+    margin: 0;
+    color: $text-2;
+    max-width: 640px;
+  }
+
+  &__action { flex: 0 0 auto; }
+
+  &__body {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: $space-6;
+    display: grid;
+    gap: $space-6;
+  }
+
+  // La ficha: preview/carta + panel de datos, en dos columnas cuando cabe.
+  &__layout {
+    display: grid;
+    gap: $space-6;
+    align-items: start;
+
+    @media (min-width: 760px) {
+      grid-template-columns: auto minmax(0, 1fr);
+    }
+
+    // Sin preview (entidad sin imagen): el panel ocupa todo el ancho.
+    > :only-child { grid-column: 1 / -1; }
+  }
+
+  &__preview { justify-self: center; }
+
+  &__shield {
+    max-width: 220px;
+    border-radius: $radius-lg;
+    border: 1px solid $border;
+  }
+
+  &__panel {
+    display: grid;
+    gap: $space-4;
+    min-width: 0;
+  }
+
+  // Bloque de información (las filas etiqueta/valor de CDL).
+  &__info {
+    background: color-mix(in srgb, $surface 72%, transparent);
+    backdrop-filter: blur(8px);
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    padding: $space-4 $space-5;
+    display: grid;
+    gap: $space-3;
+  }
+
+  &__info-title {
+    margin: 0;
+    font-size: $fs-14;
+    color: $text-3;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-left: 3px solid var(--c, $accent-500);
+    padding-left: $space-3;
+  }
+
+  &__rows {
+    margin: 0;
+    display: grid;
+    gap: $space-2;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+    border-bottom: 1px dashed $border;
+    padding-bottom: $space-2;
+
+    &:last-child { border-bottom: none; padding-bottom: 0; }
+
+    dt { color: $text-3; font-size: $fs-14; }
+    dd { margin: 0; font-weight: 600; }
+  }
+
+  &__swatch {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: $radius-sm;
+    border: 1px solid $border;
+  }
+
+  &__text { color: $text-2; }
+
+  &__related {
+    display: grid;
+    gap: $space-4;
+
+    h2 {
+      margin: 0;
+      border-left: 4px solid var(--c, $accent-500);
+      padding-left: $space-3;
+      font-size: $fs-18;
+    }
+  }
+}
+
+// Tarjeta de casa en el índice (no es una carta del juego: presentación web).
+.house-item {
+  width: 260px;
+  border: 1px solid $border;
+  border-top: 4px solid var(--c, $accent-500);
+  border-radius: $radius-lg;
+  background: $surface;
+  padding: $space-4;
+  display: grid;
+  gap: $space-2;
+  justify-items: start;
+
+  &__image {
+    max-width: 96px;
+    border-radius: $radius-sm;
+  }
+
+  &__name { margin: 0; }
+
+  &__excerpt {
+    margin: 0;
+    color: $text-3;
+    font-size: $fs-13;
+  }
+}

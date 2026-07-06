@@ -1,0 +1,50 @@
+@use "tokens" as *;
+
+// Panel de PNG generados (Fase 3) en las vistas de detalle.
+.preview-panel {
+  margin-top: $space-7;
+
+  &__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+    flex-wrap: wrap;
+    border-bottom: 1px solid $border;
+    padding-bottom: $space-2;
+    margin-bottom: $space-4;
+
+    h2 { margin: 0; font-size: $fs-18; }
+  }
+
+  &__actions { display: flex; gap: $space-2; }
+
+  &__empty {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    color: $text-3;
+  }
+
+  &__grid {
+    display: flex;
+    gap: $space-4;
+    flex-wrap: wrap;
+  }
+
+  &__item {
+    margin: 0;
+    display: grid;
+    gap: $space-1;
+    justify-items: center;
+
+    img {
+      width: 175px;
+      border-radius: $radius-md;
+      border: 1px solid $border;
+      background: $surface-2;
+    }
+
+    figcaption { color: $text-3; font-size: $fs-13; }
+  }
+}

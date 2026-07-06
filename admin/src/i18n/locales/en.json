@@ -1,0 +1,395 @@
+{
+  "routes": {
+    "login": "login",
+    "icons": "icons",
+    "previews": "previews",
+    "pdfs": "pdfs",
+    "pages": "pages",
+    "settings": "settings",
+    "backups": "backups",
+    "users": "users"
+  },
+  "breadcrumbs": {
+    "home": "Home",
+    "icons": "Icons",
+    "previews": "Images",
+    "pdfs": "PDFs",
+    "pages": "Pages",
+    "settings": "Settings",
+    "backups": "Backups",
+    "users": "Users"
+  },
+  "nav": {
+    "dashboard": "Dashboard",
+    "icons": "Icons",
+    "previews": "Images",
+    "pdfs": "PDFs",
+    "pages": "Pages",
+    "settings": "Settings",
+    "backups": "Backups",
+    "users": "Users",
+    "viewSite": "View site"
+  },
+  "icons": {
+    "title": "Icons",
+    "new": "New icon",
+    "nameLabel": "Name",
+    "imageLabel": "Image (SVG/PNG)",
+    "imageHint": "SVG or PNG · Max 2 MB",
+    "confirmDelete": {
+      "title": "Delete icon",
+      "message": "Delete \"{name}\"?"
+    },
+    "toast": {
+      "created": "Icon created",
+      "deleted": "Icon deleted",
+      "saveError": "Could not save.",
+      "updated": "Icon updated."
+    },
+    "edit": "Edit icon",
+    "imageReplaceLabel": "New image (optional)"
+  },
+  "common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "search": "Search…",
+    "empty": "No results.",
+    "logout": "Log out",
+    "required": "This field is required.",
+    "fileTooLarge": "The file is too large.",
+    "fileType": "Invalid file format.",
+    "actions": {
+      "open": "Open",
+      "edit": "Edit",
+      "publish": "Publish",
+      "unpublish": "Unpublish",
+      "delete": "Delete",
+      "restore": "Restore",
+      "forceDelete": "Delete permanently",
+      "enter": "Enter"
+    },
+    "errors": {
+      "action": "The action could not be completed.",
+      "load": "Data could not be loaded."
+    },
+    "imageDrag": "Drag an image or click",
+    "close": "Close",
+    "imageHint": "Max. 4 MB",
+    "confirm": "Confirm"
+  },
+  "login": {
+    "title": "Panel access",
+    "email": "Email",
+    "password": "Password",
+    "submit": "Sign in",
+    "submitting": "Signing in…",
+    "denied": "This account has no panel access.",
+    "noAccess": "This account cannot access the admin panel.",
+    "failed": "Could not sign in."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "connectedAs": "Signed in as {name} ({roles}).",
+    "motor": "{name} v{version} · locales {locales}"
+  },
+  "editor": {
+    "bold": "Bold",
+    "italic": "Italic",
+    "strike": "Strikethrough",
+    "heading": "Heading",
+    "bulletList": "Bullet list",
+    "orderedList": "Ordered list",
+    "undo": "Undo",
+    "redo": "Redo",
+    "insertIcon": "Insert icon",
+    "editHtml": "Edit HTML"
+  },
+  "previews": {
+    "title": "Generated PNGs",
+    "empty": "No PNGs generated yet.",
+    "regenerate": "Regenerate PNGs",
+    "refresh": "Refresh",
+    "queued": "Regeneration queued; refresh in a few seconds."
+  },
+  "previewsManager": {
+    "refresh": "Refresh",
+    "clean": "Clean orphans",
+    "total": "Total",
+    "generateMissing": "Generate missing",
+    "regenerateAll": "Regenerate all",
+    "deleteAll": "Delete all",
+    "searchPlaceholder": "Search…",
+    "noResults": "No results.",
+    "loadMore": "Load more",
+    "panelEmpty": "Pick a card to manage its items.",
+    "detailTitle": "Items",
+    "itemGenerateMissing": "Generate missing",
+    "itemRegenerate": "Regenerate",
+    "itemDelete": "Delete PNGs",
+    "confirmRegenerateAll": "Regenerate ALL previews of {'{'}type{'}'}?",
+    "confirmDeleteAll": "Delete ALL previews of {'{'}type{'}'}? The PNGs are removed from disk.",
+    "confirmDeleteItem": "Delete the PNGs of \"{'{'}name{'}'}\"?",
+    "confirmClean": "Delete orphan preview files (not referenced by any entity)?",
+    "confirm": "Confirm",
+    "title": "Images (previews)",
+    "selectItem": "Pick an item…"
+  },
+  "pdfs": {
+    "generate": "Generate",
+    "refresh": "Refresh",
+    "download": "Download",
+    "regenerate": "Regenerate",
+    "delete": "Delete",
+    "confirmDelete": "Delete the PDF \"{'{'}name{'}'}\"?",
+    "empty": "No PDFs generated yet.",
+    "statusPending": "Queued…",
+    "statusReady": "Ready",
+    "statusFailed": "Failed",
+    "viewTitle": "PDFs",
+    "detailTitle": "PDFs",
+    "panelEmpty": "Pick a card to manage its PDFs.",
+    "searchPlaceholder": "Search…",
+    "noResults": "No results.",
+    "generatedAt": "Generated",
+    "selectSource": "Pick an item…",
+    "generateMissing": "Generate missing",
+    "regenerateAll": "Regenerate all",
+    "deleteAll": "Delete all",
+    "confirmRegenerateAll": "Regenerate ALL {type} PDFs?",
+    "confirmDeleteAll": "Delete ALL {type} PDFs?",
+    "types": {
+      "pages": "Printable pages"
+    }
+  },
+  "pages": {
+    "title": "Pages",
+    "new": "New page",
+    "edit": "Edit page",
+    "homeChip": "Home",
+    "published": "Published",
+    "draft": "Draft",
+    "setHome": "Set as home",
+    "confirmDelete": "Send \"{name}\" to the trash?",
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "parent": "Parent page",
+      "template": "Template",
+      "backgroundImage": "Background image",
+      "backgroundImageHint": "Fixed layer behind the content, dimmed per theme",
+      "metaTitle": "Meta title (SEO)",
+      "metaDescription": "Meta description (SEO)",
+      "published": "Published",
+      "printable": "Printable (PDF)"
+    },
+    "templates": {
+      "default": "Default",
+      "landing": "Landing (full width)"
+    },
+    "toast": {
+      "saved": "Page saved.",
+      "deleted": "Page sent to the trash.",
+      "homeSet": "Page set as home.",
+      "saveError": "Could not save."
+    },
+    "blocks": {
+      "add": "Add block",
+      "edit": "Edit block",
+      "empty": "This page has no blocks yet.",
+      "printable": "Included in the page PDF",
+      "indexable": "Shown in the index",
+      "common": "Common settings",
+      "confirmDelete": "Delete this block?",
+      "panelTitle": "Block",
+      "panelEmpty": "Pick a block to see its actions.",
+      "panelContent": "Content"
+    },
+    "panelTitle": "Page",
+    "panelEmpty": "Pick a page to see its actions.",
+    "panelBlocks": "Blocks",
+    "open": "Open"
+  },
+  "blockTypes": {
+    "header": "Header",
+    "text": "Text",
+    "text-card": "Text card",
+    "quote": "Quote",
+    "cta": "Call to action",
+    "characters-grid": "Characters grid",
+    "houses-schemes": "Houses and schemes",
+    "index": "Automatic index"
+  },
+  "blockFields": {
+    "title": "Title",
+    "subtitle": "Subtitle",
+    "body": "Text",
+    "label": "Label",
+    "quote": "Quote",
+    "author": "Author",
+    "button_text": "Button text",
+    "button_url": "Button link",
+    "button_variant": "Button style",
+    "image": "Image",
+    "image_position": "Image position",
+    "limit": "Max cards",
+    "order": "Order",
+    "intro": "Intro",
+    "show_empty": "Show houses without schemes",
+    "align": "Alignment",
+    "width": "Content width",
+    "background": "Background color",
+    "numbered": "Numbered",
+    "items": "Questions",
+    "question": "Question",
+    "answer": "Answer",
+    "house_id": "House",
+    "show_schemes": "Show its schemes"
+  },
+  "blockOptions": {
+    "align": {
+      "left": "Left",
+      "center": "Center",
+      "right": "Right",
+      "justify": "Justify"
+    },
+    "order": {
+      "recent": "Most recent",
+      "cost": "By cost",
+      "name": "By name"
+    },
+    "width": {
+      "wide": "Wide",
+      "full": "Full width",
+      "narrow": "Narrow"
+    },
+    "image_position": {
+      "top": "Top",
+      "left": "Left",
+      "right": "Right",
+      "bottom": "Bottom",
+      "clear-left": "Left (text wraps around)",
+      "clear-right": "Right (text wraps around)"
+    },
+    "button_variant": {
+      "primary": "Normal (accent background)",
+      "secondary": "Inverse (page background)"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "sections": {
+      "identity": "Identity",
+      "appearance": "Appearance",
+      "footer": "Footer"
+    },
+    "fields": {
+      "title": "Site title",
+      "description": "Description (default meta)",
+      "logo": "Logo (SVG/PNG)",
+      "logoHint": "Shown in the public site bar",
+      "favicon": "Favicon (PNG/SVG)",
+      "faviconHint": "Browser tab icon",
+      "accentMode": "Accent color",
+      "accentColor": "Color",
+      "accentColors": "Add candidate color",
+      "accentColorsHint": "One of these colors is drawn on page load and while navigating.",
+      "fontHeadings": "Headings font",
+      "fontBody": "Body font",
+      "footerText": "Footer text",
+      "customFonts": "Custom fonts",
+      "fontName": "Font name",
+      "fontFileHint": "WOFF2/WOFF/TTF/OTF · Max 4 MB",
+      "fontDrag": "Drag a font or click",
+      "fontSpecial": "Special font (quotes)"
+    },
+    "accentModes": {
+      "fixed": "Fixed",
+      "random": "Random (CDL style)"
+    },
+    "addColor": "Add",
+    "fontPreviewHeading": "The seven kingdoms — Sample heading",
+    "fontPreviewBody": "Shuffle the deck and deal five cards to each player.",
+    "fonts": {
+      "system": "System",
+      "serif": "Classic serif",
+      "humanist": "Humanist",
+      "rounded": "Rounded",
+      "mono": "Monospace"
+    },
+    "toast": {
+      "saved": "Settings saved.",
+      "saveError": "Could not save."
+    },
+    "uploadFont": "Upload font",
+    "fontPreviewSpecial": "When you play, you win or you die."
+  },
+  "backups": {
+    "title": "Backups",
+    "create": "Create backup",
+    "hint": "Automatic backups are configured below; old ones are cleaned up automatically per retention.",
+    "empty": "No backups yet.",
+    "panelTitle": "Backup",
+    "panelEmpty": "Select a backup to see its actions.",
+    "download": "Download",
+    "fields": {
+      "date": "Date",
+      "size": "Size"
+    },
+    "confirmDelete": "Delete backup \"{name}\"?",
+    "toast": {
+      "created": "Backup created.",
+      "deleted": "Backup deleted."
+    },
+    "schedule": {
+      "title": "Automatic backup",
+      "auto": "Run backups automatically",
+      "frequency": "Frequency",
+      "daily": "Daily",
+      "weekly": "Weekly",
+      "weekday": "Day of the week",
+      "time": "Time",
+      "keepDays": "Retention (days)",
+      "saved": "Automatic backup saved.",
+      "weekdays": {
+        "1": "Monday",
+        "2": "Tuesday",
+        "3": "Wednesday",
+        "4": "Thursday",
+        "5": "Friday",
+        "6": "Saturday",
+        "7": "Sunday"
+      }
+    }
+  },
+  "users": {
+    "title": "Users",
+    "new": "New user",
+    "edit": "Edit user",
+    "panelTitle": "User",
+    "panelEmpty": "Pick a user to see their actions.",
+    "unverified": "Unverified",
+    "verified": "Email verified",
+    "selfHint": "It's your own user: you can't delete it or change your role.",
+    "confirmDelete": "Delete user \"{name}\"?",
+    "fields": {
+      "name": "Name",
+      "email": "Email",
+      "password": "Password",
+      "passwordOptional": "Password (empty = keep)",
+      "role": "Role"
+    },
+    "roles": {
+      "admin": "Admin",
+      "editor": "Editor",
+      "user": "User"
+    },
+    "toast": {
+      "saved": "User saved.",
+      "deleted": "User deleted.",
+      "saveError": "Could not save."
+    }
+  },
+  "blockEditor": {
+    "addRow": "Add"
+  }
+}

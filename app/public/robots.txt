@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /_render/
+
+# La URL absoluta del sitemap la añade `npm run prerender` (según
+# VITE_API_URL). En despliegues sin prerender, añádela a mano:
+# Sitemap: https://tu-api/sitemap.xml

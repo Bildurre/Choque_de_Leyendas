@@ -1,0 +1,329 @@
+{
+  "routes": {
+    "login": "acceso",
+    "icons": "iconos",
+    "previews": "imagenes",
+    "pdfs": "pdf",
+    "pages": "paginas",
+    "settings": "configuracion",
+    "backups": "copias",
+    "users": "usuarios"
+  },
+  "breadcrumbs": {
+    "home": "Inicio",
+    "icons": "Iconos",
+    "previews": "Imágenes",
+    "pdfs": "PDF",
+    "pages": "Páginas",
+    "settings": "Configuración",
+    "backups": "Copias de seguridad",
+    "users": "Usuarios"
+  },
+  "nav": {
+    "dashboard": "Panel",
+    "icons": "Iconos",
+    "previews": "Imágenes",
+    "pdfs": "PDF",
+    "pages": "Páginas",
+    "settings": "Configuración",
+    "backups": "Copias",
+    "users": "Usuarios",
+    "viewSite": "Ver la web"
+  },
+  "icons": {
+    "title": "Iconos",
+    "new": "Nuevo icono",
+    "nameLabel": "Nombre",
+    "imageLabel": "Imagen (SVG/PNG)",
+    "imageHint": "SVG o PNG · Máx. 2 MB",
+    "confirmDelete": {
+      "title": "Borrar icono",
+      "message": "¿Borrar \"{name}\"?"
+    },
+    "toast": {
+      "created": "Icono creado",
+      "deleted": "Icono borrado",
+      "saveError": "No se pudo guardar.",
+      "updated": "Icono actualizado."
+    },
+    "edit": "Editar icono",
+    "imageReplaceLabel": "Imagen nueva (opcional)"
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "search": "Buscar…",
+    "empty": "Sin resultados.",
+    "logout": "Salir",
+    "required": "Este campo es obligatorio.",
+    "fileTooLarge": "El archivo es demasiado grande.",
+    "fileType": "Formato de archivo no válido.",
+    "actions": {
+      "open": "Abrir",
+      "edit": "Editar",
+      "publish": "Publicar",
+      "unpublish": "Despublicar",
+      "delete": "Borrar",
+      "restore": "Restaurar",
+      "forceDelete": "Borrar definitivamente",
+      "enter": "Entrar"
+    },
+    "errors": {
+      "action": "No se ha podido completar la acción.",
+      "load": "No se han podido cargar los datos."
+    },
+    "imageDrag": "Arrastra una imagen o haz clic",
+    "close": "Cerrar",
+    "imageHint": "Máx. 4 MB",
+    "confirm": "Confirmar"
+  },
+  "login": {
+    "title": "Acceso al panel",
+    "email": "Email",
+    "password": "Contraseña",
+    "submit": "Entrar",
+    "submitting": "Entrando…",
+    "denied": "Esta cuenta no tiene acceso al panel.",
+    "noAccess": "Esta cuenta no tiene acceso al panel de administración.",
+    "failed": "No se pudo iniciar sesión."
+  },
+  "dashboard": {
+    "title": "Panel",
+    "connectedAs": "Conectado como {name} ({roles}).",
+    "motor": "{name} v{version} · locales {locales}"
+  },
+  "editor": {
+    "bold": "Negrita",
+    "italic": "Cursiva",
+    "strike": "Tachado",
+    "heading": "Título",
+    "bulletList": "Lista",
+    "orderedList": "Lista numerada",
+    "undo": "Deshacer",
+    "redo": "Rehacer",
+    "insertIcon": "Insertar icono",
+    "editHtml": "Editar HTML"
+  },
+  "previews": {
+    "title": "PNG generados",
+    "empty": "Aún no hay PNG generados.",
+    "regenerate": "Regenerar PNG",
+    "refresh": "Actualizar",
+    "queued": "Regeneración encolada; refresca en unos segundos."
+  },
+  "previewsManager": {
+    "refresh": "Actualizar",
+    "clean": "Limpiar huérfanos",
+    "total": "Total",
+    "generateMissing": "Generar faltantes",
+    "regenerateAll": "Regenerar todo",
+    "deleteAll": "Borrar todo",
+    "searchPlaceholder": "Buscar…",
+    "noResults": "Sin resultados.",
+    "loadMore": "Cargar más",
+    "panelEmpty": "Selecciona una tarjeta para gestionar sus elementos.",
+    "detailTitle": "Elementos",
+    "itemGenerateMissing": "Generar faltantes",
+    "itemRegenerate": "Regenerar",
+    "itemDelete": "Borrar PNG",
+    "confirmRegenerateAll": "¿Regenerar TODAS las previews de {'{'}type{'}'}?",
+    "confirmDeleteAll": "¿Borrar TODAS las previews de {'{'}type{'}'}? Los PNG se eliminan del disco.",
+    "confirmDeleteItem": "¿Borrar los PNG de \"{'{'}name{'}'}\"?",
+    "confirmClean": "¿Eliminar los ficheros de preview huérfanos (no referenciados por ninguna entidad)?",
+    "confirm": "Confirmar",
+    "title": "Imágenes (previews)",
+    "selectItem": "Elige un elemento…"
+  },
+  "pdfs": {
+    "generate": "Generar",
+    "refresh": "Actualizar",
+    "download": "Descargar",
+    "regenerate": "Regenerar",
+    "delete": "Borrar",
+    "confirmDelete": "¿Borrar el PDF \"{'{'}name{'}'}\"?",
+    "empty": "Aún no hay PDF generados.",
+    "statusPending": "En cola…",
+    "statusReady": "Listo",
+    "statusFailed": "Error",
+    "viewTitle": "PDF",
+    "detailTitle": "PDF",
+    "panelEmpty": "Selecciona una tarjeta para gestionar sus PDF.",
+    "searchPlaceholder": "Buscar…",
+    "noResults": "Sin resultados.",
+    "generatedAt": "Generado",
+    "selectSource": "Elige un elemento…",
+    "generateMissing": "Generar faltantes",
+    "regenerateAll": "Regenerar todo",
+    "deleteAll": "Borrar todo",
+    "confirmRegenerateAll": "¿Regenerar TODOS los PDF de {type}?",
+    "confirmDeleteAll": "¿Borrar TODOS los PDF de {type}?",
+    "types": {
+      "pages": "Páginas imprimibles"
+    }
+  },
+  "pages": {
+    "title": "Páginas",
+    "new": "Nueva página",
+    "edit": "Editar página",
+    "homeChip": "Home",
+    "published": "Publicada",
+    "draft": "Borrador",
+    "setHome": "Marcar como home",
+    "confirmDelete": "¿Enviar \"{name}\" a la papelera?",
+    "fields": {
+      "title": "Título",
+      "description": "Descripción",
+      "parent": "Página madre",
+      "template": "Plantilla",
+      "backgroundImage": "Imagen de fondo",
+      "backgroundImageHint": "Capa fija tras el contenido, atenuada según el tema",
+      "metaTitle": "Meta título (SEO)",
+      "metaDescription": "Meta descripción (SEO)",
+      "published": "Publicada",
+      "printable": "Imprimible (PDF)"
+    },
+    "templates": {
+      "default": "Por defecto",
+      "landing": "Portada (ancho completo)"
+    },
+    "toast": {
+      "saved": "Página guardada.",
+      "deleted": "Página enviada a la papelera.",
+      "homeSet": "Página marcada como home.",
+      "saveError": "No se pudo guardar."
+    },
+    "blocks": {
+      "add": "Añadir bloque",
+      "edit": "Editar bloque",
+      "empty": "La página aún no tiene bloques.",
+      "printable": "Entra en el PDF de la página",
+      "indexable": "Aparece en el índice",
+      "common": "Ajustes comunes",
+      "confirmDelete": "¿Borrar este bloque?",
+      "panelTitle": "Bloque",
+      "panelEmpty": "Selecciona un bloque para ver sus acciones.",
+      "panelContent": "Contenido"
+    },
+    "panelTitle": "Página",
+    "panelEmpty": "Selecciona una página para ver sus acciones.",
+    "panelBlocks": "Bloques",
+    "open": "Abrir"
+  },
+  "settings": {
+    "title": "Configuración",
+    "sections": {
+      "identity": "Identidad",
+      "appearance": "Apariencia",
+      "footer": "Pie de página"
+    },
+    "fields": {
+      "title": "Título del sitio",
+      "description": "Descripción (meta por defecto)",
+      "logo": "Logo (SVG/PNG)",
+      "logoHint": "Se muestra en la barra de la web pública",
+      "favicon": "Favicon (PNG/SVG)",
+      "faviconHint": "Icono de la pestaña del navegador",
+      "accentMode": "Color de acento",
+      "accentColor": "Color",
+      "accentColors": "Añadir color candidato",
+      "accentColorsHint": "Se sortea uno de estos colores al cargar la web y al navegar.",
+      "fontHeadings": "Fuente de los títulos",
+      "fontBody": "Fuente del texto",
+      "footerText": "Texto del pie",
+      "customFonts": "Fuentes propias",
+      "fontName": "Nombre de la fuente",
+      "fontFileHint": "WOFF2/WOFF/TTF/OTF · Máx. 4 MB",
+      "fontDrag": "Arrastra una fuente o haz clic",
+      "fontSpecial": "Fuente especial (citas)"
+    },
+    "accentModes": {
+      "fixed": "Fijo",
+      "random": "Aleatorio (estilo CDL)"
+    },
+    "addColor": "Añadir",
+    "fontPreviewHeading": "Los siete reinos — Título de ejemplo",
+    "fontPreviewBody": "Baraja el mazo y reparte cinco cartas a cada jugador.",
+    "fonts": {
+      "system": "Del sistema",
+      "serif": "Serif clásica",
+      "humanist": "Humanista",
+      "rounded": "Redondeada",
+      "mono": "Monoespaciada"
+    },
+    "toast": {
+      "saved": "Configuración guardada.",
+      "saveError": "No se pudo guardar."
+    },
+    "uploadFont": "Subir fuente",
+    "fontPreviewSpecial": "Cuando juegas, solo puedes ganar o morir."
+  },
+  "backups": {
+    "title": "Copias de seguridad",
+    "create": "Crear copia",
+    "hint": "La copia automática se configura abajo; las viejas se limpian solas según la retención.",
+    "empty": "Todavía no hay copias.",
+    "panelTitle": "Copia",
+    "panelEmpty": "Selecciona una copia para ver sus acciones.",
+    "download": "Descargar",
+    "fields": {
+      "date": "Fecha",
+      "size": "Tamaño"
+    },
+    "confirmDelete": "¿Borrar la copia \"{name}\"?",
+    "toast": {
+      "created": "Copia creada.",
+      "deleted": "Copia borrada."
+    },
+    "schedule": {
+      "title": "Copia automática",
+      "auto": "Hacer copias automáticas",
+      "frequency": "Frecuencia",
+      "daily": "Diaria",
+      "weekly": "Semanal",
+      "weekday": "Día de la semana",
+      "time": "Hora",
+      "keepDays": "Retención (días)",
+      "saved": "Copia automática guardada.",
+      "weekdays": {
+        "1": "Lunes",
+        "2": "Martes",
+        "3": "Miércoles",
+        "4": "Jueves",
+        "5": "Viernes",
+        "6": "Sábado",
+        "7": "Domingo"
+      }
+    }
+  },
+  "users": {
+    "title": "Usuarios",
+    "new": "Nuevo usuario",
+    "edit": "Editar usuario",
+    "panelTitle": "Usuario",
+    "panelEmpty": "Selecciona un usuario para ver sus acciones.",
+    "unverified": "Sin verificar",
+    "verified": "Email verificado",
+    "selfHint": "Es tu propio usuario: no puedes borrarlo ni cambiarte el rol.",
+    "confirmDelete": "¿Borrar al usuario \"{name}\"?",
+    "fields": {
+      "name": "Nombre",
+      "email": "Email",
+      "password": "Contraseña",
+      "passwordOptional": "Contraseña (vacía = no cambiar)",
+      "role": "Rol"
+    },
+    "roles": {
+      "admin": "Admin",
+      "editor": "Editor",
+      "user": "Usuario"
+    },
+    "toast": {
+      "saved": "Usuario guardado.",
+      "deleted": "Usuario borrado.",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "blockEditor": {
+    "addRow": "Añadir"
+  }
+}

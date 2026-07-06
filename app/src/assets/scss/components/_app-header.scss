@@ -1,0 +1,443 @@
+@use "tokens" as *;
+
+// Cabecera pública estilo kontuan en DOS líneas: marca + acciones arriba y
+// la barra de navegación debajo; superficies limpias con borde $border (el
+// acento se reserva para hovers/activos). En móvil todo lo del header
+// (salvo el logo) vive en la barra lateral off-canvas. Mobile-first.
+$header-row1: 56px;
+$header-row2: 46px;
+
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 50;
+  transition: transform 0.25s ease-in-out;
+
+  &.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  // --- Línea 1: marca + acciones ---
+  &__bar {
+    background: $surface;
+    border-bottom: 1px solid $border;
+  }
+
+  &__bar-inner {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    height: $header-row1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 $space-4;
+  }
+
+  &__burger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: none;
+    border: 1px solid $border;
+    border-radius: $radius-sm;
+    color: $accent-500;
+    cursor: pointer;
+    flex-shrink: 0;
+
+    &:hover { background: color-mix(in srgb, $accent-500 10%, transparent); }
+
+    @media (min-width: 900px) { display: none; }
+  }
+
+  &__brand {
+    display: inline-flex;
+    align-items: center;
+    min-width: 0;
+    margin-right: auto;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  &__logo {
+    display: block;
+    height: 34px;
+    width: auto;
+
+    &--svg {
+      color: $accent-500;
+      transition: color 0.3s ease;
+
+      &:hover { color: $accent-400; }
+
+      svg {
+        display: block;
+        height: 34px;
+        width: auto;
+      }
+    }
+  }
+
+  // Acciones de la cabecera: SOLO escritorio (en móvil van al off-canvas).
+  // Tres grupos — [admin·descargas] | usuario/entrar | [idioma·tema] —
+  // separados por una línea vertical para que no se amontonen.
+  &__actions {
+    display: none;
+
+    @media (min-width: 900px) {
+      display: flex;
+      align-items: center;
+      gap: $space-3;
+    }
+  }
+
+  &__set {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+  }
+
+  &__sep {
+    width: 1px;
+    height: 22px;
+    background: $border;
+    flex-shrink: 0;
+  }
+
+  // Contador de la colección "para imprimir" (enlaza con Descargas).
+  &__collection {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    color: $accent-500;
+    border-radius: $radius-md;
+
+    &:hover { background: color-mix(in srgb, $accent-500 10%, transparent); }
+  }
+
+  &__collection-count {
+    position: absolute;
+    top: 0;
+    right: 0;
+    min-width: 16px;
+    height: 16px;
+    padding: 0 3px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $accent-500;
+    color: $surface;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  // Entrar / usuario (patrón kontuan: avatar + nombre; logout al lado).
+  // Entrar tipo botón-texto: sin fondo, sin borde ni padding.
+  &__login {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 0;
+    background: none;
+    border: none;
+    color: $accent-500;
+    font-weight: 600;
+    font-size: $fs-14;
+    text-decoration: none;
+    transition: color 0.15s ease;
+
+    &:hover { color: $accent-400; }
+  }
+
+  &__user {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-1 $space-2;
+    border-radius: $radius-md;
+    color: $text-1;
+    text-decoration: none;
+    min-width: 0;
+
+    &:hover { background: color-mix(in srgb, $accent-500 10%, transparent); }
+  }
+
+  &__avatar {
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: color-mix(in srgb, $accent-500 25%, $surface-2);
+    color: $accent-500;
+    border-radius: $radius-sm;
+    font-size: $fs-13;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  &__user-name {
+    font-size: $fs-14;
+    font-weight: 500;
+    max-width: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__logout {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    background: none;
+    border: none;
+    border-radius: $radius-md;
+    color: $text-3;
+    cursor: pointer;
+
+    &:hover {
+      background: color-mix(in srgb, $danger 12%, transparent);
+      color: $danger;
+    }
+  }
+
+  // --- Línea 2 (escritorio): la barra de navegación ---
+  &__nav {
+    display: none;
+
+    @media (min-width: 900px) {
+      display: block;
+      background: $surface;
+      border-bottom: 1px solid $border;
+      height: $header-row2;
+    }
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0 $space-4;
+    max-width: 1200px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center; // nav centrada
+    gap: $space-2;
+  }
+
+  // Ítem con posible submenú (páginas con hijas, patrón CDL): el desplegable
+  // aparece al hover / focus-within y el chevron se voltea.
+  &__item {
+    position: relative;
+    height: 100%;
+    display: inline-flex;
+    align-items: center;
+
+    // is-suppressed: recién navegado a una hija (el clic lo pone y el
+    // mouseleave lo quita) — sin él, el :hover mantendría el submenú abierto.
+    &.has-children:not(.is-suppressed):hover,
+    &.has-children:not(.is-suppressed):focus-within {
+      .site-header__dropdown {
+        visibility: visible;
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .site-header__chevron { transform: rotateX(180deg); }
+    }
+  }
+
+  &__chevron {
+    transition: transform 0.2s ease;
+  }
+
+  &__dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 10;
+    min-width: 200px;
+    list-style: none;
+    margin: 0;
+    padding: $space-1 0;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: visibility 0.15s ease, opacity 0.15s ease, transform 0.15s ease;
+  }
+
+  &__dropdown-link {
+    display: block;
+    padding: $space-2 $space-4;
+    color: $text-2;
+    text-decoration: none;
+    font-size: $fs-14;
+
+    &:hover {
+      background: color-mix(in srgb, $accent-500 10%, transparent);
+      color: $accent-500;
+    }
+
+    &.router-link-active {
+      color: $accent-500;
+      font-weight: 600;
+    }
+  }
+
+  // Ítems de nav estilo kontuan (píldora al hover, activo con acento) y un
+  // punto más grandes que el texto base.
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-1 $space-3;
+    border-radius: $radius-md;
+    color: $text-2;
+    text-decoration: none;
+    font-size: $fs-16;
+    font-weight: 500;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    // En la barra ancha el hover solo colorea el texto (la píldora con
+    // fondo queda para la barra lateral).
+    &:hover { color: $accent-500; }
+
+    // is-active: también cuando la ruta activa es una HIJA de esta página.
+    &.router-link-active,
+    &.is-active {
+      color: $accent-500;
+      font-weight: 600;
+    }
+  }
+}
+
+// --- Barra lateral (móvil): todo lo del header salvo el logo ---
+.site-sidebar {
+  position: fixed;
+  top: $header-row1;
+  left: 0;
+  width: 300px;
+  max-width: 84vw;
+
+  // En el tier más estrecho ocupa TODA la pantalla (patrón kontuan).
+  @media (max-width: #{$bp-sm}) {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  height: calc(100vh - #{$header-row1});
+  background: $surface;
+  border-right: 1px solid $border;
+  transform: translateX(-100%);
+  transition: transform 0.25s ease;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  padding: $space-4 $space-3;
+
+  &.is-open { transform: translateX(0); }
+
+  @media (min-width: 900px) { display: none; }
+
+  &__prefs {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-2;
+    padding: 0 $space-2;
+  }
+
+  &__divider {
+    border: none;
+    border-top: 1px solid $border;
+    margin: $space-3 $space-2;
+    width: auto;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 2px;
+
+    .site-header__link {
+      display: flex;
+      width: 100%;
+      padding: $space-2 $space-3;
+
+      // Aquí sí: píldora con fondo al pasar y en activo.
+      &:hover {
+        background: color-mix(in srgb, $accent-500 10%, transparent);
+        color: $text-1;
+      }
+
+      &.router-link-active {
+        background: color-mix(in srgb, $accent-500 16%, transparent);
+        color: $accent-500;
+      }
+    }
+
+    .site-header__collection-count {
+      position: static;
+      margin-left: auto;
+    }
+  }
+
+  // Hijas de una página: siempre desplegadas, con indentación (CDL móvil).
+  &__children {
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 $space-5;
+    display: grid;
+    gap: 2px;
+
+    .site-header__link { font-size: $fs-14; }
+  }
+
+  // El desplegable del idioma se ancla a la IZQUIERDA del trigger: anclado
+  // a la derecha se salía de la pantalla.
+  .locale-dropdown {
+    left: 0;
+    right: auto;
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-2;
+    margin-top: auto;
+    padding: $space-2;
+
+    .site-header__user { flex: 1; }
+    .site-header__login { padding: $space-2; }
+  }
+}
+
+// El contenido deja hueco a la cabecera fija.
+.site-content {
+  padding-top: $header-row1;
+
+  @media (min-width: 900px) {
+    padding-top: calc(#{$header-row1} + #{$header-row2});
+  }
+}
