@@ -29,6 +29,12 @@ export default defineConfig({
   resolve: {
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
+  // Los paquetes del motor son "fuente" (.ts/.vue sin compilar): si Vite los
+  // pre-empaqueta, los .vue quedan fuera del chunk y los singletons (toast,
+  // confirm, sidebar) se duplican. Se excluyen para servirlos como fuente.
+  optimizeDeps: {
+    exclude: ['@edc-motor/ui'],
+  },
   server: { port: 5173 },
   css: {
     preprocessorOptions: {

@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
 import { ArrowLeft, SquarePen } from '@lucide/vue'
-import { BaseButton, useToast } from '@edc-motor/ui'
+import { BaseButton, BaseCheckbox, useToast } from '@edc-motor/ui'
 import { PageBlocks, type PageBlocksLabels } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 import { useLocalesStore } from '@/stores/locales'
@@ -51,7 +51,20 @@ const blockLabels = computed<Partial<PageBlocksLabels>>(() => ({
   panelTitle: t('pages.blocks.panelTitle'),
   panelEmpty: t('pages.blocks.panelEmpty'),
   panelContent: t('pages.blocks.panelContent'),
+  parent: t('pages.blocks.parent'),
+  parentNone: t('pages.blocks.parentNone'),
 }))
+
+/** Acción rápida del panel: alterna un flag de la página sin abrir el modal. */
+async function toggleFlag(flag: 'is_published' | 'is_printable', value: boolean) {
+  if (!page.value) return
+  try {
+    await api.put(`/admin/pages/${page.value.id}`, { [flag]: value })
+    page.value[flag] = value
+  } catch {
+    toast.danger(t('common.errors.action'))
+  }
+}
 
 async function load() {
   try {
@@ -106,7 +119,40 @@ onBeforeUnmount(crumb.clear)
       :rich-labels="richLabels"
       :labels="blockLabels"
       :translate="translate"
-    />
+    >
+      <!-- Sin bloque seleccionado, el panel muestra la PÁGINA (acciones + info) -->
+      <template #panel-default>
+        <p class="manager-panel__kicker">{{ t('pages.panelTitle') }}</p>
+
+        <div class="manager-detail__actions">
+          <BaseButton variant="info" @click="formOpen = true">
+            <template #icon><SquarePen :size="14" /></template>
+            {{ t('common.actions.edit') }}
+          </BaseButton>
+        </div>
+
+        <hr class="manager-panel__divider" />
+
+        <h3 class="manager-detail__title">
+          {{ page.title[locales.current] ?? page.title.es }}
+        </h3>
+
+        <BaseCheckbox
+          :model-value="page.is_published"
+          :label="t('pages.fields.published')"
+          @update:model-value="(v) => toggleFlag('is_published', v)"
+        />
+        <BaseCheckbox
+          :model-value="page.is_printable"
+          :label="t('pages.fields.printable')"
+          @update:model-value="(v) => toggleFlag('is_printable', v)"
+        />
+
+        <p v-for="(slugValue, code) in page.slug" :key="code" class="manager-detail__meta">
+          <strong>{{ String(code).toUpperCase() }}</strong> /{{ slugValue }}
+        </p>
+      </template>
+    </PageBlocks>
 
     <PageFormModal v-model="formOpen" :page="page" :pages="pages" @saved="load" />
   </div>
