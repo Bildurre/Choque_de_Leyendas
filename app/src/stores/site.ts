@@ -17,7 +17,7 @@ export interface SiteFont {
 export interface SiteSettings {
   title: Record<string, string>
   description: Record<string, string>
-  logo: string | null
+  logo: Record<string, string>
   favicon: string | null
   accent_mode: 'fixed' | 'random'
   accent_color: string
@@ -27,8 +27,8 @@ export interface SiteSettings {
   font_special: string
   footer_text: Record<string, string>
   fonts: Record<string, SiteFont>
-  /** SVG del logo inlineado por la API (currentColor hereda el acento). */
-  logo_inline: string | null
+  /** SVG de cada logo inlineado por la API (currentColor hereda el acento). */
+  logo_inline: Record<string, string>
 }
 
 /** CSS @font-face de un catálogo de fuentes (los navegadores solo descargan las usadas). */
@@ -61,6 +61,20 @@ export const useSiteStore = defineStore('site', () => {
   const description = computed(() => {
     const map = settings.value?.description ?? {}
     return map[locales.current] || map[locales.defaultLocale] || Object.values(map)[0] || ''
+  })
+
+  // Logo del idioma actual (con fallback al por defecto, como el título).
+  const logoUrl = computed(() => {
+    const map = settings.value?.logo ?? {}
+    return map[locales.current] || map[locales.defaultLocale] || Object.values(map)[0] || null
+  })
+
+  const logoInline = computed(() => {
+    const map = settings.value?.logo_inline ?? {}
+    const url = logoUrl.value
+    // El inline correspondiente a la URL resuelta (no mezclar idiomas).
+    const key = Object.entries(settings.value?.logo ?? {}).find(([, u]) => u === url)?.[0]
+    return (key && map[key]) || null
   })
 
   /** Título del documento: "página · sitio" (o solo una de las partes). */
@@ -147,5 +161,15 @@ export const useSiteStore = defineStore('site', () => {
     if (settings.value?.accent_mode === 'random') pickAccent()
   }
 
-  return { settings, title, footerText, description, documentTitle, load, onNavigate }
+  return {
+    settings,
+    title,
+    footerText,
+    description,
+    logoUrl,
+    logoInline,
+    documentTitle,
+    load,
+    onNavigate,
+  }
 })

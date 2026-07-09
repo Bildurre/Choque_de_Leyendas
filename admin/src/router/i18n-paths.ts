@@ -1,6 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router'
 import es from '@/i18n/locales/es.json'
-import eu from '@/i18n/locales/eu.json'
+// import eu from '@/i18n/locales/eu.json'
 import en from '@/i18n/locales/en.json'
 
 // Rutas con segmentos de path traducidos (patrón kontuan): la ruta del locale
@@ -12,7 +12,8 @@ import en from '@/i18n/locales/en.json'
 // aquí, con meta.nav/permission/breadcrumbs).
 type RoutePaths = typeof es.routes
 
-const translations: Record<string, RoutePaths> = { es: es.routes, eu: eu.routes, en: en.routes }
+//const translations: Record<string, RoutePaths> = { es: es.routes, eu: eu.routes, en: en.routes }
+const translations: Record<string, RoutePaths> = { es: es.routes, en: en.routes }
 
 export const supportedLocales = Object.keys(translations)
 

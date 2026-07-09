@@ -73,7 +73,7 @@ extra:
 
 ```json
 {
-  "require": { "edc-motor/core": "^0.2.0" }
+  "require": { "edc-motor/core": "^0.3.0" }
 }
 ```
 
@@ -111,8 +111,8 @@ trae los paquetes por versión:
 ```json
 {
   "dependencies": {
-    "@edc-motor/ui": "^0.2.0",
-    "@edc-motor/admin-kit": "^0.2.0"
+    "@edc-motor/ui": "^0.3.0",
+    "@edc-motor/admin-kit": "^0.3.0"
   }
 }
 ```

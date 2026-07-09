@@ -53,15 +53,20 @@ const backgroundImage = ref<string | null>(null)
 const isPublished = ref(false)
 const isPrintable = ref(false)
 
-/** Sube la imagen de fondo al momento (misma ruta que las de los bloques). */
+/** Sube la imagen de fondo al momento (misma ruta que las de los bloques);
+ *  el backend borra la sustituida y el "quitar" la borra del disco. */
 async function uploadBackground(file: File | null) {
   if (!file) {
+    if (backgroundImage.value) {
+      api.delete('/admin/content/uploads', { data: { url: backgroundImage.value } }).catch(() => {})
+    }
     backgroundImage.value = null
     return
   }
   try {
     const form = new FormData()
     form.append('image', file)
+    if (backgroundImage.value) form.append('replaces', backgroundImage.value)
     const { data } = await api.post('/admin/content/uploads', form)
     backgroundImage.value = data.url
   } catch {
@@ -176,7 +181,7 @@ async function save() {
       :drag-text="t('common.imageDrag')"
       :hint-text="t('pages.fields.backgroundImageHint')"
       @update:model-value="uploadBackground"
-      @remove="backgroundImage = null"
+      @remove="uploadBackground(null)"
     />
     <TranslatableInput
       v-model="metaTitle"

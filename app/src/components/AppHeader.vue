@@ -178,15 +178,15 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           <!-- Logo SVG inlineado: currentColor hereda el acento -->
           <!-- eslint-disable vue/no-v-html -- SVG subido por el admin -->
           <span
-            v-if="site.settings?.logo_inline"
+            v-if="site.logoInline"
             class="site-header__logo site-header__logo--svg"
-            v-html="site.settings.logo_inline"
+            v-html="site.logoInline"
           />
           <!-- eslint-enable vue/no-v-html -->
           <img
-            v-else-if="site.settings?.logo"
+            v-else-if="site.logoUrl"
             class="site-header__logo"
-            :src="site.settings.logo"
+            :src="site.logoUrl"
             :alt="site.title || 'logo'"
           />
           <MotorBadge v-else :label="site.title || 'EdC'" />

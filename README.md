@@ -1,6 +1,6 @@
 # choque-de-leyendas
 
-Web del juego, montada sobre **EdC Motor** (`edc-motor/core` ^0.2.0 de
+Web del juego, montada sobre **EdC Motor** (`edc-motor/core` ^0.3.0 de
 Packagist; `@edc-motor/ui` y `@edc-motor/admin-kit` de npmjs). Generado con
 `tools/crear-juego.sh` del motor: nace con la infraestructura funcionando
 (auth, páginas, configuración, PDF, copias, usuarios) y **sin entidades**:

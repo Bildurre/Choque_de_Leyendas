@@ -11,7 +11,8 @@ import { useLocalesStore } from '@/stores/locales'
 // el guard); el contenido llega ya localizado de la API. Los segmentos de
 // los listados de entidades y los slugs son traducibles: cada vista redirige
 // a la canónica del idioma activo (DC-12).
-const LOCALES = ['es', 'eu', 'en'] // debe casar con motor.locales de la API
+//const LOCALES = ['es', 'eu', 'en'] // debe casar con motor.locales de la API
+const LOCALES = ['es', 'en']
 const LOCALE_PATTERN = LOCALES.join('|')
 
 /** Locale a usar cuando la URL no trae prefijo (persistido por el store). */

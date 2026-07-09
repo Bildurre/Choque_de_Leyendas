@@ -1,6 +1,6 @@
 import { createI18n } from 'vue-i18n'
 import es from './locales/es.json'
-import eu from './locales/eu.json'
+//import eu from './locales/eu.json'
 import en from './locales/en.json'
 
 // Textos de la PROPIA interfaz de la web pública (nav, listados…). El
@@ -10,5 +10,6 @@ export const i18n = createI18n({
   legacy: false,
   locale: localStorage.getItem('edc_app_locale') || 'es',
   fallbackLocale: 'es',
-  messages: { es, eu, en },
+  //messages: { es, eu, en },
+  messages: { es, en },
 })
