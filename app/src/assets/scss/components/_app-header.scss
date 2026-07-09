@@ -62,9 +62,16 @@ $header-row2: 46px;
     text-decoration: none;
   }
 
+  // Alto del logo: 34px en estrecho y escalera hasta el doble en ancho.
+  --logo-h: 34px;
+
+  @media (min-width: #{$bp-md}) { --logo-h: 44px; }
+  @media (min-width: #{$bp-lg}) { --logo-h: 56px; }
+  @media (min-width: #{$bp-xl}) { --logo-h: 68px; }
+
   &__logo {
     display: block;
-    height: 34px;
+    height: var(--logo-h, 34px);
     width: auto;
 
     &--svg {
@@ -75,7 +82,7 @@ $header-row2: 46px;
 
       svg {
         display: block;
-        height: 34px;
+        height: var(--logo-h, 34px);
         width: auto;
       }
     }
