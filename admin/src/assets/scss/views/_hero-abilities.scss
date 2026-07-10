@@ -1,0 +1,53 @@
+@use "tokens" as *;
+
+// Listado de habilidades activas: emblema tipográfico + dados del coste como
+// fichas de color (letras; los iconos reales solo se usan en CostInput).
+.hero-abilities {
+  &__emblem {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $surface-2;
+  }
+
+  &__mono {
+    font-size: 2.2rem;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+
+  &__cost {
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  &__die {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    font-size: 0.65rem;
+    font-weight: $k-fw-bold;
+    color: #fff;
+
+    &--red { background: #c0392b; }
+    &--green { background: #27ae60; }
+    &--blue { background: #2980b9; }
+  }
+
+  // HTML de la descripción en el panel derecho (teleportado; selector plano).
+  &__description {
+    margin-top: $space-2;
+    font-size: 0.85rem;
+    color: $text-2;
+
+    p {
+      margin: 0 0 $space-2;
+    }
+  }
+}

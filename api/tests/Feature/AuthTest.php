@@ -35,7 +35,11 @@ it('exige aceptar la protección de datos para registrarse', function () {
 });
 
 it('guarda el locale del registro y lo usa como idioma preferido', function () {
-    $this->postJson('/api/auth/register?locale=eu', [
+    // Un locale activo no-por-defecto, dinámico: no depende de qué idiomas
+    // estén activados en config/motor.php.
+    $code = array_keys(config('motor.locales'))[1] ?? config('motor.default_locale');
+
+    $this->postJson('/api/auth/register?locale='.$code, [
         'name' => 'Egoi',
         'email' => 'egoi@example.com',
         'password' => 'secret-123',
@@ -44,8 +48,8 @@ it('guarda el locale del registro y lo usa como idioma preferido', function () {
     ])->assertCreated();
 
     $user = User::firstWhere('email', 'egoi@example.com');
-    expect($user->locale)->toBe('eu')
-        ->and($user->preferredLocale())->toBe('eu');
+    expect($user->locale)->toBe($code)
+        ->and($user->preferredLocale())->toBe($code);
 });
 
 it('rechaza el registro cuando el juego es solo-invitación', function () {

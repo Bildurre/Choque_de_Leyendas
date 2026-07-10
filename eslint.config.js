@@ -11,13 +11,7 @@ export default [
   },
   {
     name: 'edc/files-to-ignore',
-    ignores: [
-      '**/dist/**',
-      '**/node_modules/**',
-      '**/coverage/**',
-      '**/dev-dist/**',
-      'api/**',
-    ],
+    ignores: ['**/dist/**', '**/node_modules/**', '**/coverage/**', '**/dev-dist/**', 'api/**'],
   },
   js.configs.recommended,
   ...pluginVue.configs['flat/recommended'],

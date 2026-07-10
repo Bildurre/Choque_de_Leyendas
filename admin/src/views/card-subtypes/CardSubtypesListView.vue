@@ -1,0 +1,92 @@
+<script setup lang="ts">
+import { onMounted } from 'vue'
+import { Plus } from '@lucide/vue'
+import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
+import { BaseButton, BaseTabs } from '@edc-motor/ui'
+import { useEntityList } from '@/composables/useEntityList'
+import type { CardSubtype } from '@juego/shared'
+import CardSubtypeFormModal from '@/components/card-subtypes/CardSubtypeFormModal.vue'
+import EntityPanel from '@/components/EntityPanel.vue'
+
+// Taxonomía sin slug, sin publicación y sin single: CRUD por id y tabs
+// todos/papelera. Solo nombre traducible.
+const {
+  t,
+  items,
+  loading,
+  status,
+  search,
+  tabs,
+  tr,
+  init,
+  formOpen,
+  formMode,
+  formItem,
+  openCreate,
+  edit,
+  onSaved,
+  del,
+  restore,
+  forceDelete,
+  selectedId,
+  selected,
+  select,
+} = useEntityList<CardSubtype>({
+  resource: '/admin/card-subtypes',
+  ns: 'cardSubtypes',
+  resolveBy: 'id',
+  tabKeys: ['all', 'trashed'],
+  nameOf: (item) => item.name,
+})
+
+onMounted(init)
+</script>
+
+<template>
+  <div class="card-subtypes">
+    <div class="list-view__top">
+      <BaseButton @click="openCreate">
+        <template #icon><Plus :size="16" /></template>
+        {{ t('cardSubtypes.newButton') }}
+      </BaseButton>
+    </div>
+
+    <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <BaseTabs v-model="status" :tabs="tabs" />
+
+    <EmptyState v-if="!loading && !items.length" :title="t('common.empty')" />
+
+    <BaseGrid v-else preset="cards" gap="md">
+      <EntityCard
+        v-for="item in items"
+        :key="item.id"
+        :title="tr(item.name)"
+        :muted="!!item.deleted_at"
+        :active="selectedId === item.id"
+        clickable
+        @view="select(item)"
+      >
+        <template #badges>
+          <span v-if="item.deleted_at" class="chip is-failed">{{
+            t('cardSubtypes.state.trashed')
+          }}</span>
+        </template>
+      </EntityCard>
+    </BaseGrid>
+
+    <CardSubtypeFormModal v-model="formOpen" :mode="formMode" :target="formItem" @saved="onSaved" />
+
+    <EntityPanel
+      :item="selected"
+      :name="selected ? tr(selected.name) : ''"
+      :kicker="t('cardSubtypes.panelTitle')"
+      :empty="t('cardSubtypes.panelEmpty')"
+      :has-single="false"
+      :has-publish="false"
+      @edit="selected && edit(selected)"
+      @del="selected && del(selected)"
+      @restore="selected && restore(selected)"
+      @force-delete="selected && forceDelete(selected)"
+    />
+  </div>
+</template>

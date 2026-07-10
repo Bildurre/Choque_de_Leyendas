@@ -1,0 +1,108 @@
+@use "tokens" as *;
+
+// Cartas: el listado reutiliza los bloques genéricos (.card-art, .card-enter);
+// aquí solo el formulario por fieldsets y el detalle (single).
+
+// Formulario de carta (modal grande por fieldsets, como el form del viejo).
+.card-form {
+  &__fieldset {
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    padding: $space-4;
+    margin: 0 0 $space-4;
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+
+    legend {
+      padding: 0 $space-2;
+      font-size: $fs-14;
+      font-weight: $k-fw-bold;
+      color: $text-2;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-3;
+  }
+
+  &__checks {
+    display: flex;
+    gap: $space-4;
+    flex-wrap: wrap;
+  }
+}
+
+// Detalle de carta (single).
+.card-single {
+  &__art {
+    width: 250px;
+    max-width: 100%;
+    border-radius: $radius-md;
+    overflow: hidden;
+    background: $surface-2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 5 / 7;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__mono {
+    font-size: 3rem;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+
+  // Coste, manos, habilidad… como fichas etiqueta/valor.
+  &__facts {
+    list-style: none;
+    margin: 0 0 $space-4;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: $space-2;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: $space-2 $space-3;
+      border: 1px solid $border;
+      border-radius: $radius-md;
+      background: $surface-2;
+
+      strong {
+        font-size: 0.75rem;
+        font-weight: $k-fw-medium;
+        color: $text-2;
+      }
+
+      span {
+        font-size: $fs-16;
+        font-weight: $k-fw-bold;
+      }
+    }
+  }
+
+  &__restriction {
+    margin: $space-3 0 $space-2;
+    font-size: $fs-14;
+    color: $text-2;
+  }
+
+  &__quote {
+    margin: $space-4 0 0;
+    padding-left: $space-4;
+    border-left: 3px solid $border;
+    font-style: italic;
+    color: $text-2;
+  }
+}

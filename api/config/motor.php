@@ -10,7 +10,7 @@ return [
     'default_locale' => 'es',
     'locales' => [
         'es' => ['name' => 'Español'],
-        //'eu' => ['name' => 'Euskara'],
+        // 'eu' => ['name' => 'Euskara'], // desactivado hasta tener los textos
         'en' => ['name' => 'English'],
     ],
 

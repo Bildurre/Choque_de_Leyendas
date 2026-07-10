@@ -7,7 +7,24 @@
     "pages": "orriak",
     "settings": "konfigurazioa",
     "backups": "kopiak",
-    "users": "erabiltzaileak"
+    "users": "erabiltzaileak",
+    "factions": "fakzioak",
+    "counters": "kontagailuak",
+    "heroes": "heroiak",
+    "heroAbilities": "gaitasunak",
+    "heroAttributesConfig": "atributuen-konfigurazioa",
+    "cards": "kartak",
+    "factionDecks": "fakzio-sortak",
+    "deckAttributesConfigs": "sorta-konfigurazioak",
+    "heroSuperclasses": "superklaseak",
+    "heroRaces": "arrazak",
+    "heroClasses": "klaseak",
+    "attackRanges": "eraso-irismenak",
+    "attackSubtypes": "eraso-azpimotak",
+    "cardTypes": "karta-motak",
+    "cardSubtypes": "karta-azpimotak",
+    "equipmentTypes": "ekipamendu-motak",
+    "gameModes": "joko-moduak"
   },
   "breadcrumbs": {
     "home": "Hasiera",
@@ -17,7 +34,24 @@
     "pages": "Orriak",
     "settings": "Konfigurazioa",
     "backups": "Segurtasun-kopiak",
-    "users": "Erabiltzaileak"
+    "users": "Erabiltzaileak",
+    "factions": "Fakzioak",
+    "counters": "Kontagailuak",
+    "heroes": "Heroiak",
+    "heroAbilities": "Gaitasunak",
+    "heroAttributesConfig": "Atributuen konfigurazioa",
+    "cards": "Kartak",
+    "factionDecks": "Fakzio-sortak",
+    "deckAttributesConfigs": "Sorta-konfigurazioak",
+    "heroSuperclasses": "Superklaseak",
+    "heroRaces": "Arrazak",
+    "heroClasses": "Klaseak",
+    "attackRanges": "Eraso-irismenak",
+    "attackSubtypes": "Eraso-azpimotak",
+    "cardTypes": "Karta motak",
+    "cardSubtypes": "Karta azpimotak",
+    "equipmentTypes": "Ekipamendu motak",
+    "gameModes": "Joko moduak"
   },
   "nav": {
     "dashboard": "Panela",
@@ -28,7 +62,24 @@
     "settings": "Konfigurazioa",
     "backups": "Kopiak",
     "users": "Erabiltzaileak",
-    "viewSite": "Ikusi webgunea"
+    "viewSite": "Ikusi webgunea",
+    "factions": "Fakzioak",
+    "counters": "Kontagailuak",
+    "heroes": "Heroiak",
+    "heroAbilities": "Gaitasunak",
+    "heroAttributesConfig": "Atributuen konfig.",
+    "cards": "Kartak",
+    "factionDecks": "Fakzio-sortak",
+    "deckAttributesConfigs": "Sorta-konfig.",
+    "heroSuperclasses": "Superklaseak",
+    "heroRaces": "Arrazak",
+    "heroClasses": "Klaseak",
+    "attackRanges": "Eraso-irismenak",
+    "attackSubtypes": "Eraso-azpimotak",
+    "cardTypes": "Karta motak",
+    "cardSubtypes": "Karta azpimotak",
+    "equipmentTypes": "Ekipamendu motak",
+    "gameModes": "Joko moduak"
   },
   "icons": {
     "title": "Ikonoak",
@@ -392,5 +443,793 @@
   },
   "blockEditor": {
     "addRow": "Gehitu"
+  },
+  "factions": {
+    "title": "Fakzioak",
+    "new": "Fakzio berria",
+    "edit": "Editatu fakzioa",
+    "newButton": "Fakzio berria",
+    "panelTitle": "Fakzioa",
+    "panelEmpty": "Aukeratu fakzio bat bere ekintzak ikusteko.",
+    "tabs": {
+      "published": "Argitaratuak",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "published": "Argitaratuta",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena",
+      "loreText": "Kondaira testua",
+      "epicQuote": "Aipu epikoa",
+      "color": "Kolorea",
+      "image": "Ikonoa",
+      "published": "Argitaratuta"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Fakzioa ondo sortu da.",
+      "updated": "Fakzioa ondo eguneratu da.",
+      "published": "Fakzioa argitaratu da",
+      "unpublished": "Fakzioaren argitalpena kendu da",
+      "deleted": "Fakzioa zakarrontzira bidali da",
+      "restored": "Fakzioa berreskuratu da",
+      "forceDeleted": "Fakzioa betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "counters": {
+    "title": "Kontagailuak",
+    "new": "Kontagailu berria",
+    "edit": "Editatu kontagailua",
+    "newButton": "Kontagailu berria",
+    "panelTitle": "Kontagailua",
+    "panelEmpty": "Aukeratu kontagailu bat bere ekintzak ikusteko.",
+    "tabs": {
+      "published": "Argitaratuak",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "published": "Argitaratuta",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena",
+      "type": "Mota",
+      "effect": "Efektua",
+      "image": "Ikonoa",
+      "published": "Argitaratuta"
+    },
+    "types": {
+      "boon": "Onura",
+      "bane": "Kaltea"
+    },
+    "selectType": "Aukeratu mota",
+    "filters": {
+      "allTypes": "Mota guztiak"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Kontagailua ondo sortu da.",
+      "updated": "Kontagailua ondo eguneratu da.",
+      "published": "Kontagailua argitaratu da",
+      "unpublished": "Kontagailuaren argitalpena kendu da",
+      "deleted": "Kontagailua zakarrontzira bidali da",
+      "restored": "Kontagailua berreskuratu da",
+      "forceDeleted": "Kontagailua betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "heroes": {
+    "title": "Heroiak",
+    "new": "Heroi berria",
+    "edit": "Editatu heroia",
+    "newButton": "Heroi berria",
+    "panelTitle": "Heroia",
+    "panelEmpty": "Aukeratu heroi bat bere ekintzak ikusteko.",
+    "tabs": {
+      "published": "Argitaratuak",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "published": "Argitaratua",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "sections": {
+      "basic": "Oinarrizko informazioa",
+      "attributes": "Atributuak",
+      "passive": "Gaitasun pasiboa",
+      "abilities": "Gaitasun aktiboak",
+      "lore": "Kondaira"
+    },
+    "fields": {
+      "name": "Izena",
+      "faction": "Fakzioa",
+      "noFaction": "Fakziorik gabe",
+      "race": "Arraza",
+      "noRace": "Arrazarik gabe",
+      "class": "Klasea",
+      "noClass": "Klaserik gabe",
+      "gender": "Generoa",
+      "published": "Argitaratua",
+      "image": "Irudia",
+      "passiveName": "Pasiboaren izena",
+      "passiveDescription": "Pasiboaren deskribapena",
+      "abilities": "Gaitasun aktiboak",
+      "selectAbility": "Aukeratu gaitasun bat",
+      "addAbility": "Gehitu",
+      "noAbilities": "Heroi honek ez du gaitasun aktiborik.",
+      "moveUp": "Igo",
+      "moveDown": "Jaitsi",
+      "removeAbility": "Kendu",
+      "totalAttributes": "Atributuak guztira",
+      "loreText": "Kondaira-testua",
+      "epicQuote": "Aipu epikoa"
+    },
+    "genders": {
+      "male": "Gizonezkoa",
+      "female": "Emakumezkoa"
+    },
+    "attributes": {
+      "agility": "Bizkortasuna",
+      "mental": "Adimena",
+      "will": "Borondatea",
+      "strength": "Indarra",
+      "armor": "Armadura",
+      "health": "Bizitza"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Heroia ondo sortu da.",
+      "updated": "Heroia ondo eguneratu da.",
+      "published": "Heroia argitaratu da",
+      "unpublished": "Heroiaren argitalpena kendu da",
+      "deleted": "Heroia zakarrontzira bidali da",
+      "restored": "Heroia berreskuratu da",
+      "forceDeleted": "Heroia betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "heroAbilities": {
+    "title": "Gaitasunak",
+    "new": "Gaitasun berria",
+    "edit": "Editatu gaitasuna",
+    "newButton": "Gaitasun berria",
+    "panelTitle": "Gaitasuna",
+    "panelEmpty": "Aukeratu gaitasun bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena",
+      "description": "Deskribapena",
+      "cost": "Kostua",
+      "removeDie": "Kendu azken dadoa",
+      "attackType": "Eraso mota",
+      "noAttackType": "Eraso motarik gabe",
+      "attackRange": "Eraso-irismena",
+      "noAttackRange": "Eraso-irismenik gabe",
+      "attackSubtype": "Eraso-azpimota",
+      "noAttackSubtype": "Eraso-azpimotarik gabe",
+      "area": "Area"
+    },
+    "attackTypes": {
+      "physical": "Fisikoa",
+      "magical": "Magikoa"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Gaitasuna ondo sortu da.",
+      "updated": "Gaitasuna ondo eguneratu da.",
+      "deleted": "Gaitasuna zakarrontzira bidali da",
+      "restored": "Gaitasuna berreskuratu da",
+      "forceDeleted": "Gaitasuna betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "heroAttributesConfig": {
+    "title": "Atributuen konfigurazioa",
+    "sections": {
+      "limits": "Atributuen mugak",
+      "limitsHint": "Atributu bakoitzeko eta guztizko banaketarako baimendutako balioak, heroiak sortzean edo editatzean.",
+      "health": "Bizitzaren kalkulua",
+      "healthHint": "Bizitza = oinarria + Σ (atributua × biderkatzailea), gutxienez 1. Biderkatzaileak negatiboak izan daitezke."
+    },
+    "fields": {
+      "min_attribute_value": "Atributuaren gutxieneko balioa",
+      "max_attribute_value": "Atributuaren gehienezko balioa",
+      "min_total_attributes": "Atributuen gutxieneko guztizkoa",
+      "max_total_attributes": "Atributuen gehienezko guztizkoa",
+      "total_health_base": "Bizitzaren oinarria",
+      "agility_multiplier": "Bizkortasunaren biderkatzailea",
+      "mental_multiplier": "Adimenaren biderkatzailea",
+      "will_multiplier": "Borondatearen biderkatzailea",
+      "strength_multiplier": "Indarraren biderkatzailea",
+      "armor_multiplier": "Armaduraren biderkatzailea"
+    },
+    "hints": {
+      "min_attribute_value": "Gutxienekoa atributu bakoitzeko (1–3).",
+      "max_attribute_value": "Gehienezkoa atributu bakoitzeko (3–10).",
+      "min_total_attributes": "5 atributuen gutxieneko batura (5–20).",
+      "max_total_attributes": "5 atributuen gehienezko batura (10–50).",
+      "total_health_base": "Bizitza, atributuak aplikatu aurretik (10–100).",
+      "agility_multiplier": "Bizitza-puntuak bizkortasun-puntu bakoitzeko (-5–5).",
+      "mental_multiplier": "Bizitza-puntuak adimen-puntu bakoitzeko (-5–5).",
+      "will_multiplier": "Bizitza-puntuak borondate-puntu bakoitzeko (-5–5).",
+      "strength_multiplier": "Bizitza-puntuak indar-puntu bakoitzeko (-5–5).",
+      "armor_multiplier": "Bizitza-puntuak armadura-puntu bakoitzeko (-5–5)."
+    },
+    "toast": {
+      "saved": "Konfigurazioa ondo gorde da.",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "cards": {
+    "title": "Kartak",
+    "new": "Karta berria",
+    "edit": "Editatu karta",
+    "newButton": "Karta berria",
+    "panelTitle": "Karta",
+    "panelEmpty": "Aukeratu karta bat bere ekintzak ikusteko.",
+    "tabs": {
+      "published": "Argitaratuak",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "published": "Argitaratuta",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "sections": {
+      "basic": "Oinarrizko informazioa",
+      "effects": "Efektuak",
+      "lore": "Kondaira"
+    },
+    "fields": {
+      "name": "Izena",
+      "faction": "Fakzioa",
+      "noFaction": "Fakziorik gabe",
+      "cost": "Kostua",
+      "removeDie": "Kendu azken dadoa",
+      "published": "Argitaratuta",
+      "isUnique": "Bakarra da",
+      "type": "Karta mota",
+      "selectType": "Aukeratu mota",
+      "subtype": "Karta azpimota",
+      "noSubtype": "Azpimotarik gabe",
+      "equipmentType": "Ekipamendu mota",
+      "noEquipmentType": "Ekipamendu motarik gabe",
+      "hands": "Eskuak",
+      "selectHands": "Aukeratu eskuak",
+      "oneHand": "Esku 1",
+      "twoHands": "2 esku",
+      "heroAbility": "Heroi trebetasuna",
+      "noHeroAbility": "Heroi trebetasunik gabe",
+      "attackRange": "Eraso-irismena",
+      "noAttackRange": "Eraso-irismenik gabe",
+      "attackType": "Eraso mota",
+      "noAttackType": "Eraso motarik gabe",
+      "attackSubtype": "Eraso-azpimota",
+      "noAttackSubtype": "Eraso-azpimotarik gabe",
+      "area": "Area erasoa da",
+      "image": "Irudia",
+      "effect": "Efektua",
+      "restriction": "Murrizketa",
+      "loreText": "Kondaira testua",
+      "epicQuote": "Aipu epikoa"
+    },
+    "attackTypes": {
+      "physical": "Fisikoa",
+      "magical": "Magikoa"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Karta ondo sortu da.",
+      "updated": "Karta ondo eguneratu da.",
+      "published": "Karta argitaratu da",
+      "unpublished": "Kartaren argitalpena kendu da",
+      "deleted": "Karta zakarrontzira bidali da",
+      "restored": "Karta berreskuratu da",
+      "forceDeleted": "Karta betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "factionDecks": {
+    "title": "Fakzio-sortak",
+    "new": "Sorta berria",
+    "edit": "Editatu sorta",
+    "newButton": "Sorta berria",
+    "panelTitle": "Fakzio-sorta",
+    "panelEmpty": "Aukeratu sorta bat bere ekintzak ikusteko.",
+    "tabs": {
+      "published": "Argitaratuak",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "published": "Argitaratuta",
+      "draft": "Zirriborroa",
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena",
+      "gameMode": "Joko modua",
+      "noGameMode": "Joko modurik gabe",
+      "factions": "Fakzioak",
+      "noFactions": "Ez dago fakziorik eskuragarri.",
+      "description": "Deskribapena",
+      "epicQuote": "Aipu epikoa",
+      "image": "Ikonoa",
+      "published": "Argitaratuta"
+    },
+    "counts": {
+      "cards": "{count} karta",
+      "heroes": "{count} heroi"
+    },
+    "single": {
+      "save": "Gorde sorta",
+      "modeLimits": "Moduaren mugak",
+      "limitsLine": "{min}–{max} karta · gehienez {copies} kopia · {heroes} heroi",
+      "cardsCount": "Kartak (kopiak)",
+      "uniqueCards": "{count} bakar",
+      "heroesCount": "Heroiak",
+      "cardsTitle": "Sortako kartak",
+      "heroesTitle": "Sortako heroiak",
+      "noCards": "Sorta honetan ez dago kartarik.",
+      "noHeroes": "Sorta honetan ez dago heroirik.",
+      "addCards": "Gehitu kartak",
+      "searchCards": "Bilatu kartak…",
+      "addHeroes": "Gehitu heroiak",
+      "searchHeroes": "Bilatu heroiak…",
+      "add": "Gehitu",
+      "removeCard": "Kendu karta",
+      "removeHero": "Kendu heroia",
+      "moreCopies": "Kopia bat gehiago",
+      "fewerCopies": "Kopia bat gutxiago",
+      "prev": "Aurrekoa",
+      "next": "Hurrengoa"
+    },
+    "validation": {
+      "minCards": "Sortak gutxienez {min} karta izan behar ditu ({total} ditu).",
+      "maxCards": "Sortak ezin ditu {max} karta baino gehiago izan ({total} ditu).",
+      "maxCopies": "{count} kartak baimendutako {max} kopiak gainditzen dituzte.",
+      "requiredHeroes": "Sortak zehazki {required} heroi izan behar ditu ({total} ditu)."
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Sorta ondo sortu da.",
+      "updated": "Sorta ondo eguneratu da.",
+      "published": "Sorta argitaratu da",
+      "unpublished": "Sortaren argitalpena kendu da",
+      "deleted": "Sorta zakarrontzira bidali da",
+      "restored": "Sorta berreskuratu da",
+      "forceDeleted": "Sorta betiko ezabatu da",
+      "saveError": "Ezin izan da gorde.",
+      "deckSaved": "Sortako kartak eta heroiak gorde dira.",
+      "publishInvalid": "Sortak ez ditu joko moduaren mugak betetzen."
+    }
+  },
+  "deckAttributesConfigs": {
+    "title": "Sorta-konfigurazioak",
+    "new": "Konfigurazio berria",
+    "edit": "Editatu konfigurazioa",
+    "newButton": "Konfigurazio berria",
+    "panelTitle": "Sorta-konfigurazioa",
+    "panelEmpty": "Aukeratu konfigurazio bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak"
+    },
+    "state": {},
+    "fields": {
+      "gameMode": "Joko modua",
+      "noGameMode": "Joko modurik gabe (orokorra)",
+      "minCards": "Gutxieneko kartak",
+      "maxCards": "Gehienezko kartak",
+      "maxCopiesPerCard": "Gehienezko kopiak kartako",
+      "requiredHeroes": "Beharrezko heroiak"
+    },
+    "hints": {
+      "requiredHeroes": "Sortako heroien kopuru zehatza (0 = betekizunik ez)."
+    },
+    "errors": {
+      "maxBelowMin": "Karten gehienezkoa ezin da gutxienekoa baino txikiagoa izan."
+    },
+    "summary": {
+      "cards": "{min}–{max} karta",
+      "copies": "gehienez {max} kopia",
+      "heroes": "{count} heroi"
+    },
+    "confirmDelete": {
+      "title": "Ezabatu konfigurazioa",
+      "message": "\"{name}\" konfigurazioa ezabatu? Ekintza hau ezin da desegin."
+    },
+    "confirmForceDelete": {
+      "title": "Ezabatu konfigurazioa",
+      "message": "\"{name}\" konfigurazioa ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Konfigurazioa ondo sortu da.",
+      "updated": "Konfigurazioa ondo eguneratu da.",
+      "deleted": "Konfigurazioa ezabatu da",
+      "restored": "Konfigurazioa berreskuratu da",
+      "forceDeleted": "Konfigurazioa betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "heroSuperclasses": {
+    "title": "Superklaseak",
+    "new": "Superklase berria",
+    "edit": "Editatu superklasea",
+    "newButton": "Superklase berria",
+    "panelTitle": "Superklasea",
+    "panelEmpty": "Aukeratu superklase bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Superklasea ondo sortu da.",
+      "updated": "Superklasea ondo eguneratu da.",
+      "deleted": "Superklasea zakarrontzira bidali da",
+      "restored": "Superklasea berreskuratu da",
+      "forceDeleted": "Superklasea betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "heroRaces": {
+    "title": "Arrazak",
+    "new": "Arraza berria",
+    "edit": "Editatu arraza",
+    "newButton": "Arraza berria",
+    "panelTitle": "Arraza",
+    "panelEmpty": "Aukeratu arraza bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Arraza ondo sortu da.",
+      "updated": "Arraza ondo eguneratu da.",
+      "deleted": "Arraza zakarrontzira bidali da",
+      "restored": "Arraza berreskuratu da",
+      "forceDeleted": "Arraza betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "heroClasses": {
+    "title": "Klaseak",
+    "new": "Klase berria",
+    "edit": "Editatu klasea",
+    "newButton": "Klase berria",
+    "panelTitle": "Klasea",
+    "panelEmpty": "Aukeratu klase bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena",
+      "superclass": "Superklasea",
+      "noSuperclass": "Superklaserik gabe",
+      "passive": "Gaitasun pasiboa"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Klasea ondo sortu da.",
+      "updated": "Klasea ondo eguneratu da.",
+      "deleted": "Klasea zakarrontzira bidali da",
+      "restored": "Klasea berreskuratu da",
+      "forceDeleted": "Klasea betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "attackRanges": {
+    "title": "Eraso-irismenak",
+    "new": "Eraso-irismen berria",
+    "edit": "Editatu eraso-irismena",
+    "newButton": "Irismen berria",
+    "panelTitle": "Eraso-irismena",
+    "panelEmpty": "Aukeratu eraso-irismen bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Eraso-irismena ondo sortu da.",
+      "updated": "Eraso-irismena ondo eguneratu da.",
+      "deleted": "Eraso-irismena zakarrontzira bidali da",
+      "restored": "Eraso-irismena berreskuratu da",
+      "forceDeleted": "Eraso-irismena betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "attackSubtypes": {
+    "title": "Eraso-azpimotak",
+    "new": "Eraso-azpimota berria",
+    "edit": "Editatu eraso-azpimota",
+    "newButton": "Azpimota berria",
+    "panelTitle": "Eraso-azpimota",
+    "panelEmpty": "Aukeratu eraso-azpimota bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Eraso-azpimota ondo sortu da.",
+      "updated": "Eraso-azpimota ondo eguneratu da.",
+      "deleted": "Eraso-azpimota zakarrontzira bidali da",
+      "restored": "Eraso-azpimota berreskuratu da",
+      "forceDeleted": "Eraso-azpimota betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "cardTypes": {
+    "title": "Karta motak",
+    "new": "Karta mota berria",
+    "edit": "Editatu karta mota",
+    "newButton": "Karta mota berria",
+    "panelTitle": "Karta mota",
+    "panelEmpty": "Aukeratu karta mota bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena",
+      "heroSuperclass": "Heroi superklasea",
+      "allowsSubtypes": "Azpimotak onartzen ditu",
+      "isEquipment": "Ekipamendua da"
+    },
+    "noSuperclass": "Superklaserik gabe",
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Karta mota ondo sortu da.",
+      "updated": "Karta mota ondo eguneratu da.",
+      "deleted": "Karta mota zakarrontzira bidali da",
+      "restored": "Karta mota berreskuratu da",
+      "forceDeleted": "Karta mota betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "cardSubtypes": {
+    "title": "Karta azpimotak",
+    "new": "Karta azpimota berria",
+    "edit": "Editatu karta azpimota",
+    "newButton": "Karta azpimota berria",
+    "panelTitle": "Karta azpimota",
+    "panelEmpty": "Aukeratu karta azpimota bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Karta azpimota ondo sortu da.",
+      "updated": "Karta azpimota ondo eguneratu da.",
+      "deleted": "Karta azpimota zakarrontzira bidali da",
+      "restored": "Karta azpimota berreskuratu da",
+      "forceDeleted": "Karta azpimota betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "equipmentTypes": {
+    "title": "Ekipamendu motak",
+    "new": "Ekipamendu mota berria",
+    "edit": "Editatu ekipamendu mota",
+    "newButton": "Ekipamendu mota berria",
+    "panelTitle": "Ekipamendu mota",
+    "panelEmpty": "Aukeratu ekipamendu mota bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "weapon": "Armak",
+      "armor": "Armadurak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena",
+      "category": "Kategoria"
+    },
+    "categories": {
+      "weapon": "Arma",
+      "armor": "Armadura"
+    },
+    "selectCategory": "Aukeratu kategoria",
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Ekipamendu mota ondo sortu da.",
+      "updated": "Ekipamendu mota ondo eguneratu da.",
+      "deleted": "Ekipamendu mota zakarrontzira bidali da",
+      "restored": "Ekipamendu mota berreskuratu da",
+      "forceDeleted": "Ekipamendu mota betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "gameModes": {
+    "title": "Joko moduak",
+    "new": "Joko modu berria",
+    "edit": "Editatu joko modua",
+    "newButton": "Joko modu berria",
+    "panelTitle": "Joko modua",
+    "panelEmpty": "Aukeratu joko modu bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena",
+      "description": "Deskribapena"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Joko modua ondo sortu da.",
+      "updated": "Joko modua ondo eguneratu da.",
+      "deleted": "Joko modua zakarrontzira bidali da",
+      "restored": "Joko modua berreskuratu da",
+      "forceDeleted": "Joko modua betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
   }
 }

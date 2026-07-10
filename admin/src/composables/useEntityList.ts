@@ -1,24 +1,45 @@
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, ref, watch, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { CircleCheck, FilePen, Trash } from '@lucide/vue'
+import { CircleCheck, FilePen, LayoutGrid, Trash } from '@lucide/vue'
 import { useResource, useRightSidebar } from '@edc-motor/admin-kit'
 import { useConfirm, useToast } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useLocalesStore } from '@/stores/locales'
-import type { EntityBase, Translations } from '@juego/shared'
+import type { EntityListItem, Translations } from '@juego/shared'
 
 export interface EntityListOptions<T> {
   /** Ruta base de la API de admin (p. ej. '/admin/houses'). */
   resource: string
   /** Namespace de i18n de la entidad (p. ej. 'houses'). */
   ns: string
-  /** Nombre de la ruta del detalle (p. ej. 'house-single'). */
-  singleRoute: string
+  /** Nombre de la ruta del detalle (omítelo si la entidad no tiene single). */
+  singleRoute?: string
   /** Campo "nombre" del ítem, para los mensajes de confirmación. */
   nameOf: (item: T) => Translations
   /** Clave del PreviewRegistry si la entidad es renderizable a PNG. */
   previewKey?: string
+  /** Cómo se resuelve la entidad en la API: por slug (defecto) o por id. */
+  resolveBy?: 'slug' | 'id'
+  /**
+   * Tabs de estado del listado. Por defecto published/draft/trashed; las
+   * taxonomías sin is_published usan ['all', 'trashed'] ('all' no filtra
+   * en el servidor). Las etiquetas salen de `<ns>.tabs.<key>`.
+   */
+  tabKeys?: string[]
+  /**
+   * Parámetros extra que viajan en cada list() (filtros propios de la vista,
+   * p. ej. `type` en contadores). La vista relanza load(1) cuando cambien.
+   */
+  extraParams?: () => Record<string, string | undefined>
+}
+
+/** Icono de cada tab de estado conocida. */
+const TAB_ICONS: Record<string, Component> = {
+  all: LayoutGrid,
+  published: CircleCheck,
+  draft: FilePen,
+  trashed: Trash,
 }
 
 /**
@@ -27,7 +48,7 @@ export interface EntityListOptions<T> {
  * (publicar, papelera, restaurar, borrado definitivo) con confirmación,
  * toasts y manejo de errores. Cada vista pone solo su template.
  */
-export function useEntityList<T extends EntityBase>(options: EntityListOptions<T>) {
+export function useEntityList<T extends EntityListItem>(options: EntityListOptions<T>) {
   const { t } = useI18n()
   const router = useRouter()
   const locales = useLocalesStore()
@@ -47,14 +68,13 @@ export function useEntityList<T extends EntityBase>(options: EntityListOptions<T
     sidebar.reveal()
   }
 
-  const status = ref('published')
+  const tabKeys = options.tabKeys ?? ['published', 'draft', 'trashed']
+  const status = ref(tabKeys[0] ?? 'published')
   const search = ref('')
 
-  const tabs = computed(() => [
-    { key: 'published', label: t(`${options.ns}.tabs.published`), icon: CircleCheck },
-    { key: 'draft', label: t(`${options.ns}.tabs.draft`), icon: FilePen },
-    { key: 'trashed', label: t(`${options.ns}.tabs.trashed`), icon: Trash },
-  ])
+  const tabs = computed(() =>
+    tabKeys.map((key) => ({ key, label: t(`${options.ns}.tabs.${key}`), icon: TAB_ICONS[key] })),
+  )
 
   /** Valor traducible en el locale activo (con fallback al default). */
   function tr(obj: Translations | null | undefined): string {
@@ -67,9 +87,19 @@ export function useEntityList<T extends EntityBase>(options: EntityListOptions<T
     return item.slug?.[locales.current] || Object.values(item.slug || {})[0] || ''
   }
 
+  /** Clave con la que la API resuelve el ítem (slug o id, según opciones). */
+  function keyFor(item: T): string {
+    return options.resolveBy === 'id' ? String(item.id) : slugFor(item)
+  }
+
   async function load(page = 1) {
     try {
-      await list({ search: search.value, status: status.value, page })
+      await list({
+        search: search.value,
+        status: status.value,
+        page,
+        ...(options.extraParams?.() ?? {}),
+      })
     } catch {
       toast.danger(t('common.errors.load'))
     }
@@ -97,20 +127,25 @@ export function useEntityList<T extends EntityBase>(options: EntityListOptions<T
   const formOpen = ref(false)
   const formMode = ref<'create' | 'edit'>('create')
   const formSlug = ref<string | null>(null)
+  // Ítem en edición: lo usan los modales de entidades sin endpoint show.
+  const formItem = ref<T | null>(null)
 
   function openCreate() {
     formMode.value = 'create'
     formSlug.value = null
+    formItem.value = null
     formOpen.value = true
   }
 
   function edit(item: T) {
     formMode.value = 'edit'
-    formSlug.value = slugFor(item)
+    formSlug.value = keyFor(item)
+    formItem.value = item
     formOpen.value = true
   }
 
   function goSingle(item: T) {
+    if (!options.singleRoute) return
     router.push({ name: options.singleRoute, params: { slug: slugFor(item) } })
   }
 
@@ -121,7 +156,7 @@ export function useEntityList<T extends EntityBase>(options: EntityListOptions<T
   // --- Acciones de fila (con confirmación, toast y errores) ---
   async function togglePublish(item: T) {
     try {
-      await action(slugFor(item), 'toggle-published')
+      await action(keyFor(item), 'toggle-published')
       toast.success(
         item.is_published
           ? t(`${options.ns}.toast.unpublished`)
@@ -142,7 +177,7 @@ export function useEntityList<T extends EntityBase>(options: EntityListOptions<T
     })
     if (!ok) return
     try {
-      await remove(slugFor(item))
+      await remove(keyFor(item))
       toast.success(t(`${options.ns}.toast.deleted`))
       reloadPage()
     } catch {
@@ -213,6 +248,7 @@ export function useEntityList<T extends EntityBase>(options: EntityListOptions<T
     formOpen,
     formMode,
     formSlug,
+    formItem,
     openCreate,
     edit,
     goSingle,

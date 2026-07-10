@@ -1,0 +1,283 @@
+@use "tokens" as *;
+
+// Listado de mazos de facción: emblema (icono del mazo o inicial), etiqueta
+// de facción con su color y modal de datos básicos.
+.faction-decks {
+  &__emblem {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $surface-2;
+
+    img { width: 100%; height: 100%; object-fit: contain; }
+  }
+
+  &__mono {
+    font-size: 2.2rem;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+
+  &__faction-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+  }
+
+  // Multiselect de facciones del modal (checkbox + muestra de color)
+  &__factions {
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    padding: $space-3;
+
+    legend { padding: 0 $space-2; font-size: $fs-13; color: $text-2; }
+  }
+
+  &__faction-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+  }
+
+  &__factions-empty { color: $text-3; margin: 0; }
+  &__factions-error { color: $danger; font-size: $fs-13; margin: $space-2 0 0; }
+
+  // Errores de publicación (límites del modo) dentro del modal
+  &__publish-errors {
+    margin: 0 0 $space-4;
+    padding: $space-3 $space-4;
+    border: 1px solid $danger;
+    border-radius: $radius-md;
+    background: color-mix(in srgb, $danger 10%, $surface);
+    color: $danger;
+    list-style: none;
+
+    li + li { margin-top: $space-1; }
+  }
+}
+
+// Single editora del mazo: cabecera con límites y contadores en vivo + dos
+// paneles (cartas con copias y héroes) con buscador para añadir.
+.deck-editor {
+  &__bar-actions {
+    display: flex;
+    gap: $space-2;
+    flex-wrap: wrap;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: $space-5;
+    flex-wrap: wrap;
+    margin-bottom: $space-5;
+  }
+
+  &__identity {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+
+    h1 { margin: 0 0 $space-2; font-size: $fs-24; }
+  }
+
+  &__emblem {
+    width: 64px;
+    height: 64px;
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    background: $surface-2;
+    overflow: hidden;
+
+    img { width: 100%; height: 100%; object-fit: contain; }
+  }
+
+  &__mono {
+    font-size: 1.8rem;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+
+  &__chips {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    flex-wrap: wrap;
+    margin: 0;
+  }
+
+  // Límites del modo + contadores en vivo
+  &__stats {
+    display: flex;
+    gap: $space-5;
+    flex-wrap: wrap;
+    margin: 0;
+
+    dt { color: $text-3; font-size: $fs-13; }
+    dd {
+      margin: $space-1 0 0;
+      font-weight: $k-fw-bold;
+
+      small { color: $text-3; font-weight: $k-fw-regular; }
+    }
+  }
+
+  // Errores de publicación (servidor) y avisos de límite (cliente)
+  &__errors,
+  &__warnings {
+    margin: 0 0 $space-4;
+    padding: $space-3 $space-4;
+    border-radius: $radius-md;
+    list-style: none;
+
+    li + li { margin-top: $space-1; }
+  }
+
+  &__errors {
+    border: 1px solid $danger;
+    background: color-mix(in srgb, $danger 10%, $surface);
+    color: $danger;
+  }
+
+  &__warnings {
+    border: 1px solid $warning;
+    background: color-mix(in srgb, $warning 10%, $surface);
+    color: $text-1;
+  }
+
+  &__panels {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-6;
+    align-items: start;
+
+    @container content (min-width: #{$bp-md}) {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+
+  &__panel { min-width: 0; }
+
+  // Filas del mazo (carta con copias / héroe)
+  &__rows {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: $space-2;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+    padding: $space-2 $space-3;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    background: $surface;
+  }
+
+  &__row-media {
+    width: 32px;
+    height: 32px;
+    flex: none;
+    border-radius: $radius-sm;
+    background: $surface-2;
+    overflow: hidden;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  &__row-name {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__row-cost {
+    flex: none;
+    font-size: $fs-13;
+    color: $text-2;
+    letter-spacing: 0.08em;
+  }
+
+  // Control de copias (+/-), marcado si supera el máximo del modo
+  &__copies {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+
+    &.is-over &-value { color: $danger; }
+  }
+
+  &__copies-value {
+    min-width: 1.6rem;
+    text-align: center;
+    font-weight: $k-fw-bold;
+  }
+
+  &__step,
+  &__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.6rem;
+    height: 1.6rem;
+    padding: 0;
+    border: 1px solid $border;
+    border-radius: $radius-sm;
+    background: $surface-2;
+    color: $text-2;
+    cursor: pointer;
+
+    &:hover:not(:disabled) { color: $text-1; border-color: $text-3; }
+    &:disabled { opacity: 0.4; cursor: default; }
+  }
+
+  &__remove:hover:not(:disabled) { color: $danger; border-color: $danger; }
+
+  // Buscador para añadir (resultados paginados en servidor)
+  &__search { margin-top: $space-4; }
+
+  &__results {
+    margin: $space-3 0 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: $space-1;
+
+    li {
+      display: flex;
+      align-items: center;
+      gap: $space-3;
+      padding: $space-1 $space-2;
+      border-radius: $radius-sm;
+
+      &:hover { background: $surface-2; }
+    }
+  }
+
+  &__no-results {
+    margin: $space-3 0 0;
+    color: $text-3;
+  }
+
+  &__pager {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    margin-top: $space-2;
+    color: $text-3;
+    font-size: $fs-13;
+  }
+}

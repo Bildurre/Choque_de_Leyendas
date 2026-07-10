@@ -7,7 +7,24 @@
     "pages": "pages",
     "settings": "settings",
     "backups": "backups",
-    "users": "users"
+    "users": "users",
+    "factions": "factions",
+    "counters": "counters",
+    "heroes": "heroes",
+    "heroAbilities": "abilities",
+    "heroAttributesConfig": "attributes-configuration",
+    "cards": "cards",
+    "factionDecks": "faction-decks",
+    "deckAttributesConfigs": "deck-configurations",
+    "heroSuperclasses": "superclasses",
+    "heroRaces": "races",
+    "heroClasses": "classes",
+    "attackRanges": "attack-ranges",
+    "attackSubtypes": "attack-subtypes",
+    "cardTypes": "card-types",
+    "cardSubtypes": "card-subtypes",
+    "equipmentTypes": "equipment-types",
+    "gameModes": "game-modes"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -17,7 +34,24 @@
     "pages": "Pages",
     "settings": "Settings",
     "backups": "Backups",
-    "users": "Users"
+    "users": "Users",
+    "factions": "Factions",
+    "counters": "Counters",
+    "heroes": "Heroes",
+    "heroAbilities": "Abilities",
+    "heroAttributesConfig": "Attributes configuration",
+    "cards": "Cards",
+    "factionDecks": "Faction decks",
+    "deckAttributesConfigs": "Deck configurations",
+    "heroSuperclasses": "Superclasses",
+    "heroRaces": "Races",
+    "heroClasses": "Classes",
+    "attackRanges": "Attack ranges",
+    "attackSubtypes": "Attack subtypes",
+    "cardTypes": "Card types",
+    "cardSubtypes": "Card subtypes",
+    "equipmentTypes": "Equipment types",
+    "gameModes": "Game modes"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -28,7 +62,24 @@
     "settings": "Settings",
     "backups": "Backups",
     "users": "Users",
-    "viewSite": "View site"
+    "viewSite": "View site",
+    "factions": "Factions",
+    "counters": "Counters",
+    "heroes": "Heroes",
+    "heroAbilities": "Abilities",
+    "heroAttributesConfig": "Attributes config",
+    "cards": "Cards",
+    "factionDecks": "Faction decks",
+    "deckAttributesConfigs": "Deck configs",
+    "heroSuperclasses": "Superclasses",
+    "heroRaces": "Races",
+    "heroClasses": "Classes",
+    "attackRanges": "Attack ranges",
+    "attackSubtypes": "Attack subtypes",
+    "cardTypes": "Card types",
+    "cardSubtypes": "Card subtypes",
+    "equipmentTypes": "Equipment types",
+    "gameModes": "Game modes"
   },
   "icons": {
     "title": "Icons",
@@ -392,5 +443,793 @@
   },
   "blockEditor": {
     "addRow": "Add"
+  },
+  "factions": {
+    "title": "Factions",
+    "new": "New faction",
+    "edit": "Edit faction",
+    "newButton": "New faction",
+    "panelTitle": "Faction",
+    "panelEmpty": "Pick a faction to see its actions.",
+    "tabs": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "state": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name",
+      "loreText": "Lore text",
+      "epicQuote": "Epic quote",
+      "color": "Color",
+      "image": "Icon",
+      "published": "Published"
+    },
+    "confirmDelete": {
+      "title": "Move to trash",
+      "message": "Move \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Permanently delete \"{name}\"? This cannot be undone."
+    },
+    "toast": {
+      "created": "Faction created successfully.",
+      "updated": "Faction updated successfully.",
+      "published": "Faction published",
+      "unpublished": "Faction unpublished",
+      "deleted": "Faction moved to trash",
+      "restored": "Faction restored",
+      "forceDeleted": "Faction permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "counters": {
+    "title": "Counters",
+    "new": "New counter",
+    "edit": "Edit counter",
+    "newButton": "New counter",
+    "panelTitle": "Counter",
+    "panelEmpty": "Pick a counter to see its actions.",
+    "tabs": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "state": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name",
+      "type": "Type",
+      "effect": "Effect",
+      "image": "Icon",
+      "published": "Published"
+    },
+    "types": {
+      "boon": "Boon",
+      "bane": "Bane"
+    },
+    "selectType": "Select type",
+    "filters": {
+      "allTypes": "All types"
+    },
+    "confirmDelete": {
+      "title": "Move to trash",
+      "message": "Move \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Permanently delete \"{name}\"? This cannot be undone."
+    },
+    "toast": {
+      "created": "Counter created successfully.",
+      "updated": "Counter updated successfully.",
+      "published": "Counter published",
+      "unpublished": "Counter unpublished",
+      "deleted": "Counter moved to trash",
+      "restored": "Counter restored",
+      "forceDeleted": "Counter permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "heroes": {
+    "title": "Heroes",
+    "new": "New hero",
+    "edit": "Edit hero",
+    "newButton": "New hero",
+    "panelTitle": "Hero",
+    "panelEmpty": "Select a hero to see its actions.",
+    "tabs": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "state": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "sections": {
+      "basic": "Basic information",
+      "attributes": "Attributes",
+      "passive": "Passive ability",
+      "abilities": "Active abilities",
+      "lore": "Lore"
+    },
+    "fields": {
+      "name": "Name",
+      "faction": "Faction",
+      "noFaction": "No faction",
+      "race": "Race",
+      "noRace": "No race",
+      "class": "Class",
+      "noClass": "No class",
+      "gender": "Gender",
+      "published": "Published",
+      "image": "Image",
+      "passiveName": "Passive name",
+      "passiveDescription": "Passive description",
+      "abilities": "Active abilities",
+      "selectAbility": "Select an ability",
+      "addAbility": "Add",
+      "noAbilities": "This hero has no active abilities.",
+      "moveUp": "Move up",
+      "moveDown": "Move down",
+      "removeAbility": "Remove",
+      "totalAttributes": "Total attributes",
+      "loreText": "Lore text",
+      "epicQuote": "Epic quote"
+    },
+    "genders": {
+      "male": "Male",
+      "female": "Female"
+    },
+    "attributes": {
+      "agility": "Agility",
+      "mental": "Mental",
+      "will": "Will",
+      "strength": "Strength",
+      "armor": "Armor",
+      "health": "Health"
+    },
+    "confirmDelete": {
+      "title": "Move to trash",
+      "message": "Move \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Hero created successfully.",
+      "updated": "Hero updated successfully.",
+      "published": "Hero published",
+      "unpublished": "Hero unpublished",
+      "deleted": "Hero moved to the trash",
+      "restored": "Hero restored",
+      "forceDeleted": "Hero permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "heroAbilities": {
+    "title": "Abilities",
+    "new": "New ability",
+    "edit": "Edit ability",
+    "newButton": "New ability",
+    "panelTitle": "Ability",
+    "panelEmpty": "Select an ability to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "cost": "Cost",
+      "removeDie": "Remove last die",
+      "attackType": "Attack type",
+      "noAttackType": "No attack type",
+      "attackRange": "Attack range",
+      "noAttackRange": "No attack range",
+      "attackSubtype": "Attack subtype",
+      "noAttackSubtype": "No attack subtype",
+      "area": "Area"
+    },
+    "attackTypes": {
+      "physical": "Physical",
+      "magical": "Magical"
+    },
+    "confirmDelete": {
+      "title": "Move to trash",
+      "message": "Move \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Ability created successfully.",
+      "updated": "Ability updated successfully.",
+      "deleted": "Ability moved to the trash",
+      "restored": "Ability restored",
+      "forceDeleted": "Ability permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "heroAttributesConfig": {
+    "title": "Attributes configuration",
+    "sections": {
+      "limits": "Attribute limits",
+      "limitsHint": "Allowed values per attribute and for the total spread when creating or editing heroes.",
+      "health": "Health calculation",
+      "healthHint": "Health = base + Σ (attribute × multiplier), with a minimum of 1. Multipliers can be negative."
+    },
+    "fields": {
+      "min_attribute_value": "Minimum attribute value",
+      "max_attribute_value": "Maximum attribute value",
+      "min_total_attributes": "Minimum total attributes",
+      "max_total_attributes": "Maximum total attributes",
+      "total_health_base": "Base total health",
+      "agility_multiplier": "Agility multiplier",
+      "mental_multiplier": "Mental multiplier",
+      "will_multiplier": "Will multiplier",
+      "strength_multiplier": "Strength multiplier",
+      "armor_multiplier": "Armor multiplier"
+    },
+    "hints": {
+      "min_attribute_value": "Minimum per attribute (1–3).",
+      "max_attribute_value": "Maximum per attribute (3–10).",
+      "min_total_attributes": "Minimum sum of the 5 attributes (5–20).",
+      "max_total_attributes": "Maximum sum of the 5 attributes (10–50).",
+      "total_health_base": "Health before applying attributes (10–100).",
+      "agility_multiplier": "Health points per agility point (-5–5).",
+      "mental_multiplier": "Health points per mental point (-5–5).",
+      "will_multiplier": "Health points per will point (-5–5).",
+      "strength_multiplier": "Health points per strength point (-5–5).",
+      "armor_multiplier": "Health points per armor point (-5–5)."
+    },
+    "toast": {
+      "saved": "Configuration saved successfully.",
+      "saveError": "Could not save."
+    }
+  },
+  "cards": {
+    "title": "Cards",
+    "new": "New card",
+    "edit": "Edit card",
+    "newButton": "New card",
+    "panelTitle": "Card",
+    "panelEmpty": "Select a card to see its actions.",
+    "tabs": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "state": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "sections": {
+      "basic": "Basic information",
+      "effects": "Effects",
+      "lore": "Lore"
+    },
+    "fields": {
+      "name": "Name",
+      "faction": "Faction",
+      "noFaction": "No faction",
+      "cost": "Cost",
+      "removeDie": "Remove last die",
+      "published": "Published",
+      "isUnique": "Is unique",
+      "type": "Card type",
+      "selectType": "Select type",
+      "subtype": "Card subtype",
+      "noSubtype": "No subtype",
+      "equipmentType": "Equipment type",
+      "noEquipmentType": "No equipment type",
+      "hands": "Hands",
+      "selectHands": "Select hands",
+      "oneHand": "1 hand",
+      "twoHands": "2 hands",
+      "heroAbility": "Hero ability",
+      "noHeroAbility": "No hero ability",
+      "attackRange": "Attack range",
+      "noAttackRange": "No attack range",
+      "attackType": "Attack type",
+      "noAttackType": "No attack type",
+      "attackSubtype": "Attack subtype",
+      "noAttackSubtype": "No attack subtype",
+      "area": "Is area attack",
+      "image": "Image",
+      "effect": "Effect",
+      "restriction": "Restriction",
+      "loreText": "Lore text",
+      "epicQuote": "Epic quote"
+    },
+    "attackTypes": {
+      "physical": "Physical",
+      "magical": "Magical"
+    },
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Card created successfully.",
+      "updated": "Card updated successfully.",
+      "published": "Card published",
+      "unpublished": "Card unpublished",
+      "deleted": "Card sent to trash",
+      "restored": "Card restored",
+      "forceDeleted": "Card permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "factionDecks": {
+    "title": "Faction decks",
+    "new": "New deck",
+    "edit": "Edit deck",
+    "newButton": "New deck",
+    "panelTitle": "Faction deck",
+    "panelEmpty": "Pick a deck to see its actions.",
+    "tabs": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "state": {
+      "published": "Published",
+      "draft": "Draft",
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name",
+      "gameMode": "Game mode",
+      "noGameMode": "No game mode",
+      "factions": "Factions",
+      "noFactions": "No factions available.",
+      "description": "Description",
+      "epicQuote": "Epic quote",
+      "image": "Icon",
+      "published": "Published"
+    },
+    "counts": {
+      "cards": "{count} cards",
+      "heroes": "{count} heroes"
+    },
+    "single": {
+      "save": "Save deck",
+      "modeLimits": "Mode limits",
+      "limitsLine": "{min}–{max} cards · max {copies} copies · {heroes} heroes",
+      "cardsCount": "Cards (copies)",
+      "uniqueCards": "{count} unique",
+      "heroesCount": "Heroes",
+      "cardsTitle": "Deck cards",
+      "heroesTitle": "Deck heroes",
+      "noCards": "There are no cards in this deck.",
+      "noHeroes": "There are no heroes in this deck.",
+      "addCards": "Add cards",
+      "searchCards": "Search cards…",
+      "addHeroes": "Add heroes",
+      "searchHeroes": "Search heroes…",
+      "add": "Add",
+      "removeCard": "Remove card",
+      "removeHero": "Remove hero",
+      "moreCopies": "One more copy",
+      "fewerCopies": "One less copy",
+      "prev": "Previous",
+      "next": "Next"
+    },
+    "validation": {
+      "minCards": "The deck must have at least {min} cards (it has {total}).",
+      "maxCards": "The deck cannot have more than {max} cards (it has {total}).",
+      "maxCopies": "{count} cards exceed the {max} allowed copies.",
+      "requiredHeroes": "The deck must have exactly {required} heroes (it has {total})."
+    },
+    "confirmDelete": {
+      "title": "Move to trash",
+      "message": "Move \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Permanently delete \"{name}\"? This cannot be undone."
+    },
+    "toast": {
+      "created": "Deck created successfully.",
+      "updated": "Deck updated successfully.",
+      "published": "Deck published",
+      "unpublished": "Deck unpublished",
+      "deleted": "Deck moved to trash",
+      "restored": "Deck restored",
+      "forceDeleted": "Deck permanently deleted",
+      "saveError": "Could not save.",
+      "deckSaved": "Deck cards and heroes saved.",
+      "publishInvalid": "The deck does not meet the game mode limits."
+    }
+  },
+  "deckAttributesConfigs": {
+    "title": "Deck configurations",
+    "new": "New configuration",
+    "edit": "Edit configuration",
+    "newButton": "New configuration",
+    "panelTitle": "Deck configuration",
+    "panelEmpty": "Pick a configuration to see its actions.",
+    "tabs": {
+      "all": "All"
+    },
+    "state": {},
+    "fields": {
+      "gameMode": "Game mode",
+      "noGameMode": "No game mode (generic)",
+      "minCards": "Minimum cards",
+      "maxCards": "Maximum cards",
+      "maxCopiesPerCard": "Max copies per card",
+      "requiredHeroes": "Required heroes"
+    },
+    "hints": {
+      "requiredHeroes": "Exact number of heroes in the deck (0 = no requirement)."
+    },
+    "errors": {
+      "maxBelowMin": "The card maximum cannot be lower than the minimum."
+    },
+    "summary": {
+      "cards": "{min}–{max} cards",
+      "copies": "max {max} copies",
+      "heroes": "{count} heroes"
+    },
+    "confirmDelete": {
+      "title": "Delete configuration",
+      "message": "Delete the \"{name}\" configuration? This cannot be undone."
+    },
+    "confirmForceDelete": {
+      "title": "Delete configuration",
+      "message": "Delete the \"{name}\" configuration? This cannot be undone."
+    },
+    "toast": {
+      "created": "Configuration created successfully.",
+      "updated": "Configuration updated successfully.",
+      "deleted": "Configuration deleted",
+      "restored": "Configuration restored",
+      "forceDeleted": "Configuration permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "heroSuperclasses": {
+    "title": "Superclasses",
+    "new": "New superclass",
+    "edit": "Edit superclass",
+    "newButton": "New superclass",
+    "panelTitle": "Superclass",
+    "panelEmpty": "Select a superclass to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name"
+    },
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Superclass created successfully.",
+      "updated": "Superclass updated successfully.",
+      "deleted": "Superclass sent to the trash",
+      "restored": "Superclass restored",
+      "forceDeleted": "Superclass permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "heroRaces": {
+    "title": "Races",
+    "new": "New race",
+    "edit": "Edit race",
+    "newButton": "New race",
+    "panelTitle": "Race",
+    "panelEmpty": "Select a race to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name"
+    },
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Race created successfully.",
+      "updated": "Race updated successfully.",
+      "deleted": "Race sent to the trash",
+      "restored": "Race restored",
+      "forceDeleted": "Race permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "heroClasses": {
+    "title": "Classes",
+    "new": "New class",
+    "edit": "Edit class",
+    "newButton": "New class",
+    "panelTitle": "Class",
+    "panelEmpty": "Select a class to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name",
+      "superclass": "Superclass",
+      "noSuperclass": "No superclass",
+      "passive": "Passive ability"
+    },
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Class created successfully.",
+      "updated": "Class updated successfully.",
+      "deleted": "Class sent to the trash",
+      "restored": "Class restored",
+      "forceDeleted": "Class permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "attackRanges": {
+    "title": "Attack ranges",
+    "new": "New attack range",
+    "edit": "Edit attack range",
+    "newButton": "New range",
+    "panelTitle": "Attack range",
+    "panelEmpty": "Select an attack range to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name"
+    },
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Attack range created successfully.",
+      "updated": "Attack range updated successfully.",
+      "deleted": "Attack range sent to the trash",
+      "restored": "Attack range restored",
+      "forceDeleted": "Attack range permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "attackSubtypes": {
+    "title": "Attack subtypes",
+    "new": "New attack subtype",
+    "edit": "Edit attack subtype",
+    "newButton": "New subtype",
+    "panelTitle": "Attack subtype",
+    "panelEmpty": "Select an attack subtype to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name"
+    },
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Attack subtype created successfully.",
+      "updated": "Attack subtype updated successfully.",
+      "deleted": "Attack subtype sent to the trash",
+      "restored": "Attack subtype restored",
+      "forceDeleted": "Attack subtype permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "cardTypes": {
+    "title": "Card types",
+    "new": "New card type",
+    "edit": "Edit card type",
+    "newButton": "New card type",
+    "panelTitle": "Card type",
+    "panelEmpty": "Select a card type to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name",
+      "heroSuperclass": "Hero superclass",
+      "allowsSubtypes": "Allows subtypes",
+      "isEquipment": "Is equipment"
+    },
+    "noSuperclass": "No superclass",
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Card type created successfully.",
+      "updated": "Card type updated successfully.",
+      "deleted": "Card type sent to the trash",
+      "restored": "Card type restored",
+      "forceDeleted": "Card type permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "cardSubtypes": {
+    "title": "Card subtypes",
+    "new": "New card subtype",
+    "edit": "Edit card subtype",
+    "newButton": "New card subtype",
+    "panelTitle": "Card subtype",
+    "panelEmpty": "Select a card subtype to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name"
+    },
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Card subtype created successfully.",
+      "updated": "Card subtype updated successfully.",
+      "deleted": "Card subtype sent to the trash",
+      "restored": "Card subtype restored",
+      "forceDeleted": "Card subtype permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "equipmentTypes": {
+    "title": "Equipment types",
+    "new": "New equipment type",
+    "edit": "Edit equipment type",
+    "newButton": "New equipment type",
+    "panelTitle": "Equipment type",
+    "panelEmpty": "Select an equipment type to see its actions.",
+    "tabs": {
+      "all": "All",
+      "weapon": "Weapons",
+      "armor": "Armor",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name",
+      "category": "Category"
+    },
+    "categories": {
+      "weapon": "Weapon",
+      "armor": "Armor"
+    },
+    "selectCategory": "Select a category",
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Equipment type created successfully.",
+      "updated": "Equipment type updated successfully.",
+      "deleted": "Equipment type sent to the trash",
+      "restored": "Equipment type restored",
+      "forceDeleted": "Equipment type permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "gameModes": {
+    "title": "Game modes",
+    "new": "New game mode",
+    "edit": "Edit game mode",
+    "newButton": "New game mode",
+    "panelTitle": "Game mode",
+    "panelEmpty": "Select a game mode to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name",
+      "description": "Description"
+    },
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Game mode created successfully.",
+      "updated": "Game mode updated successfully.",
+      "deleted": "Game mode sent to the trash",
+      "restored": "Game mode restored",
+      "forceDeleted": "Game mode permanently deleted",
+      "saveError": "Could not save."
+    }
   }
 }

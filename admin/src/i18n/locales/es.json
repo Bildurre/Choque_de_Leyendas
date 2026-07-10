@@ -7,7 +7,24 @@
     "pages": "paginas",
     "settings": "configuracion",
     "backups": "copias",
-    "users": "usuarios"
+    "users": "usuarios",
+    "factions": "facciones",
+    "counters": "contadores",
+    "heroes": "heroes",
+    "heroAbilities": "habilidades",
+    "heroAttributesConfig": "configuracion-de-atributos",
+    "cards": "cartas",
+    "factionDecks": "mazos-de-faccion",
+    "deckAttributesConfigs": "configuraciones-de-mazo",
+    "heroSuperclasses": "superclases",
+    "heroRaces": "razas",
+    "heroClasses": "clases",
+    "attackRanges": "rangos-de-ataque",
+    "attackSubtypes": "subtipos-de-ataque",
+    "cardTypes": "tipos-de-carta",
+    "cardSubtypes": "subtipos-de-carta",
+    "equipmentTypes": "tipos-de-equipo",
+    "gameModes": "modos-de-juego"
   },
   "breadcrumbs": {
     "home": "Inicio",
@@ -17,7 +34,24 @@
     "pages": "Páginas",
     "settings": "Configuración",
     "backups": "Copias de seguridad",
-    "users": "Usuarios"
+    "users": "Usuarios",
+    "factions": "Facciones",
+    "counters": "Contadores",
+    "heroes": "Héroes",
+    "heroAbilities": "Habilidades",
+    "heroAttributesConfig": "Configuración de atributos",
+    "cards": "Cartas",
+    "factionDecks": "Mazos de facción",
+    "deckAttributesConfigs": "Configuraciones de mazo",
+    "heroSuperclasses": "Superclases",
+    "heroRaces": "Razas",
+    "heroClasses": "Clases",
+    "attackRanges": "Rangos de ataque",
+    "attackSubtypes": "Subtipos de ataque",
+    "cardTypes": "Tipos de carta",
+    "cardSubtypes": "Subtipos de carta",
+    "equipmentTypes": "Tipos de equipo",
+    "gameModes": "Modos de juego"
   },
   "nav": {
     "dashboard": "Panel",
@@ -28,7 +62,24 @@
     "settings": "Configuración",
     "backups": "Copias",
     "users": "Usuarios",
-    "viewSite": "Ver la web"
+    "viewSite": "Ver la web",
+    "factions": "Facciones",
+    "counters": "Contadores",
+    "heroes": "Héroes",
+    "heroAbilities": "Habilidades",
+    "heroAttributesConfig": "Config. de atributos",
+    "cards": "Cartas",
+    "factionDecks": "Mazos de facción",
+    "deckAttributesConfigs": "Config. de mazos",
+    "heroSuperclasses": "Superclases",
+    "heroRaces": "Razas",
+    "heroClasses": "Clases",
+    "attackRanges": "Rangos de ataque",
+    "attackSubtypes": "Subtipos de ataque",
+    "cardTypes": "Tipos de carta",
+    "cardSubtypes": "Subtipos de carta",
+    "equipmentTypes": "Tipos de equipo",
+    "gameModes": "Modos de juego"
   },
   "icons": {
     "title": "Iconos",
@@ -326,5 +377,793 @@
   },
   "blockEditor": {
     "addRow": "Añadir"
+  },
+  "factions": {
+    "title": "Facciones",
+    "new": "Nueva facción",
+    "edit": "Editar facción",
+    "newButton": "Nueva facción",
+    "panelTitle": "Facción",
+    "panelEmpty": "Selecciona una facción para ver sus acciones.",
+    "tabs": {
+      "published": "Publicadas",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "published": "Publicada",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre",
+      "loreText": "Texto de trasfondo",
+      "epicQuote": "Cita épica",
+      "color": "Color",
+      "image": "Icono",
+      "published": "Publicada"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Facción creada correctamente.",
+      "updated": "Facción actualizada correctamente.",
+      "published": "Facción publicada",
+      "unpublished": "Facción despublicada",
+      "deleted": "Facción enviada a la papelera",
+      "restored": "Facción restaurada",
+      "forceDeleted": "Facción borrada definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "counters": {
+    "title": "Contadores",
+    "new": "Nuevo contador",
+    "edit": "Editar contador",
+    "newButton": "Nuevo contador",
+    "panelTitle": "Contador",
+    "panelEmpty": "Selecciona un contador para ver sus acciones.",
+    "tabs": {
+      "published": "Publicados",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "published": "Publicado",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre",
+      "type": "Tipo",
+      "effect": "Efecto",
+      "image": "Icono",
+      "published": "Publicado"
+    },
+    "types": {
+      "boon": "Beneficio",
+      "bane": "Perjuicio"
+    },
+    "selectType": "Seleccionar tipo",
+    "filters": {
+      "allTypes": "Todos los tipos"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Contador creado correctamente.",
+      "updated": "Contador actualizado correctamente.",
+      "published": "Contador publicado",
+      "unpublished": "Contador despublicado",
+      "deleted": "Contador enviado a la papelera",
+      "restored": "Contador restaurado",
+      "forceDeleted": "Contador borrado definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "heroes": {
+    "title": "Héroes",
+    "new": "Nuevo héroe",
+    "edit": "Editar héroe",
+    "newButton": "Nuevo héroe",
+    "panelTitle": "Héroe",
+    "panelEmpty": "Selecciona un héroe para ver sus acciones.",
+    "tabs": {
+      "published": "Publicados",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "published": "Publicado",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "sections": {
+      "basic": "Información básica",
+      "attributes": "Atributos",
+      "passive": "Habilidad pasiva",
+      "abilities": "Habilidades activas",
+      "lore": "Trasfondo"
+    },
+    "fields": {
+      "name": "Nombre",
+      "faction": "Facción",
+      "noFaction": "Sin facción",
+      "race": "Raza",
+      "noRace": "Sin raza",
+      "class": "Clase",
+      "noClass": "Sin clase",
+      "gender": "Género",
+      "published": "Publicado",
+      "image": "Imagen",
+      "passiveName": "Nombre de la pasiva",
+      "passiveDescription": "Descripción de la pasiva",
+      "abilities": "Habilidades activas",
+      "selectAbility": "Seleccionar habilidad",
+      "addAbility": "Añadir",
+      "noAbilities": "Este héroe no tiene habilidades activas.",
+      "moveUp": "Subir",
+      "moveDown": "Bajar",
+      "removeAbility": "Quitar",
+      "totalAttributes": "Total de atributos",
+      "loreText": "Texto de trasfondo",
+      "epicQuote": "Cita épica"
+    },
+    "genders": {
+      "male": "Masculino",
+      "female": "Femenino"
+    },
+    "attributes": {
+      "agility": "Agilidad",
+      "mental": "Mente",
+      "will": "Voluntad",
+      "strength": "Fuerza",
+      "armor": "Armadura",
+      "health": "Vida"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Héroe creado correctamente.",
+      "updated": "Héroe actualizado correctamente.",
+      "published": "Héroe publicado",
+      "unpublished": "Héroe despublicado",
+      "deleted": "Héroe enviado a la papelera",
+      "restored": "Héroe restaurado",
+      "forceDeleted": "Héroe borrado definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "heroAbilities": {
+    "title": "Habilidades",
+    "new": "Nueva habilidad",
+    "edit": "Editar habilidad",
+    "newButton": "Nueva habilidad",
+    "panelTitle": "Habilidad",
+    "panelEmpty": "Selecciona una habilidad para ver sus acciones.",
+    "tabs": {
+      "all": "Todas",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre",
+      "description": "Descripción",
+      "cost": "Coste",
+      "removeDie": "Quitar el último dado",
+      "attackType": "Tipo de ataque",
+      "noAttackType": "Sin tipo de ataque",
+      "attackRange": "Rango de ataque",
+      "noAttackRange": "Sin rango de ataque",
+      "attackSubtype": "Subtipo de ataque",
+      "noAttackSubtype": "Sin subtipo de ataque",
+      "area": "Área"
+    },
+    "attackTypes": {
+      "physical": "Físico",
+      "magical": "Mágico"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Habilidad creada correctamente.",
+      "updated": "Habilidad actualizada correctamente.",
+      "deleted": "Habilidad enviada a la papelera",
+      "restored": "Habilidad restaurada",
+      "forceDeleted": "Habilidad borrada definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "heroAttributesConfig": {
+    "title": "Configuración de atributos",
+    "sections": {
+      "limits": "Límites de atributos",
+      "limitsHint": "Valores permitidos por atributo y en el reparto total al crear o editar héroes.",
+      "health": "Cálculo de vida",
+      "healthHint": "Vida = base + Σ (atributo × multiplicador), con un mínimo de 1. Los multiplicadores pueden ser negativos."
+    },
+    "fields": {
+      "min_attribute_value": "Valor mínimo de atributo",
+      "max_attribute_value": "Valor máximo de atributo",
+      "min_total_attributes": "Total mínimo de atributos",
+      "max_total_attributes": "Total máximo de atributos",
+      "total_health_base": "Base de vida total",
+      "agility_multiplier": "Multiplicador de agilidad",
+      "mental_multiplier": "Multiplicador de mente",
+      "will_multiplier": "Multiplicador de voluntad",
+      "strength_multiplier": "Multiplicador de fuerza",
+      "armor_multiplier": "Multiplicador de armadura"
+    },
+    "hints": {
+      "min_attribute_value": "Mínimo por atributo (1–3).",
+      "max_attribute_value": "Máximo por atributo (3–10).",
+      "min_total_attributes": "Suma mínima de los 5 atributos (5–20).",
+      "max_total_attributes": "Suma máxima de los 5 atributos (10–50).",
+      "total_health_base": "Vida antes de aplicar atributos (10–100).",
+      "agility_multiplier": "Puntos de vida por punto de agilidad (-5–5).",
+      "mental_multiplier": "Puntos de vida por punto de mente (-5–5).",
+      "will_multiplier": "Puntos de vida por punto de voluntad (-5–5).",
+      "strength_multiplier": "Puntos de vida por punto de fuerza (-5–5).",
+      "armor_multiplier": "Puntos de vida por punto de armadura (-5–5)."
+    },
+    "toast": {
+      "saved": "Configuración guardada correctamente.",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "cards": {
+    "title": "Cartas",
+    "new": "Nueva carta",
+    "edit": "Editar carta",
+    "newButton": "Nueva carta",
+    "panelTitle": "Carta",
+    "panelEmpty": "Selecciona una carta para ver sus acciones.",
+    "tabs": {
+      "published": "Publicadas",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "published": "Publicada",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "sections": {
+      "basic": "Información básica",
+      "effects": "Efectos",
+      "lore": "Trasfondo"
+    },
+    "fields": {
+      "name": "Nombre",
+      "faction": "Facción",
+      "noFaction": "Sin facción",
+      "cost": "Coste",
+      "removeDie": "Quitar el último dado",
+      "published": "Publicada",
+      "isUnique": "Es única",
+      "type": "Tipo de carta",
+      "selectType": "Seleccionar tipo",
+      "subtype": "Subtipo de carta",
+      "noSubtype": "Sin subtipo",
+      "equipmentType": "Tipo de equipo",
+      "noEquipmentType": "Sin tipo de equipo",
+      "hands": "Manos",
+      "selectHands": "Seleccionar manos",
+      "oneHand": "1 mano",
+      "twoHands": "2 manos",
+      "heroAbility": "Habilidad de héroe",
+      "noHeroAbility": "Sin habilidad de héroe",
+      "attackRange": "Rango de ataque",
+      "noAttackRange": "Sin rango de ataque",
+      "attackType": "Tipo de ataque",
+      "noAttackType": "Sin tipo de ataque",
+      "attackSubtype": "Subtipo de ataque",
+      "noAttackSubtype": "Sin subtipo de ataque",
+      "area": "Es ataque de área",
+      "image": "Imagen",
+      "effect": "Efecto",
+      "restriction": "Restricción",
+      "loreText": "Texto de trasfondo",
+      "epicQuote": "Cita épica"
+    },
+    "attackTypes": {
+      "physical": "Físico",
+      "magical": "Mágico"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Carta creada correctamente.",
+      "updated": "Carta actualizada correctamente.",
+      "published": "Carta publicada",
+      "unpublished": "Carta despublicada",
+      "deleted": "Carta enviada a la papelera",
+      "restored": "Carta restaurada",
+      "forceDeleted": "Carta borrada definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "factionDecks": {
+    "title": "Mazos de facción",
+    "new": "Nuevo mazo",
+    "edit": "Editar mazo",
+    "newButton": "Nuevo mazo",
+    "panelTitle": "Mazo de facción",
+    "panelEmpty": "Selecciona un mazo para ver sus acciones.",
+    "tabs": {
+      "published": "Publicados",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "published": "Publicado",
+      "draft": "Borrador",
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre",
+      "gameMode": "Modo de juego",
+      "noGameMode": "Sin modo de juego",
+      "factions": "Facciones",
+      "noFactions": "No hay facciones disponibles.",
+      "description": "Descripción",
+      "epicQuote": "Cita épica",
+      "image": "Icono",
+      "published": "Publicado"
+    },
+    "counts": {
+      "cards": "{count} cartas",
+      "heroes": "{count} héroes"
+    },
+    "single": {
+      "save": "Guardar mazo",
+      "modeLimits": "Límites del modo",
+      "limitsLine": "{min}–{max} cartas · máx. {copies} copias · {heroes} héroes",
+      "cardsCount": "Cartas (copias)",
+      "uniqueCards": "{count} únicas",
+      "heroesCount": "Héroes",
+      "cardsTitle": "Cartas del mazo",
+      "heroesTitle": "Héroes del mazo",
+      "noCards": "No hay cartas en este mazo.",
+      "noHeroes": "No hay héroes en este mazo.",
+      "addCards": "Añadir cartas",
+      "searchCards": "Buscar cartas…",
+      "addHeroes": "Añadir héroes",
+      "searchHeroes": "Buscar héroes…",
+      "add": "Añadir",
+      "removeCard": "Quitar carta",
+      "removeHero": "Quitar héroe",
+      "moreCopies": "Una copia más",
+      "fewerCopies": "Una copia menos",
+      "prev": "Anterior",
+      "next": "Siguiente"
+    },
+    "validation": {
+      "minCards": "El mazo debe tener al menos {min} cartas (tiene {total}).",
+      "maxCards": "El mazo no puede tener más de {max} cartas (tiene {total}).",
+      "maxCopies": "Hay {count} cartas que superan las {max} copias permitidas.",
+      "requiredHeroes": "El mazo debe tener exactamente {required} héroes (tiene {total})."
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Mazo creado correctamente.",
+      "updated": "Mazo actualizado correctamente.",
+      "published": "Mazo publicado",
+      "unpublished": "Mazo despublicado",
+      "deleted": "Mazo enviado a la papelera",
+      "restored": "Mazo restaurado",
+      "forceDeleted": "Mazo borrado definitivamente",
+      "saveError": "No se pudo guardar.",
+      "deckSaved": "Cartas y héroes del mazo guardados.",
+      "publishInvalid": "El mazo no cumple los límites del modo de juego."
+    }
+  },
+  "deckAttributesConfigs": {
+    "title": "Configuraciones de mazo",
+    "new": "Nueva configuración",
+    "edit": "Editar configuración",
+    "newButton": "Nueva configuración",
+    "panelTitle": "Configuración de mazo",
+    "panelEmpty": "Selecciona una configuración para ver sus acciones.",
+    "tabs": {
+      "all": "Todas"
+    },
+    "state": {},
+    "fields": {
+      "gameMode": "Modo de juego",
+      "noGameMode": "Sin modo de juego (genérica)",
+      "minCards": "Cartas mínimas",
+      "maxCards": "Cartas máximas",
+      "maxCopiesPerCard": "Copias máximas por carta",
+      "requiredHeroes": "Héroes requeridos"
+    },
+    "hints": {
+      "requiredHeroes": "Número exacto de héroes del mazo (0 = sin exigencia)."
+    },
+    "errors": {
+      "maxBelowMin": "El máximo de cartas no puede ser menor que el mínimo."
+    },
+    "summary": {
+      "cards": "{min}–{max} cartas",
+      "copies": "máx. {max} copias",
+      "heroes": "{count} héroes"
+    },
+    "confirmDelete": {
+      "title": "Eliminar configuración",
+      "message": "¿Eliminar la configuración \"{name}\"? Esta acción no se puede deshacer."
+    },
+    "confirmForceDelete": {
+      "title": "Eliminar configuración",
+      "message": "¿Eliminar la configuración \"{name}\"? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Configuración creada correctamente.",
+      "updated": "Configuración actualizada correctamente.",
+      "deleted": "Configuración eliminada",
+      "restored": "Configuración restaurada",
+      "forceDeleted": "Configuración eliminada definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "heroSuperclasses": {
+    "title": "Superclases",
+    "new": "Nueva superclase",
+    "edit": "Editar superclase",
+    "newButton": "Nueva superclase",
+    "panelTitle": "Superclase",
+    "panelEmpty": "Selecciona una superclase para ver sus acciones.",
+    "tabs": {
+      "all": "Todas",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Superclase creada correctamente.",
+      "updated": "Superclase actualizada correctamente.",
+      "deleted": "Superclase enviada a la papelera",
+      "restored": "Superclase restaurada",
+      "forceDeleted": "Superclase borrada definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "heroRaces": {
+    "title": "Razas",
+    "new": "Nueva raza",
+    "edit": "Editar raza",
+    "newButton": "Nueva raza",
+    "panelTitle": "Raza",
+    "panelEmpty": "Selecciona una raza para ver sus acciones.",
+    "tabs": {
+      "all": "Todas",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Raza creada correctamente.",
+      "updated": "Raza actualizada correctamente.",
+      "deleted": "Raza enviada a la papelera",
+      "restored": "Raza restaurada",
+      "forceDeleted": "Raza borrada definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "heroClasses": {
+    "title": "Clases",
+    "new": "Nueva clase",
+    "edit": "Editar clase",
+    "newButton": "Nueva clase",
+    "panelTitle": "Clase",
+    "panelEmpty": "Selecciona una clase para ver sus acciones.",
+    "tabs": {
+      "all": "Todas",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre",
+      "superclass": "Superclase",
+      "noSuperclass": "Sin superclase",
+      "passive": "Habilidad pasiva"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Clase creada correctamente.",
+      "updated": "Clase actualizada correctamente.",
+      "deleted": "Clase enviada a la papelera",
+      "restored": "Clase restaurada",
+      "forceDeleted": "Clase borrada definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "attackRanges": {
+    "title": "Rangos de ataque",
+    "new": "Nuevo rango de ataque",
+    "edit": "Editar rango de ataque",
+    "newButton": "Nuevo rango",
+    "panelTitle": "Rango de ataque",
+    "panelEmpty": "Selecciona un rango de ataque para ver sus acciones.",
+    "tabs": {
+      "all": "Todos",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Rango de ataque creado correctamente.",
+      "updated": "Rango de ataque actualizado correctamente.",
+      "deleted": "Rango de ataque enviado a la papelera",
+      "restored": "Rango de ataque restaurado",
+      "forceDeleted": "Rango de ataque borrado definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "attackSubtypes": {
+    "title": "Subtipos de ataque",
+    "new": "Nuevo subtipo de ataque",
+    "edit": "Editar subtipo de ataque",
+    "newButton": "Nuevo subtipo",
+    "panelTitle": "Subtipo de ataque",
+    "panelEmpty": "Selecciona un subtipo de ataque para ver sus acciones.",
+    "tabs": {
+      "all": "Todos",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Subtipo de ataque creado correctamente.",
+      "updated": "Subtipo de ataque actualizado correctamente.",
+      "deleted": "Subtipo de ataque enviado a la papelera",
+      "restored": "Subtipo de ataque restaurado",
+      "forceDeleted": "Subtipo de ataque borrado definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "cardTypes": {
+    "title": "Tipos de carta",
+    "new": "Nuevo tipo de carta",
+    "edit": "Editar tipo de carta",
+    "newButton": "Nuevo tipo de carta",
+    "panelTitle": "Tipo de carta",
+    "panelEmpty": "Selecciona un tipo de carta para ver sus acciones.",
+    "tabs": {
+      "all": "Todos",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre",
+      "heroSuperclass": "Superclase de héroe",
+      "allowsSubtypes": "Permite subtipos",
+      "isEquipment": "Es equipo"
+    },
+    "noSuperclass": "Sin superclase",
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Tipo de carta creado correctamente.",
+      "updated": "Tipo de carta actualizado correctamente.",
+      "deleted": "Tipo de carta enviado a la papelera",
+      "restored": "Tipo de carta restaurado",
+      "forceDeleted": "Tipo de carta borrado definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "cardSubtypes": {
+    "title": "Subtipos de carta",
+    "new": "Nuevo subtipo de carta",
+    "edit": "Editar subtipo de carta",
+    "newButton": "Nuevo subtipo de carta",
+    "panelTitle": "Subtipo de carta",
+    "panelEmpty": "Selecciona un subtipo de carta para ver sus acciones.",
+    "tabs": {
+      "all": "Todos",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Subtipo de carta creado correctamente.",
+      "updated": "Subtipo de carta actualizado correctamente.",
+      "deleted": "Subtipo de carta enviado a la papelera",
+      "restored": "Subtipo de carta restaurado",
+      "forceDeleted": "Subtipo de carta borrado definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "equipmentTypes": {
+    "title": "Tipos de equipo",
+    "new": "Nuevo tipo de equipo",
+    "edit": "Editar tipo de equipo",
+    "newButton": "Nuevo tipo de equipo",
+    "panelTitle": "Tipo de equipo",
+    "panelEmpty": "Selecciona un tipo de equipo para ver sus acciones.",
+    "tabs": {
+      "all": "Todos",
+      "weapon": "Armas",
+      "armor": "Armaduras",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre",
+      "category": "Categoría"
+    },
+    "categories": {
+      "weapon": "Arma",
+      "armor": "Armadura"
+    },
+    "selectCategory": "Seleccionar categoría",
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Tipo de equipo creado correctamente.",
+      "updated": "Tipo de equipo actualizado correctamente.",
+      "deleted": "Tipo de equipo enviado a la papelera",
+      "restored": "Tipo de equipo restaurado",
+      "forceDeleted": "Tipo de equipo borrado definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "gameModes": {
+    "title": "Modos de juego",
+    "new": "Nuevo modo de juego",
+    "edit": "Editar modo de juego",
+    "newButton": "Nuevo modo de juego",
+    "panelTitle": "Modo de juego",
+    "panelEmpty": "Selecciona un modo de juego para ver sus acciones.",
+    "tabs": {
+      "all": "Todos",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre",
+      "description": "Descripción"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Modo de juego creado correctamente.",
+      "updated": "Modo de juego actualizado correctamente.",
+      "deleted": "Modo de juego enviado a la papelera",
+      "restored": "Modo de juego restaurado",
+      "forceDeleted": "Modo de juego borrado definitivamente",
+      "saveError": "No se pudo guardar."
+    }
   }
 }

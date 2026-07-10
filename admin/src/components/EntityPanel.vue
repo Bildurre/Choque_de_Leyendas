@@ -12,24 +12,31 @@ import {
 } from '@lucide/vue'
 import { BaseButton } from '@edc-motor/ui'
 import { useLocalesStore } from '@/stores/locales'
-import type { EntityBase } from '@juego/shared'
+import type { EntityListItem } from '@juego/shared'
 
 // Panel derecho de los listados de entidades (patrón kontuan): TODAS las
 // acciones arriba del todo (la tarjeta solo lleva las básicas) + info del
 // elemento (estado, previews por idioma). Las acciones las ejecuta la vista
 // (vienen de useEntityList); aquí solo se emiten.
-defineProps<{
-  /** Elemento seleccionado (null => mensaje de "selecciona"). */
-  item: EntityBase | null
-  /** Nombre ya traducido del elemento (tr(nameOf(item))). */
-  name: string
-  /** Kicker del panel (p. ej. "Casa"). */
-  kicker: string
-  /** Texto cuando no hay selección. */
-  empty: string
-  /** La entidad se renderiza a PNG: muestra regenerar + imágenes por idioma. */
-  hasPreview?: boolean
-}>()
+withDefaults(
+  defineProps<{
+    /** Elemento seleccionado (null => mensaje de "selecciona"). */
+    item: EntityListItem | null
+    /** Nombre ya traducido del elemento (tr(nameOf(item))). */
+    name: string
+    /** Kicker del panel (p. ej. "Casa"). */
+    kicker: string
+    /** Texto cuando no hay selección. */
+    empty: string
+    /** La entidad se renderiza a PNG: muestra regenerar + imágenes por idioma. */
+    hasPreview?: boolean
+    /** La entidad tiene vista de detalle (botón "abrir"). */
+    hasSingle?: boolean
+    /** La entidad tiene estado publicado (botón publicar/despublicar). */
+    hasPublish?: boolean
+  }>(),
+  { hasSingle: true, hasPublish: true },
+)
 
 defineEmits<{
   open: []
@@ -70,7 +77,7 @@ const locales = useLocalesStore()
             </BaseButton>
           </template>
           <template v-else>
-            <BaseButton @click="$emit('open')">
+            <BaseButton v-if="hasSingle" @click="$emit('open')">
               <template #icon><ArrowRight :size="14" /></template>
               {{ t('common.actions.open') }}
             </BaseButton>
@@ -78,7 +85,7 @@ const locales = useLocalesStore()
               <template #icon><SquarePen :size="14" /></template>
               {{ t('common.actions.edit') }}
             </BaseButton>
-            <BaseButton variant="warning" @click="$emit('togglePublish')">
+            <BaseButton v-if="hasPublish" variant="warning" @click="$emit('togglePublish')">
               <template #icon>
                 <component :is="item.is_published ? EyeOff : Eye" :size="14" />
               </template>

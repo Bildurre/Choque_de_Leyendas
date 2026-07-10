@@ -1,0 +1,14 @@
+@use "tokens" as *;
+
+// Listado de modos de juego: la descripción se recorta a dos líneas en la
+// tarjeta para que la rejilla no baile.
+.game-modes {
+  &__description {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    color: $text-3;
+    font-size: $fs-13;
+  }
+}

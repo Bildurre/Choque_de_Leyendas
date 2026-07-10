@@ -1,0 +1,11 @@
+@use "tokens" as *;
+
+// Listado de tipos de carta: los flags (permite subtipos / es equipo) se
+// muestran como chips; en el panel derecho van en una fila propia.
+.card-types {
+  &__flags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+  }
+}

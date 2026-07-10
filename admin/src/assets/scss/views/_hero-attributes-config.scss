@@ -1,0 +1,40 @@
+@use "tokens" as *;
+
+// Configuración de atributos de héroe (singleton, estilo settings): dos
+// tarjetas (límites y fórmula de vida) con parrillas de campos numéricos.
+.hero-attributes-config {
+  &__columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-4;
+    align-items: start;
+
+    @container content (min-width: #{$bp-md}) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  &__section {
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    background: $surface;
+    padding: $space-4;
+
+    h2 {
+      margin: 0 0 $space-2;
+      font-size: $fs-16;
+    }
+  }
+
+  &__hint {
+    margin: 0 0 $space-4;
+    font-size: 0.85rem;
+    color: $text-2;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: $space-3;
+  }
+}

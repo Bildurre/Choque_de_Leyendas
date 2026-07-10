@@ -1,0 +1,258 @@
+@use "tokens" as *;
+
+// Héroes: listado (arte + stats del panel), formulario por fieldsets y single.
+.heroes {
+  &__art {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $surface-2;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__mono {
+    font-size: 2.2rem;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+
+  // Atributos en el panel derecho (teleportado; selector plano).
+  &__stats {
+    list-style: none;
+    margin: $space-3 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-1 $space-3;
+    font-size: 0.85rem;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      gap: $space-2;
+      color: $text-2;
+
+      strong { font-weight: $k-fw-medium; }
+    }
+  }
+}
+
+// Formulario de héroe (modal grande por fieldsets, como el form del viejo).
+.hero-form {
+  &__fieldset {
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    padding: $space-4;
+    margin: 0 0 $space-4;
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+
+    legend {
+      padding: 0 $space-2;
+      font-size: $fs-14;
+      font-weight: $k-fw-bold;
+      color: $text-2;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: $space-3;
+
+    &--attributes {
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    }
+  }
+
+  // Total de atributos y vida derivada, en vivo.
+  &__derived {
+    display: flex;
+    gap: $space-4;
+    flex-wrap: wrap;
+    margin: 0;
+    font-size: 0.85rem;
+    color: $text-2;
+
+    &.is-warning { color: $danger; }
+  }
+
+  &__ability-add {
+    display: flex;
+    align-items: flex-end;
+    gap: $space-3;
+
+    .form-field { flex: 1; }
+  }
+
+  &__hint {
+    margin: 0;
+    font-size: 0.85rem;
+    color: $text-3;
+  }
+
+  // Lista ordenable de habilidades activas (subir/bajar/quitar).
+  &__abilities {
+    list-style: decimal inside;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $space-3;
+      padding: $space-2 $space-3;
+      border: 1px solid $border;
+      border-radius: $radius-md;
+      background: $surface-2;
+    }
+  }
+
+  &__ability-name {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    min-width: 0;
+  }
+
+  &__ability-cost {
+    font-size: 0.75rem;
+    color: $text-2;
+  }
+
+  &__ability-actions {
+    display: inline-flex;
+    gap: $space-1;
+
+    button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      border: 1px solid $border;
+      border-radius: $radius-md;
+      background: transparent;
+      color: $text-2;
+      cursor: pointer;
+
+      &:hover:not(:disabled) { color: $text-1; }
+      &:disabled { opacity: 0.4; cursor: default; }
+    }
+  }
+}
+
+// Detalle de héroe (single).
+.hero-single {
+  &__art {
+    width: 250px;
+    max-width: 100%;
+    border-radius: $radius-md;
+    overflow: hidden;
+    background: $surface-2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 5 / 7;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  &__mono {
+    font-size: 3rem;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+
+  &__attributes {
+    list-style: none;
+    margin: 0 0 $space-2;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: $space-2;
+
+    li {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      padding: $space-2 $space-3;
+      border: 1px solid $border;
+      border-radius: $radius-md;
+      background: $surface-2;
+
+      strong {
+        font-size: 0.75rem;
+        font-weight: $k-fw-medium;
+        color: $text-2;
+      }
+
+      span {
+        font-size: $fs-18;
+        font-weight: $k-fw-bold;
+      }
+    }
+  }
+
+  &__total {
+    margin: 0 0 $space-4;
+    font-size: 0.85rem;
+    color: $text-2;
+  }
+
+  &__passive-name {
+    margin: 0 0 $space-2;
+    font-size: $fs-16;
+  }
+
+  &__abilities {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-4;
+  }
+
+  &__ability-head {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    flex-wrap: wrap;
+    margin: 0 0 $space-2;
+  }
+
+  &__ability-cost {
+    font-size: 0.8rem;
+    color: $text-2;
+  }
+
+  &__quote {
+    margin: $space-4 0 0;
+    padding-left: $space-4;
+    border-left: 3px solid $border;
+    font-style: italic;
+    color: $text-2;
+  }
+
+  &__empty {
+    color: $text-3;
+  }
+}

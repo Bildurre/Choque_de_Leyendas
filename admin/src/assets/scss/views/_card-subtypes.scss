@@ -1,0 +1,8 @@
+@use "tokens" as *;
+
+// Listado de subtipos de carta: taxonomía mínima (solo nombre), sin retoques
+// más allá del espaciado del contenedor.
+.card-subtypes {
+  display: grid;
+  gap: $space-4;
+}

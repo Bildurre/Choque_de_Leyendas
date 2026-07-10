@@ -2,6 +2,15 @@
 
 namespace App\Providers;
 
+use App\Models\Card;
+use App\Models\Counter;
+use App\Models\Hero;
+use App\Pdf\CardsCatalogExport;
+use App\Pdf\CountersExport;
+use App\Pdf\FactionDeckExport;
+use App\Pdf\HeroesCatalogExport;
+use Edc\Core\Support\Facades\Pdfs;
+use Edc\Core\Support\Facades\Previews;
 use Edc\Core\Support\Facades\Sitemap;
 use Illuminate\Support\ServiceProvider;
 
@@ -27,6 +36,20 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        // Entidades renderizables a PNG (RENDER-SPEC): la clave es el segmento
+        // de /_render/:entity y debe casar con el renderRegistry de la app Vue.
+        // No hace falta ningún Pdfs::layout: los presets 'card' (63x88) y
+        // 'counter' (25x25) ya los trae el motor.
+        Previews::register('card', Card::class);
+        Previews::register('hero', Hero::class);
+        Previews::register('counter', Counter::class);
+
+        // Catálogo de PDF del juego (gestor de PDF del admin).
+        Pdfs::register('cards-catalog', CardsCatalogExport::class);   // todas las cartas publicadas (card)
+        Pdfs::register('heroes-catalog', HeroesCatalogExport::class); // todos los héroes publicados (card)
+        Pdfs::register('counters', CountersExport::class);            // contadores recortables, 10 copias (counter)
+        Pdfs::register('faction-deck', FactionDeckExport::class);     // un PDF por mazo publicado (card)
+
         // Plantillas de página del juego: la clave viaja en el payload público
         // y la SPA elige el layout en su templateRegistry.
         config(['motor.content.templates' => [
