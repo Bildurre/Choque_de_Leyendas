@@ -29,6 +29,8 @@ onMounted(async () => {
     <RouterView />
   </div>
   <footer v-if="!bare && (site.footerText || site.title)" class="app-footer">
-    <span>{{ site.footerText || site.title }}</span>
+    <!-- El pie es texto rico saneado en el servidor (lista blanca) -->
+    <div v-if="site.footerText" class="rich-content" v-html="site.footerText" />
+    <span v-else>{{ site.title }}</span>
   </footer>
 </template>

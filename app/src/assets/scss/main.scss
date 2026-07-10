@@ -33,7 +33,7 @@ h6 {
   flex: 1 0 auto;
 }
 
-// Pie con el texto de la configuración.
+// Pie con el texto de la configuración (texto rico del wysiwyg).
 .app-footer {
   margin-top: auto;
   padding: $space-5 $space-6;
@@ -42,4 +42,16 @@ h6 {
   color: $text-3;
   font-size: $fs-13;
   text-align: center;
+
+  // El contenido enriquecido hereda la escala discreta del pie.
+  .rich-content {
+    font-size: inherit;
+
+    p,
+    ul,
+    ol,
+    blockquote {
+      margin-block: $space-1;
+    }
+  }
 }

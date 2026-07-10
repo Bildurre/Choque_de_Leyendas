@@ -192,67 +192,61 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           <MotorBadge v-else :label="site.title || 'EdC'" />
         </RouterLink>
 
-        <!-- Tres grupos: [admin·descargas] · usuario · prefs -->
+        <!-- Elementos sueltos, mismo gap para todos (sin grupos) -->
         <div class="site-header__actions">
-          <span class="site-header__set">
-            <a
-              v-if="canAccessAdmin"
-              class="site-header__collection"
-              :href="adminUrl"
-              :title="t('nav.admin')"
-              @click="goToAdmin"
-            >
-              <LayoutDashboard :size="20" />
-            </a>
-            <RouterLink
-              class="site-header__collection"
-              :to="{ name: 'downloads', params: { locale: locales.current, dl: downloadsSegment } }"
-              :title="t('nav.downloads')"
-            >
-              <FileDown :size="20" />
-              <span v-if="collection.count" class="site-header__collection-count">
-                {{ collection.count }}
-              </span>
-            </RouterLink>
-          </span>
+          <a
+            v-if="canAccessAdmin"
+            class="site-header__collection"
+            :href="adminUrl"
+            :title="t('nav.admin')"
+            @click="goToAdmin"
+          >
+            <LayoutDashboard :size="20" />
+          </a>
+          <RouterLink
+            class="site-header__collection"
+            :to="{ name: 'downloads', params: { locale: locales.current, dl: downloadsSegment } }"
+            :title="t('nav.downloads')"
+          >
+            <FileDown :size="20" />
+            <span v-if="collection.count" class="site-header__collection-count">
+              {{ collection.count }}
+            </span>
+          </RouterLink>
 
           <!-- Entrar / usuario: SIEMPRE en la cabecera (patrón kontuan) -->
-          <span class="site-header__set">
-            <template v-if="auth.isAuthenticated">
-              <RouterLink
-                class="site-header__user"
-                :to="{ name: 'account', params: { locale: locales.current } }"
-                :title="t('nav.account')"
-              >
-                <span class="site-header__user-name">{{ auth.user?.name }}</span>
-              </RouterLink>
-              <button
-                class="site-header__logout"
-                type="button"
-                :title="t('nav.logout')"
-                @click="logout"
-              >
-                <LogOut :size="18" />
-              </button>
-            </template>
+          <template v-if="auth.isAuthenticated">
             <RouterLink
-              v-else
-              class="site-header__login"
-              :to="{ name: 'login', params: { locale: locales.current } }"
+              class="site-header__user"
+              :to="{ name: 'account', params: { locale: locales.current } }"
+              :title="t('nav.account')"
             >
-              {{ t('nav.login') }}
+              <span class="site-header__user-name">{{ auth.user?.name }}</span>
             </RouterLink>
-          </span>
+            <button
+              class="site-header__logout"
+              type="button"
+              :title="t('nav.logout')"
+              @click="logout"
+            >
+              <LogOut :size="18" />
+            </button>
+          </template>
+          <RouterLink
+            v-else
+            class="site-header__login"
+            :to="{ name: 'login', params: { locale: locales.current } }"
+          >
+            {{ t('nav.login') }}
+          </RouterLink>
 
           <!-- Preferencias: idioma + tema -->
-          <span class="site-header__set">
-            <LocaleSelector
-              :model-value="locales.current"
-              :locales="locales.locales"
-              @update:model-value="switchLocale"
-            />
-            <ThemeSelector />
-          </span>
+          <LocaleSelector
+            :model-value="locales.current"
+            :locales="locales.locales"
+            @update:model-value="switchLocale"
+          />
+          <ThemeSelector />
         </div>
       </div>
     </div>

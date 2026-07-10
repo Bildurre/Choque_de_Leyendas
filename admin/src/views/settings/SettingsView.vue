@@ -14,6 +14,7 @@ import {
   useToast,
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
+import { useEditorLabels } from '@/lib/editorLabels'
 import { useLocalesStore } from '@/stores/locales'
 
 // Configuración de la web pública (doc 10): identidad (título, logo,
@@ -22,6 +23,7 @@ import { useLocalesStore } from '@/stores/locales'
 const { t, te } = useI18n()
 const toast = useToast()
 const locales = useLocalesStore()
+const richLabels = useEditorLabels()
 
 const loading = ref(true)
 const saving = ref(false)
@@ -277,8 +279,8 @@ onMounted(async () => {
             v-model="footerText"
             :locales="locales.locales"
             :label="t('settings.fields.footerText')"
-            type="textarea"
-            :rows="2"
+            type="wysiwyg"
+            :rich-labels="richLabels"
           />
         </section>
       </div>

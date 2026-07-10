@@ -93,22 +93,17 @@ $header-row2: 46px;
   }
 
   // Acciones de la cabecera: SOLO escritorio (en móvil van al off-canvas).
-  // Tres grupos — [admin·descargas] · usuario/entrar · [idioma·tema] — con
-  // el mismo aire entre grupos que entre los elementos de cada grupo.
+  // Elementos sueltos con un único gap — admin · descargas · usuario/entrar
+  // · idioma · tema — sin grupos ni separadores. Patrón común: icono/texto
+  // en color de texto, sin caja ni padding, acento al hover.
   &__actions {
     display: none;
 
     @media (min-width: 900px) {
       display: flex;
       align-items: center;
-      gap: $space-1;
+      gap: $space-2;
     }
-  }
-
-  &__set {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-1;
   }
 
   // Contador de la colección "para imprimir" (enlaza con Descargas).
@@ -117,18 +112,17 @@ $header-row2: 46px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
-    height: 36px;
-    color: $accent-500;
-    border-radius: $radius-md;
+    color: $text-1;
+    transition: color 0.15s ease;
 
-    &:hover { background: color-mix(in srgb, $accent-500 10%, transparent); }
+    &:hover { color: $accent-500; }
   }
 
+  // Sin la caja de 36px, el globito se separa del icono por las esquinas.
   &__collection-count {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: -7px;
+    right: -9px;
     min-width: 16px;
     height: 16px;
     padding: 0 3px;
@@ -144,7 +138,7 @@ $header-row2: 46px;
   }
 
   // Entrar / usuario (nombre a secas; logout al lado). Botón-texto sin
-  // fondo ni borde, muted como los selectores y acento solo al hover.
+  // fondo ni borde, color de texto y acento solo al hover.
   &__login {
     display: inline-flex;
     align-items: center;
@@ -152,7 +146,7 @@ $header-row2: 46px;
     padding: 0;
     background: none;
     border: none;
-    color: $text-2;
+    color: $text-1;
     font-weight: 600;
     font-size: $fs-14;
     text-decoration: none;
@@ -165,9 +159,8 @@ $header-row2: 46px;
     display: inline-flex;
     align-items: center;
     gap: $space-2;
-    padding: $space-1 $space-2;
-    border-radius: $radius-md;
-    color: $text-2;
+    padding: 0;
+    color: $text-1;
     text-decoration: none;
     min-width: 0;
     transition: color 0.15s ease;
@@ -202,18 +195,14 @@ $header-row2: 46px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
+    padding: 0;
     background: none;
     border: none;
-    border-radius: $radius-md;
-    color: $text-3;
+    color: $text-1;
     cursor: pointer;
+    transition: color 0.15s ease;
 
-    &:hover {
-      background: color-mix(in srgb, $danger 12%, transparent);
-      color: $danger;
-    }
+    &:hover { color: $danger; }
   }
 
   // --- Línea 2 (escritorio): la barra de navegación ---
