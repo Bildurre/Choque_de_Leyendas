@@ -202,7 +202,9 @@
       "confirmDelete": "¿Borrar este bloque?",
       "panelTitle": "Bloque",
       "panelEmpty": "Selecciona un bloque para ver sus acciones.",
-      "panelContent": "Contenido"
+      "panelContent": "Contenido",
+      "parent": "Bloque padre (índices indentados)",
+      "parentNone": "— Ninguno —"
     },
     "panelTitle": "Página",
     "panelEmpty": "Selecciona una página para ver sus acciones.",
@@ -220,7 +222,6 @@
       "title": "Título del sitio",
       "description": "Descripción (meta por defecto)",
       "logo": "Logo (SVG/PNG)",
-      "logoHint": "Se muestra en la barra de la web pública",
       "favicon": "Favicon (PNG/SVG)",
       "faviconHint": "Icono de la pestaña del navegador",
       "accentMode": "Color de acento",
