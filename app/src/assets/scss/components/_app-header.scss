@@ -4,8 +4,19 @@
 // la barra de navegación debajo; superficies limpias con borde $border (el
 // acento se reserva para hovers/activos). En móvil todo lo del header
 // (salvo el logo) vive en la barra lateral off-canvas. Mobile-first.
-$header-row1: 56px;
 $header-row2: 46px;
+
+// Alto del logo: 34px en estrecho y escalera hasta 50px en ancho. La
+// línea 1 del header crece con él (aire constante de 22px). En :root porque
+// también lo usan la barra lateral y .site-content, fuera de .site-header.
+:root {
+  --logo-h: 34px;
+
+  @media (min-width: #{$bp-md}) { --logo-h: 44px; }
+  @media (min-width: #{$bp-lg}) { --logo-h: 50px; }
+
+  --header-row1: calc(var(--logo-h) + 22px);
+}
 
 .site-header {
   position: fixed;
@@ -29,7 +40,7 @@ $header-row2: 46px;
     display: flex;
     align-items: center;
     gap: $space-3;
-    height: $header-row1;
+    height: var(--header-row1);
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 $space-4;
@@ -62,13 +73,6 @@ $header-row2: 46px;
     text-decoration: none;
   }
 
-  // Alto del logo: 34px en estrecho y escalera hasta el doble en ancho.
-  --logo-h: 34px;
-
-  @media (min-width: #{$bp-md}) { --logo-h: 44px; }
-  @media (min-width: #{$bp-lg}) { --logo-h: 56px; }
-  @media (min-width: #{$bp-xl}) { --logo-h: 68px; }
-
   &__logo {
     display: block;
     height: var(--logo-h, 34px);
@@ -89,15 +93,15 @@ $header-row2: 46px;
   }
 
   // Acciones de la cabecera: SOLO escritorio (en móvil van al off-canvas).
-  // Tres grupos — [admin·descargas] | usuario/entrar | [idioma·tema] —
-  // separados por una línea vertical para que no se amontonen.
+  // Tres grupos — [admin·descargas] · usuario/entrar · [idioma·tema] — con
+  // el mismo aire entre grupos que entre los elementos de cada grupo.
   &__actions {
     display: none;
 
     @media (min-width: 900px) {
       display: flex;
       align-items: center;
-      gap: $space-3;
+      gap: $space-1;
     }
   }
 
@@ -105,13 +109,6 @@ $header-row2: 46px;
     display: inline-flex;
     align-items: center;
     gap: $space-1;
-  }
-
-  &__sep {
-    width: 1px;
-    height: 22px;
-    background: $border;
-    flex-shrink: 0;
   }
 
   // Contador de la colección "para imprimir" (enlaza con Descargas).
@@ -146,8 +143,8 @@ $header-row2: 46px;
     line-height: 1;
   }
 
-  // Entrar / usuario (patrón kontuan: avatar + nombre; logout al lado).
-  // Entrar tipo botón-texto: sin fondo, sin borde ni padding.
+  // Entrar / usuario (nombre a secas; logout al lado). Botón-texto sin
+  // fondo ni borde, muted como los selectores y acento solo al hover.
   &__login {
     display: inline-flex;
     align-items: center;
@@ -155,13 +152,13 @@ $header-row2: 46px;
     padding: 0;
     background: none;
     border: none;
-    color: $accent-500;
+    color: $text-2;
     font-weight: 600;
     font-size: $fs-14;
     text-decoration: none;
     transition: color 0.15s ease;
 
-    &:hover { color: $accent-400; }
+    &:hover { color: $accent-500; }
   }
 
   &__user {
@@ -170,11 +167,12 @@ $header-row2: 46px;
     gap: $space-2;
     padding: $space-1 $space-2;
     border-radius: $radius-md;
-    color: $text-1;
+    color: $text-2;
     text-decoration: none;
     min-width: 0;
+    transition: color 0.15s ease;
 
-    &:hover { background: color-mix(in srgb, $accent-500 10%, transparent); }
+    &:hover { color: $accent-500; }
   }
 
   &__avatar {
@@ -338,7 +336,7 @@ $header-row2: 46px;
 // --- Barra lateral (móvil): todo lo del header salvo el logo ---
 .site-sidebar {
   position: fixed;
-  top: $header-row1;
+  top: var(--header-row1);
   left: 0;
   width: 300px;
   max-width: 84vw;
@@ -349,7 +347,7 @@ $header-row2: 46px;
     max-width: 100%;
   }
 
-  height: calc(100vh - #{$header-row1});
+  height: calc(100vh - var(--header-row1));
   background: $surface;
   border-right: 1px solid $border;
   transform: translateX(-100%);
@@ -442,9 +440,9 @@ $header-row2: 46px;
 
 // El contenido deja hueco a la cabecera fija.
 .site-content {
-  padding-top: $header-row1;
+  padding-top: var(--header-row1);
 
   @media (min-width: 900px) {
-    padding-top: calc(#{$header-row1} + #{$header-row2});
+    padding-top: calc(var(--header-row1) + #{$header-row2});
   }
 }

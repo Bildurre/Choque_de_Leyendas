@@ -192,7 +192,7 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           <MotorBadge v-else :label="site.title || 'EdC'" />
         </RouterLink>
 
-        <!-- Tres grupos con separador: [admin·descargas] | usuario | prefs -->
+        <!-- Tres grupos: [admin·descargas] · usuario · prefs -->
         <div class="site-header__actions">
           <span class="site-header__set">
             <a
@@ -216,8 +216,6 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
             </RouterLink>
           </span>
 
-          <span class="site-header__sep" aria-hidden="true" />
-
           <!-- Entrar / usuario: SIEMPRE en la cabecera (patrón kontuan) -->
           <span class="site-header__set">
             <template v-if="auth.isAuthenticated">
@@ -226,7 +224,6 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
                 :to="{ name: 'account', params: { locale: locales.current } }"
                 :title="t('nav.account')"
               >
-                <span class="site-header__avatar">{{ userInitial }}</span>
                 <span class="site-header__user-name">{{ auth.user?.name }}</span>
               </RouterLink>
               <button
@@ -243,12 +240,9 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
               class="site-header__login"
               :to="{ name: 'login', params: { locale: locales.current } }"
             >
-              <LogIn :size="16" />
               {{ t('nav.login') }}
             </RouterLink>
           </span>
-
-          <span class="site-header__sep" aria-hidden="true" />
 
           <!-- Preferencias: idioma + tema -->
           <span class="site-header__set">
