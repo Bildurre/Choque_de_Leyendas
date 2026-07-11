@@ -93,7 +93,10 @@ onMounted(async () => {
         :muted="!!item.deleted_at"
         :active="selectedId === item.id"
         clickable
+        :editable="!item.deleted_at"
+        :edit-label="t('common.actions.edit')"
         @view="select(item)"
+        @edit="edit(item)"
       >
         <template #media>
           <div class="counter-art" :class="`counter-art--${item.type}`">

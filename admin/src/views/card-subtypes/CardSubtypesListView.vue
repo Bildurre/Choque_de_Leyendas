@@ -64,7 +64,10 @@ onMounted(init)
         :muted="!!item.deleted_at"
         :active="selectedId === item.id"
         clickable
+        :editable="!item.deleted_at"
+        :edit-label="t('common.actions.edit')"
         @view="select(item)"
+        @edit="edit(item)"
       >
         <template #badges>
           <span v-if="item.deleted_at" class="chip is-failed">{{

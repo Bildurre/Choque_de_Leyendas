@@ -65,14 +65,11 @@ onMounted(init)
         :muted="!!item.deleted_at"
         :active="selectedId === item.id"
         clickable
+        :editable="!item.deleted_at"
+        :edit-label="t('common.actions.edit')"
         @view="select(item)"
+        @edit="edit(item)"
       >
-        <template #media>
-          <div class="hero-classes__emblem">
-            <span class="hero-classes__mono">{{ tr(item.name).charAt(0) }}</span>
-          </div>
-        </template>
-
         <template #badges>
           <span v-if="item.deleted_at" class="chip is-failed">{{
             t('heroClasses.state.trashed')

@@ -2,21 +2,6 @@
 
 // Listado de clases: emblema tipográfico (inicial) + pasiva en el panel.
 .hero-classes {
-  &__emblem {
-    width: 100%;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: $surface-2;
-  }
-
-  &__mono {
-    font-size: 2.2rem;
-    font-weight: $k-fw-bold;
-    color: $text-2;
-  }
-
   // HTML de la pasiva en el panel derecho (va teleportado; selector plano).
   &__passive {
     margin-top: $space-2;

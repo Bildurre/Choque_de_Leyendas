@@ -66,7 +66,10 @@ onMounted(init)
         :title="configName(item)"
         :active="selectedId === item.id"
         clickable
+        editable
+        :edit-label="t('common.actions.edit')"
         @view="select(item)"
+        @edit="edit(item)"
       >
         <template #meta>
           <span>
