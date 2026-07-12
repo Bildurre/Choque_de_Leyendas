@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { BaseTabs, BlockQuote, PreviewGrid, type CatalogItem, type PreviewGridItem } from '@edc-motor/ui'
+import {
+  BaseTabs,
+  BlockQuote,
+  PreviewGrid,
+  type CatalogItem,
+  type PreviewGridItem,
+} from '@edc-motor/ui'
 import AddToCollection from '@/components/AddToCollection.vue'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
 import CssCardsRelated from '@/components/singles/CssCardsRelated.vue'

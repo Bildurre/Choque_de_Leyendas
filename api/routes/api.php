@@ -6,6 +6,7 @@ use App\Http\Controllers\CardController;
 use App\Http\Controllers\CardSubtypeController;
 use App\Http\Controllers\CardTypeController;
 use App\Http\Controllers\CounterController;
+use App\Http\Controllers\DashboardStatsController;
 use App\Http\Controllers\DeckAttributesConfigurationController;
 use App\Http\Controllers\EquipmentTypeController;
 use App\Http\Controllers\FactionController;
@@ -111,6 +112,9 @@ Route::middleware(['auth:sanctum', 'motor.admin', 'can:manage-game'])
         Route::post('counters/{id}/restore', [CounterController::class, 'restore']);
         Route::delete('counters/{id}/force', [CounterController::class, 'forceDestroy']);
         Route::post('counters/{id}/toggle-published', [CounterController::class, 'togglePublished']);
+
+        // Dashboard (estadísticas del panel)
+        Route::get('dashboard/stats', DashboardStatsController::class);
 
         // Deck attributes configurations (por id, sin publicación ni papelera)
         Route::get('deck-attributes-configurations/for-mode/{gameMode}', [DeckAttributesConfigurationController::class, 'forMode']); // antes de {id}

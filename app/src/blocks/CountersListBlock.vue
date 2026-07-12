@@ -34,7 +34,11 @@ const counters = computed(() => props.data.counters ?? [])
         </figure>
         <div class="counter-list__body">
           <h3 class="counter-list__name">{{ counter.name }}</h3>
-          <div v-if="counter.effect" class="counter-list__effect rich-content" v-html="counter.effect" />
+          <div
+            v-if="counter.effect"
+            class="counter-list__effect rich-content"
+            v-html="counter.effect"
+          />
         </div>
       </li>
     </ul>

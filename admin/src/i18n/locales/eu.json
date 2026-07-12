@@ -146,7 +146,60 @@
   "dashboard": {
     "title": "Panela",
     "connectedAs": "{name} gisa konektatuta ({roles}).",
-    "motor": "{name} v{version} · hizkuntzak {locales}"
+    "motor": "{name} v{version} · hizkuntzak {locales}",
+    "publishedCount": "{n} argitaratuta",
+    "sections": {
+      "totals": "Guztizkoak",
+      "factions": "Fakzioak",
+      "cards": "Kartak",
+      "heroes": "Heroiak",
+      "decks": "Sortak"
+    },
+    "totals": {
+      "factions": "Fakzioak",
+      "heroes": "Heroiak",
+      "cards": "Kartak",
+      "faction_decks": "Sortak",
+      "counters": "Kontagailuak",
+      "hero_abilities": "Gaitasunak",
+      "game_modes": "Joko moduak"
+    },
+    "charts": {
+      "cardsByFaction": "Kartak fakzioka",
+      "heroesByFaction": "Heroiak fakzioka",
+      "decksByFaction": "Sortak fakzioka",
+      "cardsByType": "Kartak motaka",
+      "costCurve": "Kostu-kurba (dadoak)",
+      "costColors": "Kartak dado-koloreka",
+      "attackTypes": "Eraso mota",
+      "equipment": "Ekipamendua kategoriaka",
+      "bySuperclass": "Heroiak superklaseka",
+      "byRace": "Heroiak arrazaka",
+      "gender": "Generoa",
+      "attributes": "Atributuak (batezbestekoa eta tartea)",
+      "decksByMode": "Sortak joko moduka"
+    },
+    "labels": {
+      "diceR": "Gorria",
+      "diceG": "Berdea",
+      "diceB": "Urdina",
+      "physical": "Fisikoa",
+      "magical": "Magikoa",
+      "weapons": "Armak",
+      "armors": "Armadurak",
+      "male": "Gizonezkoa",
+      "female": "Emakumezkoa",
+      "avgCost": "Batez besteko kostua (dadoak)",
+      "area": "Areakoak",
+      "unique": "Bakarrak",
+      "avgCards": "Kartak sortako (batezbestekoa)",
+      "avgHeroes": "Heroiak sortako (batezbestekoa)",
+      "agility": "Bizkortasuna",
+      "mental": "Adimena",
+      "will": "Borondatea",
+      "strength": "Indarra",
+      "armor": "Armadura"
+    }
   },
   "editor": {
     "bold": "Lodia",

@@ -146,7 +146,60 @@
   "dashboard": {
     "title": "Panel",
     "connectedAs": "Conectado como {name} ({roles}).",
-    "motor": "{name} v{version} · locales {locales}"
+    "motor": "{name} v{version} · locales {locales}",
+    "publishedCount": "{n} publicados",
+    "sections": {
+      "totals": "Totales",
+      "factions": "Facciones",
+      "cards": "Cartas",
+      "heroes": "Héroes",
+      "decks": "Mazos"
+    },
+    "totals": {
+      "factions": "Facciones",
+      "heroes": "Héroes",
+      "cards": "Cartas",
+      "faction_decks": "Mazos",
+      "counters": "Contadores",
+      "hero_abilities": "Habilidades",
+      "game_modes": "Modos de juego"
+    },
+    "charts": {
+      "cardsByFaction": "Cartas por facción",
+      "heroesByFaction": "Héroes por facción",
+      "decksByFaction": "Mazos por facción",
+      "cardsByType": "Cartas por tipo",
+      "costCurve": "Curva de coste (dados)",
+      "costColors": "Cartas por color de dado",
+      "attackTypes": "Tipo de ataque",
+      "equipment": "Equipo por categoría",
+      "bySuperclass": "Héroes por superclase",
+      "byRace": "Héroes por raza",
+      "gender": "Género",
+      "attributes": "Atributos (media y rango)",
+      "decksByMode": "Mazos por modo de juego"
+    },
+    "labels": {
+      "diceR": "Rojo",
+      "diceG": "Verde",
+      "diceB": "Azul",
+      "physical": "Físico",
+      "magical": "Mágico",
+      "weapons": "Armas",
+      "armors": "Armaduras",
+      "male": "Masculino",
+      "female": "Femenino",
+      "avgCost": "Coste medio (dados)",
+      "area": "De área",
+      "unique": "Únicas",
+      "avgCards": "Cartas por mazo (media)",
+      "avgHeroes": "Héroes por mazo (media)",
+      "agility": "Agilidad",
+      "mental": "Mente",
+      "will": "Voluntad",
+      "strength": "Fuerza",
+      "armor": "Armadura"
+    }
   },
   "editor": {
     "bold": "Negrita",

@@ -146,7 +146,60 @@
   "dashboard": {
     "title": "Dashboard",
     "connectedAs": "Signed in as {name} ({roles}).",
-    "motor": "{name} v{version} · locales {locales}"
+    "motor": "{name} v{version} · locales {locales}",
+    "publishedCount": "{n} published",
+    "sections": {
+      "totals": "Totals",
+      "factions": "Factions",
+      "cards": "Cards",
+      "heroes": "Heroes",
+      "decks": "Decks"
+    },
+    "totals": {
+      "factions": "Factions",
+      "heroes": "Heroes",
+      "cards": "Cards",
+      "faction_decks": "Decks",
+      "counters": "Counters",
+      "hero_abilities": "Abilities",
+      "game_modes": "Game modes"
+    },
+    "charts": {
+      "cardsByFaction": "Cards by faction",
+      "heroesByFaction": "Heroes by faction",
+      "decksByFaction": "Decks by faction",
+      "cardsByType": "Cards by type",
+      "costCurve": "Cost curve (dice)",
+      "costColors": "Cards by die color",
+      "attackTypes": "Attack type",
+      "equipment": "Equipment by category",
+      "bySuperclass": "Heroes by superclass",
+      "byRace": "Heroes by race",
+      "gender": "Gender",
+      "attributes": "Attributes (average and range)",
+      "decksByMode": "Decks by game mode"
+    },
+    "labels": {
+      "diceR": "Red",
+      "diceG": "Green",
+      "diceB": "Blue",
+      "physical": "Physical",
+      "magical": "Magical",
+      "weapons": "Weapons",
+      "armors": "Armors",
+      "male": "Male",
+      "female": "Female",
+      "avgCost": "Average cost (dice)",
+      "area": "Area",
+      "unique": "Unique",
+      "avgCards": "Cards per deck (avg.)",
+      "avgHeroes": "Heroes per deck (avg.)",
+      "agility": "Agility",
+      "mental": "Mental",
+      "will": "Will",
+      "strength": "Strength",
+      "armor": "Armor"
+    }
   },
   "editor": {
     "bold": "Bold",
