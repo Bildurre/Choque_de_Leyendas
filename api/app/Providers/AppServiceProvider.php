@@ -12,6 +12,7 @@ use App\Models\Hero;
 use App\Pdf\CardsCatalogExport;
 use App\Pdf\CountersExport;
 use App\Pdf\FactionDeckExport;
+use App\Pdf\FactionExport;
 use App\Pdf\HeroesCatalogExport;
 use Edc\Core\Support\Facades\Blocks;
 use Edc\Core\Support\Facades\Pdfs;
@@ -56,6 +57,7 @@ class AppServiceProvider extends ServiceProvider
         Pdfs::register('heroes-catalog', HeroesCatalogExport::class); // todos los héroes publicados (card)
         Pdfs::register('counters', CountersExport::class);            // contadores recortables, 10 copias (counter)
         Pdfs::register('faction-deck', FactionDeckExport::class);     // un PDF por mazo publicado (card)
+        Pdfs::register('faction', FactionExport::class);               // héroes x1 + cartas x2 por facción (card)
 
         // Bloques con-datos del juego (portados del CdL viejo).
         Blocks::register(CountersListBlock::class);
