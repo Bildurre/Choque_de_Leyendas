@@ -2,13 +2,13 @@
 
 // Combobox con búsqueda y opciones ricas (SearchCombobox.vue): mismo aspecto
 // que el search-select del motor + etiqueta/error de campo de formulario.
-// El root es container para adaptar las opciones en estrecho.
+// OJO: el containment vive en el DROPDOWN (absoluto, fuera del flujo). En la
+// raíz colapsaba el componente a alto 0 dentro de un flex en columna.
 .search-combobox {
   position: relative;
   width: 100%;
   display: grid;
   gap: $space-1;
-  container-type: inline-size;
 
   &__label {
     font-size: $fs-13;
@@ -55,6 +55,7 @@
   &.is-open &__chevron { transform: rotate(180deg); }
 
   &__dropdown {
+    container-type: inline-size; // para adaptar las opciones en estrecho
     position: absolute;
     top: calc(100% + #{$space-1});
     left: 0;

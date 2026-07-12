@@ -67,9 +67,8 @@
 
     &:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    // Realce sutil en hover: scale + halo, nunca fondo.
+    // Realce en hover: solo el halo (sin cambiar el tamaño), nunca fondo.
     &:not(:disabled):hover {
-      transform: scale(1.15);
       filter: drop-shadow(0 0 4px color-mix(in srgb, $accent-500 60%, transparent));
     }
 

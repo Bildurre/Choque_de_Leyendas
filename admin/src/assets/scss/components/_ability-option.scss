@@ -1,8 +1,8 @@
 @use "tokens" as *;
 
-// Fila/opción de habilidad: nombre — rango · tipo · subtipo — coste (orden
-// canónico de metadatos de ataque). Se usa en las opciones del combobox y en
-// las filas de habilidades seleccionadas del form de héroe.
+// Opción de habilidad del combobox: nombre — rango · tipo · subtipo · área —
+// coste (orden canónico). Las filas seleccionadas del form de héroe usan
+// .ability-row (en _heroes.scss).
 .ability-option {
   display: flex;
   align-items: center;
@@ -38,14 +38,3 @@
   .search-combobox__option .ability-option__meta { display: none; }
 }
 
-// En estrecho, en las filas seleccionadas del form de héroe: el bloque
-// rango · tipo · subtipo pasa a segunda fila.
-@container (max-width: 480px) {
-  .hero-form__abilities .ability-option { flex-wrap: wrap; }
-
-  .hero-form__abilities .ability-option__meta {
-    flex-basis: 100%;
-    order: 4;
-    white-space: normal;
-  }
-}

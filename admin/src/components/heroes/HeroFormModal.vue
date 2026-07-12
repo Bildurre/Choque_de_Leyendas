@@ -82,6 +82,7 @@ interface AbilityOption extends HeroAbilityOption {
   attack_type?: 'physical' | 'magical' | null
   range?: TaxonomyOption | null
   subtype?: TaxonomyOption | null
+  area?: boolean
 }
 
 interface SelectedAbility {
@@ -91,6 +92,7 @@ interface SelectedAbility {
   attack_type?: 'physical' | 'magical' | null
   range?: TaxonomyOption | null
   subtype?: TaxonomyOption | null
+  area?: boolean
 }
 
 const form = reactive<{
@@ -188,13 +190,18 @@ const health = computed(() => {
 
 // --- Habilidades activas: combobox con búsqueda + lista ordenable ---
 
-/** Metadatos de ataque en orden canónico rango → tipo → subtipo. */
-function abilityMeta(a: AbilityOption | SelectedAbility): string {
+/** Metadatos en orden canónico rango → tipo → subtipo → área (área siempre que la haya). */
+function abilityMetaParts(a: AbilityOption | SelectedAbility): string[] {
   const parts: string[] = []
   if (a.range) parts.push(optionLabel(a.range))
   if (a.attack_type) parts.push(t(`heroAbilities.attackTypes.${a.attack_type}`))
   if (a.subtype) parts.push(optionLabel(a.subtype))
-  return parts.join(' · ')
+  if (a.area) parts.push(t('heroAbilities.fields.area'))
+  return parts
+}
+
+function abilityMeta(a: AbilityOption | SelectedAbility): string {
+  return abilityMetaParts(a).join(' · ')
 }
 
 // Opciones del combobox: la búsqueda cubre nombre, metadatos y coste.
@@ -220,6 +227,7 @@ function addAbility(id: number | string) {
     attack_type: option.attack_type ?? null,
     range: option.range ?? null,
     subtype: option.subtype ?? null,
+    area: option.area ?? false,
   })
 }
 
@@ -547,15 +555,21 @@ async function submit() {
         {{ t('heroes.fields.noAbilities') }}
       </p>
       <ol v-else class="hero-form__abilities">
-        <li v-for="(ability, index) in form.abilities" :key="ability.id">
-          <span class="ability-option">
-            <span class="ability-option__name">{{ optionLabel(ability) }}</span>
-            <span v-if="abilityMeta(ability)" class="ability-option__meta">
-              {{ abilityMeta(ability) }}
-            </span>
-            <CostDice v-if="ability.cost" class="ability-option__cost" :cost="ability.cost" />
+        <li v-for="(ability, index) in form.abilities" :key="ability.id" class="ability-row">
+          <span class="ability-row__name" :title="optionLabel(ability)">{{
+            optionLabel(ability)
+          }}</span>
+          <span v-if="abilityMetaParts(ability).length" class="ability-row__meta">
+            <span
+              v-for="(part, i) in abilityMetaParts(ability)"
+              :key="i"
+              class="ability-row__meta-part"
+              :title="part"
+              >{{ part }}</span
+            >
           </span>
-          <span class="hero-form__ability-actions">
+          <CostDice v-if="ability.cost" class="ability-row__cost" :cost="ability.cost" />
+          <span class="hero-form__ability-actions ability-row__actions">
             <button
               type="button"
               :disabled="index === 0"

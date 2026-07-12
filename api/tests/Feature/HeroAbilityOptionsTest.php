@@ -45,6 +45,7 @@ it('devuelve las habilidades con datos de ataque, ordenadas por nombre', functio
             'name' => ['es' => 'Zarpazo', 'en' => 'Claw'],
             'cost' => 'RB',
             'attack_type' => 'physical',
+            'area' => false,
             'range' => ['id' => $range->id, 'name' => ['es' => 'Melé', 'en' => 'Melee']],
             'subtype' => ['id' => $subtype->id, 'name' => ['es' => 'Corte', 'en' => 'Slash']],
         ])

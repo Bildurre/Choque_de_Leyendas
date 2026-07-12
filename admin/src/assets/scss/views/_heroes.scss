@@ -93,26 +93,17 @@
   }
 
   // Lista ordenable de habilidades activas (subir/bajar/quitar); container
-  // para que en estrecho los metadatos pasen a segunda fila (_ability-option).
+  // para los tramos responsive de .ability-row. La numeración va por counter
+  // (decimal inside no convive con el grid de la fila).
   &__abilities {
-    list-style: decimal inside;
+    list-style: none;
+    counter-reset: ability;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     gap: $space-1;
     container-type: inline-size;
-
-    li {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: $space-3;
-      padding: $space-2 $space-3;
-      border: 1px solid $border;
-      border-radius: $radius-md;
-      background: $surface-2;
-    }
   }
 
   &__ability-actions {
@@ -231,5 +222,88 @@
 
   &__empty {
     color: $text-3;
+  }
+}
+
+// Fila de habilidad seleccionada del form de héroe. Tres tramos según el
+// ancho del contenedor (la lista): estrecho = columna (acciones / nombre +
+// coste / metadatos), medio = nombre + coste + acciones con metadatos debajo,
+// ancho = todo en una fila. Metadatos en orden rango · tipo · subtipo · área,
+// truncándose todos a la vez.
+.ability-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'actions actions'
+    'name    cost'
+    'meta    meta';
+  align-items: center;
+  column-gap: $space-3;
+  row-gap: $space-1;
+  padding: $space-2 $space-3;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  background: $surface-2;
+
+  &__name {
+    grid-area: name;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &::before {
+      counter-increment: ability;
+      content: counter(ability) '. ';
+      color: $text-3;
+    }
+  }
+
+  &__meta {
+    grid-area: meta;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    min-width: 0;
+    font-size: $fs-12;
+    color: $text-2;
+  }
+
+  // Cada tramo cede por igual: se truncan todos a la vez (rang… · tip… · …).
+  &__meta-part {
+    flex: 0 1 auto;
+    min-width: 3ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    & + &::before { content: '· '; }
+  }
+
+  &__cost {
+    grid-area: cost;
+    justify-self: end;
+  }
+
+  &__actions {
+    grid-area: actions;
+    justify-self: end;
+  }
+
+  // Medio: nombre a la izquierda, coste y acciones a la derecha; metadatos debajo.
+  @container (min-width: 480px) {
+    grid-template-columns: minmax(0, 1fr) auto auto;
+    grid-template-areas:
+      'name cost actions'
+      'meta meta meta';
+  }
+
+  // Ancho: una sola fila — nombre, metadatos alineados a la izquierda,
+  // coste y acciones a la derecha.
+  @container (min-width: 720px) {
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    grid-template-areas: 'name meta cost actions';
+
+    .ability-row__name { max-width: 40cqw; }
   }
 }

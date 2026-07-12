@@ -42,6 +42,7 @@ class HeroAbilityController extends Controller
                     'name' => $a->getTranslations('name'),
                     'cost' => $a->cost,
                     'attack_type' => $a->attack_type,
+                    'area' => (bool) $a->area,
                     'range' => $a->attackRange ? [
                         'id' => $a->attackRange->id,
                         'name' => $a->attackRange->getTranslations('name'),
