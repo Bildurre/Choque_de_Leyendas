@@ -255,5 +255,13 @@
       "relatedSubtitle": "Arakatu jokoko beste sorta batzuk",
       "relatedButton": "Ikusi sorta guztiak"
     }
+  },
+  "blocks": {
+    "gameModes": {
+      "cards": "Kartak",
+      "maxCopies": "Kopiak gehienez kartako",
+      "heroes": "Heroiak",
+      "viewDecks": "Sortak ikusi"
+    }
   }
 }

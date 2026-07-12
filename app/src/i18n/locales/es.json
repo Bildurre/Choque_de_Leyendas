@@ -255,5 +255,13 @@
       "relatedSubtitle": "Explora otros mazos del juego",
       "relatedButton": "Ver todos los mazos"
     }
+  },
+  "blocks": {
+    "gameModes": {
+      "cards": "Cartas",
+      "maxCopies": "Copias máx. por carta",
+      "heroes": "Héroes",
+      "viewDecks": "Ver mazos"
+    }
   }
 }

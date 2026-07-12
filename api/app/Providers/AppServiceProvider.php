@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Blocks\CountersListBlock;
+use App\Blocks\GameModesBlock;
 use App\Models\Card;
 use App\Models\Counter;
 use App\Models\Faction;
@@ -11,6 +13,7 @@ use App\Pdf\CardsCatalogExport;
 use App\Pdf\CountersExport;
 use App\Pdf\FactionDeckExport;
 use App\Pdf\HeroesCatalogExport;
+use Edc\Core\Support\Facades\Blocks;
 use Edc\Core\Support\Facades\Pdfs;
 use Edc\Core\Support\Facades\Previews;
 use Edc\Core\Support\Facades\Sitemap;
@@ -53,6 +56,10 @@ class AppServiceProvider extends ServiceProvider
         Pdfs::register('heroes-catalog', HeroesCatalogExport::class); // todos los héroes publicados (card)
         Pdfs::register('counters', CountersExport::class);            // contadores recortables, 10 copias (counter)
         Pdfs::register('faction-deck', FactionDeckExport::class);     // un PDF por mazo publicado (card)
+
+        // Bloques con-datos del juego (portados del CdL viejo).
+        Blocks::register(CountersListBlock::class);
+        Blocks::register(GameModesBlock::class);
 
         // Plantillas de página del juego: la clave viaja en el payload público
         // y la SPA elige el layout en su templateRegistry.

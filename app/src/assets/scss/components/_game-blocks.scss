@@ -1,0 +1,120 @@
+@use "tokens" as *;
+
+// Bloques con-datos del juego (portados del CdL viejo).
+
+// Lista de contadores (boons/banes): 1 columna, 2 en tablet; icono + texto.
+.counter-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: $space-3;
+
+  @media (min-width: $bp-md) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  &__item {
+    display: grid;
+    grid-template-columns: 5rem minmax(0, 1fr);
+    gap: $space-3;
+    align-items: start;
+    padding: $space-3;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    background: color-mix(in srgb, $surface 65%, transparent);
+  }
+
+  &__image-wrapper {
+    margin: 0;
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  // Sin icono, el cuerpo ocupa toda la fila.
+  &__body { grid-column: -2 / -1; }
+  &__item:not(:has(.counter-list__image-wrapper)) &__body { grid-column: 1 / -1; }
+
+  &__name {
+    margin: 0 0 $space-1;
+    font-size: $fs-18;
+  }
+
+  &__effect {
+    font-size: $fs-14;
+    color: $text-2;
+  }
+}
+
+// Modos de juego: tarjetas con configuración de mazos y enlace al índice.
+.game-modes-list {
+  display: grid;
+  gap: $space-4;
+  grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
+
+  &__item {
+    display: grid;
+    gap: $space-3;
+    align-content: start;
+    padding: $space-4;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    background: color-mix(in srgb, $surface 65%, transparent);
+  }
+
+  &__name { margin: 0; font-size: $fs-20; }
+
+  &__description {
+    font-size: $fs-14;
+    color: $text-2;
+  }
+
+  &__config {
+    margin: 0;
+    display: grid;
+    gap: $space-1;
+    font-size: $fs-14;
+
+    div {
+      display: flex;
+      justify-content: space-between;
+      gap: $space-2;
+    }
+
+    dt { color: $text-2; }
+    dd { margin: 0; font-weight: $k-fw-semibold; }
+  }
+
+  &__decks {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    color: $text-1;
+    text-decoration: none;
+    font-weight: $k-fw-semibold;
+
+    &:hover { color: $accent-500; }
+  }
+
+  // Badge circular con el nº de mazos (patrón del viejo).
+  &__count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 28px;
+    padding: 0 $space-2;
+    border-radius: 999px;
+    background: color-mix(in srgb, $accent-500 18%, transparent);
+    color: $accent-500;
+    font-size: $fs-13;
+  }
+}

@@ -275,7 +275,9 @@
     "cta": "Ekintza-deia",
     "characters-grid": "Pertsonaien sareta",
     "houses-schemes": "Etxeak eta argukiak",
-    "index": "Aurkibide automatikoa"
+    "index": "Aurkibide automatikoa",
+    "counters-list": "Kontagailuen zerrenda",
+    "game-modes": "Joko moduak"
   },
   "blockFields": {
     "title": "Izenburua",
@@ -301,7 +303,8 @@
     "question": "Galdera",
     "answer": "Erantzuna",
     "house_id": "Etxea",
-    "show_schemes": "Erakutsi bere amarruak"
+    "show_schemes": "Erakutsi bere amarruak",
+    "counter_type": "Kontagailu mota"
   },
   "blockOptions": {
     "align": {

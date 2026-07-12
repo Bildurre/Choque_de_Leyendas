@@ -255,5 +255,13 @@
       "relatedSubtitle": "Explore other game decks",
       "relatedButton": "View all decks"
     }
+  },
+  "blocks": {
+    "gameModes": {
+      "cards": "Cards",
+      "maxCopies": "Max copies per card",
+      "heroes": "Heroes",
+      "viewDecks": "View decks"
+    }
   }
 }

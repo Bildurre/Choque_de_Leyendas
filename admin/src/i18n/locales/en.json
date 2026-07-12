@@ -275,7 +275,9 @@
     "cta": "Call to action",
     "characters-grid": "Characters grid",
     "houses-schemes": "Houses and schemes",
-    "index": "Automatic index"
+    "index": "Automatic index",
+    "counters-list": "Counters list",
+    "game-modes": "Game modes"
   },
   "blockFields": {
     "title": "Title",
@@ -301,7 +303,8 @@
     "question": "Question",
     "answer": "Answer",
     "house_id": "House",
-    "show_schemes": "Show its schemes"
+    "show_schemes": "Show its schemes",
+    "counter_type": "Counter type"
   },
   "blockOptions": {
     "align": {

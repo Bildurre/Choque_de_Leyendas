@@ -1169,5 +1169,13 @@
       "forceDeleted": "Modo de juego borrado definitivamente",
       "saveError": "No se pudo guardar."
     }
+  },
+  "blockTypes": {
+    "counters-list": "Lista de contadores",
+    "game-modes": "Modos de juego"
+  },
+  "blockFields": {
+    "intro": "Introducción",
+    "counter_type": "Tipo de contador"
   }
 }
