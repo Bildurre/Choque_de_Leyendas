@@ -2,7 +2,8 @@
 
 // Índices públicos del juego (cartas/héroes = catálogo con PreviewGrid;
 // facciones y mazos = tarjetas CSS propias). Mobile-first: todo en columna.
-// El sistema de filtros (barra + panel) es común: _index-filters.scss.
+// La barra (búsqueda + orden + Filtros) y el modal de filtros son del motor
+// (IndexToolbar + FiltersModal); aquí solo lo propio del juego.
 
 // --- Catálogo (cartas y héroes) ---
 .catalog-index {
@@ -13,6 +14,9 @@
   gap: $space-4;
 
   &__title { margin: 0; }
+
+  // El hueco bajo la barra ya lo mete el gap del grid padre.
+  .index-toolbar { margin-bottom: 0; }
 
   &__count {
     margin: 0;
@@ -57,6 +61,9 @@
 
   &__title { margin: 0; }
 
+  // El hueco bajo la barra ya lo mete el gap del grid padre.
+  .index-toolbar { margin-bottom: 0; }
+
   &__loading,
   &__empty {
     margin: 0;
@@ -96,26 +103,6 @@
         0 0 0 2px color-mix(in srgb, $accent-500 55%, transparent),
         0 8px 24px color-mix(in srgb, $accent-500 25%, transparent);
     }
-  }
-}
-
-// --- Facciones: título + toggles de orden en la misma fila ---
-.factions-index {
-  &__header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: $space-3;
-
-    // El IndexFilters (solo toggles) es contenedor de tamaño: necesita
-    // crecer como flex item para no colapsar a 0.
-    .index-filters {
-      flex: 1;
-      min-width: 120px;
-    }
-
-    .index-filters__bar { justify-content: flex-end; }
   }
 }
 

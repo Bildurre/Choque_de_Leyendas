@@ -4,26 +4,29 @@ import { useI18n } from 'vue-i18n'
 import {
   BasePagination,
   BaseSelect,
+  FiltersModal,
+  IndexToolbar,
   PreviewGrid,
   type CatalogItem,
   type PreviewGridItem,
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
-import IndexFilters from '@/components/index/IndexFilters.vue'
 import { useIndexPage } from '@/entities/indexPage'
 import { useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
 
-// Índice público de cartas: rejilla de previews sobre GET /api/cards con
-// búsqueda (debounce), filtros de juego (opciones ya localizadas de
-// GET /api/cards/filters) y orden por toggles. Facción, tipo, subtipo,
-// dados del coste (0..5, 0 = sin coste) y colores (toggles R/G/B con los
-// iconos de los dados del gestor) siempre; según los flags del tipo
-// elegido se añaden tipo de equipo (is_equipment) y rango/tipo/subtipo de
-// ataque + área (allows_subtypes). Todo vive en la query string
-// (useFiltersQuery): la UI empuja el estado a la URL y ES el cambio de
-// query el que dispara la recarga.
+// Índice público de cartas: rejilla de previews sobre GET /api/cards con el
+// patrón unificado de los índices (IndexToolbar del motor: búsqueda
+// multi-campo con debounce, toggles de orden y botón "Filtros" con badge) y
+// los filtros de juego en un FiltersModal (opciones ya localizadas de
+// GET /api/cards/filters, aplican en vivo). Facción, tipo, subtipo, dados
+// del coste (0..5, 0 = sin coste) y colores (toggles R/G/B con los iconos
+// de los dados del gestor) siempre; según los flags del tipo elegido se
+// añaden tipo de equipo (is_equipment) y rango/tipo/subtipo de ataque +
+// área (allows_subtypes). Todo vive en la query string (useFiltersQuery):
+// la UI empuja el estado a la URL y ES el cambio de query el que dispara
+// la recarga.
 const COLORS = ['R', 'G', 'B'] as const
 type CostColor = (typeof COLORS)[number]
 
@@ -52,6 +55,9 @@ const loading = ref(true)
 const page = ref(1)
 const pages = ref(0)
 const total = ref(0)
+
+// Modal de filtros (los campos aplican en vivo; el modal solo se abre/cierra).
+const filtersOpen = ref(false)
 
 // Estado de los filtros (los selects usan string: '' = todos).
 const search = ref('')
@@ -203,7 +209,8 @@ watch([selectedType, typeOptions], () => {
   }
 })
 
-// Nº de filtros activos (badge del botón móvil y botón de limpiar).
+// Nº de filtros activos (badge del botón de la barra y "Quitar filtros";
+// la búsqueda y el orden no cuentan).
 const activeFilters = computed(
   () =>
     [
@@ -305,6 +312,7 @@ function toggleColor(color: CostColor) {
     : COLORS.filter((c) => c === color || colors.value.includes(c))
 }
 
+// "Quitar filtros" limpia SOLO los filtros (la búsqueda y el orden quedan).
 function clearFilters() {
   factionId.value = ''
   typeId.value = ''
@@ -346,11 +354,27 @@ watch(() => locales.current, loadFilters, { immediate: true })
       <h1 class="catalog-index__title">{{ t(section.titleKey) }}</h1>
     </header>
 
-    <IndexFilters
-      v-model:search="search"
+    <IndexToolbar
+      v-model="search"
       v-model:sort="sort"
-      :count="activeFilters"
-      panel-id="cards-filters"
+      :search-placeholder="t('catalog.searchPlaceholder')"
+      :filters-label="t('catalog.filters.toggle')"
+      :active-count="activeFilters"
+      show-filters
+      :latest-label="t('catalog.sort.latest')"
+      :oldest-label="t('catalog.sort.oldest')"
+      :name-label="t('catalog.sort.nameAsc')"
+      :name-desc-label="t('catalog.sort.nameDesc')"
+      @open-filters="filtersOpen = true"
+    />
+
+    <FiltersModal
+      v-model="filtersOpen"
+      :title="t('catalog.filters.toggle')"
+      size="lg"
+      :active-count="activeFilters"
+      :clear-label="t('catalog.filters.clear')"
+      :close-label="t('catalog.filters.close')"
       @clear="clearFilters"
     >
       <BaseSelect
@@ -395,16 +419,16 @@ watch(() => locales.current, loadFilters, { immediate: true })
       <BaseSelect v-model="dice" :label="t('catalog.filters.dice')" :options="diceSelect" />
 
       <!-- Colores del coste: toggles con el icono del dado (o punto de color) -->
-      <div class="index-filters__field">
-        <span class="index-filters__label">{{ t('catalog.filters.colors') }}</span>
-        <div class="index-filters__colors" role="group" :aria-label="t('catalog.filters.colors')">
+      <div class="form-field cost-colors">
+        <span class="form-field__label">{{ t('catalog.filters.colors') }}</span>
+        <div class="cost-colors__group" role="group" :aria-label="t('catalog.filters.colors')">
           <button
             v-for="color in COLORS"
             :key="color"
             type="button"
-            class="index-filters__color"
+            class="cost-colors__toggle"
             :class="[
-              `index-filters__color--${color.toLowerCase()}`,
+              `cost-colors__toggle--${color.toLowerCase()}`,
               { 'is-active': colors.includes(color) },
             ]"
             :aria-pressed="colors.includes(color)"
@@ -416,13 +440,13 @@ watch(() => locales.current, loadFilters, { immediate: true })
               v-if="diceIcons[COLOR_ICON_KEYS[color]]"
               :src="diceIcons[COLOR_ICON_KEYS[color]] ?? undefined"
               alt=""
-              class="index-filters__color-icon"
+              class="cost-colors__icon"
             />
-            <span v-else class="index-filters__color-dot" aria-hidden="true"></span>
+            <span v-else class="cost-colors__dot" aria-hidden="true"></span>
           </button>
         </div>
       </div>
-    </IndexFilters>
+    </FiltersModal>
 
     <BasePagination
       class="catalog-index__pagination"

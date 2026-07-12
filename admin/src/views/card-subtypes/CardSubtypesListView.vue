@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { Plus } from '@lucide/vue'
-import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
+import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BasePagination, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import type { CardSubtype } from '@juego/shared'
 import CardSubtypeFormModal from '@/components/card-subtypes/CardSubtypeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
-import SortSelect from '@/components/SortSelect.vue'
+import ListToolbar from '@/components/ListToolbar.vue'
 
 // Taxonomía sin slug, sin publicación y sin single: CRUD por id y tabs
 // todos/papelera. Solo nombre traducible.
@@ -55,9 +55,7 @@ onMounted(init)
       </BaseButton>
     </div>
 
-    <FilterBar v-model="search" :placeholder="t('common.search')">
-      <SortSelect v-model="sort" />
-    </FilterBar>
+    <ListToolbar v-model="search" v-model:sort="sort" />
     <BaseTabs v-model="status" :tabs="tabs" />
     <BasePagination
       v-model:page="page"

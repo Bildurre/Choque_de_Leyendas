@@ -3,7 +3,7 @@ import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { CircleCheck, FilePen, LayoutGrid, Trash } from '@lucide/vue'
 import { useResource, useRightSidebar } from '@edc-motor/admin-kit'
-import { useConfirm, useToast } from '@edc-motor/ui'
+import { useConfirm, useToast, type SortValue } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useLocalesStore } from '@/stores/locales'
 import type { EntityListItem, Translations } from '@juego/shared'
@@ -71,11 +71,23 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
   const tabKeys = options.tabKeys ?? ['published', 'draft', 'trashed']
   const status = ref(tabKeys[0] ?? 'published')
   const search = ref('')
-  // Ordenación del contrato compartido con la API ('' = recientes/id desc).
-  const sort = ref('')
+  // Ordenación del contrato compartido con la API (toggles del IndexToolbar).
+  const sort = ref<SortValue>('latest')
   // Filtros genéricos de la vista (clave → valor; '' = sin filtrar). La vista
-  // hace v-model sobre sus claves y el listado se relanza solo al cambiar.
+  // hace v-model sobre sus claves (en el FiltersModal) y el listado se
+  // relanza solo al cambiar.
   const filters = reactive<Record<string, string>>({})
+  // Modal de filtros (botón "Filtros" del toolbar) y badge de activos: la
+  // búsqueda y el orden no cuentan, solo los filtros propios del modal.
+  const filtersOpen = ref(false)
+  const activeFiltersCount = computed(
+    () => Object.values(filters).filter((value) => value !== '').length,
+  )
+
+  /** Limpia los filtros del modal (la búsqueda y el orden no se tocan). */
+  function clearFilters() {
+    for (const key of Object.keys(filters)) filters[key] = ''
+  }
 
   const tabs = computed(() =>
     tabKeys.map((key) => ({ key, label: t(`${options.ns}.tabs.${key}`), icon: TAB_ICONS[key] })),
@@ -107,7 +119,7 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
       await list({
         search: search.value,
         status: status.value,
-        sort: sort.value || undefined,
+        sort: sort.value,
         ...activeFilters(),
         page,
         ...(options.extraParams?.() ?? {}),
@@ -263,6 +275,9 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     search,
     sort,
     filters,
+    filtersOpen,
+    activeFiltersCount,
+    clearFilters,
     tabs,
     tr,
     slugFor,

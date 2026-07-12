@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { Plus } from '@lucide/vue'
-import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
+import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BasePagination, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import type { HeroClass } from '@juego/shared'
 import HeroClassFormModal from '@/components/hero-classes/HeroClassFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
-import SortSelect from '@/components/SortSelect.vue'
+import ListToolbar from '@/components/ListToolbar.vue'
 
 // Taxonomía con superclase y pasiva: tabs solo all/trashed, sin single ni
 // publicación; la API resuelve por id.
@@ -55,10 +55,8 @@ onMounted(init)
       </BaseButton>
     </div>
 
-    <!-- Filtros por encima de las tabs (estilo kontuan) -->
-    <FilterBar v-model="search" :placeholder="t('common.search')">
-      <SortSelect v-model="sort" />
-    </FilterBar>
+    <!-- Barra del índice: búsqueda + toggles de ordenación -->
+    <ListToolbar v-model="search" v-model:sort="sort" />
     <BaseTabs v-model="status" :tabs="tabs" />
     <BasePagination
       v-model:page="page"

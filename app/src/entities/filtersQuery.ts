@@ -67,14 +67,15 @@ export function useFiltersQuery(options: FiltersQueryOptions) {
     router.replace({ query: stateToQuery() })
   }
 
-  // Búsqueda con debounce: al parar de teclear se empuja a la query.
+  // Búsqueda con debounce (el IndexToolbar del motor emite inmediato; el
+  // debounce vive aquí): al parar de teclear se empuja a la query.
   let debounce: ReturnType<typeof setTimeout> | undefined
   if (search) {
     watch(search, (value) => {
       clearTimeout(debounce)
       if (value.trim() === (typeof route.query.search === 'string' ? route.query.search : ''))
         return
-      debounce = setTimeout(() => pushQuery(), 350)
+      debounce = setTimeout(() => pushQuery(), 300)
     })
     onBeforeUnmount(() => clearTimeout(debounce))
   }

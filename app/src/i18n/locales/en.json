@@ -134,8 +134,7 @@
     "decks": "Decks"
   },
   "catalog": {
-    "search": "Search",
-    "searchPlaceholder": "Search by name…",
+    "searchPlaceholder": "Search…",
     "results": "1 result | {count} results",
     "empty": "No results for that search.",
     "loading": "Loading…",
@@ -159,6 +158,7 @@
       "colorG": "Green dice",
       "colorB": "Blue dice",
       "clear": "Clear filters",
+      "close": "Close",
       "subtype": "Card subtype",
       "allSubtypes": "All subtypes",
       "equipmentType": "Equipment type",
@@ -185,7 +185,6 @@
       "allModes": "All"
     },
     "sort": {
-      "label": "Order",
       "latest": "Newest",
       "oldest": "Oldest",
       "nameAsc": "Name A-Z",

@@ -125,6 +125,8 @@
     },
     "imageDrag": "Drag an image or click",
     "close": "Close",
+    "filters": "Filters",
+    "clearFilters": "Clear filters",
     "imageHint": "Max. 4 MB",
     "confirm": "Confirm",
     "dice": {
@@ -134,8 +136,9 @@
     },
     "sort": {
       "latest": "Newest first",
-      "nameAsc": "Name A-Z",
-      "nameDesc": "Name Z-A"
+      "oldest": "Oldest first",
+      "nameAsc": "Alphabetical (A-Z)",
+      "nameDesc": "Alphabetical (Z-A)"
     },
     "pagination": {
       "prev": "Previous",
@@ -287,6 +290,12 @@
     "homeChip": "Home",
     "published": "Published",
     "draft": "Draft",
+    "filters": {
+      "status": "Status",
+      "all": "All statuses",
+      "published": "Published",
+      "draft": "Drafts"
+    },
     "setHome": "Set as home",
     "confirmDelete": "Send \"{name}\" to the trash?",
     "fields": {

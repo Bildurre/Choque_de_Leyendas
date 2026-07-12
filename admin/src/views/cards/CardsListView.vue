@@ -1,18 +1,19 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { ArrowRight, Plus } from '@lucide/vue'
-import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
+import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import { api } from '@/lib/api'
 import type { Card, Translations } from '@juego/shared'
 import CardFormModal from '@/components/cards/CardFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
-import SortSelect from '@/components/SortSelect.vue'
+import ListFiltersModal from '@/components/ListFiltersModal.vue'
+import ListToolbar from '@/components/ListToolbar.vue'
 import CostDice from '@/components/game/CostDice.vue'
 
 // Cartas: entidad completa con slug, single, publicación y previews PNG.
-// El listado filtra por facción y tipo con selects en la barra de búsqueda.
+// El listado filtra por facción y tipo con selects en el modal de filtros.
 const {
   t,
   items,
@@ -23,6 +24,9 @@ const {
   search,
   sort,
   filters,
+  filtersOpen,
+  activeFiltersCount,
+  clearFilters,
   tabs,
   tr,
   init,
@@ -93,12 +97,14 @@ onMounted(async () => {
       </BaseButton>
     </div>
 
-    <!-- Filtros por encima de las tabs (estilo kontuan) -->
-    <FilterBar v-model="search" :placeholder="t('common.search')">
-      <BaseSelect v-model="filters.faction_id" :options="factionOptions" />
-      <BaseSelect v-model="filters.card_type_id" :options="cardTypeOptions" />
-      <SortSelect v-model="sort" />
-    </FilterBar>
+    <!-- Barra del índice: búsqueda + orden + botón "Filtros" (modal) -->
+    <ListToolbar
+      v-model="search"
+      v-model:sort="sort"
+      show-filters
+      :active-count="activeFiltersCount"
+      @open-filters="filtersOpen = true"
+    />
     <BaseTabs v-model="status" :tabs="tabs" />
     <BasePagination
       v-model:page="page"
@@ -159,6 +165,24 @@ onMounted(async () => {
       :next-label="t('common.pagination.next')"
       :of-label="t('common.pagination.of', { page, pages })"
     />
+
+    <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+    <ListFiltersModal
+      v-model="filtersOpen"
+      :active-count="activeFiltersCount"
+      @clear="clearFilters"
+    >
+      <BaseSelect
+        v-model="filters.faction_id"
+        :label="t('cards.fields.faction')"
+        :options="factionOptions"
+      />
+      <BaseSelect
+        v-model="filters.card_type_id"
+        :label="t('cards.fields.type')"
+        :options="cardTypeOptions"
+      />
+    </ListFiltersModal>
 
     <CardFormModal v-model="formOpen" :mode="formMode" :target-slug="formSlug" @saved="onSaved" />
 

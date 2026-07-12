@@ -125,6 +125,8 @@
     },
     "imageDrag": "Arrastra una imagen o haz clic",
     "close": "Cerrar",
+    "filters": "Filtros",
+    "clearFilters": "Quitar filtros",
     "imageHint": "Máx. 4 MB",
     "confirm": "Confirmar",
     "dice": {
@@ -133,9 +135,10 @@
       "blue": "Dado azul"
     },
     "sort": {
-      "latest": "Más recientes",
-      "nameAsc": "Nombre A-Z",
-      "nameDesc": "Nombre Z-A"
+      "latest": "Más recientes primero",
+      "oldest": "Más antiguos primero",
+      "nameAsc": "Alfabético (A-Z)",
+      "nameDesc": "Alfabético (Z-A)"
     },
     "pagination": {
       "prev": "Anterior",
@@ -287,6 +290,12 @@
     "homeChip": "Home",
     "published": "Publicada",
     "draft": "Borrador",
+    "filters": {
+      "status": "Estado",
+      "all": "Todos los estados",
+      "published": "Publicadas",
+      "draft": "Borradores"
+    },
     "setHome": "Marcar como home",
     "confirmDelete": "¿Enviar \"{name}\" a la papelera?",
     "fields": {

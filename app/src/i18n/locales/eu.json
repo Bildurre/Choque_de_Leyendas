@@ -134,8 +134,7 @@
     "decks": "Sortak"
   },
   "catalog": {
-    "search": "Bilatu",
-    "searchPlaceholder": "Bilatu izenaren arabera…",
+    "searchPlaceholder": "Bilatu…",
     "results": "emaitza 1 | {count} emaitza",
     "empty": "Ez dago emaitzarik bilaketa horrekin.",
     "loading": "Kargatzen…",
@@ -159,6 +158,7 @@
       "colorG": "Dado berdeak",
       "colorB": "Dado urdinak",
       "clear": "Iragazkiak kendu",
+      "close": "Itxi",
       "subtype": "Kartaren azpimota",
       "allSubtypes": "Azpimota guztiak",
       "equipmentType": "Ekipamendu mota",
@@ -185,7 +185,6 @@
       "allModes": "Denak"
     },
     "sort": {
-      "label": "Ordena",
       "latest": "Berrienak",
       "oldest": "Zaharrenak",
       "nameAsc": "Izena A-Z",

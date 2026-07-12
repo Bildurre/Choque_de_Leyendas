@@ -3,9 +3,11 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Plus, SquarePen, Trash2 } from '@lucide/vue'
 import { BaseButton, BaseCheckbox, BasePagination, useConfirm, useToast } from '@edc-motor/ui'
-import { FilterBar, ManagerCard, useRightSidebar } from '@edc-motor/admin-kit'
+import type { SortValue } from '@edc-motor/ui'
+import { ManagerCard, useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 import { useAuthStore } from '@/stores/auth'
+import ListToolbar from '@/components/ListToolbar.vue'
 import UserFormModal, { type UserRow } from '@/components/users/UserFormModal.vue'
 
 // Gestión de usuarios (doc 05), lo típico y básico: listar con búsqueda,
@@ -22,6 +24,8 @@ sidebar.useRegister(t('users.panelTitle'))
 const users = ref<UserRow[]>([])
 const loading = ref(true)
 const search = ref('')
+// Los usuarios se listan alfabéticamente por defecto (contrato de `sort`).
+const sort = ref<SortValue>('name')
 // Paginación del servidor (paginate del motor); escribir en `page` navega.
 const currentPage = ref(1)
 const pages = ref(1)
@@ -42,7 +46,7 @@ async function load(pageNumber = 1) {
   loading.value = true
   try {
     const { data } = await api.get('/admin/users', {
-      params: { search: search.value, page: pageNumber },
+      params: { search: search.value, sort: sort.value, page: pageNumber },
     })
     users.value = data.data
     currentPage.value = data.meta?.current_page ?? 1
@@ -54,9 +58,9 @@ async function load(pageNumber = 1) {
   }
 }
 
-// La búsqueda vuelve a la página 1.
+// La búsqueda y el orden vuelven a la página 1 (debounce compartido).
 let timer: ReturnType<typeof setTimeout> | null = null
-watch(search, () => {
+watch([search, sort], () => {
   if (timer) clearTimeout(timer)
   timer = setTimeout(() => load(1), 250)
 })
@@ -136,7 +140,8 @@ onMounted(load)
       </BaseButton>
     </div>
 
-    <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <!-- Barra del índice: búsqueda + toggles de ordenación -->
+    <ListToolbar v-model="search" v-model:sort="sort" />
     <BasePagination
       v-model:page="page"
       :pages="pages"

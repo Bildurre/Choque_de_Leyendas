@@ -4,20 +4,23 @@ import { useI18n } from 'vue-i18n'
 import {
   BasePagination,
   BaseSelect,
+  FiltersModal,
+  IndexToolbar,
   PreviewGrid,
   type CatalogItem,
   type PreviewGridItem,
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
-import IndexFilters from '@/components/index/IndexFilters.vue'
 import { useIndexPage } from '@/entities/indexPage'
 import { useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
 
-// Índice público de héroes: rejilla de previews sobre GET /api/heroes con
-// búsqueda (debounce), filtros de facción/superclase/clase/raza (opciones
-// ya localizadas de GET /api/heroes/filters) y orden por toggles. Elegir
+// Índice público de héroes: rejilla de previews sobre GET /api/heroes con el
+// patrón unificado de los índices (IndexToolbar del motor: búsqueda
+// multi-campo con debounce, toggles de orden y botón "Filtros" con badge) y
+// los filtros de facción/superclase/clase/raza en un FiltersModal (opciones
+// ya localizadas de GET /api/heroes/filters, aplican en vivo). Elegir
 // superclase acota el select de clases a las suyas (client-side con el
 // superclass_id que trae cada clase). Todo vive en la query string
 // (useFiltersQuery): la UI empuja el estado a la URL y ES el cambio de
@@ -39,6 +42,9 @@ const loading = ref(true)
 const page = ref(1)
 const pages = ref(0)
 const total = ref(0)
+
+// Modal de filtros (los campos aplican en vivo; el modal solo se abre/cierra).
+const filtersOpen = ref(false)
 
 // Estado de los filtros (los selects usan string: '' = todos).
 const search = ref('')
@@ -109,7 +115,8 @@ watch([superclassId, classOptions], () => {
   }
 })
 
-// Nº de filtros activos (badge del botón móvil y botón de limpiar).
+// Nº de filtros activos (badge del botón de la barra y "Quitar filtros";
+// la búsqueda y el orden no cuentan).
 const activeFilters = computed(
   () =>
     [factionId.value, superclassId.value, classId.value, raceId.value].filter(
@@ -179,6 +186,7 @@ async function load() {
 
 // --- Interacciones ---
 
+// "Quitar filtros" limpia SOLO los filtros (la búsqueda y el orden quedan).
 function clearFilters() {
   factionId.value = ''
   superclassId.value = ''
@@ -214,11 +222,26 @@ watch(() => locales.current, loadFilters, { immediate: true })
       <h1 class="catalog-index__title">{{ t(section.titleKey) }}</h1>
     </header>
 
-    <IndexFilters
-      v-model:search="search"
+    <IndexToolbar
+      v-model="search"
       v-model:sort="sort"
-      :count="activeFilters"
-      panel-id="heroes-filters"
+      :search-placeholder="t('catalog.searchPlaceholder')"
+      :filters-label="t('catalog.filters.toggle')"
+      :active-count="activeFilters"
+      show-filters
+      :latest-label="t('catalog.sort.latest')"
+      :oldest-label="t('catalog.sort.oldest')"
+      :name-label="t('catalog.sort.nameAsc')"
+      :name-desc-label="t('catalog.sort.nameDesc')"
+      @open-filters="filtersOpen = true"
+    />
+
+    <FiltersModal
+      v-model="filtersOpen"
+      :title="t('catalog.filters.toggle')"
+      :active-count="activeFilters"
+      :clear-label="t('catalog.filters.clear')"
+      :close-label="t('catalog.filters.close')"
       @clear="clearFilters"
     >
       <BaseSelect
@@ -233,7 +256,7 @@ watch(() => locales.current, loadFilters, { immediate: true })
       />
       <BaseSelect v-model="classId" :label="t('catalog.filters.class')" :options="classSelect" />
       <BaseSelect v-model="raceId" :label="t('catalog.filters.race')" :options="raceSelect" />
-    </IndexFilters>
+    </FiltersModal>
 
     <BasePagination
       class="catalog-index__pagination"

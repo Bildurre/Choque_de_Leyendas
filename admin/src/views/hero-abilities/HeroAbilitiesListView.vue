@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { Plus } from '@lucide/vue'
-import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
+import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useEntityList } from '@/composables/useEntityList'
 import type { HeroAbility, TaxonomyOption } from '@juego/shared'
 import HeroAbilityFormModal from '@/components/hero-abilities/HeroAbilityFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
-import SortSelect from '@/components/SortSelect.vue'
+import ListFiltersModal from '@/components/ListFiltersModal.vue'
+import ListToolbar from '@/components/ListToolbar.vue'
 import CostDice from '@/components/game/CostDice.vue'
 
 // Habilidades activas: sin single ni publicación (tabs all/trashed); la API
 // resuelve por id y la edición rellena desde el ítem del listado. El listado
 // filtra por tipo/rango/subtipo de ataque, área y coste total con selects en
-// la barra de búsqueda (mecanismo `filters` de useEntityList).
+// el modal de filtros (mecanismo `filters` de useEntityList).
 const {
   t,
   items,
@@ -25,6 +26,9 @@ const {
   search,
   sort,
   filters,
+  filtersOpen,
+  activeFiltersCount,
+  clearFilters,
   tabs,
   tr,
   init,
@@ -124,16 +128,14 @@ onMounted(() => {
       </BaseButton>
     </div>
 
-    <!-- Filtros por encima de las tabs (estilo kontuan) -->
-    <FilterBar v-model="search" :placeholder="t('common.search')">
-      <!-- Orden canónico del tipado: rango · tipo · subtipo · área -->
-      <BaseSelect v-model="filters.attack_range_id" :options="attackRangeOptions" />
-      <BaseSelect v-model="filters.attack_type" :options="attackTypeOptions" />
-      <BaseSelect v-model="filters.attack_subtype_id" :options="attackSubtypeOptions" />
-      <BaseSelect v-model="filters.area" :options="areaOptions" />
-      <BaseSelect v-model="filters.cost_total" :options="costOptions" />
-      <SortSelect v-model="sort" />
-    </FilterBar>
+    <!-- Barra del índice: búsqueda + orden + botón "Filtros" (modal) -->
+    <ListToolbar
+      v-model="search"
+      v-model:sort="sort"
+      show-filters
+      :active-count="activeFiltersCount"
+      @open-filters="filtersOpen = true"
+    />
     <BaseTabs v-model="status" :tabs="tabs" />
     <BasePagination
       v-model:page="page"
@@ -180,6 +182,40 @@ onMounted(() => {
       :next-label="t('common.pagination.next')"
       :of-label="t('common.pagination.of', { page, pages })"
     />
+
+    <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+    <ListFiltersModal
+      v-model="filtersOpen"
+      :active-count="activeFiltersCount"
+      @clear="clearFilters"
+    >
+      <!-- Orden canónico del tipado: rango · tipo · subtipo · área -->
+      <BaseSelect
+        v-model="filters.attack_range_id"
+        :label="t('heroAbilities.fields.attackRange')"
+        :options="attackRangeOptions"
+      />
+      <BaseSelect
+        v-model="filters.attack_type"
+        :label="t('heroAbilities.fields.attackType')"
+        :options="attackTypeOptions"
+      />
+      <BaseSelect
+        v-model="filters.attack_subtype_id"
+        :label="t('heroAbilities.fields.attackSubtype')"
+        :options="attackSubtypeOptions"
+      />
+      <BaseSelect
+        v-model="filters.area"
+        :label="t('heroAbilities.fields.area')"
+        :options="areaOptions"
+      />
+      <BaseSelect
+        v-model="filters.cost_total"
+        :label="t('heroAbilities.fields.cost')"
+        :options="costOptions"
+      />
+    </ListFiltersModal>
 
     <HeroAbilityFormModal v-model="formOpen" :mode="formMode" :target="formItem" @saved="onSaved" />
 

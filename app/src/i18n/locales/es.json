@@ -134,8 +134,7 @@
     "decks": "Mazos"
   },
   "catalog": {
-    "search": "Buscar",
-    "searchPlaceholder": "Buscar por nombre…",
+    "searchPlaceholder": "Buscar…",
     "results": "1 resultado | {count} resultados",
     "empty": "No hay resultados con esa búsqueda.",
     "loading": "Cargando…",
@@ -159,6 +158,7 @@
       "colorG": "Dados verdes",
       "colorB": "Dados azules",
       "clear": "Quitar filtros",
+      "close": "Cerrar",
       "subtype": "Subtipo de carta",
       "allSubtypes": "Todos los subtipos",
       "equipmentType": "Tipo de equipo",
@@ -185,7 +185,6 @@
       "allModes": "Todos"
     },
     "sort": {
-      "label": "Orden",
       "latest": "Más recientes",
       "oldest": "Más antiguos",
       "nameAsc": "Nombre A-Z",

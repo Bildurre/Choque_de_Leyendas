@@ -1,0 +1,69 @@
+@use "tokens" as *;
+
+// Toggles R/G/B de los colores del coste (FiltersModal del índice de
+// cartas): cuadrados a la altura de los inputs, con el icono del dado del
+// gestor (o un punto coloreado si no está subido). El campo va dentro de
+// un .form-field del motor (misma etiqueta y ritmo que los BaseSelect).
+.cost-colors {
+  &__group {
+    display: flex;
+    gap: $space-2;
+  }
+
+  &__toggle {
+    --dot: #888888;
+
+    width: $input-height;
+    height: $input-height;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $input-bg;
+    border: 1px solid $input-border;
+    border-radius: $input-radius;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+
+    &:hover { border-color: var(--dot); }
+
+    &.is-active {
+      border-color: var(--dot);
+      background: color-mix(in srgb, var(--dot) 20%, transparent);
+      box-shadow: inset 0 0 0 1px var(--dot);
+    }
+
+    // Mismos colores que los dados planos del render (_game-card.scss).
+    &--r { --dot: #f15959; }
+    &--g { --dot: #29ab5f; }
+    &--b { --dot: #408cfd; }
+  }
+
+  // El icono apagado hasta activarse (estado legible de un vistazo).
+  &__icon {
+    display: block;
+    width: 22px;
+    height: 22px;
+    opacity: 0.45;
+    filter: grayscale(0.5);
+    transition: opacity 0.15s ease, filter 0.15s ease;
+  }
+
+  &__toggle:hover &__icon { opacity: 0.75; }
+
+  &__toggle.is-active &__icon {
+    opacity: 1;
+    filter: none;
+  }
+
+  &__dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--dot);
+    opacity: 0.45;
+    transition: opacity 0.15s ease;
+  }
+
+  &__toggle:hover &__dot { opacity: 0.75; }
+  &__toggle.is-active &__dot { opacity: 1; }
+}

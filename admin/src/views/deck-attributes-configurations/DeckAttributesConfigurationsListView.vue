@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { Plus } from '@lucide/vue'
-import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
+import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BasePagination, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import type { DeckAttributesConfig } from '@juego/shared'
 import DeckAttributesConfigurationFormModal from '@/components/deck-attributes-configurations/DeckAttributesConfigurationFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import ListToolbar from '@/components/ListToolbar.vue'
 
 // Configuraciones de mazo: CRUD por id, sin publicación, sin papelera y sin
 // single (todo se edita en el modal). El "nombre" es el modo de juego, así
-// que no lleva SortSelect: la API ordena siempre por id desc.
+// que el toolbar va sin toggles de orden: la API ordena siempre por id desc.
 const {
   t,
   items,
@@ -57,7 +58,8 @@ onMounted(init)
       </BaseButton>
     </div>
 
-    <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <!-- Barra del índice: solo búsqueda (sin orden ni filtros extra) -->
+    <ListToolbar v-model="search" :show-sort="false" />
     <BaseTabs v-model="status" :tabs="tabs" />
     <BasePagination
       v-model:page="page"

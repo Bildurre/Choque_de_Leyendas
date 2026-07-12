@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { BaseSelect, BaseTabs } from '@edc-motor/ui'
+import { BaseSelect, BaseTabs, FiltersModal, IndexToolbar } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
-import IndexFilters from '@/components/index/IndexFilters.vue'
 import { useIndexPage } from '@/entities/indexPage'
 import { useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
 
-// Índice público de mazos: BaseTabs con una pestaña por modo de juego
-// (de GET /api/faction-decks/filters, + "Todos") que alimenta game_mode_id
-// en el servidor, select de facción y orden por toggles ('name' es el
-// default histórico del endpoint). Cada tarjeta ya lleva el nombre de su
-// modo, así que dentro de una pestaña no hace falta agrupar nada. Todo
-// vive en la query string (useFiltersQuery).
+// Índice público de mazos: patrón unificado de los índices (IndexToolbar
+// del motor: búsqueda multi-campo con debounce, toggles de orden y botón
+// "Filtros" con badge) + BaseTabs con una pestaña por modo de juego (de
+// GET /api/faction-decks/filters, + "Todos") que alimenta game_mode_id en
+// el servidor y queda FUERA del modal; el filtro de facción va en el
+// FiltersModal ('name' es el default histórico del endpoint). Cada tarjeta
+// ya lleva el nombre de su modo, así que dentro de una pestaña no hace
+// falta agrupar nada. Todo vive en la query string (useFiltersQuery).
 interface DeckRow extends FactionDeckCardData {
   id: number
   slug: string
@@ -31,7 +32,11 @@ const { route, router, locales, site, segment, section, canonicalize, applyHead 
 const items = ref<DeckRow[]>([])
 const loading = ref(true)
 
+// Modal de filtros (los campos aplican en vivo; el modal solo se abre/cierra).
+const filtersOpen = ref(false)
+
 // Estado de los filtros ('' = todos).
+const search = ref('')
 const mode = ref('')
 const factionId = ref('')
 
@@ -49,6 +54,7 @@ const sort = computed<SortOption>({
 const { queryToState } = useFiltersQuery({
   route,
   router,
+  search,
   fields: { mode, faction: factionId, sort: sortRaw },
 })
 
@@ -80,6 +86,8 @@ const factionSelect = computed(() => [
   ...factionOptions.value.map((option) => ({ value: String(option.id), label: option.name })),
 ])
 
+// Nº de filtros activos (badge del botón de la barra y "Quitar filtros"; la
+// pestaña de modo, la búsqueda y el orden no cuentan).
 const activeFilters = computed(() => (factionId.value ? 1 : 0))
 
 // --- Cargas ---
@@ -103,6 +111,7 @@ async function load() {
     await site.load() // el head usa documentTitle: sin carreras en el prerender
     const { data } = await api.get('/faction-decks', {
       params: {
+        search: search.value.trim() || undefined,
         game_mode_id: mode.value || undefined,
         faction_id: factionId.value || undefined,
         sort: sort.value === 'name' ? undefined : sort.value,
@@ -117,6 +126,7 @@ async function load() {
   applyHead(t(section.value.titleKey))
 }
 
+// "Quitar filtros" limpia SOLO los filtros (pestaña, búsqueda y orden quedan).
 function clearFilters() {
   factionId.value = ''
 }
@@ -142,10 +152,27 @@ watch(() => locales.current, loadFilters, { immediate: true })
       <h1 class="decks-index__title">{{ t(section.titleKey) }}</h1>
     </header>
 
-    <IndexFilters
+    <IndexToolbar
+      v-model="search"
       v-model:sort="sort"
-      :count="activeFilters"
-      panel-id="decks-filters"
+      :search-placeholder="t('catalog.searchPlaceholder')"
+      :filters-label="t('catalog.filters.toggle')"
+      :active-count="activeFilters"
+      show-filters
+      :latest-label="t('catalog.sort.latest')"
+      :oldest-label="t('catalog.sort.oldest')"
+      :name-label="t('catalog.sort.nameAsc')"
+      :name-desc-label="t('catalog.sort.nameDesc')"
+      @open-filters="filtersOpen = true"
+    />
+
+    <FiltersModal
+      v-model="filtersOpen"
+      :title="t('catalog.filters.toggle')"
+      size="sm"
+      :active-count="activeFilters"
+      :clear-label="t('catalog.filters.clear')"
+      :close-label="t('catalog.filters.close')"
       @clear="clearFilters"
     >
       <BaseSelect
@@ -153,9 +180,9 @@ watch(() => locales.current, loadFilters, { immediate: true })
         :label="t('catalog.filters.faction')"
         :options="factionSelect"
       />
-    </IndexFilters>
+    </FiltersModal>
 
-    <!-- Pestañas por modo de juego (server-side: game_mode_id) -->
+    <!-- Pestañas por modo de juego (server-side: game_mode_id), fuera del modal -->
     <BaseTabs v-if="modeOptions.length" v-model="activeTab" :tabs="tabs" />
 
     <p v-if="loading" class="decks-index__loading" role="status">{{ t('catalog.loading') }}</p>

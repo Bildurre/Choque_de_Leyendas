@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { ArrowRight, House as HomeIcon, Plus, SquarePen, Trash2 } from '@lucide/vue'
-import { BaseButton, BaseCheckbox, useConfirm, useToast } from '@edc-motor/ui'
+import { BaseButton, BaseCheckbox, BaseSelect, useConfirm, useToast } from '@edc-motor/ui'
 import { useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
+import ListFiltersModal from '@/components/ListFiltersModal.vue'
+import ListToolbar from '@/components/ListToolbar.vue'
 import PageFormModal, { type PageRow } from '@/components/pages/PageFormModal.vue'
 
 // Listado de páginas del CRM. TODA la tarjeta selecciona (salvo controles):
@@ -25,6 +27,19 @@ const loading = ref(true)
 const formOpen = ref(false)
 const editing = ref<PageRow | null>(null)
 const selectedId = ref<number | null>(null)
+
+// Búsqueda + filtro de estado (modal de filtros). El árbol se ordena en el
+// servidor (madre → hijas), así que el toolbar va sin toggles de orden.
+const search = ref('')
+const statusFilter = ref('')
+const filtersOpen = ref(false)
+const activeFiltersCount = computed(() => (statusFilter.value === '' ? 0 : 1))
+
+const statusOptions = computed(() => [
+  { value: '', label: t('pages.filters.all') },
+  { value: 'published', label: t('pages.filters.published') },
+  { value: 'draft', label: t('pages.filters.draft') },
+])
 
 const selected = computed(() => pages.value.find((p) => p.id === selectedId.value) ?? null)
 
@@ -74,7 +89,9 @@ watch(selectedId, async (id) => {
 async function load() {
   loading.value = true
   try {
-    const { data } = await api.get('/admin/pages')
+    const { data } = await api.get('/admin/pages', {
+      params: { search: search.value, status: statusFilter.value || undefined },
+    })
     pages.value = data.data
   } catch {
     toast.danger(t('common.errors.load'))
@@ -82,6 +99,16 @@ async function load() {
     loading.value = false
   }
 }
+
+// Búsqueda y filtro comparten debounce (mismo ritmo que useEntityList).
+let timer: ReturnType<typeof setTimeout> | null = null
+watch([search, statusFilter], () => {
+  if (timer) clearTimeout(timer)
+  timer = setTimeout(load, 250)
+})
+onBeforeUnmount(() => {
+  if (timer) clearTimeout(timer)
+})
 
 /** Toda la tarjeta selecciona, salvo sus controles interiores. */
 function select(page: PageRow, event: MouseEvent) {
@@ -157,6 +184,15 @@ onMounted(load)
       </BaseButton>
     </div>
 
+    <!-- Barra del índice: búsqueda + botón "Filtros" (el árbol no se reordena) -->
+    <ListToolbar
+      v-model="search"
+      :show-sort="false"
+      show-filters
+      :active-count="activeFiltersCount"
+      @open-filters="filtersOpen = true"
+    />
+
     <p v-if="!loading && !pages.length" class="pages-view__empty">{{ t('common.empty') }}</p>
 
     <div class="pages-view__list">
@@ -185,6 +221,20 @@ onMounted(load)
         </span>
       </article>
     </div>
+
+    <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+    <ListFiltersModal
+      v-model="filtersOpen"
+      size="sm"
+      :active-count="activeFiltersCount"
+      @clear="statusFilter = ''"
+    >
+      <BaseSelect
+        v-model="statusFilter"
+        :label="t('pages.filters.status')"
+        :options="statusOptions"
+      />
+    </ListFiltersModal>
 
     <PageFormModal v-model="formOpen" :page="editing" :pages="pages" @saved="load" />
 
