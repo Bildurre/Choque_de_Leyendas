@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\CardTypeResource;
 use App\Models\CardType;
 use Illuminate\Http\Request;
@@ -11,12 +12,14 @@ use Illuminate\Validation\Rule;
 /** CRUD de admin para los tipos de carta (taxonomía sin slug: por id). */
 class CardTypeController extends Controller
 {
+    use SortsIndex;
+
     public function index(Request $request)
     {
         $types = CardType::query()
             ->with('heroSuperclass')
             ->filter($request->only('search', 'status'))
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return CardTypeResource::collection($types);

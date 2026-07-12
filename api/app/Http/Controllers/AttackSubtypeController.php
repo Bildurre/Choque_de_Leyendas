@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\AttackSubtypeResource;
 use App\Models\AttackSubtype;
 use Illuminate\Http\Request;
@@ -10,11 +11,13 @@ use Illuminate\Support\Facades\Validator;
 /** CRUD de admin para AttackSubtype (taxonomía simple, resuelta por id). */
 class AttackSubtypeController extends Controller
 {
+    use SortsIndex;
+
     public function index(Request $request)
     {
         $subtypes = AttackSubtype::query()
             ->filter($request->only('search', 'status'))
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return AttackSubtypeResource::collection($subtypes);

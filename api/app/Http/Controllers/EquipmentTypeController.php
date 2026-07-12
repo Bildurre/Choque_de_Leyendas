@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\EquipmentTypeResource;
 use App\Models\EquipmentType;
 use Illuminate\Http\Request;
@@ -11,6 +12,8 @@ use Illuminate\Validation\Rule;
 /** CRUD de admin para los tipos de equipo (taxonomía sin slug: por id). */
 class EquipmentTypeController extends Controller
 {
+    use SortsIndex;
+
     public function index(Request $request)
     {
         $status = $request->query('status');
@@ -23,7 +26,7 @@ class EquipmentTypeController extends Controller
                 in_array($status, EquipmentType::CATEGORIES, true),
                 fn ($query) => $query->where('category', $status),
             )
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return EquipmentTypeResource::collection($types);

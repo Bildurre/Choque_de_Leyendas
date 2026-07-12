@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Public\PublicCardResource;
 use App\Models\Card;
@@ -18,11 +19,14 @@ use Illuminate\Http\Request;
  */
 class PublicCardController extends Controller
 {
+    use SortsIndex;
+
     /**
      * Índice filtrable. Parámetros: page, per_page (24, tope 48), search
-     * (nombre del locale), faction_id, card_type_id, cost_total (1..5) y
+     * (nombre del locale), faction_id, card_type_id, cost_total (1..5),
      * cost_colors (subconjunto de "RGB": la carta debe contener al menos
-     * esos dados). Orden id desc; ítems {id, name, slug, preview}.
+     * esos dados) y sort (name|name_desc; por defecto id desc). Ítems
+     * {id, name, slug, preview}.
      */
     public function index(Request $request)
     {
@@ -51,7 +55,7 @@ class PublicCardController extends Controller
         }
 
         $perPage = min(max((int) $request->query('per_page', 24), 1), 48);
-        $paginated = $query->orderByDesc('id')->paginate($perPage);
+        $paginated = $this->applySort($query, $request->query('sort'))->paginate($perPage);
 
         return response()->json([
             'data' => $paginated->getCollection()

@@ -9,7 +9,8 @@ import DeckAttributesConfigurationFormModal from '@/components/deck-attributes-c
 import EntityPanel from '@/components/EntityPanel.vue'
 
 // Configuraciones de mazo: CRUD por id, sin publicación, sin papelera y sin
-// single (todo se edita en el modal). El "nombre" es el modo de juego.
+// single (todo se edita en el modal). El "nombre" es el modo de juego, así
+// que no lleva SortSelect: la API ordena siempre por id desc.
 const {
   t,
   items,

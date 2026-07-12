@@ -7,6 +7,7 @@ import { useEntityList } from '@/composables/useEntityList'
 import type { GameMode } from '@juego/shared'
 import GameModeFormModal from '@/components/game-modes/GameModeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import SortSelect from '@/components/SortSelect.vue'
 
 // Taxonomía sin slug, sin publicación y sin single: CRUD por id y tabs
 // todos/papelera. Nombre + descripción traducibles.
@@ -16,6 +17,7 @@ const {
   loading,
   status,
   search,
+  sort,
   tabs,
   tr,
   init,
@@ -51,7 +53,9 @@ onMounted(init)
       </BaseButton>
     </div>
 
-    <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <FilterBar v-model="search" :placeholder="t('common.search')">
+      <SortSelect v-model="sort" />
+    </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />
 
     <EmptyState v-if="!loading && !items.length" :title="t('common.empty')" />

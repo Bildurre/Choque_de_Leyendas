@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\SanitizesRichText;
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\HeroClassResource;
 use App\Models\HeroClass;
 use Illuminate\Http\Request;
@@ -12,13 +13,14 @@ use Illuminate\Support\Facades\Validator;
 class HeroClassController extends Controller
 {
     use SanitizesRichText;
+    use SortsIndex;
 
     public function index(Request $request)
     {
         $classes = HeroClass::query()
             ->with('heroSuperclass')
             ->filter($request->only('search', 'status'))
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return HeroClassResource::collection($classes);

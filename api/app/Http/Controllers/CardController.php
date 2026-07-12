@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\SanitizesRichText;
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\CardResource;
 use App\Models\Card;
 use App\Models\CardType;
@@ -15,21 +16,26 @@ use Illuminate\Validation\Rule;
 class CardController extends Controller
 {
     use SanitizesRichText;
+    use SortsIndex;
 
     public function index(Request $request)
     {
         $cards = Card::query()
             ->with(['faction', 'cardType', 'cardSubtype'])
             ->filter($request->only('search', 'status'))
-            // TODO filtros extra del listado (los pedirá la vista como en el
-            // viejo: facción, tipo y coste). Descomentar cuando existan:
-            // ->when($request->filled('faction_id'),
-            //     fn ($q) => $q->where('faction_id', $request->integer('faction_id')))
-            // ->when($request->filled('card_type_id'),
-            //     fn ($q) => $q->where('card_type_id', $request->integer('card_type_id')))
+            // Filtros del listado (selects junto a la búsqueda).
+            ->when(
+                $request->filled('faction_id'),
+                fn ($q) => $q->where('faction_id', $request->integer('faction_id'))
+            )
+            ->when(
+                $request->filled('card_type_id'),
+                fn ($q) => $q->where('card_type_id', $request->integer('card_type_id'))
+            )
+            // TODO filtro por coste (lo pedirá la vista como en el viejo):
             // ->when($request->filled('cost'),
             //     fn ($q) => $q->where('cost', Card::normalizeCost($request->string('cost'))))
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return CardResource::collection($cards);

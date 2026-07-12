@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\SanitizesRichText;
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\CounterResource;
 use App\Models\Counter;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Illuminate\Validation\Rule;
 class CounterController extends Controller
 {
     use SanitizesRichText;
+    use SortsIndex;
 
     public function index(Request $request)
     {
@@ -25,7 +27,7 @@ class CounterController extends Controller
                 in_array($type, Counter::TYPES, true),
                 fn ($query) => $query->where('type', $type),
             )
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return CounterResource::collection($counters);

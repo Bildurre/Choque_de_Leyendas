@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, ref, watch, type Component } from 'vue'
+import { computed, onBeforeUnmount, reactive, ref, watch, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { CircleCheck, FilePen, LayoutGrid, Trash } from '@lucide/vue'
@@ -71,6 +71,11 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
   const tabKeys = options.tabKeys ?? ['published', 'draft', 'trashed']
   const status = ref(tabKeys[0] ?? 'published')
   const search = ref('')
+  // Ordenación del contrato compartido con la API ('' = recientes/id desc).
+  const sort = ref('')
+  // Filtros genéricos de la vista (clave → valor; '' = sin filtrar). La vista
+  // hace v-model sobre sus claves y el listado se relanza solo al cambiar.
+  const filters = reactive<Record<string, string>>({})
 
   const tabs = computed(() =>
     tabKeys.map((key) => ({ key, label: t(`${options.ns}.tabs.${key}`), icon: TAB_ICONS[key] })),
@@ -92,11 +97,18 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     return options.resolveBy === 'id' ? String(item.id) : slugFor(item)
   }
 
+  /** Filtros con valor (los vacíos no viajan en la query). */
+  function activeFilters(): Record<string, string> {
+    return Object.fromEntries(Object.entries(filters).filter(([, value]) => value !== ''))
+  }
+
   async function load(page = 1) {
     try {
       await list({
         search: search.value,
         status: status.value,
+        sort: sort.value || undefined,
+        ...activeFilters(),
         page,
         ...(options.extraParams?.() ?? {}),
       })
@@ -114,8 +126,9 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     load(1)
   })
 
+  // Búsqueda, orden y filtros comparten debounce y vuelven a la página 1.
   let timer: ReturnType<typeof setTimeout> | null = null
-  watch(search, () => {
+  watch([search, sort, filters], () => {
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => load(1), 250)
   })
@@ -236,6 +249,8 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     loading,
     status,
     search,
+    sort,
+    filters,
     tabs,
     tr,
     slugFor,

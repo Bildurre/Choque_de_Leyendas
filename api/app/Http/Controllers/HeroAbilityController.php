@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\SanitizesRichText;
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\HeroAbilityResource;
 use App\Models\HeroAbility;
 use Illuminate\Http\Request;
@@ -12,13 +13,21 @@ use Illuminate\Support\Facades\Validator;
 class HeroAbilityController extends Controller
 {
     use SanitizesRichText;
+    use SortsIndex;
 
     public function index(Request $request)
     {
+        $attackType = $request->query('attack_type');
+
         $abilities = HeroAbility::query()
             ->with(['attackRange', 'attackSubtype'])
             ->filter($request->only('search', 'status'))
-            ->orderByDesc('id')
+            // Filtro por tipo de ataque del listado (select junto a la búsqueda).
+            ->when(
+                in_array($attackType, HeroAbility::ATTACK_TYPES, true),
+                fn ($query) => $query->where('attack_type', $attackType),
+            )
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return HeroAbilityResource::collection($abilities);

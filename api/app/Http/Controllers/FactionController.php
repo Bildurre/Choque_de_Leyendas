@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\SanitizesRichText;
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\FactionResource;
 use App\Models\Faction;
 use Illuminate\Http\Request;
@@ -12,12 +13,13 @@ use Illuminate\Support\Facades\Validator;
 class FactionController extends Controller
 {
     use SanitizesRichText;
+    use SortsIndex;
 
     public function index(Request $request)
     {
         $factions = Faction::query()
             ->filter($request->only('search', 'status'))
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return FactionResource::collection($factions);

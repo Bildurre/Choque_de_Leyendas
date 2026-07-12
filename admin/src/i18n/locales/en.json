@@ -131,6 +131,11 @@
       "red": "Red die",
       "green": "Green die",
       "blue": "Blue die"
+    },
+    "sort": {
+      "latest": "Newest first",
+      "nameAsc": "Name A-Z",
+      "nameDesc": "Name Z-A"
     }
   },
   "login": {
@@ -709,6 +714,9 @@
       "physical": "Physical",
       "magical": "Magical"
     },
+    "filters": {
+      "allAttackTypes": "All attack types"
+    },
     "confirmDelete": {
       "title": "Move to trash",
       "message": "Move \"{name}\" to the trash?"
@@ -821,6 +829,10 @@
     "attackTypes": {
       "physical": "Physical",
       "magical": "Magical"
+    },
+    "filters": {
+      "allFactions": "All factions",
+      "allTypes": "All types"
     },
     "confirmDelete": {
       "title": "Send to trash",

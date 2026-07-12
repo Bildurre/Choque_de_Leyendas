@@ -6,15 +6,18 @@ import { PreviewGrid, type CatalogItem, type PreviewGridItem } from '@edc-motor/
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
 import { useIndexPage } from '@/entities/indexPage'
+import { SORT_LABEL_KEYS, SORT_OPTIONS, useCatalogSort } from '@/entities/catalogSort'
 
 // Índice de catálogo (cartas y héroes, CONVENTIONS2 §7.5): rejilla de
-// previews sobre GET /api/catalog/{key} con búsqueda (debounce) y
-// paginación. Cada ítem enlaza a su single por el slug del locale activo;
-// al cambiar de idioma se recarga y se canoniza el segmento (slug-map).
+// previews sobre GET /api/catalog/{key} con búsqueda (debounce), select de
+// orden (?sort en la query string, fuente de verdad) y paginación. Cada ítem
+// enlaza a su single por el slug del locale activo; al cambiar de idioma se
+// recarga y se canoniza el segmento (slug-map).
 const props = defineProps<{ catalogKey: string }>()
 
 const { t } = useI18n()
 const { locales, site, segment, section, canonicalize, applyHead } = useIndexPage()
+const { sort, sortParam } = useCatalogSort()
 
 const items = ref<PreviewGridItem[]>([])
 const loading = ref(true)
@@ -41,7 +44,11 @@ async function load() {
   try {
     await site.load() // el head usa documentTitle: sin carreras en el prerender
     const { data } = await api.get(`/catalog/${props.catalogKey}`, {
-      params: { page: page.value, search: search.value.trim() || undefined },
+      params: {
+        page: page.value,
+        search: search.value.trim() || undefined,
+        sort: sortParam.value,
+      },
     })
     items.value = (data.data as CatalogItem[]).map((item) => ({ ...item, to: itemRoute(item) }))
     page.value = data.meta.current_page
@@ -69,9 +76,10 @@ watch(search, () => {
 onBeforeUnmount(() => clearTimeout(debounce))
 
 // El cambio de idioma dispara la canónica (load aborta y el nuevo segmento
-// recarga con el locale nuevo), como en las vistas de página existentes.
+// recarga con el locale nuevo), como en las vistas de página existentes. El
+// orden llega por la query string (el select solo escribe en la URL).
 watch(
-  [segment, () => locales.current],
+  [segment, () => locales.current, sort],
   () => {
     page.value = 1
     load()
@@ -90,16 +98,26 @@ function onPage(n: number) {
   <main v-if="section" class="catalog-index">
     <header class="catalog-index__header">
       <h1 class="catalog-index__title">{{ t(section.titleKey) }}</h1>
-      <label class="catalog-index__search">
-        <Search :size="16" class="catalog-index__search-icon" aria-hidden="true" />
-        <input
-          v-model="search"
-          type="search"
-          class="catalog-index__search-input"
-          :placeholder="t('catalog.searchPlaceholder')"
-          :aria-label="t('catalog.search')"
-        />
-      </label>
+      <div class="catalog-index__controls">
+        <label class="catalog-index__search">
+          <Search :size="16" class="catalog-index__search-icon" aria-hidden="true" />
+          <input
+            v-model="search"
+            type="search"
+            class="catalog-index__search-input"
+            :placeholder="t('catalog.searchPlaceholder')"
+            :aria-label="t('catalog.search')"
+          />
+        </label>
+        <label class="catalog-sort">
+          <span class="catalog-sort__label">{{ t('catalog.sort.label') }}</span>
+          <select v-model="sort" class="catalog-sort__select">
+            <option v-for="option in SORT_OPTIONS" :key="option" :value="option">
+              {{ t(SORT_LABEL_KEYS[option]) }}
+            </option>
+          </select>
+        </label>
+      </div>
       <p v-if="!loading && items.length" class="catalog-index__count">
         {{ t('catalog.results', { count: total }, total) }}
       </p>

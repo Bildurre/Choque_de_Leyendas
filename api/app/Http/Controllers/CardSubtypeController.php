@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\CardSubtypeResource;
 use App\Models\CardSubtype;
 use Illuminate\Http\Request;
@@ -10,11 +11,13 @@ use Illuminate\Support\Facades\Validator;
 /** CRUD de admin para los subtipos de carta (taxonomía sin slug: por id). */
 class CardSubtypeController extends Controller
 {
+    use SortsIndex;
+
     public function index(Request $request)
     {
         $subtypes = CardSubtype::query()
             ->filter($request->only('search', 'status'))
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return CardSubtypeResource::collection($subtypes);

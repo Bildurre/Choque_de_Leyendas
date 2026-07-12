@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Concerns\SanitizesRichText;
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\FactionDeckResource;
 use App\Models\DeckAttributesConfiguration;
 use App\Models\FactionDeck;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Validator;
 class FactionDeckController extends Controller
 {
     use SanitizesRichText;
+    use SortsIndex;
 
     public function index(Request $request)
     {
@@ -25,7 +27,7 @@ class FactionDeckController extends Controller
             ->withSum('cards as total_cards', 'card_faction_deck.copies')
             ->withCount('heroes as total_heroes')
             ->filter($request->only('search', 'status'))
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return FactionDeckResource::collection($decks);

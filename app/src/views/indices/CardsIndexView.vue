@@ -6,16 +6,17 @@ import { PreviewGrid, type CatalogItem, type PreviewGridItem } from '@edc-motor/
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
 import { useIndexPage } from '@/entities/indexPage'
+import { SORT_LABEL_KEYS, SORT_OPTIONS, parseSort, type SortOption } from '@/entities/catalogSort'
 
 // Índice público de cartas con filtros avanzados: rejilla de previews sobre
 // GET /api/cards (misma forma items+meta que el catálogo genérico) con
 // búsqueda (debounce), select de facción y tipo (opciones ya localizadas de
-// GET /api/cards/filters), nº de dados del coste (1..5 → cost_total) y
-// colores del coste (toggles R/G/B → cost_colors tipo "RG"). Los filtros
-// viven en la query
-// string (URLs compartibles y botón atrás): la UI empuja el estado a la URL
-// con router.replace y ES el cambio de query el que dispara la recarga.
-// En móvil la barra de filtros se colapsa tras el botón "Filtros".
+// GET /api/cards/filters), nº de dados del coste (1..5 → cost_total),
+// colores del coste (toggles R/G/B → cost_colors tipo "RG") y select de
+// orden (?sort del contrato del catálogo). Los filtros y el orden viven en
+// la query string (URLs compartibles y botón atrás): la UI empuja el estado
+// a la URL con router.replace y ES el cambio de query el que dispara la
+// recarga. En móvil la barra de filtros se colapsa tras el botón "Filtros".
 const COLORS = ['R', 'G', 'B'] as const
 type CostColor = (typeof COLORS)[number]
 
@@ -39,6 +40,7 @@ const factionId = ref('')
 const typeId = ref('')
 const dice = ref('')
 const colors = ref<CostColor[]>([])
+const sort = ref<SortOption>('latest')
 const filtersOpen = ref(false)
 
 // Opciones de los selects (localizadas por el server; se recargan por locale).
@@ -71,6 +73,7 @@ function stateToQuery(): Record<string, string> {
   if (typeId.value) query.type = typeId.value
   if (dice.value) query.dice = dice.value
   if (colors.value.length) query.colors = colors.value.join('')
+  if (sort.value !== 'latest') query.sort = sort.value
   if (page.value > 1) query.page = String(page.value)
   return query
 }
@@ -87,13 +90,14 @@ function queryToState() {
   const colorsQ = typeof q.colors === 'string' ? q.colors.toUpperCase() : ''
   const parsed = COLORS.filter((color) => colorsQ.includes(color))
   if (parsed.join('') !== colors.value.join('')) colors.value = parsed
+  sort.value = parseSort(q.sort)
   page.value = Math.max(1, Number(q.page) || 1)
 }
 
 /** true si el estado ya coincide con la query de la URL (nada que empujar). */
 function inSyncWithUrl(): boolean {
   const target = stateToQuery()
-  return ['search', 'faction', 'type', 'dice', 'colors', 'page'].every((key) => {
+  return ['search', 'faction', 'type', 'dice', 'colors', 'sort', 'page'].every((key) => {
     const current = route.query[key]
     return (target[key] ?? '') === (typeof current === 'string' ? current : '')
   })
@@ -132,6 +136,7 @@ async function load() {
         card_type_id: typeId.value || undefined,
         cost_total: dice.value || undefined,
         cost_colors: colors.value.join('') || undefined,
+        sort: sort.value === 'latest' ? undefined : sort.value,
       },
     })
     items.value = (data.data as CatalogItem[]).map((item) => ({ ...item, to: itemRoute(item) }))
@@ -159,9 +164,10 @@ watch(search, (value) => {
 })
 onBeforeUnmount(() => clearTimeout(debounce))
 
-// Selects y toggles: a la query al momento (resetean a página 1). El guard
-// evita re-empujar cuando el cambio viene de la propia URL (queryToState).
-watch([factionId, typeId, dice, colors], () => {
+// Selects y toggles (orden incluido): a la query al momento (resetean a
+// página 1). El guard evita re-empujar cuando el cambio viene de la propia
+// URL (queryToState).
+watch([factionId, typeId, dice, colors, sort], () => {
   if (!inSyncWithUrl()) pushQuery()
 })
 
@@ -269,6 +275,15 @@ watch(() => locales.current, loadFilters, { immediate: true })
           <option value="">{{ t('catalog.filters.anyDice') }}</option>
           <option v-for="n in 5" :key="n" :value="String(n)">
             {{ t('singles.deck.dice', { count: n }, n) }}
+          </option>
+        </select>
+      </label>
+
+      <label class="cards-filters__field cards-filters__field--sort">
+        <span class="cards-filters__label">{{ t('catalog.sort.label') }}</span>
+        <select v-model="sort" class="cards-filters__select">
+          <option v-for="option in SORT_OPTIONS" :key="option" :value="option">
+            {{ t(SORT_LABEL_KEYS[option]) }}
           </option>
         </select>
       </label>

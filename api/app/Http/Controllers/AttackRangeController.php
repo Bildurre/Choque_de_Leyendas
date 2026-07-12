@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\AttackRangeResource;
 use App\Models\AttackRange;
 use Illuminate\Http\Request;
@@ -10,11 +11,13 @@ use Illuminate\Support\Facades\Validator;
 /** CRUD de admin para AttackRange (taxonomía simple, resuelta por id). */
 class AttackRangeController extends Controller
 {
+    use SortsIndex;
+
     public function index(Request $request)
     {
         $ranges = AttackRange::query()
             ->filter($request->only('search', 'status'))
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return AttackRangeResource::collection($ranges);

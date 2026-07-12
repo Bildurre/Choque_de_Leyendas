@@ -4,9 +4,11 @@ import { useI18n } from 'vue-i18n'
 import { api } from '@/lib/api'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
 import { useIndexPage } from '@/entities/indexPage'
+import { SORT_LABEL_KEYS, SORT_OPTIONS, useCatalogSort } from '@/entities/catalogSort'
 
 // Índice público de mazos (CONVENTIONS2 §7.5, diseño del viejo §9.4):
-// GET /api/faction-decks trae TODOS los mazos publicados y aquí se agrupan
+// GET /api/faction-decks trae TODOS los mazos publicados (con select de
+// orden: ?sort en la query string, fuente de verdad) y aquí se agrupan
 // por modo de juego (las pestañas del viejo, en cliente) con contador.
 // Tarjeta CSS con icono, badge de facción/multifacción y totales.
 interface DeckRow extends FactionDeckCardData {
@@ -16,6 +18,7 @@ interface DeckRow extends FactionDeckCardData {
 
 const { t } = useI18n()
 const { locales, site, segment, section, canonicalize, applyHead } = useIndexPage()
+const { sort, sortParam } = useCatalogSort()
 
 const items = ref<DeckRow[]>([])
 const loading = ref(true)
@@ -51,7 +54,7 @@ async function load() {
   loading.value = true
   try {
     await site.load() // el head usa documentTitle: sin carreras en el prerender
-    const { data } = await api.get('/faction-decks')
+    const { data } = await api.get('/faction-decks', { params: { sort: sortParam.value } })
     items.value = data.data
   } catch {
     items.value = []
@@ -61,12 +64,23 @@ async function load() {
   applyHead(t(section.value.titleKey))
 }
 
-watch([segment, () => locales.current], load, { immediate: true })
+// El orden llega por la query string (el select solo escribe en la URL).
+watch([segment, () => locales.current, sort], load, { immediate: true })
 </script>
 
 <template>
   <main v-if="section" class="decks-index">
-    <h1 class="decks-index__title">{{ t(section.titleKey) }}</h1>
+    <header class="decks-index__header">
+      <h1 class="decks-index__title">{{ t(section.titleKey) }}</h1>
+      <label class="catalog-sort">
+        <span class="catalog-sort__label">{{ t('catalog.sort.label') }}</span>
+        <select v-model="sort" class="catalog-sort__select">
+          <option v-for="option in SORT_OPTIONS" :key="option" :value="option">
+            {{ t(SORT_LABEL_KEYS[option]) }}
+          </option>
+        </select>
+      </label>
+    </header>
 
     <!-- Pestañas por modo de juego (client-side), con contador de mazos -->
     <div v-if="modes.length > 1" class="decks-index__tabs" role="tablist">

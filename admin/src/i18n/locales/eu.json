@@ -131,6 +131,11 @@
       "red": "Dado gorria",
       "green": "Dado berdea",
       "blue": "Dado urdina"
+    },
+    "sort": {
+      "latest": "Berrienak lehenik",
+      "nameAsc": "Izena A-Z",
+      "nameDesc": "Izena Z-A"
     }
   },
   "login": {
@@ -709,6 +714,9 @@
       "physical": "Fisikoa",
       "magical": "Magikoa"
     },
+    "filters": {
+      "allAttackTypes": "Eraso mota guztiak"
+    },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
       "message": "\"{name}\" zakarrontzira bidali?"
@@ -821,6 +829,10 @@
     "attackTypes": {
       "physical": "Fisikoa",
       "magical": "Magikoa"
+    },
+    "filters": {
+      "allFactions": "Fakzio guztiak",
+      "allTypes": "Mota guztiak"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",

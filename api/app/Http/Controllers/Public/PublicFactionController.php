@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Public\PublicFactionItemResource;
 use App\Http\Resources\Public\PublicFactionResource;
 use App\Models\Faction;
+use Illuminate\Http\Request;
 
 /**
  * Web pública: facciones. Solo lectura, sin auth, SOLO publicado; el locale
@@ -13,20 +15,29 @@ use App\Models\Faction;
  */
 class PublicFactionController extends Controller
 {
+    use SortsIndex;
+
     /** Índice: tarjetas de facción con contadores de publicados. */
-    public function index()
+    public function index(Request $request)
     {
         $locale = app()->getLocale();
+        $sort = $request->query('sort');
 
-        $factions = Faction::published()
+        $query = Faction::published()
             ->withCount([
-                'heroes as heroes_count' => fn ($query) => $query->published(),
-                'cards as cards_count' => fn ($query) => $query->published(),
-            ])
-            ->orderBy("name->{$locale}")
-            ->get();
+                'heroes as heroes_count' => fn ($q) => $q->published(),
+                'cards as cards_count' => fn ($q) => $q->published(),
+            ]);
 
-        return PublicFactionItemResource::collection($factions);
+        // Contrato de `sort` (name|name_desc|latest); sin él (o con un valor
+        // desconocido) se conserva el orden histórico: nombre asc del locale.
+        if (in_array($sort, ['name', 'name_desc', 'latest'], true)) {
+            $this->applySort($query, $sort);
+        } else {
+            $query->orderBy("name->{$locale}");
+        }
+
+        return PublicFactionItemResource::collection($query->get());
     }
 
     /** Ficha por slug (vale en cualquier locale) con su contenido publicado. */

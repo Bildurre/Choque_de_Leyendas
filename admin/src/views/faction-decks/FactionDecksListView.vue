@@ -8,6 +8,7 @@ import { useEntityList } from '@/composables/useEntityList'
 import type { DeckPublishError, FactionDeck } from '@juego/shared'
 import FactionDeckFormModal from '@/components/faction-decks/FactionDeckFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import SortSelect from '@/components/SortSelect.vue'
 
 // Listado de mazos de facción. La tarjeta selecciona (panel derecho con las
 // acciones); "entrar" abre la single con el editor de cartas y héroes.
@@ -18,6 +19,7 @@ const {
   loading,
   status,
   search,
+  sort,
   tabs,
   tr,
   slugFor,
@@ -79,7 +81,9 @@ onMounted(init)
       </BaseButton>
     </div>
 
-    <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <FilterBar v-model="search" :placeholder="t('common.search')">
+      <SortSelect v-model="sort" />
+    </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />
 
     <EmptyState v-if="!loading && !items.length" :title="t('common.empty')" />

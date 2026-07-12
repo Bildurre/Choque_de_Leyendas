@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\HeroSuperclassResource;
 use App\Models\HeroSuperclass;
 use Illuminate\Http\Request;
@@ -10,11 +11,13 @@ use Illuminate\Support\Facades\Validator;
 /** CRUD de admin para HeroSuperclass (taxonomía simple, resuelta por id). */
 class HeroSuperclassController extends Controller
 {
+    use SortsIndex;
+
     public function index(Request $request)
     {
         $superclasses = HeroSuperclass::query()
             ->filter($request->only('search', 'status'))
-            ->orderByDesc('id')
+            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return HeroSuperclassResource::collection($superclasses);

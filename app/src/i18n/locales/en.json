@@ -154,6 +154,12 @@
       "colorG": "Green dice",
       "colorB": "Blue dice",
       "clear": "Clear filters"
+    },
+    "sort": {
+      "label": "Order",
+      "latest": "Newest",
+      "nameAsc": "Name A-Z",
+      "nameDesc": "Name Z-A"
     }
   },
   "decks": {

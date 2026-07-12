@@ -7,6 +7,7 @@ import { useEntityList } from '@/composables/useEntityList'
 import type { Hero } from '@juego/shared'
 import HeroFormModal from '@/components/heroes/HeroFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import SortSelect from '@/components/SortSelect.vue'
 
 // Héroes: entidad completa con slug, single, publicación y previews PNG.
 const {
@@ -15,6 +16,7 @@ const {
   loading,
   status,
   search,
+  sort,
   tabs,
   tr,
   init,
@@ -54,7 +56,9 @@ onMounted(init)
     </div>
 
     <!-- Filtros por encima de las tabs (estilo kontuan) -->
-    <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <FilterBar v-model="search" :placeholder="t('common.search')">
+      <SortSelect v-model="sort" />
+    </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />
 
     <EmptyState v-if="!loading && !items.length" :title="t('common.empty')" />

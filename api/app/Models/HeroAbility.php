@@ -22,6 +22,8 @@ class HeroAbility extends Model
     use HasTranslations;
     use SoftDeletes;
 
+    public const ATTACK_TYPES = ['physical', 'magical'];
+
     protected $table = 'hero_abilities';
 
     protected $fillable = [

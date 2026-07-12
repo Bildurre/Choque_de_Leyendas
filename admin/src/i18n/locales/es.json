@@ -131,6 +131,11 @@
       "red": "Dado rojo",
       "green": "Dado verde",
       "blue": "Dado azul"
+    },
+    "sort": {
+      "latest": "Más recientes",
+      "nameAsc": "Nombre A-Z",
+      "nameDesc": "Nombre Z-A"
     }
   },
   "login": {
@@ -640,6 +645,9 @@
       "physical": "Físico",
       "magical": "Mágico"
     },
+    "filters": {
+      "allAttackTypes": "Todos los tipos de ataque"
+    },
     "confirmDelete": {
       "title": "Enviar a la papelera",
       "message": "¿Enviar \"{name}\" a la papelera?"
@@ -752,6 +760,10 @@
     "attackTypes": {
       "physical": "Físico",
       "magical": "Mágico"
+    },
+    "filters": {
+      "allFactions": "Todas las facciones",
+      "allTypes": "Todos los tipos"
     },
     "confirmDelete": {
       "title": "Enviar a la papelera",

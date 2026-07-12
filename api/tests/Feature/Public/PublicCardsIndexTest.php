@@ -124,3 +124,24 @@ it('pagina con per_page y lo limita a 48', function () {
     $capped = $this->getJson('/api/cards?per_page=100')->assertOk();
     expect($capped->json('meta.per_page'))->toBe(48);
 });
+
+it('ordena por nombre asc y desc con sort (contrato compartido)', function () {
+    $bruma = publicCard(['name' => ['es' => 'Bruma', 'en' => 'Mist']]);
+    $alfa = publicCard(['name' => ['es' => 'Alfa', 'en' => 'Alpha']]);
+    $cieno = publicCard(['name' => ['es' => 'Cieno', 'en' => 'Silt']]);
+
+    $asc = $this->getJson('/api/cards?sort=name')->assertOk();
+    expect(collect($asc->json('data'))->pluck('id')->all())
+        ->toBe([$alfa->id, $bruma->id, $cieno->id]);
+
+    $desc = $this->getJson('/api/cards?sort=name_desc')->assertOk();
+    expect(collect($desc->json('data'))->pluck('id')->all())
+        ->toBe([$cieno->id, $bruma->id, $alfa->id]);
+
+    // `latest` o un valor desconocido caen al orden por defecto: id desc
+    foreach (['latest', 'raro'] as $sort) {
+        $fallback = $this->getJson("/api/cards?sort={$sort}")->assertOk();
+        expect(collect($fallback->json('data'))->pluck('id')->all())
+            ->toBe([$cieno->id, $alfa->id, $bruma->id]);
+    }
+});

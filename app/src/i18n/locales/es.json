@@ -154,6 +154,12 @@
       "colorG": "Dados verdes",
       "colorB": "Dados azules",
       "clear": "Quitar filtros"
+    },
+    "sort": {
+      "label": "Orden",
+      "latest": "Más recientes",
+      "nameAsc": "Nombre A-Z",
+      "nameDesc": "Nombre Z-A"
     }
   },
   "decks": {

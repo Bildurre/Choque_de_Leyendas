@@ -1,23 +1,26 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { ArrowRight, Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BaseSelect, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
-import type { Card } from '@juego/shared'
+import { api } from '@/lib/api'
+import type { Card, Translations } from '@juego/shared'
 import CardFormModal from '@/components/cards/CardFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import SortSelect from '@/components/SortSelect.vue'
 import CostDice from '@/components/game/CostDice.vue'
 
 // Cartas: entidad completa con slug, single, publicación y previews PNG.
-// TODO filtros extra del listado (facción/tipo/coste): pasarlos por
-// extraParams cuando la vista los pinte; el controller ya los espera.
+// El listado filtra por facción y tipo con selects en la barra de búsqueda.
 const {
   t,
   items,
   loading,
   status,
   search,
+  sort,
+  filters,
   tabs,
   tr,
   init,
@@ -44,7 +47,39 @@ const {
   previewKey: 'card',
 })
 
-onMounted(init)
+// Opciones de los selects de filtro (endpoints options, nombres traducibles).
+interface FilterOption {
+  id: number
+  name: Translations
+}
+const factions = ref<FilterOption[]>([])
+const cardTypes = ref<FilterOption[]>([])
+
+const factionOptions = computed(() => [
+  { value: '', label: t('cards.filters.allFactions') },
+  ...factions.value.map((f) => ({ value: String(f.id), label: tr(f.name) })),
+])
+const cardTypeOptions = computed(() => [
+  { value: '', label: t('cards.filters.allTypes') },
+  ...cardTypes.value.map((ct) => ({ value: String(ct.id), label: tr(ct.name) })),
+])
+
+async function loadFilterOptions() {
+  try {
+    const [factionsRes, typesRes] = await Promise.all([
+      api.get('/admin/factions/options'),
+      api.get('/admin/card-types/options'),
+    ])
+    factions.value = factionsRes.data.data
+    cardTypes.value = typesRes.data.data
+  } catch {
+    // Sin opciones no hay filtro, pero el listado sigue funcionando.
+  }
+}
+
+onMounted(async () => {
+  await Promise.all([init(), loadFilterOptions()])
+})
 </script>
 
 <template>
@@ -57,7 +92,11 @@ onMounted(init)
     </div>
 
     <!-- Filtros por encima de las tabs (estilo kontuan) -->
-    <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <FilterBar v-model="search" :placeholder="t('common.search')">
+      <BaseSelect v-model="filters.faction_id" :options="factionOptions" />
+      <BaseSelect v-model="filters.card_type_id" :options="cardTypeOptions" />
+      <SortSelect v-model="sort" />
+    </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />
 
     <EmptyState v-if="!loading && !items.length" :title="t('common.empty')" />

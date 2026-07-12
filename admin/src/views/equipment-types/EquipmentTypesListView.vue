@@ -7,6 +7,7 @@ import { useEntityList } from '@/composables/useEntityList'
 import type { EquipmentType } from '@juego/shared'
 import EquipmentTypeFormModal from '@/components/equipment-types/EquipmentTypeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import SortSelect from '@/components/SortSelect.vue'
 
 // Taxonomía sin slug, sin publicación y sin single: CRUD por id. El filtro
 // por categoría del viejo se porta como tabs extra (weapon|armor viajan en
@@ -17,6 +18,7 @@ const {
   loading,
   status,
   search,
+  sort,
   tabs,
   tr,
   init,
@@ -52,7 +54,9 @@ onMounted(init)
       </BaseButton>
     </div>
 
-    <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <FilterBar v-model="search" :placeholder="t('common.search')">
+      <SortSelect v-model="sort" />
+    </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />
 
     <EmptyState v-if="!loading && !items.length" :title="t('common.empty')" />

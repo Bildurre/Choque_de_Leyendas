@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { computed, onMounted } from 'vue'
 import { Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BaseSelect, BaseTabs } from '@edc-motor/ui'
@@ -8,12 +8,12 @@ import { useIconsStore } from '@/stores/icons'
 import type { Counter } from '@juego/shared'
 import CounterFormModal from '@/components/counters/CounterFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import SortSelect from '@/components/SortSelect.vue'
 
 // Sin single: se edita en modal y la API resuelve por id. Además de las tabs
 // de estado, el listado filtra por tipo (boon|bane) con un select en la
 // barra de búsqueda (el viejo usaba pestañas beneficio/perjuicio).
 const icons = useIconsStore()
-const typeFilter = ref('')
 
 const {
   t,
@@ -21,10 +21,11 @@ const {
   loading,
   status,
   search,
+  sort,
+  filters,
   tabs,
   tr,
   init,
-  load,
   formOpen,
   formMode,
   formItem,
@@ -46,10 +47,7 @@ const {
   resolveBy: 'id',
   previewKey: 'counter',
   nameOf: (item) => item.name,
-  extraParams: () => ({ type: typeFilter.value || undefined }),
 })
-
-watch(typeFilter, () => load(1))
 
 const typeOptions = computed(() => [
   { value: '', label: t('counters.filters.allTypes') },
@@ -79,7 +77,8 @@ onMounted(async () => {
 
     <!-- Búsqueda + filtro por tipo, por encima de las tabs (estilo kontuan) -->
     <FilterBar v-model="search" :placeholder="t('common.search')">
-      <BaseSelect v-model="typeFilter" :options="typeOptions" />
+      <BaseSelect v-model="filters.type" :options="typeOptions" />
+      <SortSelect v-model="sort" />
     </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />
 

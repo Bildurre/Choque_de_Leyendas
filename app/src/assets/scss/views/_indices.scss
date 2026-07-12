@@ -27,6 +27,14 @@
 
   &__title { margin: 0; }
 
+  // Buscador + select de orden en fila (columna del `auto` en tablet+).
+  &__controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-3;
+  }
+
   // Buscador: icono dentro del campo, a la izquierda.
   &__search {
     position: relative;
@@ -180,6 +188,12 @@
     }
   }
 
+  &__field--sort {
+    @media (min-width: $bp-md) {
+      flex-basis: 180px;
+    }
+  }
+
   &__label {
     font-size: $fs-12;
     font-weight: $k-fw-semibold;
@@ -264,6 +278,38 @@
   }
 }
 
+// --- Select de orden de los índices (héroes, facciones y mazos; el de
+// cartas va como campo más de la barra de filtros) ---
+.catalog-sort {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-2;
+
+  &__label {
+    font-size: $fs-12;
+    font-weight: $k-fw-semibold;
+    color: $text-3;
+    white-space: nowrap;
+  }
+
+  // Mismo tratamiento que los selects de la barra de filtros de cartas.
+  &__select {
+    padding: $space-2 $space-3;
+    font-size: $fs-14;
+    color: $text-1;
+    background: color-mix(in srgb, $surface 72%, transparent);
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    transition: border-color 0.15s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $accent-500;
+      box-shadow: $focus-ring;
+    }
+  }
+}
+
 // --- Base común de los índices de tarjetas CSS (facciones y mazos) ---
 .factions-index,
 .decks-index {
@@ -274,6 +320,15 @@
   gap: $space-5;
 
   &__title { margin: 0; }
+
+  // Título + select de orden en fila (envuelve en pantallas estrechas).
+  &__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+  }
 
   &__loading,
   &__empty {

@@ -1,22 +1,26 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted } from 'vue'
 import { Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BaseSelect, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import type { HeroAbility } from '@juego/shared'
 import HeroAbilityFormModal from '@/components/hero-abilities/HeroAbilityFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import SortSelect from '@/components/SortSelect.vue'
 import CostDice from '@/components/game/CostDice.vue'
 
 // Habilidades activas: sin single ni publicación (tabs all/trashed); la API
-// resuelve por id y la edición rellena desde el ítem del listado.
+// resuelve por id y la edición rellena desde el ítem del listado. El listado
+// filtra por tipo de ataque con un select en la barra de búsqueda.
 const {
   t,
   items,
   loading,
   status,
   search,
+  sort,
+  filters,
   tabs,
   tr,
   init,
@@ -39,6 +43,12 @@ const {
   resolveBy: 'id',
   tabKeys: ['all', 'trashed'],
 })
+
+const attackTypeOptions = computed(() => [
+  { value: '', label: t('heroAbilities.filters.allAttackTypes') },
+  { value: 'physical', label: t('heroAbilities.attackTypes.physical') },
+  { value: 'magical', label: t('heroAbilities.attackTypes.magical') },
+])
 
 /** Tipado completo en orden canónico: rango · tipo · subtipo · área. */
 function typing(a: HeroAbility): string {
@@ -64,7 +74,10 @@ onMounted(init)
     </div>
 
     <!-- Filtros por encima de las tabs (estilo kontuan) -->
-    <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <FilterBar v-model="search" :placeholder="t('common.search')">
+      <BaseSelect v-model="filters.attack_type" :options="attackTypeOptions" />
+      <SortSelect v-model="sort" />
+    </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />
 
     <EmptyState v-if="!loading && !items.length" :title="t('common.empty')" />

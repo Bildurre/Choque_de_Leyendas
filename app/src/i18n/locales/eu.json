@@ -154,6 +154,12 @@
       "colorG": "Dado berdeak",
       "colorB": "Dado urdinak",
       "clear": "Iragazkiak kendu"
+    },
+    "sort": {
+      "label": "Ordena",
+      "latest": "Berrienak",
+      "nameAsc": "Izena A-Z",
+      "nameDesc": "Izena Z-A"
     }
   },
   "decks": {

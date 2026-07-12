@@ -15,6 +15,8 @@ class DeckAttributesConfigurationController extends Controller
 {
     public function index(Request $request)
     {
+        // Sin `sort`: la entidad no tiene nombre propio (se identifica por su
+        // modo de juego), así que el contrato de ordenación no aplica.
         $configs = DeckAttributesConfiguration::query()
             ->with('gameMode')
             ->orderByDesc('id')
