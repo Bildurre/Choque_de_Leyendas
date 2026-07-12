@@ -40,3 +40,6 @@
     font-size: $fs-13;
   }
 }
+
+.counters__effect p { margin: 0; }
+.counters__effect p + p { margin-top: $space-1; }

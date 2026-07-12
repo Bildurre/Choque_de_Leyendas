@@ -136,7 +136,12 @@ onMounted(async () => {
         </template>
 
         <template #meta>
-          <span class="counters__effect">{{ tr(item.effect) }}</span>
+          <!-- eslint-disable-next-line vue/no-v-html -- wysiwyg saneado en servidor (DC-09) -->
+          <span
+            v-if="tr(item.effect) !== '—'"
+            class="counters__effect"
+            v-html="tr(item.effect)"
+          ></span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -171,7 +176,12 @@ onMounted(async () => {
           <strong>{{ t('counters.fields.type') }}</strong>
           {{ t(`counters.types.${selected.type}`) }}
         </p>
-        <p v-if="selected" class="manager-detail__meta">{{ tr(selected.effect) }}</p>
+        <!-- eslint-disable-next-line vue/no-v-html -- wysiwyg saneado en servidor (DC-09) -->
+        <div
+          v-if="selected && tr(selected.effect) !== '—'"
+          class="manager-detail__meta counters__effect"
+          v-html="tr(selected.effect)"
+        ></div>
       </template>
     </EntityPanel>
   </div>
