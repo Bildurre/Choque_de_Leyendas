@@ -76,7 +76,12 @@ class Card extends Model implements HasMedia, PreviewableContract
         'restriction',
     ];
 
-    protected array $searchable = ['name'];
+    /**
+     * Columnas del buscador de listados (HasFilters). LIKE sobre el json
+     * completo de cada campo traducible; los campos wysiwyg (lore_text,
+     * epic_quote) se buscan con su HTML tal cual — asumido y aceptable.
+     */
+    protected array $searchable = ['name', 'effect', 'restriction', 'lore_text', 'epic_quote'];
 
     protected function casts(): array
     {

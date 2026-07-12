@@ -25,7 +25,9 @@ class PublicHeroController extends Controller
 
     /**
      * Índice filtrable. Parámetros: page, per_page (24, tope 48), search
-     * (nombre del locale), faction_id, hero_class_id, hero_superclass_id
+     * (multi-campo vía scopeFilter del motor: LIKE sobre el json de cada
+     * columna de $searchable — nombre, pasiva, lore y cita — en cualquier
+     * locale), faction_id, hero_class_id, hero_superclass_id
      * (héroes cuya clase pertenece a esa superclase), hero_race_id y sort
      * (name|name_desc|latest|oldest; por defecto id desc). Ítems
      * {id, name, slug, preview}.
@@ -33,11 +35,8 @@ class PublicHeroController extends Controller
     public function index(Request $request)
     {
         $locale = app()->getLocale();
-        $query = Hero::published();
-
-        if (($search = trim((string) $request->query('search'))) !== '') {
-            $query->where("name->{$locale}", 'like', "%{$search}%");
-        }
+        // Búsqueda multi-campo del motor (published ya lo aplica el scope propio)
+        $query = Hero::published()->filter($request->only('search'));
 
         foreach (['faction_id', 'hero_class_id', 'hero_race_id'] as $column) {
             if (($id = (int) $request->query($column)) > 0) {

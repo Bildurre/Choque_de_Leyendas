@@ -84,6 +84,26 @@ it('filtra por faction_id: mazos que incluyan esa facción (pivot)', function ()
         ->toBe([$deAlianza->id, $multi->id]);
 });
 
+it('busca multi-campo: casa por la descripción aunque el nombre no coincida', function () {
+    $iniciacion = publicDeck([
+        'name' => ['es' => 'Mazo inicial', 'en' => 'Starter deck'],
+        'description' => ['es' => '<p>Pensado para aprender las reglas.</p>', 'en' => '<p>Meant for learning the rules.</p>'],
+    ]);
+    publicDeck(['name' => ['es' => 'Otro mazo', 'en' => 'Other deck']]);
+    // Aunque la descripción case, los no publicados siguen fuera
+    publicDeck([
+        'name' => ['es' => 'Borrador', 'en' => 'Draft'],
+        'description' => ['es' => '<p>También para aprender.</p>', 'en' => '<p>Also for learning.</p>'],
+        'is_published' => false,
+    ]);
+
+    $response = $this->getJson('/api/faction-decks?search=aprender')->assertOk();
+    expect(collect($response->json('data'))->pluck('id')->all())->toBe([$iniciacion->id]);
+
+    // Lo que no está en ningún campo buscable no casa
+    expect($this->getJson('/api/faction-decks?search=grimorio')->assertOk()->json('data'))->toBeEmpty();
+});
+
 it('ordena con el contrato de sort, incluido oldest', function () {
     $bravo = publicDeck(['name' => ['es' => 'Bravo', 'en' => 'Bravo']]);
     $alfa = publicDeck(['name' => ['es' => 'Alfa', 'en' => 'Alpha']]);

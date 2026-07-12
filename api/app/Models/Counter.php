@@ -35,7 +35,8 @@ class Counter extends Model implements HasMedia, PreviewableContract
 
     public array $translatable = ['name', 'effect'];
 
-    protected array $searchable = ['name'];
+    /** Columnas del buscador de listados (HasFilters): LIKE sobre el json. */
+    protected array $searchable = ['name', 'effect'];
 
     protected function casts(): array
     {

@@ -38,7 +38,8 @@ class HeroAbility extends Model
 
     public array $translatable = ['name', 'description'];
 
-    protected array $searchable = ['name'];
+    /** Columnas del buscador de listados (HasFilters): LIKE sobre el json. */
+    protected array $searchable = ['name', 'description'];
 
     protected function casts(): array
     {

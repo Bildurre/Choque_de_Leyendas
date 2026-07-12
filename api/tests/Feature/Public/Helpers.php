@@ -5,6 +5,7 @@ use App\Models\AttackSubtype;
 use App\Models\Card;
 use App\Models\CardSubtype;
 use App\Models\CardType;
+use App\Models\Counter;
 use App\Models\EquipmentType;
 use App\Models\Faction;
 use App\Models\FactionDeck;
@@ -46,8 +47,8 @@ if (! function_exists('ensurePublicApiRoutes')) {
     {
         $faction = new Faction;
         $faction->setTranslations('name', $overrides['name'] ?? ['es' => 'Alianza', 'en' => 'Alliance']);
-        $faction->setTranslations('lore_text', ['es' => '<p>Trasfondo</p>', 'en' => '<p>Lore</p>']);
-        $faction->setTranslations('epic_quote', ['es' => 'Cita épica', 'en' => 'Epic quote']);
+        $faction->setTranslations('lore_text', $overrides['lore_text'] ?? ['es' => '<p>Trasfondo</p>', 'en' => '<p>Lore</p>']);
+        $faction->setTranslations('epic_quote', $overrides['epic_quote'] ?? ['es' => 'Cita épica', 'en' => 'Epic quote']);
         $faction->color = $overrides['color'] ?? '#336699';
         $faction->is_published = $overrides['is_published'] ?? true;
         $faction->save();
@@ -72,8 +73,15 @@ if (! function_exists('ensurePublicApiRoutes')) {
     {
         $card = new Card;
         $card->setTranslations('name', $overrides['name'] ?? ['es' => 'Espada corta', 'en' => 'Short sword']);
-        $card->setTranslations('effect', ['es' => 'Golpea dos veces.', 'en' => 'Strikes twice.']);
-        $card->setTranslations('lore_text', ['es' => '<p>Forjada en EdC.</p>', 'en' => '<p>Forged in EdC.</p>']);
+        $card->setTranslations('effect', $overrides['effect'] ?? ['es' => 'Golpea dos veces.', 'en' => 'Strikes twice.']);
+        $card->setTranslations('lore_text', $overrides['lore_text'] ?? ['es' => '<p>Forjada en EdC.</p>', 'en' => '<p>Forged in EdC.</p>']);
+        // Opcionales: solo se rellenan si el test los pasa (por defecto quedan null)
+        if (isset($overrides['restriction'])) {
+            $card->setTranslations('restriction', $overrides['restriction']);
+        }
+        if (isset($overrides['epic_quote'])) {
+            $card->setTranslations('epic_quote', $overrides['epic_quote']);
+        }
         $card->faction_id = $overrides['faction_id'] ?? null;
         $card->card_type_id = $overrides['card_type_id'] ?? publicCardType()->id;
         $card->card_subtype_id = $overrides['card_subtype_id'] ?? null;
@@ -168,7 +176,7 @@ if (! function_exists('ensurePublicApiRoutes')) {
     {
         $ability = new HeroAbility;
         $ability->setTranslations('name', $overrides['name'] ?? ['es' => 'Golpe certero', 'en' => 'True strike']);
-        $ability->setTranslations('description', ['es' => 'Hace daño.', 'en' => 'Deals damage.']);
+        $ability->setTranslations('description', $overrides['description'] ?? ['es' => 'Hace daño.', 'en' => 'Deals damage.']);
         $ability->attack_type = $overrides['attack_type'] ?? null;
         $ability->attack_range_id = $overrides['attack_range_id'] ?? null;
         $ability->attack_subtype_id = $overrides['attack_subtype_id'] ?? null;
@@ -184,8 +192,15 @@ if (! function_exists('ensurePublicApiRoutes')) {
     {
         $hero = new Hero;
         $hero->setTranslations('name', $overrides['name'] ?? ['es' => 'Aritz', 'en' => 'Aritz the Bold']);
-        $hero->setTranslations('lore_text', ['es' => '<p>Nació en el norte.</p>', 'en' => '<p>Born up north.</p>']);
-        $hero->setTranslations('epic_quote', ['es' => 'Por la Alianza', 'en' => 'For the Alliance']);
+        $hero->setTranslations('lore_text', $overrides['lore_text'] ?? ['es' => '<p>Nació en el norte.</p>', 'en' => '<p>Born up north.</p>']);
+        $hero->setTranslations('epic_quote', $overrides['epic_quote'] ?? ['es' => 'Por la Alianza', 'en' => 'For the Alliance']);
+        // Opcionales: solo se rellenan si el test los pasa (por defecto quedan null)
+        if (isset($overrides['passive_name'])) {
+            $hero->setTranslations('passive_name', $overrides['passive_name']);
+        }
+        if (isset($overrides['passive_description'])) {
+            $hero->setTranslations('passive_description', $overrides['passive_description']);
+        }
         $hero->faction_id = $overrides['faction_id'] ?? null;
         $hero->hero_class_id = $overrides['hero_class_id'] ?? null;
         $hero->hero_race_id = $overrides['hero_race_id'] ?? null;
@@ -198,6 +213,19 @@ if (! function_exists('ensurePublicApiRoutes')) {
         $hero->save();
 
         return $hero;
+    }
+
+    /** Contador mínimo (publicado por defecto; sin slug, va por id). */
+    function publicCounter(array $overrides = []): Counter
+    {
+        $counter = new Counter;
+        $counter->setTranslations('name', $overrides['name'] ?? ['es' => 'Veneno', 'en' => 'Poison']);
+        $counter->setTranslations('effect', $overrides['effect'] ?? ['es' => 'Pierde 1 de vida.', 'en' => 'Lose 1 health.']);
+        $counter->type = $overrides['type'] ?? 'bane';
+        $counter->is_published = $overrides['is_published'] ?? true;
+        $counter->save();
+
+        return $counter;
     }
 
     /** Modo de juego mínimo. */
@@ -215,8 +243,8 @@ if (! function_exists('ensurePublicApiRoutes')) {
     {
         $deck = new FactionDeck;
         $deck->setTranslations('name', $overrides['name'] ?? ['es' => 'Mazo inicial', 'en' => 'Starter deck']);
-        $deck->setTranslations('description', ['es' => '<p>Para empezar.</p>', 'en' => '<p>To get going.</p>']);
-        $deck->setTranslations('epic_quote', ['es' => 'Al combate', 'en' => 'To battle']);
+        $deck->setTranslations('description', $overrides['description'] ?? ['es' => '<p>Para empezar.</p>', 'en' => '<p>To get going.</p>']);
+        $deck->setTranslations('epic_quote', $overrides['epic_quote'] ?? ['es' => 'Al combate', 'en' => 'To battle']);
         $deck->game_mode_id = $overrides['game_mode_id'] ?? null;
         $deck->is_published = $overrides['is_published'] ?? true;
         $deck->save();

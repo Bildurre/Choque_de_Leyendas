@@ -28,7 +28,9 @@ class PublicCardController extends Controller
 
     /**
      * Índice filtrable. Parámetros: page, per_page (24, tope 48), search
-     * (nombre del locale), faction_id, card_type_id, card_subtype_id,
+     * (multi-campo vía scopeFilter del motor: LIKE sobre el json de cada
+     * columna de $searchable — nombre, efecto, restricción, lore y cita —
+     * en cualquier locale), faction_id, card_type_id, card_subtype_id,
      * equipment_type_id, attack_range_id, attack_subtype_id, attack_type
      * (physical|magical), area ('1'/'0'; ausente = no filtra), cost_total
      * (0..5; 0 = cartas sin coste), cost_colors (subconjunto de "RGB": la
@@ -38,11 +40,8 @@ class PublicCardController extends Controller
     public function index(Request $request)
     {
         $locale = app()->getLocale();
-        $query = Card::published();
-
-        if (($search = trim((string) $request->query('search'))) !== '') {
-            $query->where("name->{$locale}", 'like', "%{$search}%");
-        }
+        // Búsqueda multi-campo del motor (published ya lo aplica el scope propio)
+        $query = Card::published()->filter($request->only('search'));
 
         if (($factionId = (int) $request->query('faction_id')) > 0) {
             $query->ofFaction($factionId);

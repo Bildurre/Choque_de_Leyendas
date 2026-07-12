@@ -22,8 +22,10 @@ class PublicFactionDeckController extends Controller
 
     /**
      * Índice: tarjetas de mazo con modo, facciones (color) y totales.
-     * Filtros: game_mode_id y faction_id (mazos que incluyan esa facción,
-     * pivot faction_deck_faction).
+     * Filtros: search (multi-campo vía scopeFilter del motor: LIKE sobre
+     * el json de cada columna de $searchable — nombre, descripción y cita —
+     * en cualquier locale), game_mode_id y faction_id (mazos que incluyan
+     * esa facción, pivot faction_deck_faction).
      */
     public function index(Request $request)
     {
@@ -31,6 +33,8 @@ class PublicFactionDeckController extends Controller
         $sort = $request->query('sort');
 
         $query = FactionDeck::published()
+            // Búsqueda multi-campo del motor (published ya lo aplica el scope propio)
+            ->filter($request->only('search'))
             ->with(['gameMode', 'factions' => fn ($q) => $q->published()])
             ->withSum(['cards as total_cards' => fn ($q) => $q->published()], 'card_faction_deck.copies')
             ->withCount(['heroes as total_heroes' => fn ($q) => $q->published()]);

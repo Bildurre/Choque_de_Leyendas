@@ -104,7 +104,7 @@ it('combina filtros (facción + cost_colors + cost_total)', function () {
     expect($response->json('data.0.id'))->toBe($match->id);
 });
 
-it('busca por nombre en el locale activo', function () {
+it('busca por nombre', function () {
     publicCard(['name' => ['es' => 'Espada corta', 'en' => 'Short sword']]);
     publicCard(['name' => ['es' => 'Escudo', 'en' => 'Shield']]);
 
@@ -112,6 +112,29 @@ it('busca por nombre en el locale activo', function () {
 
     $response->assertJsonCount(1, 'data');
     expect($response->json('data.0.name'))->toBe('Espada corta');
+});
+
+it('busca multi-campo: casa por el efecto aunque el nombre no coincida', function () {
+    $robo = publicCard([
+        'name' => ['es' => 'Alfa', 'en' => 'Alpha'],
+        'effect' => ['es' => 'Roba una carta al rival.', 'en' => 'Steal a card from the rival.'],
+    ]);
+    publicCard([
+        'name' => ['es' => 'Beta', 'en' => 'Beta'],
+        'effect' => ['es' => 'Cura dos puntos.', 'en' => 'Heals two points.'],
+    ]);
+    // Aunque el efecto case, las no publicadas siguen fuera
+    publicCard([
+        'name' => ['es' => 'Borrador', 'en' => 'Draft'],
+        'effect' => ['es' => 'Roba al rival.', 'en' => 'Steal from the rival.'],
+        'is_published' => false,
+    ]);
+
+    $response = $this->getJson('/api/cards?search=rival')->assertOk();
+    expect(collect($response->json('data'))->pluck('id')->all())->toBe([$robo->id]);
+
+    // Lo que no está en ningún campo buscable no casa
+    expect($this->getJson('/api/cards?search=grimorio')->assertOk()->json('data'))->toBeEmpty();
 });
 
 it('pagina con per_page y lo limita a 48', function () {

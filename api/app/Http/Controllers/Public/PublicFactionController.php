@@ -17,13 +17,19 @@ class PublicFactionController extends Controller
 {
     use SortsIndex;
 
-    /** Índice: tarjetas de facción con contadores de publicados. */
+    /**
+     * Índice: tarjetas de facción con contadores de publicados. `search`
+     * es multi-campo vía scopeFilter del motor: LIKE sobre el json de cada
+     * columna de $searchable (nombre, lore y cita) en cualquier locale.
+     */
     public function index(Request $request)
     {
         $locale = app()->getLocale();
         $sort = $request->query('sort');
 
         $query = Faction::published()
+            // Búsqueda multi-campo del motor (published ya lo aplica el scope propio)
+            ->filter($request->only('search'))
             ->withCount([
                 'heroes as heroes_count' => fn ($q) => $q->published(),
                 'cards as cards_count' => fn ($q) => $q->published(),

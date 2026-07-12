@@ -25,7 +25,8 @@ class HeroClass extends Model
 
     public array $translatable = ['name', 'passive'];
 
-    protected array $searchable = ['name'];
+    /** Columnas del buscador de listados (HasFilters): LIKE sobre el json. */
+    protected array $searchable = ['name', 'passive'];
 
     /** Superclase a la que pertenece la clase. */
     public function heroSuperclass(): BelongsTo

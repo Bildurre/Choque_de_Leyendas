@@ -42,6 +42,26 @@ it('localiza el índice con ?locale', function () {
         ->and($response->json('data.0.slug'))->toBe('alliance');
 });
 
+it('busca multi-campo: casa por el lore aunque el nombre no coincida', function () {
+    $volcanica = publicFaction([
+        'name' => ['es' => 'Alianza', 'en' => 'Alliance'],
+        'lore_text' => ['es' => '<p>Forjada entre volcanes.</p>', 'en' => '<p>Forged among volcanoes.</p>'],
+    ]);
+    publicFaction(['name' => ['es' => 'Horda', 'en' => 'Horde'], 'color' => '#993333']);
+    // Aunque el lore case, las no publicadas siguen fuera
+    publicFaction([
+        'name' => ['es' => 'Borrador', 'en' => 'Draft'],
+        'lore_text' => ['es' => '<p>Más volcanes.</p>', 'en' => '<p>More volcanoes.</p>'],
+        'is_published' => false,
+    ]);
+
+    $response = $this->getJson('/api/factions?search=volcanes')->assertOk();
+    expect(collect($response->json('data'))->pluck('id')->all())->toBe([$volcanica->id]);
+
+    // Lo que no está en ningún campo buscable no casa
+    expect($this->getJson('/api/factions?search=grimorio')->assertOk()->json('data'))->toBeEmpty();
+});
+
 it('no exige autenticación', function () {
     $this->getJson('/api/factions')->assertOk();
 });

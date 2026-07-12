@@ -34,7 +34,7 @@ it('lista solo héroes publicados con la forma del catálogo y orden id desc', f
         ]);
 });
 
-it('busca por nombre en el locale activo', function () {
+it('busca por nombre', function () {
     publicHero(['name' => ['es' => 'Aritz', 'en' => 'Aritz the Bold']]);
     publicHero(['name' => ['es' => 'Beltza', 'en' => 'Beltza']]);
 
@@ -42,6 +42,26 @@ it('busca por nombre en el locale activo', function () {
 
     $response->assertJsonCount(1, 'data');
     expect($response->json('data.0.name'))->toBe('Aritz');
+});
+
+it('busca multi-campo: casa por la pasiva aunque el nombre no coincida', function () {
+    $centinela = publicHero([
+        'name' => ['es' => 'Aritz', 'en' => 'Aritz the Bold'],
+        'passive_description' => ['es' => 'Ignora las emboscadas.', 'en' => 'Ignores ambushes.'],
+    ]);
+    publicHero(['name' => ['es' => 'Beltza', 'en' => 'Beltza']]);
+    // Aunque la pasiva case, los no publicados siguen fuera
+    publicHero([
+        'name' => ['es' => 'Borrador', 'en' => 'Draft'],
+        'passive_description' => ['es' => 'También ignora emboscadas.', 'en' => 'Also ignores ambushes.'],
+        'is_published' => false,
+    ]);
+
+    $response = $this->getJson('/api/heroes?search=emboscadas')->assertOk();
+    expect(collect($response->json('data'))->pluck('id')->all())->toBe([$centinela->id]);
+
+    // Lo que no está en ningún campo buscable no casa
+    expect($this->getJson('/api/heroes?search=grimorio')->assertOk()->json('data'))->toBeEmpty();
 });
 
 it('filtra por facción, clase y raza', function () {
