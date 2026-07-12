@@ -145,3 +145,80 @@ it('ordena por nombre asc y desc con sort (contrato compartido)', function () {
             ->toBe([$cieno->id, $alfa->id, $bruma->id]);
     }
 });
+
+it('ordena por id asc con sort=oldest (contrato compartido)', function () {
+    $first = publicCard(['name' => ['es' => 'Primera', 'en' => 'First']]);
+    $second = publicCard(['name' => ['es' => 'Segunda', 'en' => 'Second']]);
+
+    $response = $this->getJson('/api/cards?sort=oldest')->assertOk();
+
+    expect(collect($response->json('data'))->pluck('id')->all())
+        ->toBe([$first->id, $second->id]);
+});
+
+it('filtra por subtipo de carta y tipo de equipo', function () {
+    $subtype = publicCardSubtype();
+    $equipment = publicEquipmentType();
+
+    $bestia = publicCard(['name' => ['es' => 'Bestia parda', 'en' => 'Brown beast'], 'card_subtype_id' => $subtype->id]);
+    $espada = publicCard(['name' => ['es' => 'Mandoble', 'en' => 'Greatsword'], 'equipment_type_id' => $equipment->id]);
+    publicCard(['name' => ['es' => 'Neutra', 'en' => 'Plain']]);
+
+    $bySubtype = $this->getJson("/api/cards?card_subtype_id={$subtype->id}")->assertOk();
+    expect(collect($bySubtype->json('data'))->pluck('id')->all())->toBe([$bestia->id]);
+
+    $byEquipment = $this->getJson("/api/cards?equipment_type_id={$equipment->id}")->assertOk();
+    expect(collect($byEquipment->json('data'))->pluck('id')->all())->toBe([$espada->id]);
+});
+
+it('filtra por rango, tipo y subtipo de ataque', function () {
+    $range = publicAttackRange();
+    $subtype = publicAttackSubtype();
+
+    $melee = publicCard(['name' => ['es' => 'Tajo', 'en' => 'Slice'], 'attack_range_id' => $range->id]);
+    $fisica = publicCard(['name' => ['es' => 'Puñetazo', 'en' => 'Punch'], 'attack_type' => 'physical']);
+    $magica = publicCard(['name' => ['es' => 'Rayo', 'en' => 'Bolt'], 'attack_type' => 'magical']);
+    $corte = publicCard(['name' => ['es' => 'Cuchillada', 'en' => 'Stab'], 'attack_subtype_id' => $subtype->id]);
+
+    $byRange = $this->getJson("/api/cards?attack_range_id={$range->id}")->assertOk();
+    expect(collect($byRange->json('data'))->pluck('id')->all())->toBe([$melee->id]);
+
+    $byType = $this->getJson('/api/cards?attack_type=physical')->assertOk();
+    expect(collect($byType->json('data'))->pluck('id')->all())->toBe([$fisica->id]);
+
+    $bySubtype = $this->getJson("/api/cards?attack_subtype_id={$subtype->id}")->assertOk();
+    expect(collect($bySubtype->json('data'))->pluck('id')->all())->toBe([$corte->id]);
+
+    // Un attack_type desconocido no filtra
+    $unknown = $this->getJson('/api/cards?attack_type=raro')->assertOk();
+    expect($unknown->json('data'))->toHaveCount(4)
+        ->and($magica->attack_type)->toBe('magical');
+});
+
+it('filtra por area con 1/0 y lo ignora si no viene', function () {
+    $conArea = publicCard(['name' => ['es' => 'Explosión', 'en' => 'Blast'], 'area' => true]);
+    $sinArea = publicCard(['name' => ['es' => 'Dardo', 'en' => 'Dart'], 'area' => false]);
+
+    $si = $this->getJson('/api/cards?area=1')->assertOk();
+    expect(collect($si->json('data'))->pluck('id')->all())->toBe([$conArea->id]);
+
+    $no = $this->getJson('/api/cards?area=0')->assertOk();
+    expect(collect($no->json('data'))->pluck('id')->all())->toBe([$sinArea->id]);
+
+    // Ausente (o un valor raro): no filtra
+    foreach (['/api/cards', '/api/cards?area=raro'] as $url) {
+        expect($this->getJson($url)->assertOk()->json('data'))->toHaveCount(2);
+    }
+});
+
+it('cost_total=0 devuelve las cartas sin coste', function () {
+    $gratis = publicCard(['name' => ['es' => 'Gratis', 'en' => 'Free'], 'cost' => null]);
+    publicCard(['name' => ['es' => 'Cara', 'en' => 'Pricey'], 'cost' => 'RGB']);
+
+    $response = $this->getJson('/api/cards?cost_total=0')->assertOk();
+
+    expect(collect($response->json('data'))->pluck('id')->all())->toBe([$gratis->id]);
+
+    // Y sin cost_total no se filtra nada
+    expect($this->getJson('/api/cards')->assertOk()->json('data'))->toHaveCount(2);
+});

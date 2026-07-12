@@ -37,19 +37,22 @@ use Illuminate\Support\Facades\Route;
 */
 
 /*
-| Público — web pública (facciones, mazos, índice de cartas con filtros y
-| singles de cartas/héroes). Solo lectura, sin auth, SOLO publicado; locale
-| via SetLocale (grupo api). El índice de héroes NO va aquí: lo sirve
-| /api/catalog/hero del motor (el de cartas necesita filtros de juego y por
-| eso tiene endpoint propio). Literales antes de {slug}.
+| Público — web pública (facciones, mazos, índices de cartas y héroes con
+| filtros y singles de cartas/héroes). Solo lectura, sin auth, SOLO
+| publicado; locale via SetLocale (grupo api). Los índices de cartas y
+| héroes extienden al catálogo del motor (/api/catalog/{key}) con los
+| filtros de juego. Literales (filters) SIEMPRE antes de {slug}.
 */
 Route::get('factions', [PublicFactionController::class, 'index']);
 Route::get('factions/{slug}', [PublicFactionController::class, 'show']);
 Route::get('faction-decks', [PublicFactionDeckController::class, 'index']);
+Route::get('faction-decks/filters', [PublicFactionDeckController::class, 'filters']); // antes de {slug}
 Route::get('faction-decks/{slug}', [PublicFactionDeckController::class, 'show']);
 Route::get('cards', [PublicCardController::class, 'index']);
 Route::get('cards/filters', [PublicCardController::class, 'filters']); // antes de {slug}
 Route::get('cards/{slug}', [PublicCardController::class, 'show']);
+Route::get('heroes', [PublicHeroController::class, 'index']);
+Route::get('heroes/filters', [PublicHeroController::class, 'filters']); // antes de {slug}
 Route::get('heroes/{slug}', [PublicHeroController::class, 'show']);
 
 Route::middleware(['auth:sanctum', 'motor.admin', 'can:manage-game'])

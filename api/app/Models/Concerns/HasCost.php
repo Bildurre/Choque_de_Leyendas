@@ -2,6 +2,8 @@
 
 namespace App\Models\Concerns;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * Coste en dados (R/G/B) para cartas y habilidades. Columna string `cost`
  * (p. ej. "RRG"), máximo 5 dados. Se normaliza al guardar: mayúsculas, solo
@@ -43,6 +45,19 @@ trait HasCost
     public function setCostAttribute(?string $value): void
     {
         $this->attributes['cost'] = self::normalizeCost($value);
+    }
+
+    /**
+     * Filas con exactamente N dados de coste. Con N = 0 casan las que no
+     * tienen coste (la columna normalizada guarda NULL, nunca cadena vacía).
+     */
+    public function scopeCostTotal(Builder $query, int $total): Builder
+    {
+        if ($total === 0) {
+            return $query->whereNull('cost');
+        }
+
+        return $query->whereRaw('length(cost) = ?', [$total]);
     }
 
     /** Total de dados. */

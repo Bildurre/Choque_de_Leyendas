@@ -29,9 +29,9 @@ class PublicFactionController extends Controller
                 'cards as cards_count' => fn ($q) => $q->published(),
             ]);
 
-        // Contrato de `sort` (name|name_desc|latest); sin él (o con un valor
-        // desconocido) se conserva el orden histórico: nombre asc del locale.
-        if (in_array($sort, ['name', 'name_desc', 'latest'], true)) {
+        // Contrato de `sort` (name|name_desc|latest|oldest); sin él (o con un
+        // valor desconocido) se conserva el orden histórico: nombre asc del locale.
+        if (in_array($sort, self::SORTS, true)) {
             $this->applySort($query, $sort);
         } else {
             $query->orderBy("name->{$locale}");

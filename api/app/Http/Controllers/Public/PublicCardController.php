@@ -5,9 +5,14 @@ namespace App\Http\Controllers\Public;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Public\PublicCardResource;
+use App\Models\AttackRange;
+use App\Models\AttackSubtype;
 use App\Models\Card;
+use App\Models\CardSubtype;
 use App\Models\CardType;
+use App\Models\EquipmentType;
 use App\Models\Faction;
+use App\Support\GameIcons;
 use Edc\Core\Previews\CatalogItem;
 use Illuminate\Http\Request;
 
@@ -23,10 +28,12 @@ class PublicCardController extends Controller
 
     /**
      * Índice filtrable. Parámetros: page, per_page (24, tope 48), search
-     * (nombre del locale), faction_id, card_type_id, cost_total (1..5),
-     * cost_colors (subconjunto de "RGB": la carta debe contener al menos
-     * esos dados) y sort (name|name_desc; por defecto id desc). Ítems
-     * {id, name, slug, preview}.
+     * (nombre del locale), faction_id, card_type_id, card_subtype_id,
+     * equipment_type_id, attack_range_id, attack_subtype_id, attack_type
+     * (physical|magical), area ('1'/'0'; ausente = no filtra), cost_total
+     * (0..5; 0 = cartas sin coste), cost_colors (subconjunto de "RGB": la
+     * carta debe contener al menos esos dados) y sort (name|name_desc|
+     * latest|oldest; por defecto id desc). Ítems {id, name, slug, preview}.
      */
     public function index(Request $request)
     {
@@ -45,9 +52,28 @@ class PublicCardController extends Controller
             $query->ofType($typeId);
         }
 
-        $costTotal = (int) $request->query('cost_total');
-        if ($costTotal >= 1 && $costTotal <= Card::COST_MAX) {
-            $query->costTotal($costTotal);
+        // Filtros por columna directa (ids de taxonomías del juego).
+        foreach (['card_subtype_id', 'equipment_type_id', 'attack_range_id', 'attack_subtype_id'] as $column) {
+            if (($id = (int) $request->query($column)) > 0) {
+                $query->where($column, $id);
+            }
+        }
+
+        $attackType = $request->query('attack_type');
+        if (in_array($attackType, Card::ATTACK_TYPES, true)) {
+            $query->where('attack_type', $attackType);
+        }
+
+        // area llega como '1'/'0'; ausente (o cualquier otra cosa) no filtra.
+        $area = $request->query('area');
+        if (in_array($area, ['1', '0'], true)) {
+            $query->where('area', $area === '1');
+        }
+
+        // 0 también vale: cartas sin coste (cost NULL).
+        $costTotal = $request->query('cost_total');
+        if (is_string($costTotal) && ctype_digit($costTotal) && (int) $costTotal <= Card::COST_MAX) {
+            $query->costTotal((int) $costTotal);
         }
 
         if (($colors = (string) $request->query('cost_colors')) !== '') {
@@ -72,12 +98,25 @@ class PublicCardController extends Controller
     }
 
     /**
-     * Opciones de los selects de filtro del índice: facciones publicadas y
-     * todos los tipos, con nombres YA localizados al locale de la petición.
+     * Opciones de los selects de filtro del índice: facciones publicadas,
+     * tipos (con sus flags, que deciden qué filtros aplican), subtipos,
+     * tipos de equipo, rangos y subtipos de ataque, con nombres YA
+     * localizados al locale de la petición. `icons` trae las urls de los
+     * dados del gestor de Iconos (null si no están subidos) para pintar el
+     * filtro de colores de coste.
      */
     public function filters()
     {
         $locale = app()->getLocale();
+
+        $taxonomy = fn (string $modelClass) => $modelClass::query()
+            ->orderBy("name->{$locale}")
+            ->get()
+            ->map(fn ($item) => [
+                'id' => $item->id,
+                'name' => $item->getTranslation('name', $locale),
+            ])
+            ->values();
 
         return response()->json([
             'factions' => Faction::published()
@@ -94,8 +133,16 @@ class PublicCardController extends Controller
                 ->map(fn (CardType $type) => [
                     'id' => $type->id,
                     'name' => $type->getTranslation('name', $locale),
+                    'allows_subtypes' => (bool) $type->allows_subtypes,
+                    'is_equipment' => (bool) $type->is_equipment,
                 ])
                 ->values(),
+            'subtypes' => $taxonomy(CardSubtype::class),
+            'equipment_types' => $taxonomy(EquipmentType::class),
+            'attack_ranges' => $taxonomy(AttackRange::class),
+            'attack_subtypes' => $taxonomy(AttackSubtype::class),
+            // url|null por dado; el front omite (o sustituye) los null.
+            'icons' => GameIcons::urls(['dice-red', 'dice-green', 'dice-blue']),
         ]);
     }
 

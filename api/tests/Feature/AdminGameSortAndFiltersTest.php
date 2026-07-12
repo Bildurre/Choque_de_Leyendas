@@ -107,3 +107,83 @@ it('filtra las cartas de admin por faction_id y card_type_id', function () {
         ->assertOk();
     expect($response->json('data'))->toBeEmpty();
 });
+
+it('ordena un index de admin por id asc con sort=oldest', function () {
+    $admin = motorUser('admin');
+    [$bola, $aullido, $zarpazo] = threeAbilities();
+
+    $response = $this->actingAs($admin)
+        ->getJson('/api/admin/hero-abilities?sort=oldest')
+        ->assertOk();
+    expect(array_column($response->json('data'), 'id'))
+        ->toBe([$bola->id, $aullido->id, $zarpazo->id]);
+});
+
+it('filtra las habilidades por attack_range_id y attack_subtype_id', function () {
+    $admin = motorUser('admin');
+
+    $range = publicAttackRange();
+    $subtype = publicAttackSubtype();
+
+    $melee = publicAbility(['name' => ['es' => 'Tajo', 'en' => 'Slice'], 'attack_range_id' => $range->id]);
+    $corte = publicAbility(['name' => ['es' => 'Cuchillada', 'en' => 'Stab'], 'attack_subtype_id' => $subtype->id]);
+    publicAbility(['name' => ['es' => 'Aullido', 'en' => 'Howl']]);
+
+    $response = $this->actingAs($admin)
+        ->getJson("/api/admin/hero-abilities?attack_range_id={$range->id}")
+        ->assertOk();
+    expect(array_column($response->json('data'), 'id'))->toBe([$melee->id]);
+
+    $response = $this->actingAs($admin)
+        ->getJson("/api/admin/hero-abilities?attack_subtype_id={$subtype->id}")
+        ->assertOk();
+    expect(array_column($response->json('data'), 'id'))->toBe([$corte->id]);
+});
+
+it('filtra las habilidades por area con 1/0 y lo ignora si no viene', function () {
+    $admin = motorUser('admin');
+
+    $conArea = publicAbility(['name' => ['es' => 'Explosión', 'en' => 'Blast'], 'area' => true]);
+    $sinArea = publicAbility(['name' => ['es' => 'Dardo', 'en' => 'Dart'], 'area' => false]);
+
+    $si = $this->actingAs($admin)->getJson('/api/admin/hero-abilities?area=1')->assertOk();
+    expect(array_column($si->json('data'), 'id'))->toBe([$conArea->id]);
+
+    $no = $this->actingAs($admin)->getJson('/api/admin/hero-abilities?area=0')->assertOk();
+    expect(array_column($no->json('data'), 'id'))->toBe([$sinArea->id]);
+
+    // Ausente (o un valor raro): no filtra
+    foreach (['/api/admin/hero-abilities', '/api/admin/hero-abilities?area=raro'] as $url) {
+        $response = $this->actingAs($admin)->getJson($url)->assertOk();
+        expect($response->json('data'))->toHaveCount(2);
+    }
+});
+
+it('filtra las habilidades por cost_total (longitud del cost canónico)', function () {
+    $admin = motorUser('admin');
+
+    $uno = publicAbility(['name' => ['es' => 'Barato', 'en' => 'Cheap'], 'cost' => 'R']);
+    $tres = publicAbility(['name' => ['es' => 'Caro', 'en' => 'Pricey'], 'cost' => 'RGB']);
+
+    $response = $this->actingAs($admin)
+        ->getJson('/api/admin/hero-abilities?cost_total=1')
+        ->assertOk();
+    expect(array_column($response->json('data'), 'id'))->toBe([$uno->id]);
+
+    $response = $this->actingAs($admin)
+        ->getJson('/api/admin/hero-abilities?cost_total=3')
+        ->assertOk();
+    expect(array_column($response->json('data'), 'id'))->toBe([$tres->id]);
+
+    // cost_total=0 (sin coste) no casa con ninguna: el coste es obligatorio
+    $response = $this->actingAs($admin)
+        ->getJson('/api/admin/hero-abilities?cost_total=0')
+        ->assertOk();
+    expect($response->json('data'))->toBeEmpty();
+
+    // Fuera de rango (>5) o no numérico: no filtra
+    foreach (['/api/admin/hero-abilities?cost_total=6', '/api/admin/hero-abilities?cost_total=raro'] as $url) {
+        $response = $this->actingAs($admin)->getJson($url)->assertOk();
+        expect($response->json('data'))->toHaveCount(2);
+    }
+});

@@ -1,28 +1,41 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Search, SlidersHorizontal } from '@lucide/vue'
-import { PreviewGrid, type CatalogItem, type PreviewGridItem } from '@edc-motor/ui'
+import { BaseSelect, PreviewGrid, type CatalogItem, type PreviewGridItem } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
+import IndexFilters from '@/components/index/IndexFilters.vue'
 import { useIndexPage } from '@/entities/indexPage'
-import { SORT_LABEL_KEYS, SORT_OPTIONS, parseSort, type SortOption } from '@/entities/catalogSort'
+import { useFiltersQuery } from '@/entities/filtersQuery'
+import { parseSort, type SortOption } from '@/entities/catalogSort'
 
-// Índice público de cartas con filtros avanzados: rejilla de previews sobre
-// GET /api/cards (misma forma items+meta que el catálogo genérico) con
-// búsqueda (debounce), select de facción y tipo (opciones ya localizadas de
-// GET /api/cards/filters), nº de dados del coste (1..5 → cost_total),
-// colores del coste (toggles R/G/B → cost_colors tipo "RG") y select de
-// orden (?sort del contrato del catálogo). Los filtros y el orden viven en
-// la query string (URLs compartibles y botón atrás): la UI empuja el estado
-// a la URL con router.replace y ES el cambio de query el que dispara la
-// recarga. En móvil la barra de filtros se colapsa tras el botón "Filtros".
+// Índice público de cartas: rejilla de previews sobre GET /api/cards con
+// búsqueda (debounce), filtros de juego (opciones ya localizadas de
+// GET /api/cards/filters) y orden por toggles. Facción, tipo, subtipo,
+// dados del coste (0..5, 0 = sin coste) y colores (toggles R/G/B con los
+// iconos de los dados del gestor) siempre; según los flags del tipo
+// elegido se añaden tipo de equipo (is_equipment) y rango/tipo/subtipo de
+// ataque + área (allows_subtypes). Todo vive en la query string
+// (useFiltersQuery): la UI empuja el estado a la URL y ES el cambio de
+// query el que dispara la recarga.
 const COLORS = ['R', 'G', 'B'] as const
 type CostColor = (typeof COLORS)[number]
+
+// Iconos de los dados por color (url del gestor o null -> punto coloreado).
+const COLOR_ICON_KEYS: Record<CostColor, string> = {
+  R: 'dice-red',
+  G: 'dice-green',
+  B: 'dice-blue',
+}
 
 interface FilterOption {
   id: number
   name: string
+}
+
+interface TypeOption extends FilterOption {
+  allows_subtypes: boolean
+  is_equipment: boolean
 }
 
 const { t } = useI18n()
@@ -38,18 +51,167 @@ const total = ref(0)
 const search = ref('')
 const factionId = ref('')
 const typeId = ref('')
-const dice = ref('')
+const subtypeId = ref('')
+const equipmentTypeId = ref('')
+const attackRangeId = ref('')
+const attackSubtypeId = ref('')
 const colors = ref<CostColor[]>([])
-const sort = ref<SortOption>('latest')
-const filtersOpen = ref(false)
+
+// Campos con dominio cerrado: computed con setter que sanea (un valor
+// inválido pegado en la URL cae al canónico y el watcher limpia la query).
+const diceRaw = ref('')
+const dice = computed({
+  get: () => diceRaw.value,
+  set: (value: string) => {
+    diceRaw.value = /^[0-5]$/.test(value) ? value : ''
+  },
+})
+
+const attackTypeRaw = ref('')
+const attackType = computed({
+  get: () => attackTypeRaw.value,
+  set: (value: string) => {
+    attackTypeRaw.value = ['physical', 'magical'].includes(value) ? value : ''
+  },
+})
+
+const areaRaw = ref('')
+const area = computed({
+  get: () => areaRaw.value,
+  set: (value: string) => {
+    areaRaw.value = ['1', '0'].includes(value) ? value : ''
+  },
+})
+
+const colorsParam = computed({
+  get: () => colors.value.join(''),
+  set: (value: string) => {
+    const upper = value.toUpperCase()
+    colors.value = COLORS.filter((color) => upper.includes(color))
+  },
+})
+
+// Orden: 'latest' es el default del índice (fuera de la URL).
+const sortRaw = ref('')
+const sort = computed<SortOption>({
+  get: () => parseSort(sortRaw.value),
+  set: (value) => {
+    sortRaw.value = value === 'latest' ? '' : value
+  },
+})
+
+// Estado <-> query string (URLs compartibles, botón atrás).
+const { queryToState, pushQuery } = useFiltersQuery({
+  route,
+  router,
+  search,
+  page,
+  fields: {
+    faction: factionId,
+    type: typeId,
+    subtype: subtypeId,
+    equip: equipmentTypeId,
+    range: attackRangeId,
+    atk: attackType,
+    asub: attackSubtypeId,
+    area,
+    dice,
+    colors: colorsParam,
+    sort: sortRaw,
+  },
+})
 
 // Opciones de los selects (localizadas por el server; se recargan por locale).
 const factionOptions = ref<FilterOption[]>([])
-const typeOptions = ref<FilterOption[]>([])
+const typeOptions = ref<TypeOption[]>([])
+const subtypeOptions = ref<FilterOption[]>([])
+const equipmentTypeOptions = ref<FilterOption[]>([])
+const attackRangeOptions = ref<FilterOption[]>([])
+const attackSubtypeOptions = ref<FilterOption[]>([])
+const diceIcons = ref<Record<string, string | null>>({})
+
+/** Opciones de BaseSelect con el "todos" delante. */
+function withAll(options: FilterOption[], allLabel: string) {
+  return [
+    { value: '', label: allLabel },
+    ...options.map((option) => ({ value: String(option.id), label: option.name })),
+  ]
+}
+
+const factionSelect = computed(() =>
+  withAll(factionOptions.value, t('catalog.filters.allFactions')),
+)
+const typeSelect = computed(() => withAll(typeOptions.value, t('catalog.filters.allTypes')))
+const subtypeSelect = computed(() =>
+  withAll(subtypeOptions.value, t('catalog.filters.allSubtypes')),
+)
+const equipmentTypeSelect = computed(() =>
+  withAll(equipmentTypeOptions.value, t('catalog.filters.allEquipmentTypes')),
+)
+const attackRangeSelect = computed(() =>
+  withAll(attackRangeOptions.value, t('catalog.filters.allAttackRanges')),
+)
+const attackSubtypeSelect = computed(() =>
+  withAll(attackSubtypeOptions.value, t('catalog.filters.allAttackSubtypes')),
+)
+
+const attackTypeSelect = computed(() => [
+  { value: '', label: t('catalog.filters.allAttackTypes') },
+  { value: 'physical', label: t('catalog.filters.attackPhysical') },
+  { value: 'magical', label: t('catalog.filters.attackMagical') },
+])
+
+const areaSelect = computed(() => [
+  { value: '', label: t('catalog.filters.areaAll') },
+  { value: '1', label: t('catalog.filters.areaYes') },
+  { value: '0', label: t('catalog.filters.areaNo') },
+])
+
+// Dados del coste: 0 (sin coste) también filtra.
+const diceSelect = computed(() => [
+  { value: '', label: t('catalog.filters.anyDice') },
+  { value: '0', label: t('catalog.filters.noCost') },
+  ...[1, 2, 3, 4, 5].map((n) => ({
+    value: String(n),
+    label: t('singles.deck.dice', { count: n }, n),
+  })),
+])
+
+// Filtros condicionales según los flags del tipo elegido.
+const selectedType = computed(
+  () => typeOptions.value.find((option) => String(option.id) === typeId.value) ?? null,
+)
+const showEquipment = computed(() => !!selectedType.value?.is_equipment)
+const showAttack = computed(() => !!selectedType.value?.allows_subtypes)
+
+// Al cambiar de tipo se limpian los condicionales que dejen de aplicar
+// (también al cargar las opciones, para sanear URLs pegadas).
+watch([selectedType, typeOptions], () => {
+  if (!typeOptions.value.length) return
+  if (!showEquipment.value) equipmentTypeId.value = ''
+  if (!showAttack.value) {
+    attackRangeId.value = ''
+    attackType.value = ''
+    attackSubtypeId.value = ''
+    area.value = ''
+  }
+})
 
 // Nº de filtros activos (badge del botón móvil y botón de limpiar).
 const activeFilters = computed(
-  () => [factionId.value, typeId.value, dice.value, colors.value.join('')].filter(Boolean).length,
+  () =>
+    [
+      factionId.value,
+      typeId.value,
+      subtypeId.value,
+      equipmentTypeId.value,
+      attackRangeId.value,
+      attackType.value,
+      attackSubtypeId.value,
+      area.value,
+      dice.value,
+      colorsParam.value,
+    ].filter((value) => value !== '').length,
 )
 
 function itemRoute(item: CatalogItem) {
@@ -64,51 +226,6 @@ function itemRoute(item: CatalogItem) {
   }
 }
 
-// --- Sincronización estado <-> query string (URLs compartibles) ---
-
-function stateToQuery(): Record<string, string> {
-  const query: Record<string, string> = {}
-  if (search.value.trim()) query.search = search.value.trim()
-  if (factionId.value) query.faction = factionId.value
-  if (typeId.value) query.type = typeId.value
-  if (dice.value) query.dice = dice.value
-  if (colors.value.length) query.colors = colors.value.join('')
-  if (sort.value !== 'latest') query.sort = sort.value
-  if (page.value > 1) query.page = String(page.value)
-  return query
-}
-
-function queryToState() {
-  const q = route.query
-  const searchQ = typeof q.search === 'string' ? q.search : ''
-  // No pisar el input mientras se escribe (la query guarda el valor sin espacios).
-  if (search.value.trim() !== searchQ) search.value = searchQ
-  factionId.value = typeof q.faction === 'string' ? q.faction : ''
-  typeId.value = typeof q.type === 'string' ? q.type : ''
-  const diceQ = Number(q.dice)
-  dice.value = diceQ >= 1 && diceQ <= 5 ? String(diceQ) : ''
-  const colorsQ = typeof q.colors === 'string' ? q.colors.toUpperCase() : ''
-  const parsed = COLORS.filter((color) => colorsQ.includes(color))
-  if (parsed.join('') !== colors.value.join('')) colors.value = parsed
-  sort.value = parseSort(q.sort)
-  page.value = Math.max(1, Number(q.page) || 1)
-}
-
-/** true si el estado ya coincide con la query de la URL (nada que empujar). */
-function inSyncWithUrl(): boolean {
-  const target = stateToQuery()
-  return ['search', 'faction', 'type', 'dice', 'colors', 'sort', 'page'].every((key) => {
-    const current = route.query[key]
-    return (target[key] ?? '') === (typeof current === 'string' ? current : '')
-  })
-}
-
-/** Empuja el estado a la URL; cambiar un filtro resetea a la página 1. */
-function pushQuery(resetPage = true) {
-  if (resetPage) page.value = 1
-  router.replace({ query: stateToQuery() })
-}
-
 // --- Cargas ---
 
 async function loadFilters() {
@@ -117,9 +234,23 @@ async function loadFilters() {
     const payload = data?.data ?? data ?? {}
     factionOptions.value = Array.isArray(payload.factions) ? payload.factions : []
     typeOptions.value = Array.isArray(payload.types) ? payload.types : []
+    subtypeOptions.value = Array.isArray(payload.subtypes) ? payload.subtypes : []
+    equipmentTypeOptions.value = Array.isArray(payload.equipment_types)
+      ? payload.equipment_types
+      : []
+    attackRangeOptions.value = Array.isArray(payload.attack_ranges) ? payload.attack_ranges : []
+    attackSubtypeOptions.value = Array.isArray(payload.attack_subtypes)
+      ? payload.attack_subtypes
+      : []
+    diceIcons.value = payload.icons ?? {}
   } catch {
     factionOptions.value = []
     typeOptions.value = []
+    subtypeOptions.value = []
+    equipmentTypeOptions.value = []
+    attackRangeOptions.value = []
+    attackSubtypeOptions.value = []
+    diceIcons.value = {}
   }
 }
 
@@ -134,8 +265,15 @@ async function load() {
         search: search.value.trim() || undefined,
         faction_id: factionId.value || undefined,
         card_type_id: typeId.value || undefined,
-        cost_total: dice.value || undefined,
-        cost_colors: colors.value.join('') || undefined,
+        card_subtype_id: subtypeId.value || undefined,
+        equipment_type_id: equipmentTypeId.value || undefined,
+        attack_range_id: attackRangeId.value || undefined,
+        attack_type: attackType.value || undefined,
+        attack_subtype_id: attackSubtypeId.value || undefined,
+        area: area.value || undefined,
+        // cost_total admite 0 (cartas sin coste): '' es el único "no filtra".
+        cost_total: dice.value === '' ? undefined : dice.value,
+        cost_colors: colorsParam.value || undefined,
         sort: sort.value === 'latest' ? undefined : sort.value,
       },
     })
@@ -155,22 +293,6 @@ async function load() {
 
 // --- Interacciones ---
 
-// Búsqueda con debounce: al parar de teclear se empuja a la query.
-let debounce: ReturnType<typeof setTimeout> | undefined
-watch(search, (value) => {
-  clearTimeout(debounce)
-  if (value.trim() === (typeof route.query.search === 'string' ? route.query.search : '')) return
-  debounce = setTimeout(() => pushQuery(), 350)
-})
-onBeforeUnmount(() => clearTimeout(debounce))
-
-// Selects y toggles (orden incluido): a la query al momento (resetean a
-// página 1). El guard evita re-empujar cuando el cambio viene de la propia
-// URL (queryToState).
-watch([factionId, typeId, dice, colors, sort], () => {
-  if (!inSyncWithUrl()) pushQuery()
-})
-
 function toggleColor(color: CostColor) {
   colors.value = colors.value.includes(color)
     ? colors.value.filter((c) => c !== color)
@@ -180,6 +302,12 @@ function toggleColor(color: CostColor) {
 function clearFilters() {
   factionId.value = ''
   typeId.value = ''
+  subtypeId.value = ''
+  equipmentTypeId.value = ''
+  attackRangeId.value = ''
+  attackType.value = ''
+  attackSubtypeId.value = ''
+  area.value = ''
   dice.value = ''
   colors.value = []
 }
@@ -210,94 +338,67 @@ watch(() => locales.current, loadFilters, { immediate: true })
   <main v-if="section" class="catalog-index cards-index">
     <header class="catalog-index__header">
       <h1 class="catalog-index__title">{{ t(section.titleKey) }}</h1>
-
-      <div class="cards-index__controls">
-        <label class="catalog-index__search">
-          <Search :size="16" class="catalog-index__search-icon" aria-hidden="true" />
-          <input
-            v-model="search"
-            type="search"
-            class="catalog-index__search-input"
-            :placeholder="t('catalog.searchPlaceholder')"
-            :aria-label="t('catalog.search')"
-          />
-        </label>
-
-        <!-- En móvil los filtros se colapsan tras este botón -->
-        <button
-          type="button"
-          class="cards-index__toggle"
-          :aria-expanded="filtersOpen"
-          aria-controls="cards-filters"
-          @click="filtersOpen = !filtersOpen"
-        >
-          <SlidersHorizontal :size="16" aria-hidden="true" />
-          {{ t('catalog.filters.toggle') }}
-          <span v-if="activeFilters" class="cards-index__toggle-count">{{ activeFilters }}</span>
-        </button>
-      </div>
-
-      <p v-if="!loading && items.length" class="catalog-index__count">
-        {{ t('catalog.results', { count: total }, total) }}
-      </p>
     </header>
 
-    <!-- Barra de filtros (siempre visible en escritorio) -->
-    <form
-      id="cards-filters"
-      class="cards-filters"
-      :class="{ 'cards-filters--open': filtersOpen }"
-      @submit.prevent
+    <IndexFilters
+      v-model:search="search"
+      v-model:sort="sort"
+      :count="activeFilters"
+      panel-id="cards-filters"
+      @clear="clearFilters"
     >
-      <label class="cards-filters__field">
-        <span class="cards-filters__label">{{ t('catalog.filters.faction') }}</span>
-        <select v-model="factionId" class="cards-filters__select">
-          <option value="">{{ t('catalog.filters.allFactions') }}</option>
-          <option v-for="option in factionOptions" :key="option.id" :value="String(option.id)">
-            {{ option.name }}
-          </option>
-        </select>
-      </label>
+      <BaseSelect
+        v-model="factionId"
+        :label="t('catalog.filters.faction')"
+        :options="factionSelect"
+      />
+      <BaseSelect v-model="typeId" :label="t('catalog.filters.type')" :options="typeSelect" />
+      <BaseSelect
+        v-model="subtypeId"
+        :label="t('catalog.filters.subtype')"
+        :options="subtypeSelect"
+      />
 
-      <label class="cards-filters__field">
-        <span class="cards-filters__label">{{ t('catalog.filters.type') }}</span>
-        <select v-model="typeId" class="cards-filters__select">
-          <option value="">{{ t('catalog.filters.allTypes') }}</option>
-          <option v-for="option in typeOptions" :key="option.id" :value="String(option.id)">
-            {{ option.name }}
-          </option>
-        </select>
-      </label>
+      <!-- Condicionales del tipo elegido (flags del endpoint de filtros) -->
+      <BaseSelect
+        v-if="showEquipment"
+        v-model="equipmentTypeId"
+        :label="t('catalog.filters.equipmentType')"
+        :options="equipmentTypeSelect"
+      />
+      <template v-if="showAttack">
+        <!-- Orden canónico: rango · tipo · subtipo · área -->
+        <BaseSelect
+          v-model="attackRangeId"
+          :label="t('catalog.filters.attackRange')"
+          :options="attackRangeSelect"
+        />
+        <BaseSelect
+          v-model="attackType"
+          :label="t('catalog.filters.attackType')"
+          :options="attackTypeSelect"
+        />
+        <BaseSelect
+          v-model="attackSubtypeId"
+          :label="t('catalog.filters.attackSubtype')"
+          :options="attackSubtypeSelect"
+        />
+        <BaseSelect v-model="area" :label="t('catalog.filters.area')" :options="areaSelect" />
+      </template>
 
-      <label class="cards-filters__field cards-filters__field--dice">
-        <span class="cards-filters__label">{{ t('catalog.filters.dice') }}</span>
-        <select v-model="dice" class="cards-filters__select">
-          <option value="">{{ t('catalog.filters.anyDice') }}</option>
-          <option v-for="n in 5" :key="n" :value="String(n)">
-            {{ t('singles.deck.dice', { count: n }, n) }}
-          </option>
-        </select>
-      </label>
+      <BaseSelect v-model="dice" :label="t('catalog.filters.dice')" :options="diceSelect" />
 
-      <label class="cards-filters__field cards-filters__field--sort">
-        <span class="cards-filters__label">{{ t('catalog.sort.label') }}</span>
-        <select v-model="sort" class="cards-filters__select">
-          <option v-for="option in SORT_OPTIONS" :key="option" :value="option">
-            {{ t(SORT_LABEL_KEYS[option]) }}
-          </option>
-        </select>
-      </label>
-
-      <fieldset class="cards-filters__colors">
-        <legend class="cards-filters__label">{{ t('catalog.filters.colors') }}</legend>
-        <div class="cards-filters__toggles">
+      <!-- Colores del coste: toggles con el icono del dado (o punto de color) -->
+      <div class="index-filters__field">
+        <span class="index-filters__label">{{ t('catalog.filters.colors') }}</span>
+        <div class="index-filters__colors" role="group" :aria-label="t('catalog.filters.colors')">
           <button
             v-for="color in COLORS"
             :key="color"
             type="button"
-            class="cards-filters__color"
+            class="index-filters__color"
             :class="[
-              `cards-filters__color--${color.toLowerCase()}`,
+              `index-filters__color--${color.toLowerCase()}`,
               { 'is-active': colors.includes(color) },
             ]"
             :aria-pressed="colors.includes(color)"
@@ -305,15 +406,21 @@ watch(() => locales.current, loadFilters, { immediate: true })
             :title="t(`catalog.filters.color${color}`)"
             @click="toggleColor(color)"
           >
-            {{ color }}
+            <img
+              v-if="diceIcons[COLOR_ICON_KEYS[color]]"
+              :src="diceIcons[COLOR_ICON_KEYS[color]] ?? undefined"
+              alt=""
+              class="index-filters__color-icon"
+            />
+            <span v-else class="index-filters__color-dot" aria-hidden="true"></span>
           </button>
         </div>
-      </fieldset>
+      </div>
+    </IndexFilters>
 
-      <button v-if="activeFilters" type="button" class="cards-filters__clear" @click="clearFilters">
-        {{ t('catalog.filters.clear') }}
-      </button>
-    </form>
+    <p v-if="!loading && items.length" class="catalog-index__count">
+      {{ t('catalog.results', { count: total }, total) }}
+    </p>
 
     <p v-if="loading && !items.length" class="catalog-index__loading" role="status">
       {{ t('catalog.loading') }}

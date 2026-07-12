@@ -715,7 +715,14 @@
       "magical": "Magical"
     },
     "filters": {
-      "allAttackTypes": "All attack types"
+      "allAttackTypes": "All attack types",
+      "allAttackRanges": "All attack ranges",
+      "allAttackSubtypes": "All attack subtypes",
+      "allAreas": "Area: all",
+      "areaYes": "With area",
+      "areaNo": "Without area",
+      "allCosts": "Any cost",
+      "dice": "{n} die | {n} dice"
     },
     "confirmDelete": {
       "title": "Move to trash",

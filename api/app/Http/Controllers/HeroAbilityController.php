@@ -18,14 +18,35 @@ class HeroAbilityController extends Controller
     public function index(Request $request)
     {
         $attackType = $request->query('attack_type');
+        $area = $request->query('area');
+        $costTotal = $request->query('cost_total');
 
         $abilities = HeroAbility::query()
             ->with(['attackRange', 'attackSubtype'])
             ->filter($request->only('search', 'status'))
-            // Filtro por tipo de ataque del listado (select junto a la búsqueda).
+            // Filtros del listado (selects junto a la búsqueda). Los valores
+            // desconocidos o ausentes se ignoran (no filtran).
             ->when(
                 in_array($attackType, HeroAbility::ATTACK_TYPES, true),
                 fn ($query) => $query->where('attack_type', $attackType),
+            )
+            ->when(
+                $request->filled('attack_range_id'),
+                fn ($query) => $query->where('attack_range_id', $request->integer('attack_range_id')),
+            )
+            ->when(
+                $request->filled('attack_subtype_id'),
+                fn ($query) => $query->where('attack_subtype_id', $request->integer('attack_subtype_id')),
+            )
+            // area llega como '1'/'0'; ausente = no filtra.
+            ->when(
+                in_array($area, ['1', '0'], true),
+                fn ($query) => $query->where('area', $area === '1'),
+            )
+            // cost_total = longitud del cost canónico (0..5).
+            ->when(
+                is_string($costTotal) && ctype_digit($costTotal) && (int) $costTotal <= HeroAbility::COST_MAX,
+                fn ($query) => $query->costTotal((int) $costTotal),
             )
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);

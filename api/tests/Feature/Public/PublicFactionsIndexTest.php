@@ -45,3 +45,21 @@ it('localiza el índice con ?locale', function () {
 it('no exige autenticación', function () {
     $this->getJson('/api/factions')->assertOk();
 });
+
+it('ordena con el contrato de sort, incluido oldest', function () {
+    $bravo = publicFaction(['name' => ['es' => 'Bravo', 'en' => 'Bravo']]);
+    $alfa = publicFaction(['name' => ['es' => 'Alfa', 'en' => 'Alpha']]);
+
+    // Sin sort: orden histórico, nombre asc del locale
+    $default = $this->getJson('/api/factions')->assertOk();
+    expect(collect($default->json('data'))->pluck('id')->all())->toBe([$alfa->id, $bravo->id]);
+
+    $oldest = $this->getJson('/api/factions?sort=oldest')->assertOk();
+    expect(collect($oldest->json('data'))->pluck('id')->all())->toBe([$bravo->id, $alfa->id]);
+
+    $latest = $this->getJson('/api/factions?sort=latest')->assertOk();
+    expect(collect($latest->json('data'))->pluck('id')->all())->toBe([$alfa->id, $bravo->id]);
+
+    $desc = $this->getJson('/api/factions?sort=name_desc')->assertOk();
+    expect(collect($desc->json('data'))->pluck('id')->all())->toBe([$bravo->id, $alfa->id]);
+});

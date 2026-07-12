@@ -144,12 +144,6 @@ class Card extends Model implements HasMedia, PreviewableContract
         return $query->where('card_type_id', $cardTypeId);
     }
 
-    /** Cartas con exactamente N dados de coste (cost NULL nunca casa). */
-    public function scopeCostTotal(Builder $query, int $total): Builder
-    {
-        return $query->whereRaw('length(cost) = ?', [$total]);
-    }
-
     /**
      * Cartas cuyo coste contiene AL MENOS un dado de cada color pedido
      * ("RG" = al menos un rojo y un verde, con los que sea de más). Como

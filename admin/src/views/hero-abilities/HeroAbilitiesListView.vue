@@ -1,10 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BaseSelect, BaseTabs } from '@edc-motor/ui'
+import { api } from '@/lib/api'
 import { useEntityList } from '@/composables/useEntityList'
-import type { HeroAbility } from '@juego/shared'
+import type { HeroAbility, TaxonomyOption } from '@juego/shared'
 import HeroAbilityFormModal from '@/components/hero-abilities/HeroAbilityFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import SortSelect from '@/components/SortSelect.vue'
@@ -12,7 +13,8 @@ import CostDice from '@/components/game/CostDice.vue'
 
 // Habilidades activas: sin single ni publicación (tabs all/trashed); la API
 // resuelve por id y la edición rellena desde el ítem del listado. El listado
-// filtra por tipo de ataque con un select en la barra de búsqueda.
+// filtra por tipo/rango/subtipo de ataque, área y coste total con selects en
+// la barra de búsqueda (mecanismo `filters` de useEntityList).
 const {
   t,
   items,
@@ -50,6 +52,50 @@ const attackTypeOptions = computed(() => [
   { value: 'magical', label: t('heroAbilities.attackTypes.magical') },
 ])
 
+// Taxonomías de los selects de rango/subtipo (mismos options del modal).
+const attackRanges = ref<TaxonomyOption[]>([])
+const attackSubtypes = ref<TaxonomyOption[]>([])
+
+async function loadFilterOptions() {
+  try {
+    const [ranges, subtypes] = await Promise.all([
+      api.get('/admin/attack-ranges/options'),
+      api.get('/admin/attack-subtypes/options'),
+    ])
+    attackRanges.value = ranges.data.data
+    attackSubtypes.value = subtypes.data.data
+  } catch {
+    attackRanges.value = []
+    attackSubtypes.value = []
+  }
+}
+
+const attackRangeOptions = computed(() => [
+  { value: '', label: t('heroAbilities.filters.allAttackRanges') },
+  ...attackRanges.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
+])
+
+const attackSubtypeOptions = computed(() => [
+  { value: '', label: t('heroAbilities.filters.allAttackSubtypes') },
+  ...attackSubtypes.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
+])
+
+// area viaja como '1'/'0' ('' = no filtra), contrato del endpoint.
+const areaOptions = computed(() => [
+  { value: '', label: t('heroAbilities.filters.allAreas') },
+  { value: '1', label: t('heroAbilities.filters.areaYes') },
+  { value: '0', label: t('heroAbilities.filters.areaNo') },
+])
+
+// cost_total 1..5: el coste de una habilidad es obligatorio, 0 no existe.
+const costOptions = computed(() => [
+  { value: '', label: t('heroAbilities.filters.allCosts') },
+  ...[1, 2, 3, 4, 5].map((n) => ({
+    value: String(n),
+    label: t('heroAbilities.filters.dice', { n }, n),
+  })),
+])
+
 /** Tipado completo en orden canónico: rango · tipo · subtipo · área. */
 function typing(a: HeroAbility): string {
   const parts: string[] = []
@@ -60,7 +106,10 @@ function typing(a: HeroAbility): string {
   return parts.join(' · ')
 }
 
-onMounted(init)
+onMounted(() => {
+  init()
+  loadFilterOptions()
+})
 </script>
 
 <!-- eslint-disable vue/no-v-html -- HTML del WYSIWYG propio (sanitización en servidor) -->
@@ -75,7 +124,12 @@ onMounted(init)
 
     <!-- Filtros por encima de las tabs (estilo kontuan) -->
     <FilterBar v-model="search" :placeholder="t('common.search')">
+      <!-- Orden canónico del tipado: rango · tipo · subtipo · área -->
+      <BaseSelect v-model="filters.attack_range_id" :options="attackRangeOptions" />
       <BaseSelect v-model="filters.attack_type" :options="attackTypeOptions" />
+      <BaseSelect v-model="filters.attack_subtype_id" :options="attackSubtypeOptions" />
+      <BaseSelect v-model="filters.area" :options="areaOptions" />
+      <BaseSelect v-model="filters.cost_total" :options="costOptions" />
       <SortSelect v-model="sort" />
     </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />

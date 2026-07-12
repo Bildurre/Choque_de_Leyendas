@@ -3,6 +3,14 @@
 // Listado de habilidades activas: el coste se pinta con CostDice (iconos del
 // gestor o letras coloreadas, componente compartido).
 .hero-abilities {
+  // Seis selects en la barra de filtros: la cola envuelve en vez de
+  // desbordar por la derecha (el flex-shrink: 0 del kit se queda corto).
+  .filter-bar__extra {
+    flex-wrap: wrap;
+    flex-shrink: 1;
+    min-width: 0;
+  }
+
   // HTML de la descripción en el panel derecho (teleportado; selector plano).
   &__description {
     margin-top: $space-2;

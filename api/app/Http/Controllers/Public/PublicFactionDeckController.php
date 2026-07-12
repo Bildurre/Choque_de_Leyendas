@@ -6,7 +6,9 @@ use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Public\PublicFactionDeckItemResource;
 use App\Http\Resources\Public\PublicFactionDeckResource;
+use App\Models\Faction;
 use App\Models\FactionDeck;
+use App\Models\GameMode;
 use Illuminate\Http\Request;
 
 /**
@@ -18,7 +20,11 @@ class PublicFactionDeckController extends Controller
 {
     use SortsIndex;
 
-    /** Índice: tarjetas de mazo con modo, facciones (color) y totales. */
+    /**
+     * Índice: tarjetas de mazo con modo, facciones (color) y totales.
+     * Filtros: game_mode_id y faction_id (mazos que incluyan esa facción,
+     * pivot faction_deck_faction).
+     */
     public function index(Request $request)
     {
         $locale = app()->getLocale();
@@ -29,15 +35,53 @@ class PublicFactionDeckController extends Controller
             ->withSum(['cards as total_cards' => fn ($q) => $q->published()], 'card_faction_deck.copies')
             ->withCount(['heroes as total_heroes' => fn ($q) => $q->published()]);
 
-        // Contrato de `sort` (name|name_desc|latest); sin él (o con un valor
-        // desconocido) se conserva el orden histórico: nombre asc del locale.
-        if (in_array($sort, ['name', 'name_desc', 'latest'], true)) {
+        if (($modeId = (int) $request->query('game_mode_id')) > 0) {
+            $query->where('game_mode_id', $modeId);
+        }
+
+        if (($factionId = (int) $request->query('faction_id')) > 0) {
+            $query->whereHas('factions', fn ($q) => $q->where('factions.id', $factionId));
+        }
+
+        // Contrato de `sort` (name|name_desc|latest|oldest); sin él (o con un
+        // valor desconocido) se conserva el orden histórico: nombre asc del locale.
+        if (in_array($sort, self::SORTS, true)) {
             $this->applySort($query, $sort);
         } else {
             $query->orderBy("name->{$locale}");
         }
 
         return PublicFactionDeckItemResource::collection($query->get());
+    }
+
+    /**
+     * Opciones de los selects de filtro del índice: modos de juego y
+     * facciones publicadas (con color), con nombres YA localizados al
+     * locale de la petición.
+     */
+    public function filters()
+    {
+        $locale = app()->getLocale();
+
+        return response()->json([
+            'modes' => GameMode::query()
+                ->orderBy("name->{$locale}")
+                ->get()
+                ->map(fn (GameMode $mode) => [
+                    'id' => $mode->id,
+                    'name' => $mode->getTranslation('name', $locale),
+                ])
+                ->values(),
+            'factions' => Faction::published()
+                ->orderBy("name->{$locale}")
+                ->get()
+                ->map(fn (Faction $faction) => [
+                    'id' => $faction->id,
+                    'name' => $faction->getTranslation('name', $locale),
+                    'color' => $faction->color,
+                ])
+                ->values(),
+        ]);
     }
 
     /** Ficha por slug (vale en cualquier locale) con listas y estadísticas. */

@@ -50,3 +50,54 @@ it('localiza el índice con ?locale', function () {
         ->and($response->json('data.0.slug'))->toBe('starter-deck')
         ->and($response->json('data.0.game_mode.name'))->toBe('Skirmish');
 });
+
+it('filtra por game_mode_id', function () {
+    $skirmish = publicGameMode();
+    $deck = publicDeck(['game_mode_id' => $skirmish->id]);
+    publicDeck(['name' => ['es' => 'Otro mazo', 'en' => 'Other deck']]);
+
+    $response = $this->getJson("/api/faction-decks?game_mode_id={$skirmish->id}")->assertOk();
+
+    $response->assertJsonCount(1, 'data');
+    expect($response->json('data.0.id'))->toBe($deck->id);
+});
+
+it('filtra por faction_id: mazos que incluyan esa facción (pivot)', function () {
+    $alianza = publicFaction();
+    $horda = publicFaction(['name' => ['es' => 'Horda', 'en' => 'Horde'], 'color' => '#993333']);
+
+    $deAlianza = publicDeck(['name' => ['es' => 'De la Alianza', 'en' => 'Alliance deck']]);
+    $deAlianza->factions()->attach($alianza->id);
+
+    $multi = publicDeck(['name' => ['es' => 'Multifacción', 'en' => 'Multifaction']]);
+    $multi->factions()->attach([$alianza->id, $horda->id]);
+
+    $soloHorda = publicDeck(['name' => ['es' => 'Solo Horda', 'en' => 'Horde only']]);
+    $soloHorda->factions()->attach($horda->id);
+
+    publicDeck(['name' => ['es' => 'Sin facciones', 'en' => 'Factionless']]);
+
+    $response = $this->getJson("/api/faction-decks?faction_id={$alianza->id}")->assertOk();
+
+    // Orden por defecto: nombre asc del locale (es)
+    expect(collect($response->json('data'))->pluck('id')->all())
+        ->toBe([$deAlianza->id, $multi->id]);
+});
+
+it('ordena con el contrato de sort, incluido oldest', function () {
+    $bravo = publicDeck(['name' => ['es' => 'Bravo', 'en' => 'Bravo']]);
+    $alfa = publicDeck(['name' => ['es' => 'Alfa', 'en' => 'Alpha']]);
+
+    // Sin sort: orden histórico, nombre asc del locale
+    $default = $this->getJson('/api/faction-decks')->assertOk();
+    expect(collect($default->json('data'))->pluck('id')->all())->toBe([$alfa->id, $bravo->id]);
+
+    $oldest = $this->getJson('/api/faction-decks?sort=oldest')->assertOk();
+    expect(collect($oldest->json('data'))->pluck('id')->all())->toBe([$bravo->id, $alfa->id]);
+
+    $latest = $this->getJson('/api/faction-decks?sort=latest')->assertOk();
+    expect(collect($latest->json('data'))->pluck('id')->all())->toBe([$alfa->id, $bravo->id]);
+
+    $desc = $this->getJson('/api/faction-decks?sort=name_desc')->assertOk();
+    expect(collect($desc->json('data'))->pluck('id')->all())->toBe([$bravo->id, $alfa->id]);
+});

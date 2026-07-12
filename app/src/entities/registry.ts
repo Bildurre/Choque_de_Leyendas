@@ -55,7 +55,7 @@ export const entitySections: EntitySection[] = [
     endpoint: '/cards', // single: GET /api/cards/{slug} (EntityDetailView)
     paths: { es: 'cartas', en: 'cards' }, // eu: 'kartak' al activar el locale
     titleKey: 'entities.cards',
-    index: CardsIndexView, // índice: GET /api/catalog/card
+    index: CardsIndexView, // índice: GET /api/cards (+ /filters)
     detail: CardSingleView,
     collectible: 'card',
   },
@@ -64,7 +64,7 @@ export const entitySections: EntitySection[] = [
     endpoint: '/heroes',
     paths: { es: 'heroes', en: 'heroes' }, // eu: 'heroiak'
     titleKey: 'entities.heroes',
-    index: HeroesIndexView, // índice: GET /api/catalog/hero
+    index: HeroesIndexView, // índice: GET /api/heroes (+ /filters)
     detail: HeroSingleView,
     collectible: 'hero',
   },

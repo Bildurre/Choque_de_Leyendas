@@ -1,13 +1,18 @@
 <?php
 
+use App\Models\AttackRange;
+use App\Models\AttackSubtype;
 use App\Models\Card;
+use App\Models\CardSubtype;
 use App\Models\CardType;
+use App\Models\EquipmentType;
 use App\Models\Faction;
 use App\Models\FactionDeck;
 use App\Models\GameMode;
 use App\Models\Hero;
 use App\Models\HeroAbility;
 use App\Models\HeroClass;
+use App\Models\HeroRace;
 use App\Models\HeroSuperclass;
 use Illuminate\Support\Facades\Route;
 
@@ -71,9 +76,16 @@ if (! function_exists('ensurePublicApiRoutes')) {
         $card->setTranslations('lore_text', ['es' => '<p>Forjada en EdC.</p>', 'en' => '<p>Forged in EdC.</p>']);
         $card->faction_id = $overrides['faction_id'] ?? null;
         $card->card_type_id = $overrides['card_type_id'] ?? publicCardType()->id;
+        $card->card_subtype_id = $overrides['card_subtype_id'] ?? null;
+        $card->equipment_type_id = $overrides['equipment_type_id'] ?? null;
+        $card->attack_type = $overrides['attack_type'] ?? null;
+        $card->attack_range_id = $overrides['attack_range_id'] ?? null;
+        $card->attack_subtype_id = $overrides['attack_subtype_id'] ?? null;
         $card->hero_ability_id = $overrides['hero_ability_id'] ?? null;
-        $card->cost = $overrides['cost'] ?? 'RG';
+        // array_key_exists y no ??: 'cost' => null significa carta sin coste
+        $card->cost = array_key_exists('cost', $overrides) ? $overrides['cost'] : 'RG';
         $card->hands = $overrides['hands'] ?? null;
+        $card->area = $overrides['area'] ?? false;
         $card->is_unique = $overrides['is_unique'] ?? false;
         $card->is_published = $overrides['is_published'] ?? true;
         $card->save();
@@ -81,17 +93,71 @@ if (! function_exists('ensurePublicApiRoutes')) {
         return $card;
     }
 
-    /** Clase de héroe con superclase y pasiva de clase. */
-    function publicHeroClass(): HeroClass
+    /** Subtipo de carta mínimo. */
+    function publicCardSubtype(array $overrides = []): CardSubtype
     {
-        $superclass = new HeroSuperclass;
-        $superclass->setTranslations('name', ['es' => 'Luchador', 'en' => 'Fighter']);
-        $superclass->save();
+        $subtype = new CardSubtype;
+        $subtype->setTranslations('name', $overrides['name'] ?? ['es' => 'Bestia', 'en' => 'Beast']);
+        $subtype->save();
+
+        return $subtype;
+    }
+
+    /** Tipo de equipo mínimo. */
+    function publicEquipmentType(array $overrides = []): EquipmentType
+    {
+        $type = new EquipmentType;
+        $type->setTranslations('name', $overrides['name'] ?? ['es' => 'Espada', 'en' => 'Sword']);
+        $type->category = $overrides['category'] ?? 'weapon';
+        $type->save();
+
+        return $type;
+    }
+
+    /** Rango de ataque mínimo. */
+    function publicAttackRange(array $overrides = []): AttackRange
+    {
+        $range = new AttackRange;
+        $range->setTranslations('name', $overrides['name'] ?? ['es' => 'Cuerpo a cuerpo', 'en' => 'Melee']);
+        $range->save();
+
+        return $range;
+    }
+
+    /** Subtipo de ataque mínimo. */
+    function publicAttackSubtype(array $overrides = []): AttackSubtype
+    {
+        $subtype = new AttackSubtype;
+        $subtype->setTranslations('name', $overrides['name'] ?? ['es' => 'Corte', 'en' => 'Slash']);
+        $subtype->save();
+
+        return $subtype;
+    }
+
+    /** Raza de héroe mínima. */
+    function publicHeroRace(array $overrides = []): HeroRace
+    {
+        $race = new HeroRace;
+        $race->setTranslations('name', $overrides['name'] ?? ['es' => 'Humano', 'en' => 'Human']);
+        $race->save();
+
+        return $race;
+    }
+
+    /** Clase de héroe con superclase (propia o dada) y pasiva de clase. */
+    function publicHeroClass(array $overrides = []): HeroClass
+    {
+        if (! array_key_exists('hero_superclass_id', $overrides)) {
+            $superclass = new HeroSuperclass;
+            $superclass->setTranslations('name', $overrides['superclass_name'] ?? ['es' => 'Luchador', 'en' => 'Fighter']);
+            $superclass->save();
+            $overrides['hero_superclass_id'] = $superclass->id;
+        }
 
         $class = new HeroClass;
-        $class->setTranslations('name', ['es' => 'Guerrero', 'en' => 'Warrior']);
+        $class->setTranslations('name', $overrides['name'] ?? ['es' => 'Guerrero', 'en' => 'Warrior']);
         $class->setTranslations('passive', ['es' => 'Pasiva de clase', 'en' => 'Class passive']);
-        $class->hero_superclass_id = $superclass->id;
+        $class->hero_superclass_id = $overrides['hero_superclass_id'];
         $class->save();
 
         return $class;
@@ -103,6 +169,10 @@ if (! function_exists('ensurePublicApiRoutes')) {
         $ability = new HeroAbility;
         $ability->setTranslations('name', $overrides['name'] ?? ['es' => 'Golpe certero', 'en' => 'True strike']);
         $ability->setTranslations('description', ['es' => 'Hace daño.', 'en' => 'Deals damage.']);
+        $ability->attack_type = $overrides['attack_type'] ?? null;
+        $ability->attack_range_id = $overrides['attack_range_id'] ?? null;
+        $ability->attack_subtype_id = $overrides['attack_subtype_id'] ?? null;
+        $ability->area = $overrides['area'] ?? false;
         $ability->cost = $overrides['cost'] ?? 'RB';
         $ability->save();
 
@@ -118,6 +188,7 @@ if (! function_exists('ensurePublicApiRoutes')) {
         $hero->setTranslations('epic_quote', ['es' => 'Por la Alianza', 'en' => 'For the Alliance']);
         $hero->faction_id = $overrides['faction_id'] ?? null;
         $hero->hero_class_id = $overrides['hero_class_id'] ?? null;
+        $hero->hero_race_id = $overrides['hero_race_id'] ?? null;
         $hero->agility = $overrides['agility'] ?? 3;
         $hero->mental = $overrides['mental'] ?? 2;
         $hero->will = $overrides['will'] ?? 4;

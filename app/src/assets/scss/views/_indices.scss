@@ -1,8 +1,8 @@
 @use "tokens" as *;
 
 // Índices públicos del juego (cartas/héroes = catálogo con PreviewGrid;
-// facciones y mazos = tarjetas CSS propias). Mobile-first: todo en columna,
-// y la cabecera del catálogo pasa a fila en tablet.
+// facciones y mazos = tarjetas CSS propias). Mobile-first: todo en columna.
+// El sistema de filtros (barra + panel) es común: _index-filters.scss.
 
 // --- Catálogo (cartas y héroes) ---
 .catalog-index {
@@ -10,69 +10,9 @@
   margin: 0 auto;
   padding: $space-6;
   display: grid;
-  gap: $space-5;
-
-  &__header {
-    display: grid;
-    gap: $space-3;
-    align-items: center;
-
-    @media (min-width: $bp-md) {
-      grid-template-columns: 1fr auto;
-
-      // El contador queda bajo el título, a la izquierda.
-      .catalog-index__count { grid-column: 1; }
-    }
-  }
+  gap: $space-4;
 
   &__title { margin: 0; }
-
-  // Buscador + select de orden en fila (columna del `auto` en tablet+).
-  &__controls {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: $space-3;
-  }
-
-  // Buscador: icono dentro del campo, a la izquierda.
-  &__search {
-    position: relative;
-    display: block;
-
-    @media (min-width: $bp-md) {
-      width: 280px;
-    }
-  }
-
-  // Lupa a la derecha, dentro del input (criterio del FilterBar del motor).
-  &__search-icon {
-    position: absolute;
-    top: 50%;
-    right: $space-3;
-    transform: translateY(-50%);
-    color: $text-3;
-    pointer-events: none;
-  }
-
-  &__search-input {
-    width: 100%;
-    padding: $space-2 $space-7 $space-2 $space-3;
-    font-size: $fs-14;
-    color: $text-1;
-    background: color-mix(in srgb, $surface 72%, transparent);
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    transition: border-color 0.15s ease;
-
-    &::placeholder { color: $text-3; }
-
-    &:focus {
-      outline: none;
-      border-color: $accent-500;
-      box-shadow: $focus-ring;
-    }
-  }
 
   &__count {
     margin: 0;
@@ -102,214 +42,6 @@
   }
 }
 
-// --- Índice de cartas: filtros avanzados (colapsables en móvil) ---
-.cards-index {
-  // Buscador + botón de filtros en fila (el botón solo existe en móvil).
-  &__controls {
-    display: flex;
-    align-items: center;
-    gap: $space-3;
-
-    .catalog-index__search {
-      flex: 1;
-      min-width: 0;
-
-      // En escritorio recupera la anchura fija del catálogo genérico
-      // (el flex: 1 de móvil la anularía).
-      @media (min-width: $bp-md) {
-        flex: 0 0 280px;
-      }
-    }
-  }
-
-  &__toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-2;
-    padding: $space-2 $space-3;
-    font-size: $fs-14;
-    font-weight: $k-fw-semibold;
-    color: $text-2;
-    background: color-mix(in srgb, $surface 72%, transparent);
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
-
-    &:hover { color: $accent-500; }
-
-    &[aria-expanded="true"] {
-      color: $accent-500;
-      border-color: $accent-500;
-    }
-
-    // En escritorio la barra está siempre desplegada: sin botón.
-    @media (min-width: $bp-md) { display: none; }
-  }
-
-  &__toggle-count {
-    font-size: $fs-12;
-    font-weight: $k-fw-semibold;
-    padding: 0 $space-2;
-    border-radius: $radius-pill;
-    background: color-mix(in srgb, $accent-500 18%, transparent);
-  }
-}
-
-// Barra de filtros: oculta en móvil hasta abrirla; siempre visible en tablet+.
-.cards-filters {
-  display: none;
-  flex-wrap: wrap;
-  align-items: end;
-  gap: $space-3 $space-4;
-  padding: $space-4;
-  background: color-mix(in srgb, $surface 72%, transparent);
-  border: 1px solid $border;
-  border-radius: $radius-md;
-
-  &--open { display: flex; }
-
-  @media (min-width: $bp-md) { display: flex; }
-
-  &__field {
-    display: grid;
-    gap: $space-1;
-    flex: 1 1 200px;
-    min-width: 0;
-
-    @media (min-width: $bp-md) {
-      flex: 0 1 220px;
-    }
-  }
-
-  &__field--dice {
-    @media (min-width: $bp-md) {
-      flex-basis: 160px;
-    }
-  }
-
-  &__field--sort {
-    @media (min-width: $bp-md) {
-      flex-basis: 180px;
-    }
-  }
-
-  &__label {
-    font-size: $fs-12;
-    font-weight: $k-fw-semibold;
-    color: $text-3;
-  }
-
-  &__select {
-    width: 100%;
-    padding: $space-2 $space-3;
-    font-size: $fs-14;
-    color: $text-1;
-    background: color-mix(in srgb, $surface 72%, transparent);
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    transition: border-color 0.15s ease;
-
-    &:focus {
-      outline: none;
-      border-color: $accent-500;
-      box-shadow: $focus-ring;
-    }
-  }
-
-  // Toggles R/G/B con los colores de los dados (los del render de cartas).
-  &__colors {
-    display: grid;
-    gap: $space-1;
-    margin: 0;
-    padding: 0;
-    border: none;
-    min-inline-size: auto;
-  }
-
-  &__toggles {
-    display: flex;
-    gap: $space-2;
-  }
-
-  &__color {
-    --dot: #888888;
-
-    width: 36px;
-    height: 36px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: $fs-14;
-    font-weight: 800;
-    color: $text-3;
-    background: color-mix(in srgb, var(--dot) 18%, transparent);
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    cursor: pointer;
-    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
-
-    &:hover { border-color: var(--dot); }
-
-    &.is-active {
-      color: #ffffff;
-      background: var(--dot);
-      border-color: var(--dot);
-    }
-
-    // Mismos colores que los dados planos del render (_game-card.scss).
-    &--r { --dot: #f15959; }
-    &--g { --dot: #29ab5f; }
-    &--b { --dot: #408cfd; }
-  }
-
-  // Quitar filtros: enlace discreto al final de la barra.
-  &__clear {
-    margin-left: auto;
-    padding: $space-2 0;
-    font-size: $fs-13;
-    font-weight: $k-fw-semibold;
-    color: $accent-500;
-    background: none;
-    border: none;
-    cursor: pointer;
-
-    &:hover { text-decoration: underline; }
-  }
-}
-
-// --- Select de orden de los índices (héroes, facciones y mazos; el de
-// cartas va como campo más de la barra de filtros) ---
-.catalog-sort {
-  display: inline-flex;
-  align-items: center;
-  gap: $space-2;
-
-  &__label {
-    font-size: $fs-12;
-    font-weight: $k-fw-semibold;
-    color: $text-3;
-    white-space: nowrap;
-  }
-
-  // Mismo tratamiento que los selects de la barra de filtros de cartas.
-  &__select {
-    padding: $space-2 $space-3;
-    font-size: $fs-14;
-    color: $text-1;
-    background: color-mix(in srgb, $surface 72%, transparent);
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    transition: border-color 0.15s ease;
-
-    &:focus {
-      outline: none;
-      border-color: $accent-500;
-      box-shadow: $focus-ring;
-    }
-  }
-}
-
 // --- Base común de los índices de tarjetas CSS (facciones y mazos) ---
 .factions-index,
 .decks-index {
@@ -317,18 +49,9 @@
   margin: 0 auto;
   padding: $space-6;
   display: grid;
-  gap: $space-5;
+  gap: $space-4;
 
   &__title { margin: 0; }
-
-  // Título + select de orden en fila (envuelve en pantallas estrechas).
-  &__header {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: $space-3;
-  }
 
   &__loading,
   &__empty {
@@ -360,6 +83,7 @@
     color: inherit;
     text-decoration: none;
     border-radius: $radius-md;
+    cursor: pointer;
 
     &:hover,
     &:focus-visible {
@@ -371,43 +95,32 @@
   }
 }
 
-// --- Pestañas por modo de juego (índice de mazos, portadas del viejo) ---
-.decks-index {
-  &__tabs {
+// --- Facciones: título + toggles de orden en la misma fila ---
+.factions-index {
+  &__header {
     display: flex;
     flex-wrap: wrap;
-    gap: $space-2;
-    border-bottom: 1px solid $border;
-    padding-bottom: $space-3;
-  }
-
-  &__tab {
-    display: inline-flex;
     align-items: center;
-    gap: $space-2;
-    padding: $space-2 $space-4;
-    font-size: $fs-14;
-    font-weight: 600;
-    color: $text-2;
-    background: color-mix(in srgb, $surface 72%, transparent);
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
+    justify-content: space-between;
+    gap: $space-3;
 
-    &:hover { color: $accent-500; }
-
-    &.is-active {
-      color: $accent-500;
-      border-color: $accent-500;
+    // El IndexFilters (solo toggles) es contenedor de tamaño: necesita
+    // crecer como flex item para no colapsar a 0.
+    .index-filters {
+      flex: 1;
+      min-width: 120px;
     }
-  }
 
-  &__tab-count {
-    font-size: $fs-12;
-    font-weight: 600;
-    padding: 0 $space-2;
-    border-radius: $radius-pill;
-    background: color-mix(in srgb, $accent-500 18%, transparent);
+    .index-filters__bar { justify-content: flex-end; }
   }
+}
+
+// --- Mazos: BaseTabs por modo de juego ---
+.decks-index {
+  // El .tabs del ui-kit se adapta al contenedor "content" (como en singles).
+  container-type: inline-size;
+  container-name: content;
+
+  // La rejilla del índice ya mete el hueco (gap del grid padre).
+  .tabs { margin-bottom: 0; }
 }

@@ -73,6 +73,7 @@
     text-decoration: none;
     font-size: $fs-13;
     justify-self: start;
+    cursor: pointer;
 
     &:hover { color: $accent-500; }
   }

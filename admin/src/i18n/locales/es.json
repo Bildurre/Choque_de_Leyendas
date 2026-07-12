@@ -646,7 +646,14 @@
       "magical": "Mágico"
     },
     "filters": {
-      "allAttackTypes": "Todos los tipos de ataque"
+      "allAttackTypes": "Todos los tipos de ataque",
+      "allAttackRanges": "Todos los rangos",
+      "allAttackSubtypes": "Todos los subtipos",
+      "allAreas": "Área: todas",
+      "areaYes": "Con área",
+      "areaNo": "Sin área",
+      "allCosts": "Cualquier coste",
+      "dice": "{n} dado | {n} dados"
     },
     "confirmDelete": {
       "title": "Enviar a la papelera",

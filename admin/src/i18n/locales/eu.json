@@ -715,7 +715,14 @@
       "magical": "Magikoa"
     },
     "filters": {
-      "allAttackTypes": "Eraso mota guztiak"
+      "allAttackTypes": "Eraso mota guztiak",
+      "allAttackRanges": "Irismen guztiak",
+      "allAttackSubtypes": "Azpimota guztiak",
+      "allAreas": "Area: denak",
+      "areaYes": "Areaduna",
+      "areaNo": "Arearik gabe",
+      "allCosts": "Edozein kostu",
+      "dice": "Dado {n} | {n} dado"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
