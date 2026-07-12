@@ -7,6 +7,7 @@ use Edc\Core\Support\Concerns\HasFilters;
 use Edc\Core\Support\Concerns\HasPublishedState;
 use Edc\Core\Support\Concerns\ResolvesBySlug;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
@@ -70,6 +71,12 @@ class Faction extends Model implements HasMedia
     public function cards(): HasMany
     {
         return $this->hasMany(Card::class);
+    }
+
+    /** Mazos en los que participa la facción (portado del viejo). */
+    public function factionDecks(): BelongsToMany
+    {
+        return $this->belongsToMany(FactionDeck::class, 'faction_deck_faction');
     }
 
     public function getSlugOptions(): SlugOptions

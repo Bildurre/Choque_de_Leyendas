@@ -1,0 +1,126 @@
+@use "tokens" as *;
+
+// Tarjeta CSS de mazo (portada de `_deck-preview.scss` del viejo): como la
+// de facción, con el modo de juego arriba, badge de facción/multifacción
+// abajo y totales bajo el nombre. En multifacción el marco y el borde del
+// icono usan el GRADIENTE por bandas de los colores de sus facciones.
+.deck-card {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  aspect-ratio: 5 / 7;
+  border: 2px solid $border;
+  border-radius: $radius-md;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    border-color: var(--faction-color-right, var(--faction-color));
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  &--multi {
+    border-color: transparent;
+    background: var(--faction-gradient);
+    background-clip: padding-box;
+
+    &::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: var(--faction-gradient);
+      border-radius: $radius-md;
+      z-index: -1;
+    }
+
+    .deck-card__icon {
+      border-image: var(--faction-gradient) 1;
+
+      img { box-shadow: none; }
+    }
+
+    .deck-card__name {
+      -webkit-text-stroke-color: rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  &__icon {
+    position: absolute;
+    inset: 0;
+    border: 0.5rem solid var(--faction-color);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      border-radius: $radius-sm;
+      box-shadow: 0 0 0 4px var(--faction-color);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
+    height: 100%;
+  }
+
+  &__name {
+    margin: 0;
+    padding: 0 $space-4;
+    text-align: center;
+    font-size: clamp(1rem, 10cqw, 2rem);
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--faction-text);
+    -webkit-text-stroke: 5px var(--faction-color);
+    paint-order: stroke fill;
+    z-index: 1;
+  }
+
+  // Totales de héroes/cartas (dato nuevo del índice).
+  &__totals {
+    margin: 0;
+    padding: $space-1 $space-3;
+    font-size: $fs-12;
+    font-weight: 600;
+    color: var(--mode-text, #ffffff);
+    background: color-mix(in srgb, var(--mode-bg, #000000) 85%, transparent);
+    border-radius: $radius-pill;
+    z-index: 1;
+  }
+
+  // Modo de juego, pegado a la esquina superior izquierda.
+  &__mode {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: $space-2 $space-3;
+    font-size: $fs-12;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--mode-text);
+    background: var(--mode-bg);
+    border-bottom-right-radius: $radius-sm;
+    z-index: 2;
+  }
+
+  // Facción (o "multifacción"), esquina inferior derecha.
+  &__badge {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: $space-2 $space-3;
+    font-size: $fs-12;
+    font-weight: 500;
+    line-height: 1;
+    color: var(--badge-text, #ffffff);
+    background: var(--badge-bg, rgba(0, 0, 0, 0.8));
+    border-top-left-radius: $radius-sm;
+    z-index: 2;
+  }
+}

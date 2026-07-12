@@ -126,5 +126,120 @@
     "error": "No se pudo actualizar la colección.",
     "add": "Añadir a tu PDF",
     "inCollection": "En tu colección"
+  },
+  "entities": {
+    "cards": "Cartas",
+    "heroes": "Héroes",
+    "factions": "Facciones",
+    "decks": "Mazos"
+  },
+  "catalog": {
+    "search": "Buscar",
+    "searchPlaceholder": "Buscar por nombre…",
+    "results": "1 resultado | {count} resultados",
+    "empty": "No hay resultados con esa búsqueda.",
+    "loading": "Cargando…",
+    "prev": "Anterior",
+    "next": "Siguiente"
+  },
+  "decks": {
+    "multiFaction": "Multifacción",
+    "totals": "{heroes} héroes · {cards} cartas"
+  },
+  "singles": {
+    "yes": "Sí",
+    "attackTypes": {
+      "physical": "Físico",
+      "magical": "Mágico"
+    },
+    "card": {
+      "basicInfo": "Detalles de la Carta",
+      "attackInfo": "Detalles del Ataque",
+      "effects": "Efectos",
+      "name": "Nombre",
+      "faction": "Facción",
+      "unique": "Es única",
+      "type": "Tipo de carta",
+      "subtype": "Subtipo de carta",
+      "superclass": "Superclase",
+      "equipmentType": "Tipo de equipo",
+      "handsLabel": "Manos requeridas",
+      "hands": "{count} mano | {count} manos",
+      "cost": "Coste",
+      "attackRange": "Rango de ataque",
+      "attackType": "Tipo de ataque",
+      "attackSubtype": "Subtipo de ataque",
+      "area": "Área",
+      "grantedAbility": "Habilidad",
+      "relatedSubtitle": "Descubre más cartas del juego",
+      "relatedButton": "Ver todas las cartas"
+    },
+    "hero": {
+      "basicInfo": "Información del Héroe",
+      "name": "Nombre",
+      "faction": "Facción",
+      "race": "Raza",
+      "gender": "Género",
+      "genders": {
+        "male": "Masculino",
+        "female": "Femenino"
+      },
+      "class": "Clase",
+      "superclass": "Superclase",
+      "attributes": "Atributos",
+      "attribute": {
+        "agility": "Agilidad",
+        "mental": "Mente",
+        "will": "Voluntad",
+        "strength": "Fuerza",
+        "armor": "Armadura",
+        "health": "Vida"
+      },
+      "abilities": "Habilidades",
+      "passiveAbilities": "Habilidades pasivas",
+      "activeAbilities": "Habilidades activas",
+      "relatedSubtitle": "Descubre más héroes del juego",
+      "relatedButton": "Ver todos los héroes"
+    },
+    "faction": {
+      "tabs": {
+        "heroes": "Héroes",
+        "cards": "Cartas",
+        "decks": "Mazos"
+      },
+      "noHeroes": "Esta facción no tiene héroes",
+      "noCards": "Esta facción no tiene cartas",
+      "noDecks": "Esta facción no tiene mazos",
+      "relatedSubtitle": "Explora más facciones del juego",
+      "relatedButton": "Ver todas las facciones"
+    },
+    "deck": {
+      "tabs": {
+        "info": "Información",
+        "heroes": "Héroes",
+        "cards": "Cartas"
+      },
+      "basicInfo": "Información básica",
+      "name": "Nombre",
+      "factions": "Facciones",
+      "gameMode": "Modo de juego",
+      "heroes": "Héroes",
+      "cards": "Cartas",
+      "uniqueHeroes": "{total} ({unique} únicos)",
+      "uniqueCards": "{total} ({unique} únicas)",
+      "diceDistribution": "Coste de las cartas",
+      "symbolDistribution": "Distribución de dados",
+      "cardTypes": "Tipos de cartas",
+      "heroSuperclasses": "Superclases de héroes",
+      "heroClasses": "Clases de héroes",
+      "average": "Promedio",
+      "dice": "{count} dado | {count} dados",
+      "noDice": "Sin coste",
+      "copies": "x{count}",
+      "noHeroes": "Este mazo no tiene héroes",
+      "noCards": "Este mazo no tiene cartas",
+      "relatedSubtitle": "Explora otros mazos del juego",
+      "relatedButton": "Ver todos los mazos"
+    }
   }
 }

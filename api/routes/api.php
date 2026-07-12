@@ -17,6 +17,10 @@ use App\Http\Controllers\HeroClassController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\HeroRaceController;
 use App\Http\Controllers\HeroSuperclassController;
+use App\Http\Controllers\Public\PublicCardController;
+use App\Http\Controllers\Public\PublicFactionController;
+use App\Http\Controllers\Public\PublicFactionDeckController;
+use App\Http\Controllers\Public\PublicHeroController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,6 +34,19 @@ use Illuminate\Support\Facades\Route;
 | - Entidades con slug traducible: show/update/destroy/toggle por slug;
 |   restore/force por id. Taxonomías simples: todo por id.
 */
+
+/*
+| Público — web pública (facciones, mazos y singles de cartas/héroes).
+| Solo lectura, sin auth, SOLO publicado; locale via SetLocale (grupo api).
+| Los índices de cartas y héroes NO van aquí: los sirve /api/catalog/{card|hero}
+| del motor. Literales antes de {slug}.
+*/
+Route::get('factions', [PublicFactionController::class, 'index']);
+Route::get('factions/{slug}', [PublicFactionController::class, 'show']);
+Route::get('faction-decks', [PublicFactionDeckController::class, 'index']);
+Route::get('faction-decks/{slug}', [PublicFactionDeckController::class, 'show']);
+Route::get('cards/{slug}', [PublicCardController::class, 'show']);
+Route::get('heroes/{slug}', [PublicHeroController::class, 'show']);
 
 Route::middleware(['auth:sanctum', 'motor.admin', 'can:manage-game'])
     ->prefix('admin')->group(function () {

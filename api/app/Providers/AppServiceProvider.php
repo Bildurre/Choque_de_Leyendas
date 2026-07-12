@@ -4,6 +4,8 @@ namespace App\Providers;
 
 use App\Models\Card;
 use App\Models\Counter;
+use App\Models\Faction;
+use App\Models\FactionDeck;
 use App\Models\Hero;
 use App\Pdf\CardsCatalogExport;
 use App\Pdf\CountersExport;
@@ -64,10 +66,65 @@ class AppServiceProvider extends ServiceProvider
             ...self::webfonts(),
         ]]);
 
-        // El apartado público de Descargas es indexable.
+        // El apartado público de Descargas es indexable (solo locales activos:
+        // eu queda listo sin generar URLs muertas mientras esté desactivado).
         Sitemap::add(fn () => [[
-            'slugs' => ['es' => 'descargas', 'eu' => 'deskargak', 'en' => 'downloads'],
+            'slugs' => array_intersect_key(
+                ['es' => 'descargas', 'eu' => 'deskargak', 'en' => 'downloads'],
+                config('motor.locales', []),
+            ),
         ]]);
+
+        // Sitemap de las entidades públicas: índice + un detalle por slug de
+        // cada colección publicada. Los segmentos por locale DEBEN casar con
+        // entitySections de la app (app/src/entities/registry.ts); el helper
+        // filtra a los locales activos (motor.locales), así que eu queda
+        // listo sin generar URLs muertas mientras esté desactivado.
+        Sitemap::add(fn () => self::sitemapEntries(
+            Card::published()->get(),
+            ['es' => 'cartas', 'eu' => 'kartak', 'en' => 'cards'],
+        ));
+        Sitemap::add(fn () => self::sitemapEntries(
+            Hero::published()->get(),
+            ['es' => 'heroes', 'eu' => 'heroiak', 'en' => 'heroes'],
+        ));
+        Sitemap::add(fn () => self::sitemapEntries(
+            Faction::published()->get(),
+            ['es' => 'facciones', 'eu' => 'fakzioak', 'en' => 'factions'],
+        ));
+        Sitemap::add(fn () => self::sitemapEntries(
+            FactionDeck::published()->get(),
+            ['es' => 'mazos', 'eu' => 'sortak', 'en' => 'decks'],
+        ));
+    }
+
+    /**
+     * URLs del sitemap de una colección publicada: índice + un detalle por slug.
+     * Restringe el mapa de secciones a los locales activos (config motor.locales)
+     * para que al activar eu no salgan URLs muertas antes de tiempo.
+     */
+    protected static function sitemapEntries($models, array $sections): array
+    {
+        $sections = array_intersect_key($sections, config('motor.locales', []));
+        $entries = [['slugs' => $sections]];
+
+        foreach ($models as $model) {
+            $slugs = collect($model->getTranslations('slug'))
+                ->only(array_keys($sections))
+                ->map(fn (string $slug, string $locale) => "{$sections[$locale]}/{$slug}")
+                ->all();
+
+            if ($slugs === []) {
+                continue;
+            }
+
+            $entries[] = [
+                'slugs' => $slugs,
+                'updated_at' => $model->updated_at?->toDateString(),
+            ];
+        }
+
+        return $entries;
     }
 
     /** Catálogo de webfonts (regular + cursiva; variables donde las hay). */

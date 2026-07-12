@@ -126,5 +126,120 @@
     "error": "Ezin izan da bilduma eguneratu.",
     "add": "Gehitu zure PDFra",
     "inCollection": "Zure bilduman"
+  },
+  "entities": {
+    "cards": "Kartak",
+    "heroes": "Heroiak",
+    "factions": "Fakzioak",
+    "decks": "Sortak"
+  },
+  "catalog": {
+    "search": "Bilatu",
+    "searchPlaceholder": "Bilatu izenaren arabera…",
+    "results": "emaitza 1 | {count} emaitza",
+    "empty": "Ez dago emaitzarik bilaketa horrekin.",
+    "loading": "Kargatzen…",
+    "prev": "Aurrekoa",
+    "next": "Hurrengoa"
+  },
+  "decks": {
+    "multiFaction": "Fakzio anitzekoa",
+    "totals": "{heroes} heroi · {cards} karta"
+  },
+  "singles": {
+    "yes": "Bai",
+    "attackTypes": {
+      "physical": "Fisikoa",
+      "magical": "Magikoa"
+    },
+    "card": {
+      "basicInfo": "Kartaren xehetasunak",
+      "attackInfo": "Erasoaren xehetasunak",
+      "effects": "Efektuak",
+      "name": "Izena",
+      "faction": "Fakzioa",
+      "unique": "Bakarra da",
+      "type": "Karta mota",
+      "subtype": "Kartaren azpimota",
+      "superclass": "Superklasea",
+      "equipmentType": "Ekipamendu mota",
+      "handsLabel": "Beharrezko eskuak",
+      "hands": "Esku {count} | {count} esku",
+      "cost": "Kostua",
+      "attackRange": "Eraso-irismena",
+      "attackType": "Eraso mota",
+      "attackSubtype": "Erasoaren azpimota",
+      "area": "Eremua",
+      "grantedAbility": "Trebetasuna",
+      "relatedSubtitle": "Ezagutu jokoko karta gehiago",
+      "relatedButton": "Ikusi karta guztiak"
+    },
+    "hero": {
+      "basicInfo": "Heroiaren informazioa",
+      "name": "Izena",
+      "faction": "Fakzioa",
+      "race": "Arraza",
+      "gender": "Generoa",
+      "genders": {
+        "male": "Gizonezkoa",
+        "female": "Emakumezkoa"
+      },
+      "class": "Klasea",
+      "superclass": "Superklasea",
+      "attributes": "Atributuak",
+      "attribute": {
+        "agility": "Bizkortasuna",
+        "mental": "Adimena",
+        "will": "Borondatea",
+        "strength": "Indarra",
+        "armor": "Armadura",
+        "health": "Bizitza"
+      },
+      "abilities": "Trebetasunak",
+      "passiveAbilities": "Trebetasun pasiboak",
+      "activeAbilities": "Trebetasun aktiboak",
+      "relatedSubtitle": "Ezagutu jokoko heroi gehiago",
+      "relatedButton": "Ikusi heroi guztiak"
+    },
+    "faction": {
+      "tabs": {
+        "heroes": "Heroiak",
+        "cards": "Kartak",
+        "decks": "Sortak"
+      },
+      "noHeroes": "Fakzio honek ez du heroirik",
+      "noCards": "Fakzio honek ez du kartarik",
+      "noDecks": "Fakzio honek ez du sortarik",
+      "relatedSubtitle": "Arakatu jokoko fakzio gehiago",
+      "relatedButton": "Ikusi fakzio guztiak"
+    },
+    "deck": {
+      "tabs": {
+        "info": "Informazioa",
+        "heroes": "Heroiak",
+        "cards": "Kartak"
+      },
+      "basicInfo": "Oinarrizko informazioa",
+      "name": "Izena",
+      "factions": "Fakzioak",
+      "gameMode": "Joko modua",
+      "heroes": "Heroiak",
+      "cards": "Kartak",
+      "uniqueHeroes": "{total} ({unique} bakar)",
+      "uniqueCards": "{total} ({unique} bakar)",
+      "diceDistribution": "Karten kostua",
+      "symbolDistribution": "Dadoen banaketa",
+      "cardTypes": "Karta motak",
+      "heroSuperclasses": "Heroien superklaseak",
+      "heroClasses": "Heroien klaseak",
+      "average": "Batezbestekoa",
+      "dice": "Dado {count} | {count} dado",
+      "noDice": "Kosturik gabe",
+      "copies": "x{count}",
+      "noHeroes": "Sorta honek ez du heroirik",
+      "noCards": "Sorta honek ez du kartarik",
+      "relatedSubtitle": "Arakatu jokoko beste sorta batzuk",
+      "relatedButton": "Ikusi sorta guztiak"
+    }
   }
 }

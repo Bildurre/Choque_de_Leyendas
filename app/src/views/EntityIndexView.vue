@@ -32,7 +32,8 @@ const segment = computed(() => String(route.params.section ?? ''))
 const section = computed(() => sectionFor(segment.value))
 
 async function load() {
-  if (!section.value) return
+  // Con vista índice propia (section.index), esa vista carga y canoniza.
+  if (!section.value || section.value.index) return
   const current = section.value
 
   // Canónica del locale activo: /es/characters -> /es/personajes.
@@ -72,7 +73,9 @@ function detailSlug(item: EntityRow): string {
 </script>
 
 <template>
-  <main v-if="section" class="entity-index">
+  <!-- Secciones con vista índice propia (búsqueda/paginación): se delega -->
+  <component :is="section.index" v-if="section?.index" />
+  <main v-else-if="section" class="entity-index">
     <h1 class="entity-index__title">{{ t(section.titleKey) }}</h1>
     <p v-if="!loading && !items.length" class="entity-index__empty">{{ t('list.empty') }}</p>
     <div class="entity-index__grid">

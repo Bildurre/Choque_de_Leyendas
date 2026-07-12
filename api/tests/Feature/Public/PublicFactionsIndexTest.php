@@ -1,0 +1,47 @@
+<?php
+
+// GET /api/factions — índice público de facciones.
+
+require_once __DIR__.'/Helpers.php';
+
+beforeEach(function () {
+    ensurePublicApiRoutes();
+    // Como un navegador: sin ?locale manda Accept-Language (es)
+    $this->withHeader('Accept-Language', 'es');
+});
+
+it('lista solo facciones publicadas con contadores de contenido publicado', function () {
+    $faction = publicFaction();
+    publicHero(['faction_id' => $faction->id]);
+    publicHero(['name' => ['es' => 'Borrador'], 'faction_id' => $faction->id, 'is_published' => false]);
+    publicCard(['faction_id' => $faction->id]);
+    publicCard(['name' => ['es' => 'Borrador'], 'faction_id' => $faction->id, 'is_published' => false]);
+    publicFaction(['name' => ['es' => 'Sin publicar'], 'is_published' => false]);
+
+    $response = $this->getJson('/api/factions')->assertOk();
+
+    $response->assertJsonCount(1, 'data');
+    expect($response->json('data.0'))->toMatchArray([
+        'id' => $faction->id,
+        'name' => 'Alianza',
+        'slug' => 'alianza',
+        'color' => '#336699',
+        'text_is_dark' => false,
+        'icon' => null,
+        'heroes_count' => 1,
+        'cards_count' => 1,
+    ]);
+});
+
+it('localiza el índice con ?locale', function () {
+    publicFaction();
+
+    $response = $this->getJson('/api/factions?locale=en')->assertOk();
+
+    expect($response->json('data.0.name'))->toBe('Alliance')
+        ->and($response->json('data.0.slug'))->toBe('alliance');
+});
+
+it('no exige autenticación', function () {
+    $this->getJson('/api/factions')->assertOk();
+});

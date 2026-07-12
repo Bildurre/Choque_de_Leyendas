@@ -126,5 +126,120 @@
     "error": "Could not update the collection.",
     "add": "Add to your PDF",
     "inCollection": "In your collection"
+  },
+  "entities": {
+    "cards": "Cards",
+    "heroes": "Heroes",
+    "factions": "Factions",
+    "decks": "Decks"
+  },
+  "catalog": {
+    "search": "Search",
+    "searchPlaceholder": "Search by name…",
+    "results": "1 result | {count} results",
+    "empty": "No results for that search.",
+    "loading": "Loading…",
+    "prev": "Previous",
+    "next": "Next"
+  },
+  "decks": {
+    "multiFaction": "Multifaction",
+    "totals": "{heroes} heroes · {cards} cards"
+  },
+  "singles": {
+    "yes": "Yes",
+    "attackTypes": {
+      "physical": "Physical",
+      "magical": "Magical"
+    },
+    "card": {
+      "basicInfo": "Card Details",
+      "attackInfo": "Attack Details",
+      "effects": "Effects",
+      "name": "Name",
+      "faction": "Faction",
+      "unique": "Unique",
+      "type": "Card type",
+      "subtype": "Card subtype",
+      "superclass": "Superclass",
+      "equipmentType": "Equipment type",
+      "handsLabel": "Hands required",
+      "hands": "{count} hand | {count} hands",
+      "cost": "Cost",
+      "attackRange": "Attack range",
+      "attackType": "Attack type",
+      "attackSubtype": "Attack subtype",
+      "area": "Area",
+      "grantedAbility": "Ability",
+      "relatedSubtitle": "Discover more game cards",
+      "relatedButton": "View all cards"
+    },
+    "hero": {
+      "basicInfo": "Hero Details",
+      "name": "Name",
+      "faction": "Faction",
+      "race": "Race",
+      "gender": "Gender",
+      "genders": {
+        "male": "Male",
+        "female": "Female"
+      },
+      "class": "Class",
+      "superclass": "Superclass",
+      "attributes": "Attributes",
+      "attribute": {
+        "agility": "Agility",
+        "mental": "Mental",
+        "will": "Will",
+        "strength": "Strength",
+        "armor": "Armor",
+        "health": "Health"
+      },
+      "abilities": "Abilities",
+      "passiveAbilities": "Passive abilities",
+      "activeAbilities": "Active abilities",
+      "relatedSubtitle": "Discover more game heroes",
+      "relatedButton": "View all heroes"
+    },
+    "faction": {
+      "tabs": {
+        "heroes": "Heroes",
+        "cards": "Cards",
+        "decks": "Decks"
+      },
+      "noHeroes": "This faction has no heroes",
+      "noCards": "This faction has no cards",
+      "noDecks": "This faction has no decks",
+      "relatedSubtitle": "Explore more game factions",
+      "relatedButton": "View all factions"
+    },
+    "deck": {
+      "tabs": {
+        "info": "Information",
+        "heroes": "Heroes",
+        "cards": "Cards"
+      },
+      "basicInfo": "Basic Information",
+      "name": "Name",
+      "factions": "Factions",
+      "gameMode": "Game mode",
+      "heroes": "Heroes",
+      "cards": "Cards",
+      "uniqueHeroes": "{total} ({unique} unique)",
+      "uniqueCards": "{total} ({unique} unique)",
+      "diceDistribution": "Cards cost",
+      "symbolDistribution": "Dice distribution",
+      "cardTypes": "Card types",
+      "heroSuperclasses": "Hero superclasses",
+      "heroClasses": "Hero classes",
+      "average": "Average",
+      "dice": "{count} die | {count} dice",
+      "noDice": "No cost",
+      "copies": "x{count}",
+      "noHeroes": "This deck has no heroes",
+      "noCards": "This deck has no cards",
+      "relatedSubtitle": "Explore other game decks",
+      "relatedButton": "View all decks"
+    }
   }
 }
