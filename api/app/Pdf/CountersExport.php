@@ -3,6 +3,7 @@
 namespace App\Pdf;
 
 use App\Models\Counter;
+use Edc\Core\Icons\Models\Icon;
 use Edc\Core\Pdf\PdfExport;
 use Edc\Core\Pdf\PrintableItem;
 use Illuminate\Database\Eloquent\Model;
@@ -44,20 +45,39 @@ class CountersExport extends PdfExport
 
     /**
      * Token de vida como SVG en data-URI (DomPDF lo rasteriza): círculo
-     * blanco con borde, el corazón del viejo y el valor centrado encima.
+     * blanco con borde, el corazón y el valor centrado encima. El corazón es
+     * el icono 'health' del gestor de Iconos (el mismo que usa la preview
+     * del héroe) si está subido; si no, el corazón clásico del viejo.
      */
     protected function healthTokenSvg(int $value): string
     {
+        $heart = $this->healthIconElement()
+            ?? '<path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z" fill="rgb(255,166,200)" stroke="rgb(185,0,15)" stroke-width="1" transform="translate(0,0.6) scale(0.95) translate(0.6,0)"/>';
+
         $svg = <<<SVG
 <?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
   <circle cx="12" cy="12" r="11.5" fill="#ffffff" stroke="#000000" stroke-width="0.5"/>
-  <path d="M12,21.35l-1.45-1.32C5.4,15.36,2,12.28,2,8.5C2,5.42,4.42,3,7.5,3c1.74,0,3.41,0.81,4.5,2.09C13.09,3.81,14.76,3,16.5,3C19.58,3,22,5.42,22,8.5c0,3.78-3.4,6.86-8.55,11.54L12,21.35z" fill="rgb(255,166,200)" stroke="rgb(185,0,15)" stroke-width="1" transform="translate(0,0.6) scale(0.95) translate(0.6,0)"/>
+  {$heart}
   <text x="12" y="14.6" text-anchor="middle" font-family="Arial, sans-serif" font-size="8" font-weight="bold" fill="#000000">{$value}</text>
 </svg>
 SVG;
 
         return 'data:image/svg+xml;base64,'.base64_encode($svg);
+    }
+
+    /** El icono 'health' del gestor embebido como <image>, o null si no está. */
+    protected function healthIconElement(): ?string
+    {
+        $media = Icon::query()->where('slug', 'health')->first()?->getFirstMedia('image');
+
+        if ($media === null || ! is_file($media->getPath())) {
+            return null;
+        }
+
+        $uri = 'data:'.$media->mime_type.';base64,'.base64_encode(file_get_contents($media->getPath()));
+
+        return '<image href="'.$uri.'" x="3" y="2.4" width="18" height="18"/>';
     }
 
     /** Preset 25x25 que ya trae el motor. */

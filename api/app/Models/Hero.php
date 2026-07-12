@@ -179,7 +179,7 @@ class Hero extends Model implements HasMedia, PreviewableContract
             'image' => $this->imageUrl(),
             // Iconos convencionales del gestor (url|null; el render omite los null)
             'icons' => GameIcons::urls([
-                'agility', 'mental', 'will', 'strength', 'armor',
+                'agility', 'mental', 'will', 'strength', 'armor', 'health',
                 'physical', 'magical', 'area',
                 'dice-red', 'dice-green', 'dice-blue',
             ]),
