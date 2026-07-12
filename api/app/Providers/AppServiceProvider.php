@@ -45,6 +45,8 @@ class AppServiceProvider extends ServiceProvider
         Previews::register('card', Card::class);
         Previews::register('hero', Hero::class);
         Previews::register('counter', Counter::class);
+        Previews::register('faction', Faction::class);
+        Previews::register('faction-deck', FactionDeck::class);
 
         // Catálogo de PDF del juego (gestor de PDF del admin).
         Pdfs::register('cards-catalog', CardsCatalogExport::class);   // todas las cartas publicadas (card)

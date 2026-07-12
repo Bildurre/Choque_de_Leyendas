@@ -140,7 +140,21 @@
     "empty": "Ez dago emaitzarik bilaketa horrekin.",
     "loading": "Kargatzen…",
     "prev": "Aurrekoa",
-    "next": "Hurrengoa"
+    "next": "Hurrengoa",
+    "filters": {
+      "toggle": "Iragazkiak",
+      "faction": "Fakzioa",
+      "allFactions": "Fakzio guztiak",
+      "type": "Karta mota",
+      "allTypes": "Mota guztiak",
+      "dice": "Kostuaren dadoak",
+      "anyDice": "Edozein kostu",
+      "colors": "Kostuaren koloreak",
+      "colorR": "Dado gorriak",
+      "colorG": "Dado berdeak",
+      "colorB": "Dado urdinak",
+      "clear": "Iragazkiak kendu"
+    }
   },
   "decks": {
     "multiFaction": "Fakzio anitzekoa",

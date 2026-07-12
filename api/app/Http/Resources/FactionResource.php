@@ -19,6 +19,7 @@ class FactionResource extends JsonResource
             'color' => $this->color,
             'text_is_dark' => $this->text_is_dark,
             'image' => $this->imageUrl(),
+            'previews' => $this->previewUrls(),
             'is_published' => $this->is_published,
             // TODO: heroes/cards con whenLoaded cuando existan sus clusters.
             'deleted_at' => $this->deleted_at,

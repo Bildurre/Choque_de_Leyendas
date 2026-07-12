@@ -47,6 +47,9 @@ class FactionDeckController extends Controller
         if (array_key_exists('faction_ids', $data)) {
             $deck->factions()->sync($data['faction_ids'] ?? []);
         }
+        // Icono (MediaLibrary) y facciones (pivot) no son columnas: no
+        // disparan la invalidación declarativa. Se regenera a mano.
+        $deck->regeneratePreviews();
 
         return (new FactionDeckResource($deck->load(['gameMode', 'factions'])))
             ->response()->setStatusCode(201);
@@ -81,6 +84,9 @@ class FactionDeckController extends Controller
         if (array_key_exists('faction_ids', $data)) {
             $deck->factions()->sync($data['faction_ids'] ?? []);
         }
+        // Icono (MediaLibrary) y facciones (pivot) no son columnas: no
+        // disparan la invalidación declarativa. Se regenera a mano.
+        $deck->regeneratePreviews();
 
         return new FactionDeckResource($deck->load(['gameMode', 'factions']));
     }
@@ -98,6 +104,8 @@ class FactionDeckController extends Controller
         $deck->cards()->sync(collect($data['items'])->mapWithKeys(
             fn (array $item) => [$item['card_id'] => ['copies' => $item['copies']]],
         ));
+        // Las cartas (pivot) salen en la preview y no son columnas: a mano.
+        $deck->regeneratePreviews();
 
         return new FactionDeckResource($deck->load(['gameMode', 'factions', 'heroes', 'cards']));
     }
@@ -112,6 +120,8 @@ class FactionDeckController extends Controller
         ])->validate();
 
         $deck->heroes()->sync($data['hero_ids']);
+        // Los héroes (pivot) salen en la preview y no son columnas: a mano.
+        $deck->regeneratePreviews();
 
         return new FactionDeckResource($deck->load(['gameMode', 'factions', 'heroes', 'cards']));
     }

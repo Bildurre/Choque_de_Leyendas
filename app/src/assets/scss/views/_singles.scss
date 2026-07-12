@@ -77,46 +77,21 @@
   }
 }
 
-// --- Pestañas de facción y mazo (x-tabs del viejo, en cliente) ---
-.single-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: $space-2;
-  border-bottom: 1px solid $border;
-  padding-bottom: $space-3;
-
-  &__tab {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-2;
-    padding: $space-2 $space-4;
-    font-size: $fs-14;
-    font-weight: $k-fw-semibold;
-    color: $text-2;
-    background: color-mix(in srgb, $surface 72%, transparent);
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    cursor: pointer;
-    transition: color 0.15s ease, border-color 0.15s ease;
-
-    &:hover {
-      color: $accent-500;
-    }
-
-    &.is-active {
-      color: $accent-500;
-      border-color: $accent-500;
-    }
-  }
-
-  &__count {
-    font-size: $fs-12;
-    font-weight: $k-fw-semibold;
-    padding: 0 $space-2;
-    border-radius: $radius-pill;
-    background: color-mix(in srgb, $accent-500 18%, transparent);
-  }
+// --- Pestañas de los singles (BaseTabs del motor) ---
+// El .tabs del ui-kit se adapta con container queries al contenedor "content":
+// aquí lo declaran los propios singles (fuera del admin no existe).
+.faction-single,
+.deck-single {
+  container-type: inline-size;
+  container-name: content;
 }
+
+// El gap del grid ya separa: sin el margen inferior propio del ui-kit.
+.faction-single__tabs,
+.deck-single__tabs {
+  margin-bottom: 0;
+}
+
 
 // --- Rejillas de previews dentro de los singles ---
 .single-grid {

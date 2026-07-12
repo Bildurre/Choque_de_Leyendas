@@ -42,23 +42,23 @@ function mapServerErrors(e: unknown) {
   for (const [k, v] of Object.entries(fieldErrors(e))) {
     if (k === 'name' || k.startsWith('name.')) errors.name = v
     if (k === 'description' || k.startsWith('description.')) errors.description = v
-    if (['cost', 'attack_type', 'attack_range_id', 'attack_subtype_id'].includes(k)) errors[k] = v
+    if (['cost', 'attack_range_id', 'attack_type', 'attack_subtype_id'].includes(k)) errors[k] = v
   }
 }
 
 const form = reactive<{
   name: Record<string, string>
   description: Record<string, string>
-  attack_type: string
   attack_range_id: string
+  attack_type: string
   attack_subtype_id: string
   area: boolean
   cost: string
 }>({
   name: {},
   description: {},
-  attack_type: '',
   attack_range_id: '',
+  attack_type: '',
   attack_subtype_id: '',
   area: false,
   cost: '',
@@ -78,14 +78,14 @@ function optionLabel(option: TaxonomyOption): string {
 }
 
 // Opción vacía explícita: permite volver a "sin valor" (placeholder es disabled).
+const attackRangeOptions = computed(() => [
+  { value: '', label: t('heroAbilities.fields.noAttackRange') },
+  ...attackRanges.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
+])
 const attackTypeOptions = computed(() => [
   { value: '', label: t('heroAbilities.fields.noAttackType') },
   { value: 'physical', label: t('heroAbilities.attackTypes.physical') },
   { value: 'magical', label: t('heroAbilities.attackTypes.magical') },
-])
-const attackRangeOptions = computed(() => [
-  { value: '', label: t('heroAbilities.fields.noAttackRange') },
-  ...attackRanges.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
 ])
 const attackSubtypeOptions = computed(() => [
   { value: '', label: t('heroAbilities.fields.noAttackSubtype') },
@@ -98,8 +98,8 @@ const hasName = () => Object.values(form.name).some((v) => v && v.trim() !== '')
 function reset() {
   form.name = {}
   form.description = {}
-  form.attack_type = ''
   form.attack_range_id = ''
+  form.attack_type = ''
   form.attack_subtype_id = ''
   form.area = false
   form.cost = ''
@@ -127,10 +127,10 @@ watch(
     if (props.mode === 'edit' && props.target) {
       form.name = { ...(props.target.name ?? {}) }
       form.description = { ...(props.target.description ?? {}) }
-      form.attack_type = props.target.attack_type ?? ''
       form.attack_range_id = props.target.attack_range_id
         ? String(props.target.attack_range_id)
         : ''
+      form.attack_type = props.target.attack_type ?? ''
       form.attack_subtype_id = props.target.attack_subtype_id
         ? String(props.target.attack_subtype_id)
         : ''
@@ -144,8 +144,8 @@ function payload() {
   return {
     name: form.name,
     description: form.description,
-    attack_type: form.attack_type || null,
     attack_range_id: form.attack_range_id ? Number(form.attack_range_id) : null,
+    attack_type: form.attack_type || null,
     attack_subtype_id: form.attack_subtype_id ? Number(form.attack_subtype_id) : null,
     area: form.area,
     cost: form.cost,
@@ -207,19 +207,25 @@ async function submit() {
       :max="5"
       :error="errors.cost"
       :remove-label="t('heroAbilities.fields.removeDie')"
+      :die-labels="{
+        red: t('common.dice.red'),
+        green: t('common.dice.green'),
+        blue: t('common.dice.blue'),
+      }"
     />
 
-    <BaseSelect
-      v-model="form.attack_type"
-      :label="t('heroAbilities.fields.attackType')"
-      :options="attackTypeOptions"
-      :error="errors.attack_type"
-    />
+    <!-- Metadatos de ataque en orden canónico: rango → tipo → subtipo -->
     <BaseSelect
       v-model="form.attack_range_id"
       :label="t('heroAbilities.fields.attackRange')"
       :options="attackRangeOptions"
       :error="errors.attack_range_id"
+    />
+    <BaseSelect
+      v-model="form.attack_type"
+      :label="t('heroAbilities.fields.attackType')"
+      :options="attackTypeOptions"
+      :error="errors.attack_type"
     />
     <BaseSelect
       v-model="form.attack_subtype_id"

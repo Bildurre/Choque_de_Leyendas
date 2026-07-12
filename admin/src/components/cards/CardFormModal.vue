@@ -16,6 +16,8 @@ import { useEditorLabels } from '@/lib/editorLabels'
 import { useLocalesStore } from '@/stores/locales'
 import { useIconsStore } from '@/stores/icons'
 import CostInput from '@/components/game/CostInput.vue'
+import CostDice from '@/components/game/CostDice.vue'
+import SearchCombobox from '@/components/SearchCombobox.vue'
 import type {
   Card,
   CardTypeOption,
@@ -73,8 +75,8 @@ function mapServerErrors(e: unknown) {
         'card_type_id',
         'card_subtype_id',
         'equipment_type_id',
-        'attack_type',
         'attack_range_id',
+        'attack_type',
         'attack_subtype_id',
         'hero_ability_id',
         'hands',
@@ -97,8 +99,8 @@ const form = reactive<{
   card_type_id: string
   card_subtype_id: string
   equipment_type_id: string
-  attack_type: string
   attack_range_id: string
+  attack_type: string
   attack_subtype_id: string
   hero_ability_id: string
   hands: string
@@ -116,8 +118,8 @@ const form = reactive<{
   card_type_id: '',
   card_subtype_id: '',
   equipment_type_id: '',
-  attack_type: '',
   attack_range_id: '',
+  attack_type: '',
   attack_subtype_id: '',
   hero_ability_id: '',
   hands: '',
@@ -180,11 +182,14 @@ const handsOptions = computed(() => [
   { value: '1', label: t('cards.fields.oneHand') },
   { value: '2', label: t('cards.fields.twoHands') },
 ])
+// Combobox con búsqueda (nombre + coste); la opción vacía permite limpiar.
 const heroAbilityOptions = computed(() => [
-  { value: '', label: t('cards.fields.noHeroAbility') },
+  { id: '', label: t('cards.fields.noHeroAbility'), cost: '' },
   ...heroAbilities.value.map((o) => ({
-    value: o.id,
-    label: o.cost ? `${optionLabel(o)} (${o.cost})` : optionLabel(o),
+    id: String(o.id),
+    label: optionLabel(o),
+    search: `${optionLabel(o)} ${o.cost ?? ''}`,
+    cost: o.cost ?? '',
   })),
 ])
 const attackRangeOptions = computed(() => [
@@ -214,8 +219,8 @@ function reset() {
   form.card_type_id = ''
   form.card_subtype_id = ''
   form.equipment_type_id = ''
-  form.attack_type = ''
   form.attack_range_id = ''
+  form.attack_type = ''
   form.attack_subtype_id = ''
   form.hero_ability_id = ''
   form.hands = ''
@@ -269,8 +274,8 @@ watch(
         form.card_type_id = card.card_type_id ? String(card.card_type_id) : ''
         form.card_subtype_id = card.card_subtype_id ? String(card.card_subtype_id) : ''
         form.equipment_type_id = card.equipment_type_id ? String(card.equipment_type_id) : ''
-        form.attack_type = card.attack_type ?? ''
         form.attack_range_id = card.attack_range_id ? String(card.attack_range_id) : ''
+        form.attack_type = card.attack_type ?? ''
         form.attack_subtype_id = card.attack_subtype_id ? String(card.attack_subtype_id) : ''
         form.hero_ability_id = card.hero_ability_id ? String(card.hero_ability_id) : ''
         form.hands = card.hands ? String(card.hands) : ''
@@ -306,8 +311,8 @@ function toFormData(): FormData {
   fd.append('card_subtype_id', allowsSubtypes.value ? form.card_subtype_id : '')
   fd.append('equipment_type_id', isEquipment.value ? form.equipment_type_id : '')
   fd.append('hands', isEquipment.value ? form.hands : '')
-  fd.append('attack_type', form.attack_type)
   fd.append('attack_range_id', form.attack_range_id)
+  fd.append('attack_type', form.attack_type)
   fd.append('attack_subtype_id', form.attack_subtype_id)
   fd.append('hero_ability_id', form.hero_ability_id)
   fd.append('cost', form.cost)
@@ -381,6 +386,11 @@ async function submit() {
           v-model="form.cost"
           :label="t('cards.fields.cost')"
           :remove-label="t('cards.fields.removeDie')"
+          :die-labels="{
+            red: t('common.dice.red'),
+            green: t('common.dice.green'),
+            blue: t('common.dice.blue'),
+          }"
           :error="errors.cost"
         />
       </div>
@@ -422,12 +432,23 @@ async function submit() {
             :error="errors.hands"
           />
         </template>
-        <BaseSelect
+        <!-- Combobox con búsqueda: nombre — coste en cada opción -->
+        <SearchCombobox
           v-model="form.hero_ability_id"
-          :label="t('cards.fields.heroAbility')"
           :options="heroAbilityOptions"
+          :label="t('cards.fields.heroAbility')"
+          :placeholder="t('cards.fields.noHeroAbility')"
+          :search-placeholder="t('common.search')"
+          :no-results="t('common.empty')"
           :error="errors.hero_ability_id"
-        />
+        >
+          <template #option="{ option }">
+            <span class="ability-option">
+              <span class="ability-option__name">{{ option.label }}</span>
+              <CostDice v-if="option.cost" class="ability-option__cost" :cost="option.cost" />
+            </span>
+          </template>
+        </SearchCombobox>
       </div>
 
       <div class="card-form__grid">

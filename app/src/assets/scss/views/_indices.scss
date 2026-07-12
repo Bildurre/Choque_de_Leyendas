@@ -37,10 +37,11 @@
     }
   }
 
+  // Lupa a la derecha, dentro del input (criterio del FilterBar del motor).
   &__search-icon {
     position: absolute;
     top: 50%;
-    left: $space-3;
+    right: $space-3;
     transform: translateY(-50%);
     color: $text-3;
     pointer-events: none;
@@ -48,7 +49,7 @@
 
   &__search-input {
     width: 100%;
-    padding: $space-2 $space-3 $space-2 $space-7;
+    padding: $space-2 $space-7 $space-2 $space-3;
     font-size: $fs-14;
     color: $text-1;
     background: color-mix(in srgb, $surface 72%, transparent);
@@ -90,6 +91,176 @@
     top: -34px;
     right: 0;
     z-index: 2;
+  }
+}
+
+// --- Índice de cartas: filtros avanzados (colapsables en móvil) ---
+.cards-index {
+  // Buscador + botón de filtros en fila (el botón solo existe en móvil).
+  &__controls {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+
+    .catalog-index__search {
+      flex: 1;
+      min-width: 0;
+
+      // En escritorio recupera la anchura fija del catálogo genérico
+      // (el flex: 1 de móvil la anularía).
+      @media (min-width: $bp-md) {
+        flex: 0 0 280px;
+      }
+    }
+  }
+
+  &__toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2 $space-3;
+    font-size: $fs-14;
+    font-weight: $k-fw-semibold;
+    color: $text-2;
+    background: color-mix(in srgb, $surface 72%, transparent);
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease;
+
+    &:hover { color: $accent-500; }
+
+    &[aria-expanded="true"] {
+      color: $accent-500;
+      border-color: $accent-500;
+    }
+
+    // En escritorio la barra está siempre desplegada: sin botón.
+    @media (min-width: $bp-md) { display: none; }
+  }
+
+  &__toggle-count {
+    font-size: $fs-12;
+    font-weight: $k-fw-semibold;
+    padding: 0 $space-2;
+    border-radius: $radius-pill;
+    background: color-mix(in srgb, $accent-500 18%, transparent);
+  }
+}
+
+// Barra de filtros: oculta en móvil hasta abrirla; siempre visible en tablet+.
+.cards-filters {
+  display: none;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: $space-3 $space-4;
+  padding: $space-4;
+  background: color-mix(in srgb, $surface 72%, transparent);
+  border: 1px solid $border;
+  border-radius: $radius-md;
+
+  &--open { display: flex; }
+
+  @media (min-width: $bp-md) { display: flex; }
+
+  &__field {
+    display: grid;
+    gap: $space-1;
+    flex: 1 1 200px;
+    min-width: 0;
+
+    @media (min-width: $bp-md) {
+      flex: 0 1 220px;
+    }
+  }
+
+  &__field--dice {
+    @media (min-width: $bp-md) {
+      flex-basis: 160px;
+    }
+  }
+
+  &__label {
+    font-size: $fs-12;
+    font-weight: $k-fw-semibold;
+    color: $text-3;
+  }
+
+  &__select {
+    width: 100%;
+    padding: $space-2 $space-3;
+    font-size: $fs-14;
+    color: $text-1;
+    background: color-mix(in srgb, $surface 72%, transparent);
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    transition: border-color 0.15s ease;
+
+    &:focus {
+      outline: none;
+      border-color: $accent-500;
+      box-shadow: $focus-ring;
+    }
+  }
+
+  // Toggles R/G/B con los colores de los dados (los del render de cartas).
+  &__colors {
+    display: grid;
+    gap: $space-1;
+    margin: 0;
+    padding: 0;
+    border: none;
+    min-inline-size: auto;
+  }
+
+  &__toggles {
+    display: flex;
+    gap: $space-2;
+  }
+
+  &__color {
+    --dot: #888888;
+
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: $fs-14;
+    font-weight: 800;
+    color: $text-3;
+    background: color-mix(in srgb, var(--dot) 18%, transparent);
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+
+    &:hover { border-color: var(--dot); }
+
+    &.is-active {
+      color: #ffffff;
+      background: var(--dot);
+      border-color: var(--dot);
+    }
+
+    // Mismos colores que los dados planos del render (_game-card.scss).
+    &--r { --dot: #f15959; }
+    &--g { --dot: #29ab5f; }
+    &--b { --dot: #408cfd; }
+  }
+
+  // Quitar filtros: enlace discreto al final de la barra.
+  &__clear {
+    margin-left: auto;
+    padding: $space-2 0;
+    font-size: $fs-13;
+    font-weight: $k-fw-semibold;
+    color: $accent-500;
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover { text-decoration: underline; }
   }
 }
 

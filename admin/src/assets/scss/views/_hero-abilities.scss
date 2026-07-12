@@ -1,30 +1,8 @@
 @use "tokens" as *;
 
-// Listado de habilidades activas: emblema tipográfico + dados del coste como
-// fichas de color (letras; los iconos reales solo se usan en CostInput).
+// Listado de habilidades activas: el coste se pinta con CostDice (iconos del
+// gestor o letras coloreadas, componente compartido).
 .hero-abilities {
-  &__cost {
-    display: inline-flex;
-    align-items: center;
-    gap: 2px;
-  }
-
-  &__die {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 16px;
-    height: 16px;
-    border-radius: 4px;
-    font-size: 0.65rem;
-    font-weight: $k-fw-bold;
-    color: #fff;
-
-    &--red { background: #c0392b; }
-    &--green { background: #27ae60; }
-    &--blue { background: #2980b9; }
-  }
-
   // HTML de la descripción en el panel derecho (teleportado; selector plano).
   &__description {
     margin-top: $space-2;

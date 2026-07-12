@@ -140,7 +140,21 @@
     "empty": "No hay resultados con esa búsqueda.",
     "loading": "Cargando…",
     "prev": "Anterior",
-    "next": "Siguiente"
+    "next": "Siguiente",
+    "filters": {
+      "toggle": "Filtros",
+      "faction": "Facción",
+      "allFactions": "Todas las facciones",
+      "type": "Tipo de carta",
+      "allTypes": "Todos los tipos",
+      "dice": "Dados del coste",
+      "anyDice": "Cualquier coste",
+      "colors": "Colores del coste",
+      "colorR": "Dados rojos",
+      "colorG": "Dados verdes",
+      "colorB": "Dados azules",
+      "clear": "Quitar filtros"
+    }
   },
   "decks": {
     "multiFaction": "Multifacción",

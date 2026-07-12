@@ -2,7 +2,13 @@
 import { computed, nextTick, ref, watch } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { BlockQuote, PreviewGrid, type CatalogItem, type PreviewGridItem } from '@edc-motor/ui'
+import {
+  BaseTabs,
+  BlockQuote,
+  PreviewGrid,
+  type CatalogItem,
+  type PreviewGridItem,
+} from '@edc-motor/ui'
 import AddToCollection from '@/components/AddToCollection.vue'
 import FactionCard from '@/components/FactionCard.vue'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
@@ -56,11 +62,16 @@ const style = computed(() => ({
   '--faction-text': props.item.text_is_dark ? '#000000' : '#ffffff',
 }))
 
-const tabs = computed<Array<{ id: Tab; label: string; count: number }>>(() => [
-  { id: 'heroes', label: t('singles.faction.tabs.heroes'), count: props.item.heroes_count },
-  { id: 'cards', label: t('singles.faction.tabs.cards'), count: props.item.cards_count },
-  { id: 'decks', label: t('singles.faction.tabs.decks'), count: props.item.decks_count },
+// Pestañas del BaseTabs del motor, con los contadores de publicados.
+const tabs = computed<Array<{ key: Tab; label: string; count: number }>>(() => [
+  { key: 'heroes', label: t('singles.faction.tabs.heroes'), count: props.item.heroes_count },
+  { key: 'cards', label: t('singles.faction.tabs.cards'), count: props.item.cards_count },
+  { key: 'decks', label: t('singles.faction.tabs.decks'), count: props.item.decks_count },
 ])
+
+function setTab(key: string) {
+  tab.value = key as Tab
+}
 
 function withRoute(items: CatalogItem[], sectionKey: string): PreviewGridItem[] {
   return items.map((row) => ({
@@ -112,22 +123,13 @@ watch(
       />
     </section>
 
-    <!-- Pestañas héroes / cartas / mazos con contadores -->
-    <div class="single-tabs" role="tablist">
-      <button
-        v-for="entry in tabs"
-        :key="entry.id"
-        type="button"
-        role="tab"
-        class="single-tabs__tab"
-        :class="{ 'is-active': tab === entry.id }"
-        :aria-selected="tab === entry.id"
-        @click="tab = entry.id"
-      >
-        {{ entry.label }}
-        <span class="single-tabs__count">{{ entry.count }}</span>
-      </button>
-    </div>
+    <!-- Pestañas héroes / cartas / mazos con contadores (BaseTabs del motor) -->
+    <BaseTabs
+      class="faction-single__tabs"
+      :tabs="tabs"
+      :model-value="tab"
+      @update:model-value="setTab"
+    />
 
     <PreviewGrid
       v-if="tab === 'heroes'"

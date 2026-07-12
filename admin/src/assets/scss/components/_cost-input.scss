@@ -1,7 +1,8 @@
 @use "tokens" as *;
 
-// Widget de coste en dados (CostInput.vue): valor de solo lectura + botones
-// R/G/B (icono del gestor o fallback de color plano) + borrar último.
+// Widget de coste en dados (CostInput.vue): valor de solo lectura (CostDice)
+// + botones R/G/B donde el propio icono es el botón (sin fondo ni borde ni
+// padding; hover con realce sutil) + borrar último.
 .cost-input {
   display: grid;
   gap: $space-1;
@@ -35,56 +36,56 @@
     color: $text-3;
   }
 
-  &__die {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: $radius-sm;
-    font-size: $fs-13;
-    font-weight: $k-fw-bold;
-    color: #fff;
-
-    img { width: 100%; height: 100%; object-fit: contain; }
-
-    // Fallback sin icono: color plano por dado.
-    &--red { background: #b3362e; }
-    &--green { background: #3d7a3f; }
-    &--blue { background: #2f5f9e; }
-  }
-
   &__buttons {
     display: flex;
     align-items: center;
-    gap: $space-1;
+    gap: $space-2;
   }
 
+  // El icono es el botón: sin fondo, sin borde, sin padding.
   &__btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: 2rem;
     height: 2rem;
-    border: 1px solid $border;
-    border-radius: $radius-sm;
-    background: $surface-2;
-    color: #fff;
+    padding: 0;
+    border: 0;
+    background: none;
+    font-size: $fs-18;
     font-weight: $k-fw-bold;
+    line-height: 1;
     cursor: pointer;
+    transition: transform 0.12s ease, filter 0.12s ease;
 
-    img { width: 1.25rem; height: 1.25rem; object-fit: contain; }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
 
-    &:disabled { opacity: 0.45; cursor: not-allowed; }
-    &:not(:disabled):hover { filter: brightness(1.1); }
+    &:disabled { opacity: 0.4; cursor: not-allowed; }
 
-    &--red { background: #b3362e; border-color: #b3362e; }
-    &--green { background: #3d7a3f; border-color: #3d7a3f; }
-    &--blue { background: #2f5f9e; border-color: #2f5f9e; }
+    // Realce sutil en hover: scale + halo, nunca fondo.
+    &:not(:disabled):hover {
+      transform: scale(1.15);
+      filter: drop-shadow(0 0 4px color-mix(in srgb, $accent-500 60%, transparent));
+    }
+
+    // Fallback sin icono: letra coloreada, sin fondo.
+    &--red { color: #c0392b; }
+    &--green { color: #27ae60; }
+    &--blue { color: #2980b9; }
 
     &--remove {
       color: $text-2;
-      background: transparent;
+
+      &:not(:disabled):hover {
+        transform: none;
+        filter: none;
+        color: $text-1;
+      }
     }
   }
 

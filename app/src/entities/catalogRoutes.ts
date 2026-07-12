@@ -6,8 +6,6 @@ import { entitySections } from './registry'
 // de BlockRelated en singles). Se provee en main.ts con
 // `app.provide(catalogRoutesKey, catalogRoutes)` (lo integra el ensamblaje).
 // `counter` no se mapea: no tiene slug ni single público (se pinta sin enlace).
-// Facciones y mazos NO están en el PreviewRegistry (tarjetas CSS, sin PNG):
-// el bloque related no puede referenciarlos, así que no van en este mapa.
 function sectionRoutes(sectionKey: string): CatalogRoutes[string] {
   const section = entitySections.find((s) => s.key === sectionKey)
   if (!section) return {}
@@ -33,4 +31,6 @@ function sectionRoutes(sectionKey: string): CatalogRoutes[string] {
 export const catalogRoutes: CatalogRoutes = {
   card: sectionRoutes('cards'),
   hero: sectionRoutes('heroes'),
+  faction: sectionRoutes('factions'),
+  'faction-deck': sectionRoutes('decks'),
 }

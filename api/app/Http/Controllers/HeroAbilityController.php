@@ -24,15 +24,33 @@ class HeroAbilityController extends Controller
         return HeroAbilityResource::collection($abilities);
     }
 
-    /** Lista ligera (id + nombre + coste) para el selector de héroes. */
+    /**
+     * Lista para los selectores de héroes/cartas, ordenada por nombre.
+     * Mantiene id + name (mapa de traducciones) + cost (lo que ya consumen
+     * los form modals) y añade los datos de ataque para poder mostrarlos.
+     */
     public function options()
     {
+        $locale = app()->getLocale();
+
         return response()->json([
-            'data' => HeroAbility::orderByDesc('id')->get()->map(fn (HeroAbility $a) => [
-                'id' => $a->id,
-                'name' => $a->getTranslations('name'),
-                'cost' => $a->cost,
-            ]),
+            'data' => HeroAbility::with(['attackRange', 'attackSubtype'])
+                ->orderBy("name->{$locale}")
+                ->get()
+                ->map(fn (HeroAbility $a) => [
+                    'id' => $a->id,
+                    'name' => $a->getTranslations('name'),
+                    'cost' => $a->cost,
+                    'attack_type' => $a->attack_type,
+                    'range' => $a->attackRange ? [
+                        'id' => $a->attackRange->id,
+                        'name' => $a->attackRange->getTranslations('name'),
+                    ] : null,
+                    'subtype' => $a->attackSubtype ? [
+                        'id' => $a->attackSubtype->id,
+                        'name' => $a->attackSubtype->getTranslations('name'),
+                    ] : null,
+                ]),
         ]);
     }
 

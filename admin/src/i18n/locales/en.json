@@ -126,7 +126,12 @@
     "imageDrag": "Drag an image or click",
     "close": "Close",
     "imageHint": "Max. 4 MB",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "dice": {
+      "red": "Red die",
+      "green": "Green die",
+      "blue": "Blue die"
+    }
   },
   "login": {
     "title": "Panel access",
@@ -578,7 +583,6 @@
       "passiveDescription": "Passive description",
       "abilities": "Active abilities",
       "selectAbility": "Select an ability",
-      "addAbility": "Add",
       "noAbilities": "This hero has no active abilities.",
       "moveUp": "Move up",
       "moveDown": "Move down",

@@ -7,6 +7,7 @@ import { useEntityList } from '@/composables/useEntityList'
 import type { Card } from '@juego/shared'
 import CardFormModal from '@/components/cards/CardFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import CostDice from '@/components/game/CostDice.vue'
 
 // Cartas: entidad completa con slug, single, publicación y previews PNG.
 // TODO filtros extra del listado (facción/tipo/coste): pasarlos por
@@ -96,7 +97,7 @@ onMounted(init)
         <template #meta>
           <span>{{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}</span>
           <span v-if="item.card_type">· {{ tr(item.card_type.name) }}</span>
-          <span v-if="item.cost">· {{ item.cost }}</span>
+          <span v-if="item.cost">· <CostDice :cost="item.cost" /></span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -126,7 +127,7 @@ onMounted(init)
           <span>{{
             selected.faction ? tr(selected.faction.name) : t('cards.fields.noFaction')
           }}</span>
-          <code v-if="selected.cost">· {{ selected.cost }}</code>
+          <span v-if="selected.cost">· <CostDice :cost="selected.cost" /></span>
           <span v-if="selected.is_unique">· {{ t('cards.fields.isUnique') }}</span>
         </p>
       </template>

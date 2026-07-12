@@ -347,6 +347,52 @@ export interface CounterRenderData {
   effect: string | null
 }
 
+// Payloads de facción y mazo (tarjetas CSS renderizables): forma EXACTA de
+// renderData() en Faction/FactionDeck de la api. Aun así los componentes
+// programan defensivo: cualquier campo puede venir null o faltar.
+
+export interface FactionRenderData {
+  id?: number
+  name: string | null
+  color: string | null
+  text_is_dark: boolean | null
+  icon: string | null
+  lore_text: string | null
+  epic_quote: string | null
+  /** Totales de contenido PUBLICADO (como la web pública). */
+  heroes_count?: number | null
+  cards_count?: number | null
+  decks_count?: number | null
+}
+
+/** Facción de un mazo en el render (nombre localizado + su color). */
+export interface DeckRenderFaction {
+  name: string | null
+  color: string | null
+  text_is_dark?: boolean | null
+}
+
+/** Carta de un mazo en el render (nombre localizado + copias). */
+export interface DeckRenderCard {
+  name: string | null
+  copies: number | null
+}
+
+export interface FactionDeckRenderData {
+  id?: number
+  name: string | null
+  icon: string | null
+  /** Nombre del modo YA localizado. */
+  game_mode?: string | null
+  factions?: DeckRenderFaction[] | null
+  /** Totales de contenido publicado (las cartas suman copias). */
+  total_heroes?: number | null
+  total_cards?: number | null
+  cards?: DeckRenderCard[] | null
+  /** Héroes del mazo (solo el nombre localizado). */
+  heroes?: Array<{ name?: string | null }> | null
+}
+
 export interface PaginationMeta {
   current_page: number
   last_page: number

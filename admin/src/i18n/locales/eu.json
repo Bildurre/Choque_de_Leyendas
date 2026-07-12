@@ -126,7 +126,12 @@
     "imageDrag": "Arrastatu irudi bat edo egin klik",
     "close": "Itxi",
     "imageHint": "Geh. 4 MB",
-    "confirm": "Berretsi"
+    "confirm": "Berretsi",
+    "dice": {
+      "red": "Dado gorria",
+      "green": "Dado berdea",
+      "blue": "Dado urdina"
+    }
   },
   "login": {
     "title": "Panelerako sarrera",
@@ -578,7 +583,6 @@
       "passiveDescription": "Pasiboaren deskribapena",
       "abilities": "Gaitasun aktiboak",
       "selectAbility": "Aukeratu gaitasun bat",
-      "addAbility": "Gehitu",
       "noAbilities": "Heroi honek ez du gaitasun aktiborik.",
       "moveUp": "Igo",
       "moveDown": "Jaitsi",

@@ -1,0 +1,137 @@
+@use "tokens" as *;
+
+// Combobox con búsqueda y opciones ricas (SearchCombobox.vue): mismo aspecto
+// que el search-select del motor + etiqueta/error de campo de formulario.
+// El root es container para adaptar las opciones en estrecho.
+.search-combobox {
+  position: relative;
+  width: 100%;
+  display: grid;
+  gap: $space-1;
+  container-type: inline-size;
+
+  &__label {
+    font-size: $fs-13;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+
+  &__trigger {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    width: 100%;
+    background: $input-bg;
+    border: 1px solid $input-border;
+    border-radius: $input-radius;
+    color: $input-text;
+    cursor: pointer;
+    padding: $space-2 $space-3;
+    text-align: left;
+    font: inherit;
+
+    &:hover { border-color: $input-border-hover; }
+  }
+
+  &.is-open &__trigger { border-color: $input-border-focus; }
+  &--error &__trigger { border-color: $danger; }
+
+  &__value {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &.is-placeholder { color: $input-placeholder; }
+  }
+
+  &__chevron {
+    flex: 0 0 auto;
+    color: $text-3;
+    transition: transform 0.15s ease;
+  }
+
+  &.is-open &__chevron { transform: rotate(180deg); }
+
+  &__dropdown {
+    position: absolute;
+    top: calc(100% + #{$space-1});
+    left: 0;
+    right: 0;
+    z-index: 50;
+    background: $surface;
+    border: 1px solid $border-strong;
+    border-radius: $radius-md;
+    box-shadow: $shadow-md;
+    overflow: hidden;
+    display: grid;
+  }
+
+  &__input {
+    width: 100%;
+    background: $input-bg;
+    border: 0;
+    border-bottom: 1px solid $border;
+    color: $input-text;
+    padding: $space-2 $space-3;
+    font: inherit;
+    outline: none;
+
+    &::placeholder { color: $input-placeholder; }
+  }
+
+  &__options {
+    list-style: none;
+    margin: 0;
+    padding: $space-1;
+    display: grid;
+    gap: 1px;
+    max-height: 240px;
+    overflow-y: auto;
+  }
+
+  &__option {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    width: 100%;
+    background: none;
+    border: 0;
+    border-radius: $radius-sm;
+    color: $text-1;
+    cursor: pointer;
+    padding: $space-2 $space-2;
+    text-align: left;
+    font-size: $fs-13;
+
+    &:hover,
+    &.is-highlighted { background: $surface-2; }
+
+    &.is-active {
+      background: color-mix(in srgb, $accent-500 14%, transparent);
+      color: $accent-500;
+      font-weight: $k-fw-semibold;
+    }
+  }
+
+  &__body {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__empty {
+    color: $text-3;
+    font-size: $fs-13;
+    padding: $space-2 $space-2;
+  }
+
+  &__error {
+    margin: 0;
+    font-size: $fs-13;
+    color: $danger;
+  }
+}

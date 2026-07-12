@@ -1,0 +1,183 @@
+// Ficha de mazo (FactionDeckRender): port del preview del viejo
+// (_deck-preview.scss) reorganizado en "ficha": cabecera con el color (o el
+// gradiente multifacción), chips de facciones, totales y resumen de héroes y
+// cartas. Misma proporción 5/7 que las cartas y todo en cqw; en /_render
+// ocupa el viewport entero.
+.game-deck {
+  // Color primario, su texto y el gradiente: inline desde el componente.
+  --fc: #6b7280;
+  --ftx: #ffffff;
+  --dg: var(--fc);
+
+  container-type: size;
+  position: relative;
+  width: 375px;
+  aspect-ratio: 5 / 7;
+  overflow: hidden;
+  border-radius: 2.4cqw;
+  border: 1px solid var(--fc);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  color: #000;
+  font-family: Roboto, system-ui, sans-serif;
+  font-size: 4.8cqw;
+
+  // --- Cabecera con el color/gradiente de las facciones ---
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2.4cqw;
+    padding: 2.4cqw 3.2cqw;
+    background: var(--dg);
+  }
+
+  &__titles {
+    min-width: 0;
+  }
+
+  &__name {
+    margin: 0;
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 6cqw;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--ftx);
+  }
+
+  &__mode {
+    margin: 0;
+    font-size: 3.4cqw;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--ftx);
+  }
+
+  // En multifacción el texto pisa varias bandas: halo oscuro (como el
+  // text-stroke negro del preview viejo).
+  &--multi &__name,
+  &--multi &__mode {
+    color: #fff;
+    text-shadow: 0 0 1.2cqw rgb(0 0 0 / 70%);
+  }
+
+  // Icono del mazo en medallón (como el logo de facción de las cartas).
+  &__icon {
+    flex-shrink: 0;
+    width: 14.4cqw;
+    height: 14.4cqw;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #000;
+    background: #fff;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  // --- Facciones y totales ---
+
+  &__factions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2cqw;
+    padding: 2cqw 3.2cqw 0;
+  }
+
+  &__faction {
+    padding: .8cqw 2.4cqw;
+    border-radius: 4cqw;
+    font-size: 2.9cqw;
+    font-weight: 600;
+    line-height: 1.2;
+  }
+
+  &__totals {
+    display: flex;
+    gap: 4.8cqw;
+    padding: 2cqw 3.2cqw 0;
+    font-size: 3.2cqw;
+    color: #333;
+  }
+
+  &__total strong {
+    font-size: 3.8cqw;
+    font-weight: 800;
+    color: #000;
+  }
+
+  // --- Resumen: listas de héroes y cartas ---
+
+  &__lists {
+    flex: 1;
+    overflow: hidden;
+    padding: 2cqw 3.2cqw;
+    display: flex;
+    flex-direction: column;
+    gap: 2.4cqw;
+  }
+
+  &__list-title {
+    margin: 0 0 1cqw;
+    padding-bottom: .6cqw;
+    border-bottom: 1px solid var(--fc);
+    font-size: 3.6cqw;
+    font-weight: 700;
+  }
+
+  &__list ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 2.9cqw;
+    line-height: 1.35;
+  }
+
+  // Las cartas suelen ser muchas: a dos columnas.
+  &__list--cards ul {
+    columns: 2;
+    column-gap: 3.2cqw;
+  }
+
+  &__copies {
+    font-weight: 700;
+  }
+
+  // --- Pie con el título del juego (como las cartas) ---
+
+  &__footer {
+    margin-top: auto;
+    background: color-mix(in srgb, var(--fc) 80%, transparent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5cqw;
+    padding: 1.2cqw 0;
+    font-size: 2.4cqw;
+    font-family: 'IM Fell English', Georgia, serif;
+    font-weight: 600;
+
+    span { color: var(--ftx); }
+  }
+
+  &--multi &__footer {
+    background: var(--dg);
+
+    span {
+      color: #fff;
+      text-shadow: 0 0 1.2cqw rgb(0 0 0 / 70%);
+    }
+  }
+}
+
+// Escenario de captura (/_render): la ficha ocupa exactamente el viewport.
+.render-stage .game-deck {
+  width: 100vw;
+  height: 100vh;
+  aspect-ratio: auto;
+}

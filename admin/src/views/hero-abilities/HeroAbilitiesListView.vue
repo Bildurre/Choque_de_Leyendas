@@ -7,6 +7,7 @@ import { useEntityList } from '@/composables/useEntityList'
 import type { HeroAbility } from '@juego/shared'
 import HeroAbilityFormModal from '@/components/hero-abilities/HeroAbilityFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
+import CostDice from '@/components/game/CostDice.vue'
 
 // Habilidades activas: sin single ni publicación (tabs all/trashed); la API
 // resuelve por id y la edición rellena desde el ítem del listado.
@@ -38,15 +39,6 @@ const {
   resolveBy: 'id',
   tabKeys: ['all', 'trashed'],
 })
-
-/** Letras del coste con su color para pintarlas como dados (CSS plano). */
-function dice(cost: string): { letter: string; color: string }[] {
-  const colors: Record<string, string> = { R: 'red', G: 'green', B: 'blue' }
-  return (cost || '')
-    .split('')
-    .filter((letter) => colors[letter])
-    .map((letter) => ({ letter, color: colors[letter] }))
-}
 
 onMounted(init)
 </script>
@@ -88,15 +80,7 @@ onMounted(init)
         </template>
 
         <template #meta>
-          <span class="hero-abilities__cost">
-            <span
-              v-for="(d, i) in dice(item.cost)"
-              :key="`${d.letter}-${i}`"
-              class="hero-abilities__die"
-              :class="`hero-abilities__die--${d.color}`"
-              >{{ d.letter }}</span
-            >
-          </span>
+          <CostDice v-if="item.cost" :cost="item.cost" />
           <span v-if="item.attack_type">{{
             t(`heroAbilities.attackTypes.${item.attack_type}`)
           }}</span>
@@ -119,20 +103,13 @@ onMounted(init)
       @force-delete="selected && forceDelete(selected)"
     >
       <template #meta>
+        <!-- Metadatos de ataque en orden canónico: rango → tipo → subtipo -->
         <p v-if="selected" class="manager-detail__meta">
-          <span class="hero-abilities__cost">
-            <span
-              v-for="(d, i) in dice(selected.cost)"
-              :key="`${d.letter}-${i}`"
-              class="hero-abilities__die"
-              :class="`hero-abilities__die--${d.color}`"
-              >{{ d.letter }}</span
-            >
-          </span>
+          <CostDice v-if="selected.cost" :cost="selected.cost" />
+          <span v-if="selected.attack_range">{{ tr(selected.attack_range.name) }}</span>
           <span v-if="selected.attack_type">
-            {{ t(`heroAbilities.attackTypes.${selected.attack_type}`) }}
+            · {{ t(`heroAbilities.attackTypes.${selected.attack_type}`) }}
           </span>
-          <span v-if="selected.attack_range">· {{ tr(selected.attack_range.name) }}</span>
           <span v-if="selected.attack_subtype">· {{ tr(selected.attack_subtype.name) }}</span>
         </p>
         <!-- HTML del WYSIWYG propio (saneado en origen) -->

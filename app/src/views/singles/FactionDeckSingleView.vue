@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { BlockQuote, PreviewGrid, type CatalogItem, type PreviewGridItem } from '@edc-motor/ui'
+import { BaseTabs, BlockQuote, PreviewGrid, type CatalogItem, type PreviewGridItem } from '@edc-motor/ui'
 import AddToCollection from '@/components/AddToCollection.vue'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
 import CssCardsRelated from '@/components/singles/CssCardsRelated.vue'
@@ -97,11 +97,16 @@ const SYMBOLS: Array<{ key: 'R' | 'G' | 'B'; type: 'red' | 'green' | 'blue' }> =
 ]
 const symbols = computed(() => SYMBOLS.filter(({ key }) => props.item.stats.symbols[key] > 0))
 
-const tabs = computed<Array<{ id: Tab; label: string; count: number | null }>>(() => [
-  { id: 'info', label: t('singles.deck.tabs.info'), count: null },
-  { id: 'heroes', label: t('singles.deck.tabs.heroes'), count: props.item.stats.total_heroes },
-  { id: 'cards', label: t('singles.deck.tabs.cards'), count: props.item.stats.total_cards },
+// Pestañas del BaseTabs del motor (mismo patrón que el single de facción).
+const tabs = computed<Array<{ key: Tab; label: string; count?: number }>>(() => [
+  { key: 'info', label: t('singles.deck.tabs.info') },
+  { key: 'heroes', label: t('singles.deck.tabs.heroes'), count: props.item.stats.total_heroes },
+  { key: 'cards', label: t('singles.deck.tabs.cards'), count: props.item.stats.total_cards },
 ])
+
+function setTab(key: string) {
+  tab.value = key as Tab
+}
 
 const decksIndexRoute = computed(() => sectionIndexRoute('decks', props.locale))
 
@@ -154,21 +159,12 @@ watch(
     </section>
 
     <!-- Pestañas info | héroes | cartas -->
-    <div class="single-tabs" role="tablist">
-      <button
-        v-for="entry in tabs"
-        :key="entry.id"
-        type="button"
-        role="tab"
-        class="single-tabs__tab"
-        :class="{ 'is-active': tab === entry.id }"
-        :aria-selected="tab === entry.id"
-        @click="tab = entry.id"
-      >
-        {{ entry.label }}
-        <span v-if="entry.count !== null" class="single-tabs__count">{{ entry.count }}</span>
-      </button>
-    </div>
+    <BaseTabs
+      class="deck-single__tabs"
+      :tabs="tabs"
+      :model-value="tab"
+      @update:model-value="setTab"
+    />
 
     <!-- Información: la rejilla de estadísticas del viejo -->
     <div v-if="tab === 'info'" class="info-blocks-grid">

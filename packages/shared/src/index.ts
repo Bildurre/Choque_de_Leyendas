@@ -6,4 +6,6 @@
 export { default as CardRender } from './components/CardRender.vue'
 export { default as HeroRender } from './components/HeroRender.vue'
 export { default as CounterRender } from './components/CounterRender.vue'
+export { default as FactionRender } from './components/FactionRender.vue'
+export { default as FactionDeckRender } from './components/FactionDeckRender.vue'
 export * from './types'

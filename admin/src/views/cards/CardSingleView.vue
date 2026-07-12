@@ -12,6 +12,7 @@ import { usePageCrumb } from '@/composables/usePageCrumb'
 import type { Card } from '@juego/shared'
 import CardFormModal from '@/components/cards/CardFormModal.vue'
 import PreviewPanel from '@/components/previews/PreviewPanel.vue'
+import CostDice from '@/components/game/CostDice.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -31,12 +32,12 @@ function tr(obj: Record<string, string> | null | undefined) {
 }
 const slug = computed(() => route.params.slug as string)
 
-/** Datos de ataque como chips (solo los presentes). */
+/** Datos de ataque como chips, en orden canónico rango → tipo → subtipo. */
 const attackChips = computed(() => {
   if (!item.value) return []
   const chips: string[] = []
-  if (item.value.attack_type) chips.push(t(`cards.attackTypes.${item.value.attack_type}`))
   if (item.value.attack_range) chips.push(tr(item.value.attack_range.name))
+  if (item.value.attack_type) chips.push(t(`cards.attackTypes.${item.value.attack_type}`))
   if (item.value.attack_subtype) chips.push(tr(item.value.attack_subtype.name))
   if (item.value.area) chips.push(t('cards.fields.area'))
   return chips
@@ -122,7 +123,8 @@ onBeforeUnmount(() => {
         <ul class="card-single__facts">
           <li>
             <strong>{{ t('cards.fields.cost') }}</strong>
-            <span>{{ item.cost || '—' }}</span>
+            <CostDice v-if="item.cost" :cost="item.cost" size="medium" />
+            <span v-else>—</span>
           </li>
           <li v-if="item.hands">
             <strong>{{ t('cards.fields.hands') }}</strong>

@@ -11,6 +11,7 @@ import { useLocalesStore } from '@/stores/locales'
 import { usePageCrumb } from '@/composables/usePageCrumb'
 import type { Hero } from '@juego/shared'
 import HeroFormModal from '@/components/heroes/HeroFormModal.vue'
+import CostDice from '@/components/game/CostDice.vue'
 
 const { t } = useI18n()
 const route = useRoute()
@@ -145,7 +146,7 @@ onBeforeUnmount(() => {
       <li v-for="ability in item.abilities" :key="ability.id">
         <p class="hero-single__ability-head">
           <strong>{{ tr(ability.name) }}</strong>
-          <code v-if="ability.cost" class="hero-single__ability-cost">{{ ability.cost }}</code>
+          <CostDice v-if="ability.cost" :cost="ability.cost" />
           <span v-if="ability.attack_type" class="chip">{{
             t(`heroAbilities.attackTypes.${ability.attack_type}`)
           }}</span>

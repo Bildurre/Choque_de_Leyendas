@@ -1,0 +1,51 @@
+@use "tokens" as *;
+
+// Fila/opción de habilidad: nombre — rango · tipo · subtipo — coste (orden
+// canónico de metadatos de ataque). Se usa en las opciones del combobox y en
+// las filas de habilidades seleccionadas del form de héroe.
+.ability-option {
+  display: flex;
+  align-items: center;
+  gap: $space-2;
+  flex: 1;
+  min-width: 0;
+
+  &__name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__meta {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: $fs-12;
+    color: $text-2;
+  }
+
+  &__cost {
+    flex: none;
+    margin-left: auto;
+  }
+}
+
+// En estrecho, dentro del desplegable del combobox: solo nombre + coste.
+@container (max-width: 420px) {
+  .search-combobox__option .ability-option__meta { display: none; }
+}
+
+// En estrecho, en las filas seleccionadas del form de héroe: el bloque
+// rango · tipo · subtipo pasa a segunda fila.
+@container (max-width: 480px) {
+  .hero-form__abilities .ability-option { flex-wrap: wrap; }
+
+  .hero-form__abilities .ability-option__meta {
+    flex-basis: 100%;
+    order: 4;
+    white-space: normal;
+  }
+}

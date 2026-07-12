@@ -86,21 +86,14 @@
     &.is-warning { color: $danger; }
   }
 
-  &__ability-add {
-    display: flex;
-    align-items: flex-end;
-    gap: $space-3;
-
-    .form-field { flex: 1; }
-  }
-
   &__hint {
     margin: 0;
     font-size: 0.85rem;
     color: $text-3;
   }
 
-  // Lista ordenable de habilidades activas (subir/bajar/quitar).
+  // Lista ordenable de habilidades activas (subir/bajar/quitar); container
+  // para que en estrecho los metadatos pasen a segunda fila (_ability-option).
   &__abilities {
     list-style: decimal inside;
     margin: 0;
@@ -108,6 +101,7 @@
     display: flex;
     flex-direction: column;
     gap: $space-1;
+    container-type: inline-size;
 
     li {
       display: flex;
@@ -119,18 +113,6 @@
       border-radius: $radius-md;
       background: $surface-2;
     }
-  }
-
-  &__ability-name {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-2;
-    min-width: 0;
-  }
-
-  &__ability-cost {
-    font-size: 0.75rem;
-    color: $text-2;
   }
 
   &__ability-actions {
@@ -237,11 +219,6 @@
     gap: $space-2;
     flex-wrap: wrap;
     margin: 0 0 $space-2;
-  }
-
-  &__ability-cost {
-    font-size: 0.8rem;
-    color: $text-2;
   }
 
   &__quote {

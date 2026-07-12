@@ -10,6 +10,7 @@ use Edc\Core\Previews\PreviewableContract;
 use Edc\Core\Support\Concerns\HasFilters;
 use Edc\Core\Support\Concerns\HasPublishedState;
 use Edc\Core\Support\Concerns\ResolvesBySlug;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -127,6 +128,46 @@ class Card extends Model implements HasMedia, PreviewableContract
     public function heroAbility(): BelongsTo
     {
         return $this->belongsTo(HeroAbility::class);
+    }
+
+    // --- Filtros del índice público ---
+
+    /** Solo cartas de la facción dada. */
+    public function scopeOfFaction(Builder $query, int $factionId): Builder
+    {
+        return $query->where('faction_id', $factionId);
+    }
+
+    /** Solo cartas del tipo dado. */
+    public function scopeOfType(Builder $query, int $cardTypeId): Builder
+    {
+        return $query->where('card_type_id', $cardTypeId);
+    }
+
+    /** Cartas con exactamente N dados de coste (cost NULL nunca casa). */
+    public function scopeCostTotal(Builder $query, int $total): Builder
+    {
+        return $query->whereRaw('length(cost) = ?', [$total]);
+    }
+
+    /**
+     * Cartas cuyo coste contiene AL MENOS un dado de cada color pedido
+     * ("RG" = al menos un rojo y un verde, con los que sea de más). Como
+     * HasCost guarda el coste en orden canónico R→G→B, basta un único LIKE
+     * escalonado ('%R%G%'); el argumento se normaliza igual (dedupe + orden).
+     */
+    public function scopeCostContainsColors(Builder $query, string $colors): Builder
+    {
+        $wanted = array_values(array_intersect(
+            ['R', 'G', 'B'],
+            str_split(strtoupper($colors)),
+        ));
+
+        if ($wanted === []) {
+            return $query;
+        }
+
+        return $query->where('cost', 'like', '%'.implode('%', $wanted).'%');
     }
 
     // --- Render a PNG (carta) ---

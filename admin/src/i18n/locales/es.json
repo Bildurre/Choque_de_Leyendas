@@ -126,7 +126,12 @@
     "imageDrag": "Arrastra una imagen o haz clic",
     "close": "Cerrar",
     "imageHint": "Máx. 4 MB",
-    "confirm": "Confirmar"
+    "confirm": "Confirmar",
+    "dice": {
+      "red": "Dado rojo",
+      "green": "Dado verde",
+      "blue": "Dado azul"
+    }
   },
   "login": {
     "title": "Acceso al panel",
@@ -512,7 +517,6 @@
       "passiveDescription": "Descripción de la pasiva",
       "abilities": "Habilidades activas",
       "selectAbility": "Seleccionar habilidad",
-      "addAbility": "Añadir",
       "noAbilities": "Este héroe no tiene habilidades activas.",
       "moveUp": "Subir",
       "moveDown": "Bajar",

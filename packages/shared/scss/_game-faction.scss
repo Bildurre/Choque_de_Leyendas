@@ -1,0 +1,100 @@
+// Emblema de facción (FactionRender): port del preview del viejo
+// (_faction-preview.scss) con la banda de totales nueva. Misma proporción
+// 5/7 que las cartas y todo en cqw (container queries) para que escale a
+// cualquier tamaño; en /_render ocupa el viewport entero.
+.game-faction {
+  // Color de la facción y su texto: inline desde el componente (con fallback).
+  --fc: #6b7280;
+  --ftx: #ffffff;
+
+  container-type: size;
+  position: relative;
+  width: 375px;
+  aspect-ratio: 5 / 7;
+  overflow: hidden;
+  border-radius: 2.4cqw;
+  display: flex;
+  flex-direction: column;
+  background: var(--fc);
+  color: var(--ftx);
+  font-family: Roboto, system-ui, sans-serif;
+
+  // Emblema a sangre, con el marco interior del color de la facción.
+  &__icon {
+    position: absolute;
+    inset: 0;
+    border: 2.4cqw solid var(--fc);
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+  }
+
+  &__content {
+    position: relative;
+    z-index: 1;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3.2cqw;
+    padding: 4.8cqw;
+    text-align: center;
+  }
+
+  // Nombre centrado con text-stroke del color (como el viejo).
+  &__name {
+    margin: 0;
+    font-family: 'IM Fell English', Georgia, serif;
+    font-size: 10cqw;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--ftx);
+    -webkit-text-stroke: 1.4cqw var(--fc);
+    paint-order: stroke fill;
+  }
+
+  // Cita épica en una pastilla del color (legible sobre el emblema).
+  &__quote {
+    max-width: 84%;
+    padding: 1.6cqw 3.2cqw;
+    border-radius: 2cqw;
+    background: color-mix(in srgb, var(--fc) 85%, transparent);
+    font-size: 3.4cqw;
+    font-style: italic;
+    line-height: 1.3;
+    color: var(--ftx);
+
+    p { margin: 0; }
+  }
+
+  // Banda inferior con los totales de héroes/cartas/mazos.
+  &__totals {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    gap: 6.4cqw;
+    padding: 2.4cqw 3.2cqw;
+    background: color-mix(in srgb, var(--fc) 85%, transparent);
+    font-size: 3.4cqw;
+    color: var(--ftx);
+  }
+
+  &__total strong {
+    font-size: 4.3cqw;
+    font-weight: 800;
+  }
+}
+
+// Escenario de captura (/_render): la tarjeta ocupa exactamente el viewport.
+.render-stage .game-faction {
+  width: 100vw;
+  height: 100vh;
+  aspect-ratio: auto;
+}

@@ -50,6 +50,7 @@ class FactionDeckResource extends JsonResource
                 ],
             )),
             'image' => $this->imageUrl(),
+            'previews' => $this->previewUrls(),
             'total_cards' => $this->total_cards,
             'total_heroes' => $this->total_heroes,
             'is_published' => $this->is_published,

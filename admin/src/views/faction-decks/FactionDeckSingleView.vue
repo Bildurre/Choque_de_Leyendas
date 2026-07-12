@@ -18,6 +18,7 @@ import type {
   Translations,
 } from '@juego/shared'
 import FactionDeckFormModal from '@/components/faction-decks/FactionDeckFormModal.vue'
+import CostDice from '@/components/game/CostDice.vue'
 
 // Single editora del mazo (patrón página+bloques): cabecera con límites del
 // modo y contadores en vivo + panel de cartas (copias) + panel de héroes.
@@ -374,7 +375,10 @@ onBeforeUnmount(() => {
               <img v-if="card.image" :src="card.image" alt="" />
             </span>
             <span class="deck-editor__row-name">{{ tr(card.name) }}</span>
-            <span class="deck-editor__row-cost">{{ card.cost || '—' }}</span>
+            <span class="deck-editor__row-cost">
+              <CostDice v-if="card.cost" :cost="card.cost" />
+              <template v-else>—</template>
+            </span>
             <span
               class="deck-editor__copies"
               :class="{ 'is-over': config && card.copies > config.max_copies_per_card }"
@@ -419,7 +423,10 @@ onBeforeUnmount(() => {
           <ul v-if="cardSearch.results.value.length" class="deck-editor__results">
             <li v-for="item in cardSearch.results.value" :key="item.id">
               <span class="deck-editor__row-name">{{ tr(item.name) }}</span>
-              <span class="deck-editor__row-cost">{{ item.cost || '—' }}</span>
+              <span class="deck-editor__row-cost">
+                <CostDice v-if="item.cost" :cost="item.cost" />
+                <template v-else>—</template>
+              </span>
               <BaseButton variant="text" @click="addCard(item)">
                 <template #icon><Plus :size="14" /></template>
                 {{ t('factionDecks.single.add') }}

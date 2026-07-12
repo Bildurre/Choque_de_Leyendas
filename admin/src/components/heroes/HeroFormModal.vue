@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { ArrowDown, ArrowUp, Plus, X } from '@lucide/vue'
+import { ArrowDown, ArrowUp, X } from '@lucide/vue'
 import {
-  BaseButton,
   BaseCheckbox,
   BaseSelect,
   EditModal,
@@ -18,6 +17,8 @@ import { fieldErrors } from '@/lib/apiError'
 import { useEditorLabels } from '@/lib/editorLabels'
 import { useLocalesStore } from '@/stores/locales'
 import { useIconsStore } from '@/stores/icons'
+import SearchCombobox from '@/components/SearchCombobox.vue'
+import CostDice from '@/components/game/CostDice.vue'
 import type {
   Hero,
   HeroAbilityOption,
@@ -52,7 +53,7 @@ const errors = reactive<Record<string, string>>({})
 const factions = ref<TaxonomyOption[]>([])
 const races = ref<TaxonomyOption[]>([])
 const classes = ref<TaxonomyOption[]>([])
-const abilityOptions = ref<HeroAbilityOption[]>([])
+const abilityOptions = ref<AbilityOption[]>([])
 const config = ref<HeroAttributesConfig | null>(null)
 
 function clearErrors() {
@@ -76,10 +77,20 @@ function mapServerErrors(e: unknown) {
   }
 }
 
+/** Forma del endpoint /admin/hero-abilities/options (range/subtype anulables). */
+interface AbilityOption extends HeroAbilityOption {
+  attack_type?: 'physical' | 'magical' | null
+  range?: TaxonomyOption | null
+  subtype?: TaxonomyOption | null
+}
+
 interface SelectedAbility {
   id: number
   name: Translations
   cost: string
+  attack_type?: 'physical' | 'magical' | null
+  range?: TaxonomyOption | null
+  subtype?: TaxonomyOption | null
 }
 
 const form = reactive<{
@@ -175,21 +186,41 @@ const health = computed(() => {
   )
 })
 
-// --- Habilidades activas: multiselect ordenable simple ---
-const abilityToAdd = ref('')
+// --- Habilidades activas: combobox con búsqueda + lista ordenable ---
+
+/** Metadatos de ataque en orden canónico rango → tipo → subtipo. */
+function abilityMeta(a: AbilityOption | SelectedAbility): string {
+  const parts: string[] = []
+  if (a.range) parts.push(optionLabel(a.range))
+  if (a.attack_type) parts.push(t(`heroAbilities.attackTypes.${a.attack_type}`))
+  if (a.subtype) parts.push(optionLabel(a.subtype))
+  return parts.join(' · ')
+}
+
+// Opciones del combobox: la búsqueda cubre nombre, metadatos y coste.
 const availableAbilities = computed(() =>
   abilityOptions.value
     .filter((o) => !form.abilities.some((a) => a.id === o.id))
-    .map((o) => ({ value: o.id, label: `${optionLabel(o)} (${o.cost})` })),
+    .map((o) => ({
+      id: o.id,
+      label: optionLabel(o),
+      search: [optionLabel(o), abilityMeta(o), o.cost].filter(Boolean).join(' '),
+      ability: o,
+    })),
 )
 
-function addAbility() {
-  const id = Number(abilityToAdd.value)
-  if (!id) return
-  const option = abilityOptions.value.find((o) => o.id === id)
-  if (!option || form.abilities.some((a) => a.id === id)) return
-  form.abilities.push({ id: option.id, name: option.name, cost: option.cost })
-  abilityToAdd.value = ''
+// Al elegir en el combobox se añade directamente (sin botón intermedio).
+function addAbility(id: number | string) {
+  const option = abilityOptions.value.find((o) => o.id === Number(id))
+  if (!option || form.abilities.some((a) => a.id === option.id)) return
+  form.abilities.push({
+    id: option.id,
+    name: option.name,
+    cost: option.cost,
+    attack_type: option.attack_type ?? null,
+    range: option.range ?? null,
+    subtype: option.subtype ?? null,
+  })
 }
 
 function removeAbility(index: number) {
@@ -223,7 +254,6 @@ function reset() {
   form.armor = 2
   form.is_published = false
   form.abilities = []
-  abilityToAdd.value = ''
   image.value = null
   currentImage.value = null
   clearErrors()
@@ -271,12 +301,19 @@ watch(
         form.strength = hero.strength
         form.armor = hero.armor
         form.is_published = !!hero.is_published
-        // Ya llegan ordenadas por position desde la API.
-        form.abilities = (hero.abilities ?? []).map((a) => ({
-          id: a.id,
-          name: a.name,
-          cost: a.cost,
-        }))
+        // Ya llegan ordenadas por position desde la API; los metadatos de
+        // ataque se completan desde las opciones ya cargadas (por id).
+        form.abilities = (hero.abilities ?? []).map((a) => {
+          const option = abilityOptions.value.find((o) => o.id === a.id)
+          return {
+            id: a.id,
+            name: a.name,
+            cost: a.cost,
+            attack_type: option?.attack_type ?? a.attack_type ?? null,
+            range: option?.range ?? null,
+            subtype: option?.subtype ?? null,
+          }
+        })
         currentImage.value = hero.image ?? null
       } catch {
         toast.danger(t('heroes.toast.saveError'))
@@ -481,27 +518,42 @@ async function submit() {
     <!-- Habilidades activas (ordenables) -->
     <fieldset class="hero-form__fieldset">
       <legend>{{ t('heroes.sections.abilities') }}</legend>
-      <div class="hero-form__ability-add">
-        <BaseSelect
-          v-model="abilityToAdd"
-          :label="t('heroes.fields.abilities')"
-          :options="availableAbilities"
-          :placeholder="t('heroes.fields.selectAbility')"
-          :error="errors.abilities"
-        />
-        <BaseButton variant="text" type="button" @click="addAbility">
-          <template #icon><Plus :size="14" /></template>
-          {{ t('heroes.fields.addAbility') }}
-        </BaseButton>
-      </div>
+      <!-- Combobox con búsqueda: al elegir, la habilidad se añade a la lista -->
+      <SearchCombobox
+        :model-value="null"
+        :options="availableAbilities"
+        :label="t('heroes.fields.abilities')"
+        :placeholder="t('heroes.fields.selectAbility')"
+        :search-placeholder="t('common.search')"
+        :no-results="t('common.empty')"
+        :error="errors.abilities"
+        @update:model-value="addAbility"
+      >
+        <template #option="{ option }">
+          <span class="ability-option">
+            <span class="ability-option__name">{{ option.label }}</span>
+            <span v-if="abilityMeta(option.ability)" class="ability-option__meta">
+              {{ abilityMeta(option.ability) }}
+            </span>
+            <CostDice
+              v-if="option.ability.cost"
+              class="ability-option__cost"
+              :cost="option.ability.cost"
+            />
+          </span>
+        </template>
+      </SearchCombobox>
       <p v-if="!form.abilities.length" class="hero-form__hint">
         {{ t('heroes.fields.noAbilities') }}
       </p>
       <ol v-else class="hero-form__abilities">
         <li v-for="(ability, index) in form.abilities" :key="ability.id">
-          <span class="hero-form__ability-name">
-            {{ optionLabel(ability) }}
-            <code v-if="ability.cost" class="hero-form__ability-cost">{{ ability.cost }}</code>
+          <span class="ability-option">
+            <span class="ability-option__name">{{ optionLabel(ability) }}</span>
+            <span v-if="abilityMeta(ability)" class="ability-option__meta">
+              {{ abilityMeta(ability) }}
+            </span>
+            <CostDice v-if="ability.cost" class="ability-option__cost" :cost="ability.cost" />
           </span>
           <span class="hero-form__ability-actions">
             <button

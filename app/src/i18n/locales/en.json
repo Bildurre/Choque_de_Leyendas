@@ -140,7 +140,21 @@
     "empty": "No results for that search.",
     "loading": "Loading…",
     "prev": "Previous",
-    "next": "Next"
+    "next": "Next",
+    "filters": {
+      "toggle": "Filters",
+      "faction": "Faction",
+      "allFactions": "All factions",
+      "type": "Card type",
+      "allTypes": "All types",
+      "dice": "Cost dice",
+      "anyDice": "Any cost",
+      "colors": "Cost colors",
+      "colorR": "Red dice",
+      "colorG": "Green dice",
+      "colorB": "Blue dice",
+      "clear": "Clear filters"
+    }
   },
   "decks": {
     "multiFaction": "Multifaction",
