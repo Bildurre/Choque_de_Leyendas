@@ -40,6 +40,16 @@ const {
   tabKeys: ['all', 'trashed'],
 })
 
+/** Tipado completo en orden canónico: rango · tipo · subtipo · área. */
+function typing(a: HeroAbility): string {
+  const parts: string[] = []
+  if (a.attack_range) parts.push(tr(a.attack_range.name))
+  if (a.attack_type) parts.push(t(`heroAbilities.attackTypes.${a.attack_type}`))
+  if (a.attack_subtype) parts.push(tr(a.attack_subtype.name))
+  if (a.area) parts.push(t('heroAbilities.fields.area'))
+  return parts.join(' · ')
+}
+
 onMounted(init)
 </script>
 
@@ -76,14 +86,11 @@ onMounted(init)
           <span v-if="item.deleted_at" class="chip is-failed">{{
             t('heroAbilities.state.trashed')
           }}</span>
-          <span v-if="item.area" class="chip">{{ t('heroAbilities.fields.area') }}</span>
         </template>
 
         <template #meta>
           <CostDice v-if="item.cost" :cost="item.cost" />
-          <span v-if="item.attack_type">{{
-            t(`heroAbilities.attackTypes.${item.attack_type}`)
-          }}</span>
+          <span v-if="typing(item)">{{ typing(item) }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -103,14 +110,10 @@ onMounted(init)
       @force-delete="selected && forceDelete(selected)"
     >
       <template #meta>
-        <!-- Metadatos de ataque en orden canónico: rango → tipo → subtipo -->
+        <!-- Tipado completo en orden canónico: rango · tipo · subtipo · área -->
         <p v-if="selected" class="manager-detail__meta">
           <CostDice v-if="selected.cost" :cost="selected.cost" />
-          <span v-if="selected.attack_range">{{ tr(selected.attack_range.name) }}</span>
-          <span v-if="selected.attack_type">
-            · {{ t(`heroAbilities.attackTypes.${selected.attack_type}`) }}
-          </span>
-          <span v-if="selected.attack_subtype">· {{ tr(selected.attack_subtype.name) }}</span>
+          <span v-if="typing(selected)">{{ typing(selected) }}</span>
         </p>
         <!-- HTML del WYSIWYG propio (saneado en origen) -->
         <div
