@@ -2,3 +2,8 @@
 
 // Barra superior común de los listados (botón "nuevo").
 .list-view__top { display: flex; justify-content: flex-end; margin-bottom: $space-4; }
+
+// Paginación de los listados: arriba a la derecha (justo bajo filtros/tabs)
+// y abajo centrada tras el grid. Con una sola página no se pinta.
+.list-view__pagination { justify-content: flex-end; margin-bottom: $space-4; }
+.list-view__pagination--bottom { justify-content: center; margin-top: $space-4; margin-bottom: 0; }

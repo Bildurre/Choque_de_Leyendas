@@ -2,7 +2,7 @@
 import { computed, onMounted, ref } from 'vue'
 import { Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BaseSelect, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useEntityList } from '@/composables/useEntityList'
 import type { HeroAbility, TaxonomyOption } from '@juego/shared'
@@ -19,6 +19,8 @@ const {
   t,
   items,
   loading,
+  page,
+  pages,
   status,
   search,
   sort,
@@ -133,6 +135,14 @@ onMounted(() => {
       <SortSelect v-model="sort" />
     </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />
+    <BasePagination
+      v-model:page="page"
+      :pages="pages"
+      class="list-view__pagination"
+      :prev-label="t('common.pagination.prev')"
+      :next-label="t('common.pagination.next')"
+      :of-label="t('common.pagination.of', { page, pages })"
+    />
 
     <EmptyState v-if="!loading && !items.length" :title="t('common.empty')" />
 
@@ -161,6 +171,15 @@ onMounted(() => {
         </template>
       </EntityCard>
     </BaseGrid>
+
+    <BasePagination
+      v-model:page="page"
+      :pages="pages"
+      class="list-view__pagination list-view__pagination--bottom"
+      :prev-label="t('common.pagination.prev')"
+      :next-label="t('common.pagination.next')"
+      :of-label="t('common.pagination.of', { page, pages })"
+    />
 
     <HeroAbilityFormModal v-model="formOpen" :mode="formMode" :target="formItem" @saved="onSaved" />
 

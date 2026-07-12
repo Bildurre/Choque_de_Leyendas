@@ -136,6 +136,11 @@
       "latest": "Berrienak lehenik",
       "nameAsc": "Izena A-Z",
       "nameDesc": "Izena Z-A"
+    },
+    "pagination": {
+      "prev": "Aurrekoa",
+      "next": "Hurrengoa",
+      "of": "{page} / {pages}"
     }
   },
   "login": {

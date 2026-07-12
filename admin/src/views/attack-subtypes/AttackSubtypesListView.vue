@@ -2,7 +2,7 @@
 import { onMounted } from 'vue'
 import { Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, FilterBar, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import type { AttackSubtype } from '@juego/shared'
 import AttackSubtypeFormModal from '@/components/attack-subtypes/AttackSubtypeFormModal.vue'
@@ -15,6 +15,8 @@ const {
   t,
   items,
   loading,
+  page,
+  pages,
   status,
   search,
   sort,
@@ -58,6 +60,14 @@ onMounted(init)
       <SortSelect v-model="sort" />
     </FilterBar>
     <BaseTabs v-model="status" :tabs="tabs" />
+    <BasePagination
+      v-model:page="page"
+      :pages="pages"
+      class="list-view__pagination"
+      :prev-label="t('common.pagination.prev')"
+      :next-label="t('common.pagination.next')"
+      :of-label="t('common.pagination.of', { page, pages })"
+    />
 
     <EmptyState v-if="!loading && !items.length" :title="t('common.empty')" />
 
@@ -81,6 +91,15 @@ onMounted(init)
         </template>
       </EntityCard>
     </BaseGrid>
+
+    <BasePagination
+      v-model:page="page"
+      :pages="pages"
+      class="list-view__pagination list-view__pagination--bottom"
+      :prev-label="t('common.pagination.prev')"
+      :next-label="t('common.pagination.next')"
+      :of-label="t('common.pagination.of', { page, pages })"
+    />
 
     <AttackSubtypeFormModal
       v-model="formOpen"

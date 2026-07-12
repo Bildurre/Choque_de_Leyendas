@@ -121,6 +121,16 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     load(meta.value?.current_page ?? 1)
   }
 
+  // Página actual / total para BasePagination: escribir en `page` navega
+  // (v-model:page). Búsqueda, orden, filtros y tabs ya vuelven a la 1 (load(1)).
+  const page = computed({
+    get: () => meta.value?.current_page ?? 1,
+    set: (n: number) => {
+      load(n)
+    },
+  })
+  const pages = computed(() => meta.value?.last_page ?? 1)
+
   watch(status, () => {
     selectedId.value = null
     load(1)
@@ -247,6 +257,8 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     items,
     meta,
     loading,
+    page,
+    pages,
     status,
     search,
     sort,

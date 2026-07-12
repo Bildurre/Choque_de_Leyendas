@@ -141,6 +141,11 @@
     "loading": "Loading…",
     "prev": "Previous",
     "next": "Next",
+    "pagination": {
+      "prev": "Previous",
+      "next": "Next",
+      "of": "{page} of {pages}"
+    },
     "filters": {
       "toggle": "Filters",
       "faction": "Faction",

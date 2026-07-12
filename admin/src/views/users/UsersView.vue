@@ -2,7 +2,7 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Plus, SquarePen, Trash2 } from '@lucide/vue'
-import { BaseButton, BaseCheckbox, useConfirm, useToast } from '@edc-motor/ui'
+import { BaseButton, BaseCheckbox, BasePagination, useConfirm, useToast } from '@edc-motor/ui'
 import { FilterBar, ManagerCard, useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 import { useAuthStore } from '@/stores/auth'
@@ -22,6 +22,15 @@ sidebar.useRegister(t('users.panelTitle'))
 const users = ref<UserRow[]>([])
 const loading = ref(true)
 const search = ref('')
+// Paginación del servidor (paginate del motor); escribir en `page` navega.
+const currentPage = ref(1)
+const pages = ref(1)
+const page = computed({
+  get: () => currentPage.value,
+  set: (n: number) => {
+    load(n)
+  },
+})
 const formOpen = ref(false)
 const editing = ref<UserRow | null>(null)
 const selectedId = ref<number | null>(null)
@@ -29,11 +38,15 @@ const selectedId = ref<number | null>(null)
 const selected = computed(() => users.value.find((u) => u.id === selectedId.value) ?? null)
 const isSelf = computed(() => selected.value?.id === auth.user?.id)
 
-async function load() {
+async function load(pageNumber = 1) {
   loading.value = true
   try {
-    const { data } = await api.get('/admin/users', { params: { search: search.value } })
+    const { data } = await api.get('/admin/users', {
+      params: { search: search.value, page: pageNumber },
+    })
     users.value = data.data
+    currentPage.value = data.meta?.current_page ?? 1
+    pages.value = data.meta?.last_page ?? 1
   } catch {
     toast.danger(t('common.errors.load'))
   } finally {
@@ -41,10 +54,11 @@ async function load() {
   }
 }
 
+// La búsqueda vuelve a la página 1.
 let timer: ReturnType<typeof setTimeout> | null = null
 watch(search, () => {
   if (timer) clearTimeout(timer)
-  timer = setTimeout(load, 250)
+  timer = setTimeout(() => load(1), 250)
 })
 onBeforeUnmount(() => {
   if (timer) clearTimeout(timer)
@@ -89,7 +103,7 @@ async function remove(user: UserRow) {
     await api.delete(`/admin/users/${user.id}`)
     if (selectedId.value === user.id) selectedId.value = null
     toast.success(t('users.toast.deleted'))
-    await load()
+    await load(currentPage.value)
   } catch {
     toast.danger(t('common.errors.action'))
   }
@@ -123,6 +137,14 @@ onMounted(load)
     </div>
 
     <FilterBar v-model="search" :placeholder="t('common.search')" />
+    <BasePagination
+      v-model:page="page"
+      :pages="pages"
+      class="list-view__pagination"
+      :prev-label="t('common.pagination.prev')"
+      :next-label="t('common.pagination.next')"
+      :of-label="t('common.pagination.of', { page, pages })"
+    />
 
     <p v-if="!loading && !users.length" class="users-view__empty">{{ t('common.empty') }}</p>
 
@@ -144,7 +166,16 @@ onMounted(load)
       </ManagerCard>
     </div>
 
-    <UserFormModal v-model="formOpen" :user="editing" @saved="load" />
+    <BasePagination
+      v-model:page="page"
+      :pages="pages"
+      class="list-view__pagination list-view__pagination--bottom"
+      :prev-label="t('common.pagination.prev')"
+      :next-label="t('common.pagination.next')"
+      :of-label="t('common.pagination.of', { page, pages })"
+    />
+
+    <UserFormModal v-model="formOpen" :user="editing" @saved="load(currentPage)" />
 
     <!-- Acciones del usuario seleccionado, en el panel derecho -->
     <Teleport defer to="#right-sidebar-target">

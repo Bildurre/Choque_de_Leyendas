@@ -136,6 +136,11 @@
       "latest": "Newest first",
       "nameAsc": "Name A-Z",
       "nameDesc": "Name Z-A"
+    },
+    "pagination": {
+      "prev": "Previous",
+      "next": "Next",
+      "of": "{page} of {pages}"
     }
   },
   "login": {

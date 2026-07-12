@@ -20,6 +20,10 @@
     font-size: $fs-13;
   }
 
+  // Paginación superior (bajo la fila de buscador/orden), a la derecha; la
+  // inferior la trae integrada el PreviewGrid.
+  &__pagination { justify-content: flex-end; }
+
   &__loading {
     margin: 0;
     padding: $space-8 0;

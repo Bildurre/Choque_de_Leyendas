@@ -1,7 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { BaseSelect, PreviewGrid, type CatalogItem, type PreviewGridItem } from '@edc-motor/ui'
+import {
+  BasePagination,
+  BaseSelect,
+  PreviewGrid,
+  type CatalogItem,
+  type PreviewGridItem,
+} from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
 import IndexFilters from '@/components/index/IndexFilters.vue'
@@ -228,6 +234,16 @@ watch(() => locales.current, loadFilters, { immediate: true })
       <BaseSelect v-model="classId" :label="t('catalog.filters.class')" :options="classSelect" />
       <BaseSelect v-model="raceId" :label="t('catalog.filters.race')" :options="raceSelect" />
     </IndexFilters>
+
+    <BasePagination
+      class="catalog-index__pagination"
+      :page="page"
+      :pages="pages"
+      :prev-label="t('catalog.pagination.prev')"
+      :next-label="t('catalog.pagination.next')"
+      :of-label="t('catalog.pagination.of', { page, pages })"
+      @update:page="onPage"
+    />
 
     <p v-if="!loading && items.length" class="catalog-index__count">
       {{ t('catalog.results', { count: total }, total) }}

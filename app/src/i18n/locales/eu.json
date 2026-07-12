@@ -141,6 +141,11 @@
     "loading": "Kargatzen…",
     "prev": "Aurrekoa",
     "next": "Hurrengoa",
+    "pagination": {
+      "prev": "Aurrekoa",
+      "next": "Hurrengoa",
+      "of": "{page} / {pages}"
+    },
     "filters": {
       "toggle": "Iragazkiak",
       "faction": "Fakzioa",
