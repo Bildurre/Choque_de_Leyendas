@@ -2,8 +2,8 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ChevronDown, FileDown, LayoutDashboard, LogIn, LogOut, Menu, X } from '@lucide/vue'
-import { LocaleSelector, MotorBadge, ThemeSelector } from '@edc-motor/ui'
+import { ChevronDown, FileDown, Funnel, LayoutDashboard, LogIn, LogOut, Menu, X } from '@lucide/vue'
+import { LocaleSelector, MotorBadge, ThemeSelector, useAppRightSidebar } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { entitySections } from '@/entities/registry'
 import { DOWNLOAD_PATHS } from '@/router/downloads'
@@ -25,6 +25,17 @@ const { t } = useI18n()
 const locales = useLocalesStore()
 const site = useSiteStore()
 const collection = useCollectionStore()
+
+// Barra derecha contextual (filtros de la vista): el botón Funnel solo
+// aparece si la vista actual ha registrado contenido, y despliega/pliega
+// según el modo (columna en ancho, drawer en estrecho).
+const {
+  hasContent: filtersAvailable,
+  isOpen: filtersOpen,
+  overlay: filtersOverlay,
+  mobileOpen: filtersDrawerOpen,
+  toggle: toggleFilters,
+} = useAppRightSidebar()
 
 interface NavPage {
   id: number
@@ -123,11 +134,13 @@ async function logout() {
   router.push({ name: 'home', params: { locale: locales.current } })
 }
 
-// Ocultar al bajar, enseñar al subir.
+// Ocultar al bajar, enseñar al subir (nunca con un drawer abierto: el de
+// navegación o el de filtros anclan su techo a la cabecera).
 let lastY = 0
 function onScroll() {
   const y = window.scrollY
-  hidden.value = y > 80 && y > lastY && !navOpen.value
+  hidden.value =
+    y > 80 && y > lastY && !navOpen.value && !(filtersOverlay.value && filtersDrawerOpen.value)
   lastY = y
 }
 
@@ -248,6 +261,19 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
           />
           <ThemeSelector />
         </div>
+
+        <!-- Filtros de la vista (barra derecha contextual): fuera de las
+             acciones para seguir a mano también en móvil -->
+        <button
+          v-if="filtersAvailable"
+          type="button"
+          class="site-header__filters"
+          :aria-expanded="filtersOpen"
+          :title="t('nav.filters')"
+          @click="toggleFilters"
+        >
+          <Funnel :size="20" />
+        </button>
       </div>
     </div>
 

@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { BaseSelect, BaseTabs, FiltersModal, IndexToolbar } from '@edc-motor/ui'
+import { FunnelX } from '@lucide/vue'
+import { BaseButton, BaseSelect, BaseTabs, IndexToolbar, useAppRightSidebar } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
 import { useIndexPage } from '@/entities/indexPage'
@@ -9,13 +10,14 @@ import { useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
 
 // Índice público de mazos: patrón unificado de los índices (IndexToolbar
-// del motor: búsqueda multi-campo con debounce, toggles de orden y botón
-// "Filtros" con badge) + BaseTabs con una pestaña por modo de juego (de
+// del motor: búsqueda multi-campo con debounce y toggles de orden) +
+// BaseTabs con una pestaña por modo de juego (de
 // GET /api/faction-decks/filters, + "Todos") que alimenta game_mode_id en
-// el servidor y queda FUERA del modal; el filtro de facción va en el
-// FiltersModal ('name' es el default histórico del endpoint). Cada tarjeta
-// ya lleva el nombre de su modo, así que dentro de una pestaña no hace
-// falta agrupar nada. Todo vive en la query string (useFiltersQuery).
+// el servidor y se QUEDA en la vista; el filtro de facción va en la barra
+// derecha contextual (AppRightSidebar: registro + Teleport; el botón Funnel
+// del header la despliega). 'name' es el default histórico del endpoint.
+// Cada tarjeta ya lleva el nombre de su modo, así que dentro de una pestaña
+// no hace falta agrupar nada. Todo vive en la query string (useFiltersQuery).
 interface DeckRow extends FactionDeckCardData {
   id: number
   slug: string
@@ -32,8 +34,10 @@ const { route, router, locales, site, segment, section, canonicalize, applyHead 
 const items = ref<DeckRow[]>([])
 const loading = ref(true)
 
-// Modal de filtros (los campos aplican en vivo; el modal solo se abre/cierra).
-const filtersOpen = ref(false)
+// Filtros en la barra derecha contextual: se registra sin título (el
+// cascarón pone el suyo, reactivo al locale) y se limpia al salir de la
+// vista (el token evita pisar el registro de la vista entrante).
+useAppRightSidebar().useRegister()
 
 // Estado de los filtros ('' = todos).
 const search = ref('')
@@ -86,7 +90,7 @@ const factionSelect = computed(() => [
   ...factionOptions.value.map((option) => ({ value: String(option.id), label: option.name })),
 ])
 
-// Nº de filtros activos (badge del botón de la barra y "Quitar filtros"; la
+// Nº de filtros activos (enseña el "Quitar filtros" de la barra derecha; la
 // pestaña de modo, la búsqueda y el orden no cuentan).
 const activeFilters = computed(() => (factionId.value ? 1 : 0))
 
@@ -156,33 +160,29 @@ watch(() => locales.current, loadFilters, { immediate: true })
       v-model="search"
       v-model:sort="sort"
       :search-placeholder="t('catalog.searchPlaceholder')"
-      :filters-label="t('catalog.filters.toggle')"
-      :active-count="activeFilters"
-      show-filters
       :latest-label="t('catalog.sort.latest')"
       :oldest-label="t('catalog.sort.oldest')"
       :name-label="t('catalog.sort.nameAsc')"
       :name-desc-label="t('catalog.sort.nameDesc')"
-      @open-filters="filtersOpen = true"
     />
 
-    <FiltersModal
-      v-model="filtersOpen"
-      :title="t('catalog.filters.toggle')"
-      size="sm"
-      :active-count="activeFilters"
-      :clear-label="t('catalog.filters.clear')"
-      :close-label="t('catalog.filters.close')"
-      @clear="clearFilters"
-    >
+    <!-- Filtro de facción en la barra derecha contextual (aplica en vivo) -->
+    <Teleport defer to="#app-right-sidebar-target">
       <BaseSelect
         v-model="factionId"
         :label="t('catalog.filters.faction')"
         :options="factionSelect"
       />
-    </FiltersModal>
 
-    <!-- Pestañas por modo de juego (server-side: game_mode_id), fuera del modal -->
+      <!-- "Quitar filtros" (solo con filtros activos), como el pie del
+           antiguo modal: pestaña, búsqueda y orden se quedan como están -->
+      <BaseButton v-if="activeFilters > 0" variant="secondary" type="button" @click="clearFilters">
+        <template #icon><FunnelX :size="16" /></template>
+        {{ t('catalog.filters.clear') }}
+      </BaseButton>
+    </Teleport>
+
+    <!-- Pestañas por modo de juego (server-side: game_mode_id), en la vista -->
     <BaseTabs v-if="modeOptions.length" v-model="activeTab" :tabs="tabs" />
 
     <p v-if="loading" class="decks-index__loading" role="status">{{ t('catalog.loading') }}</p>

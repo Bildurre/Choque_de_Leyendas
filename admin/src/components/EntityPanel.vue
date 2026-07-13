@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { useSlots } from 'vue'
 import { useI18n } from 'vue-i18n'
 import {
+  ArrowLeft,
   ArrowRight,
   Camera,
   Eye,
@@ -18,6 +20,11 @@ import type { EntityListItem } from '@juego/shared'
 // acciones arriba del todo (la tarjeta solo lleva las básicas) + info del
 // elemento (estado, previews por idioma). Las acciones las ejecuta la vista
 // (vienen de useEntityList); aquí solo se emiten.
+//
+// Los filtros del listado también viven aquí (slot `filters`): sin card
+// seleccionada, el "selecciona…" + separador + los selects (aplican en
+// vivo); con selección, el botón "← Volver a los filtros" (emite `deselect`)
+// antecede a las acciones. Sin slot, el panel se comporta como siempre.
 withDefaults(
   defineProps<{
     /** Elemento seleccionado (null => mensaje de "selecciona"). */
@@ -46,22 +53,46 @@ defineEmits<{
   del: []
   restore: []
   forceDelete: []
+  /** "Volver a los filtros": la vista deselecciona la card activa. */
+  deselect: []
 }>()
 
 defineSlots<{
   /** Info extra específica de la entidad (color, stats…). */
   meta?: () => unknown
+  /** Filtros del listado (selects en vivo), visibles sin selección. */
+  filters?: () => unknown
 }>()
 
 const { t } = useI18n()
 const locales = useLocalesStore()
+const slots = useSlots()
+const hasFilters = !!slots.filters
 </script>
 
 <template>
   <Teleport defer to="#right-sidebar-target">
     <div class="manager-panel">
-      <p v-if="!item" class="manager-panel__empty">{{ empty }}</p>
+      <template v-if="!item">
+        <p class="manager-panel__empty">{{ empty }}</p>
+
+        <template v-if="hasFilters">
+          <hr class="manager-panel__divider" />
+
+          <p class="manager-panel__kicker">{{ t('common.filters') }}</p>
+          <slot name="filters" />
+        </template>
+      </template>
       <template v-else>
+        <template v-if="hasFilters">
+          <button type="button" class="manager-panel__back" @click="$emit('deselect')">
+            <ArrowLeft :size="14" />
+            {{ t('common.backToFilters') }}
+          </button>
+
+          <hr class="manager-panel__divider" />
+        </template>
+
         <p class="manager-panel__kicker">{{ kicker }}</p>
 
         <!-- Acciones PRIMERO; después, secciones separadas (patrón panel) -->

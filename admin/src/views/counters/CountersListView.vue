@@ -8,12 +8,11 @@ import { useIconsStore } from '@/stores/icons'
 import type { Counter } from '@juego/shared'
 import CounterFormModal from '@/components/counters/CounterFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
-import ListFiltersModal from '@/components/ListFiltersModal.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
 
 // Sin single: se edita en modal y la API resuelve por id. Además de las tabs
 // de estado, el listado filtra por tipo (boon|bane) con un select en el
-// modal de filtros (el viejo usaba pestañas beneficio/perjuicio).
+// panel derecho (el viejo usaba pestañas beneficio/perjuicio).
 const icons = useIconsStore()
 
 const {
@@ -26,9 +25,6 @@ const {
   search,
   sort,
   filters,
-  filtersOpen,
-  activeFiltersCount,
-  clearFilters,
   tabs,
   tr,
   init,
@@ -81,14 +77,8 @@ onMounted(async () => {
       </BaseButton>
     </div>
 
-    <!-- Barra del índice: búsqueda + orden + botón "Filtros" (modal) -->
-    <ListToolbar
-      v-model="search"
-      v-model:sort="sort"
-      show-filters
-      :active-count="activeFiltersCount"
-      @open-filters="filtersOpen = true"
-    />
+    <!-- Barra del índice: búsqueda + orden (los filtros, en el panel derecho) -->
+    <ListToolbar v-model="search" v-model:sort="sort" />
     <BaseTabs v-model="status" :tabs="tabs" />
     <BasePagination
       v-model:page="page"
@@ -162,20 +152,6 @@ onMounted(async () => {
       :of-label="t('common.pagination.of', { page, pages })"
     />
 
-    <!-- Filtros del listado: aplican en vivo (sin guardar) -->
-    <ListFiltersModal
-      v-model="filtersOpen"
-      size="sm"
-      :active-count="activeFiltersCount"
-      @clear="clearFilters"
-    >
-      <BaseSelect
-        v-model="filters.type"
-        :label="t('counters.fields.type')"
-        :options="typeOptions"
-      />
-    </ListFiltersModal>
-
     <CounterFormModal v-model="formOpen" :mode="formMode" :target="formItem" @saved="onSaved" />
 
     <EntityPanel
@@ -185,6 +161,7 @@ onMounted(async () => {
       :empty="t('counters.panelEmpty')"
       :has-single="false"
       :has-preview="hasPreview"
+      @deselect="selectedId = null"
       @edit="selected && edit(selected)"
       @toggle-publish="selected && togglePublish(selected)"
       @regenerate="selected && regeneratePreview(selected)"
@@ -192,6 +169,15 @@ onMounted(async () => {
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
+      <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+      <template #filters>
+        <BaseSelect
+          v-model="filters.type"
+          :label="t('counters.fields.type')"
+          :options="typeOptions"
+        />
+      </template>
+
       <template #meta>
         <p v-if="selected" class="manager-detail__meta">
           <strong>{{ t('counters.fields.type') }}</strong>

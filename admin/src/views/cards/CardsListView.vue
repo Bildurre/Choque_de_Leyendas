@@ -8,12 +8,12 @@ import { api } from '@/lib/api'
 import type { Card, Translations } from '@juego/shared'
 import CardFormModal from '@/components/cards/CardFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
-import ListFiltersModal from '@/components/ListFiltersModal.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
 import CostDice from '@/components/game/CostDice.vue'
 
 // Cartas: entidad completa con slug, single, publicación y previews PNG.
-// El listado filtra por facción y tipo con selects en el modal de filtros.
+// El listado filtra por facción y tipo con selects en el panel derecho
+// (slot `filters` del EntityPanel).
 const {
   t,
   items,
@@ -24,9 +24,6 @@ const {
   search,
   sort,
   filters,
-  filtersOpen,
-  activeFiltersCount,
-  clearFilters,
   tabs,
   tr,
   init,
@@ -53,7 +50,8 @@ const {
   previewKey: 'card',
 })
 
-// Opciones de los selects de filtro (endpoints options, nombres traducibles).
+// Opciones de los selects de filtro del panel (endpoints options,
+// nombres traducibles).
 interface FilterOption {
   id: number
   name: Translations
@@ -97,14 +95,8 @@ onMounted(async () => {
       </BaseButton>
     </div>
 
-    <!-- Barra del índice: búsqueda + orden + botón "Filtros" (modal) -->
-    <ListToolbar
-      v-model="search"
-      v-model:sort="sort"
-      show-filters
-      :active-count="activeFiltersCount"
-      @open-filters="filtersOpen = true"
-    />
+    <!-- Barra del índice: búsqueda + orden (los filtros, en el panel derecho) -->
+    <ListToolbar v-model="search" v-model:sort="sort" />
     <BaseTabs v-model="status" :tabs="tabs" />
     <BasePagination
       v-model:page="page"
@@ -166,24 +158,6 @@ onMounted(async () => {
       :of-label="t('common.pagination.of', { page, pages })"
     />
 
-    <!-- Filtros del listado: aplican en vivo (sin guardar) -->
-    <ListFiltersModal
-      v-model="filtersOpen"
-      :active-count="activeFiltersCount"
-      @clear="clearFilters"
-    >
-      <BaseSelect
-        v-model="filters.faction_id"
-        :label="t('cards.fields.faction')"
-        :options="factionOptions"
-      />
-      <BaseSelect
-        v-model="filters.card_type_id"
-        :label="t('cards.fields.type')"
-        :options="cardTypeOptions"
-      />
-    </ListFiltersModal>
-
     <CardFormModal v-model="formOpen" :mode="formMode" :target-slug="formSlug" @saved="onSaved" />
 
     <EntityPanel
@@ -192,6 +166,7 @@ onMounted(async () => {
       :kicker="t('cards.panelTitle')"
       :empty="t('cards.panelEmpty')"
       has-preview
+      @deselect="selectedId = null"
       @open="selected && goSingle(selected)"
       @edit="selected && edit(selected)"
       @toggle-publish="selected && togglePublish(selected)"
@@ -200,6 +175,20 @@ onMounted(async () => {
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
+      <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+      <template #filters>
+        <BaseSelect
+          v-model="filters.faction_id"
+          :label="t('cards.fields.faction')"
+          :options="factionOptions"
+        />
+        <BaseSelect
+          v-model="filters.card_type_id"
+          :label="t('cards.fields.type')"
+          :options="cardTypeOptions"
+        />
+      </template>
+
       <template #meta>
         <p v-if="selected" class="manager-detail__meta">
           <span>{{ selected.card_type ? tr(selected.card_type.name) : '—' }}</span>

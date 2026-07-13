@@ -29,8 +29,18 @@ h6 {
   flex-direction: column;
 }
 
-.site-content {
+// El cuerpo (contenido + barra derecha contextual) ocupa el alto sobrante:
+// el pie sigue pegado abajo. En ancho la barra es una columna junto al
+// contenido; en estrecho se superpone (drawer del propio componente).
+.site-main {
   flex: 1 0 auto;
+  display: flex;
+  align-items: stretch;
+}
+
+.site-content {
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 // Pie con el texto de la configuración (texto rico del wysiwyg).

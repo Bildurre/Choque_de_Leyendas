@@ -6,7 +6,9 @@
     "logout": "Salir",
     "downloads": "Descargas",
     "menu": "Menú",
-    "admin": "Administración"
+    "admin": "Administración",
+    "filters": "Filtros",
+    "closeFilters": "Cerrar los filtros"
   },
   "list": {
     "empty": "No hay nada que mostrar todavía."
@@ -146,7 +148,6 @@
       "of": "{page} de {pages}"
     },
     "filters": {
-      "toggle": "Filtros",
       "faction": "Facción",
       "allFactions": "Todas las facciones",
       "type": "Tipo de carta",
@@ -158,7 +159,6 @@
       "colorG": "Dados verdes",
       "colorB": "Dados azules",
       "clear": "Quitar filtros",
-      "close": "Cerrar",
       "subtype": "Subtipo de carta",
       "allSubtypes": "Todos los subtipos",
       "equipmentType": "Tipo de equipo",

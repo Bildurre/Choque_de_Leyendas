@@ -2,8 +2,8 @@
 
 // Índices públicos del juego (cartas/héroes = catálogo con PreviewGrid;
 // facciones y mazos = tarjetas CSS propias). Mobile-first: todo en columna.
-// La barra (búsqueda + orden + Filtros) y el modal de filtros son del motor
-// (IndexToolbar + FiltersModal); aquí solo lo propio del juego.
+// La barra de búsqueda + orden (IndexToolbar) y la barra derecha de filtros
+// (AppRightSidebar) son del motor; aquí solo lo propio del juego.
 
 // --- Catálogo (cartas y héroes) ---
 .catalog-index {

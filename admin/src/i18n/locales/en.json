@@ -126,7 +126,7 @@
     "imageDrag": "Drag an image or click",
     "close": "Close",
     "filters": "Filters",
-    "clearFilters": "Clear filters",
+    "backToFilters": "Back to filters",
     "imageHint": "Max. 4 MB",
     "confirm": "Confirm",
     "dice": {

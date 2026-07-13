@@ -6,7 +6,9 @@
     "logout": "Irten",
     "downloads": "Deskargak",
     "menu": "Menua",
-    "admin": "Administrazioa"
+    "admin": "Administrazioa",
+    "filters": "Iragazkiak",
+    "closeFilters": "Itxi iragazkiak"
   },
   "list": {
     "empty": "Ez dago ezer erakusteko oraindik."
@@ -146,7 +148,6 @@
       "of": "{page} / {pages}"
     },
     "filters": {
-      "toggle": "Iragazkiak",
       "faction": "Fakzioa",
       "allFactions": "Fakzio guztiak",
       "type": "Karta mota",
@@ -158,7 +159,6 @@
       "colorG": "Dado berdeak",
       "colorB": "Dado urdinak",
       "clear": "Iragazkiak kendu",
-      "close": "Itxi",
       "subtype": "Kartaren azpimota",
       "allSubtypes": "Azpimota guztiak",
       "equipmentType": "Ekipamendu mota",

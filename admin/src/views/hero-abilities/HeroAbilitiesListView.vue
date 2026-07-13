@@ -8,14 +8,13 @@ import { useEntityList } from '@/composables/useEntityList'
 import type { HeroAbility, TaxonomyOption } from '@juego/shared'
 import HeroAbilityFormModal from '@/components/hero-abilities/HeroAbilityFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
-import ListFiltersModal from '@/components/ListFiltersModal.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
 import CostDice from '@/components/game/CostDice.vue'
 
 // Habilidades activas: sin single ni publicación (tabs all/trashed); la API
 // resuelve por id y la edición rellena desde el ítem del listado. El listado
 // filtra por tipo/rango/subtipo de ataque, área y coste total con selects en
-// el modal de filtros (mecanismo `filters` de useEntityList).
+// el panel derecho (mecanismo `filters` de useEntityList).
 const {
   t,
   items,
@@ -26,9 +25,6 @@ const {
   search,
   sort,
   filters,
-  filtersOpen,
-  activeFiltersCount,
-  clearFilters,
   tabs,
   tr,
   init,
@@ -128,14 +124,8 @@ onMounted(() => {
       </BaseButton>
     </div>
 
-    <!-- Barra del índice: búsqueda + orden + botón "Filtros" (modal) -->
-    <ListToolbar
-      v-model="search"
-      v-model:sort="sort"
-      show-filters
-      :active-count="activeFiltersCount"
-      @open-filters="filtersOpen = true"
-    />
+    <!-- Barra del índice: búsqueda + orden (los filtros, en el panel derecho) -->
+    <ListToolbar v-model="search" v-model:sort="sort" />
     <BaseTabs v-model="status" :tabs="tabs" />
     <BasePagination
       v-model:page="page"
@@ -183,40 +173,6 @@ onMounted(() => {
       :of-label="t('common.pagination.of', { page, pages })"
     />
 
-    <!-- Filtros del listado: aplican en vivo (sin guardar) -->
-    <ListFiltersModal
-      v-model="filtersOpen"
-      :active-count="activeFiltersCount"
-      @clear="clearFilters"
-    >
-      <!-- Orden canónico del tipado: rango · tipo · subtipo · área -->
-      <BaseSelect
-        v-model="filters.attack_range_id"
-        :label="t('heroAbilities.fields.attackRange')"
-        :options="attackRangeOptions"
-      />
-      <BaseSelect
-        v-model="filters.attack_type"
-        :label="t('heroAbilities.fields.attackType')"
-        :options="attackTypeOptions"
-      />
-      <BaseSelect
-        v-model="filters.attack_subtype_id"
-        :label="t('heroAbilities.fields.attackSubtype')"
-        :options="attackSubtypeOptions"
-      />
-      <BaseSelect
-        v-model="filters.area"
-        :label="t('heroAbilities.fields.area')"
-        :options="areaOptions"
-      />
-      <BaseSelect
-        v-model="filters.cost_total"
-        :label="t('heroAbilities.fields.cost')"
-        :options="costOptions"
-      />
-    </ListFiltersModal>
-
     <HeroAbilityFormModal v-model="formOpen" :mode="formMode" :target="formItem" @saved="onSaved" />
 
     <EntityPanel
@@ -226,11 +182,42 @@ onMounted(() => {
       :empty="t('heroAbilities.panelEmpty')"
       :has-single="false"
       :has-publish="false"
+      @deselect="selectedId = null"
       @edit="selected && edit(selected)"
       @del="selected && del(selected)"
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
+      <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+      <template #filters>
+        <!-- Orden canónico del tipado: rango · tipo · subtipo · área -->
+        <BaseSelect
+          v-model="filters.attack_range_id"
+          :label="t('heroAbilities.fields.attackRange')"
+          :options="attackRangeOptions"
+        />
+        <BaseSelect
+          v-model="filters.attack_type"
+          :label="t('heroAbilities.fields.attackType')"
+          :options="attackTypeOptions"
+        />
+        <BaseSelect
+          v-model="filters.attack_subtype_id"
+          :label="t('heroAbilities.fields.attackSubtype')"
+          :options="attackSubtypeOptions"
+        />
+        <BaseSelect
+          v-model="filters.area"
+          :label="t('heroAbilities.fields.area')"
+          :options="areaOptions"
+        />
+        <BaseSelect
+          v-model="filters.cost_total"
+          :label="t('heroAbilities.fields.cost')"
+          :options="costOptions"
+        />
+      </template>
+
       <template #meta>
         <!-- Tipado completo en orden canónico: rango · tipo · subtipo · área -->
         <p v-if="selected" class="manager-detail__meta">

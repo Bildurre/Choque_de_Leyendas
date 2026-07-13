@@ -1,9 +1,10 @@
 @use "tokens" as *;
 
-// Toggles R/G/B de los colores del coste (FiltersModal del índice de
-// cartas): cuadrados a la altura de los inputs, con el icono del dado del
-// gestor (o un punto coloreado si no está subido). El campo va dentro de
-// un .form-field del motor (misma etiqueta y ritmo que los BaseSelect).
+// Toggles R/G/B de los colores del coste (índice de cartas, en la barra
+// derecha contextual): cuadrados a la altura de los inputs, con el icono
+// del dado del gestor (o un punto coloreado si no está subido). El campo va
+// dentro de un .form-field del motor (misma etiqueta y ritmo que los
+// BaseSelect, apilados a una columna en la barra).
 .cost-colors {
   &__group {
     display: flex;

@@ -2,18 +2,20 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { ArrowRight, House as HomeIcon, Plus, SquarePen, Trash2 } from '@lucide/vue'
+import { ArrowLeft, ArrowRight, House as HomeIcon, Plus, SquarePen, Trash2 } from '@lucide/vue'
 import { BaseButton, BaseCheckbox, BaseSelect, useConfirm, useToast } from '@edc-motor/ui'
-import { useRightSidebar } from '@edc-motor/admin-kit'
+import { useCardDeselect, useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
-import ListFiltersModal from '@/components/ListFiltersModal.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
 import PageFormModal, { type PageRow } from '@/components/pages/PageFormModal.vue'
 
 // Listado de páginas del CRM. TODA la tarjeta selecciona (salvo controles):
 // el panel derecho trae las acciones (patrón kontuan, arriba del todo) y las
 // rápidas sin modal (publicar, imprimible, home). El título y la flecha
-// entran al single (bloques).
+// entran al single (bloques). Los filtros del listado viven en el propio
+// panel derecho: sin card seleccionada se muestran los selects; con
+// selección, el botón "volver a los filtros" deselecciona (también un click
+// en la zona vacía del contenido).
 const { t, te } = useI18n()
 const router = useRouter()
 const toast = useToast()
@@ -28,12 +30,10 @@ const formOpen = ref(false)
 const editing = ref<PageRow | null>(null)
 const selectedId = ref<number | null>(null)
 
-// Búsqueda + filtro de estado (modal de filtros). El árbol se ordena en el
-// servidor (madre → hijas), así que el toolbar va sin toggles de orden.
+// Búsqueda + filtro de estado (en el panel derecho). El árbol se ordena en
+// el servidor (madre → hijas), así que el toolbar va sin toggles de orden.
 const search = ref('')
 const statusFilter = ref('')
-const filtersOpen = ref(false)
-const activeFiltersCount = computed(() => (statusFilter.value === '' ? 0 : 1))
 
 const statusOptions = computed(() => [
   { value: '', label: t('pages.filters.all') },
@@ -118,6 +118,10 @@ function select(page: PageRow, event: MouseEvent) {
   sidebar.reveal()
 }
 
+// Click en la zona vacía del contenido (fuera de una card o control):
+// deselecciona y el panel vuelve a los filtros.
+useCardDeselect(() => (selectedId.value = null), '.pages-view__item')
+
 function open(page: PageRow) {
   router.push({ name: 'page', params: { id: page.id } })
 }
@@ -184,14 +188,9 @@ onMounted(load)
       </BaseButton>
     </div>
 
-    <!-- Barra del índice: búsqueda + botón "Filtros" (el árbol no se reordena) -->
-    <ListToolbar
-      v-model="search"
-      :show-sort="false"
-      show-filters
-      :active-count="activeFiltersCount"
-      @open-filters="filtersOpen = true"
-    />
+    <!-- Barra del índice: solo búsqueda (el árbol no se reordena; los
+         filtros viven en el panel derecho) -->
+    <ListToolbar v-model="search" :show-sort="false" />
 
     <p v-if="!loading && !pages.length" class="pages-view__empty">{{ t('common.empty') }}</p>
 
@@ -222,27 +221,32 @@ onMounted(load)
       </article>
     </div>
 
-    <!-- Filtros del listado: aplican en vivo (sin guardar) -->
-    <ListFiltersModal
-      v-model="filtersOpen"
-      size="sm"
-      :active-count="activeFiltersCount"
-      @clear="statusFilter = ''"
-    >
-      <BaseSelect
-        v-model="statusFilter"
-        :label="t('pages.filters.status')"
-        :options="statusOptions"
-      />
-    </ListFiltersModal>
-
     <PageFormModal v-model="formOpen" :page="editing" :pages="pages" @saved="load" />
 
-    <!-- Acciones de la página seleccionada, en el panel derecho -->
+    <!-- Panel derecho: sin selección, los filtros del listado (aplican en
+         vivo); con selección, "volver a los filtros" + las acciones -->
     <Teleport defer to="#right-sidebar-target">
       <div class="manager-panel">
-        <p v-if="!selected" class="manager-panel__empty">{{ t('pages.panelEmpty') }}</p>
+        <template v-if="!selected">
+          <p class="manager-panel__empty">{{ t('pages.panelEmpty') }}</p>
+
+          <hr class="manager-panel__divider" />
+
+          <p class="manager-panel__kicker">{{ t('common.filters') }}</p>
+          <BaseSelect
+            v-model="statusFilter"
+            :label="t('pages.filters.status')"
+            :options="statusOptions"
+          />
+        </template>
         <template v-else>
+          <button type="button" class="manager-panel__back" @click="selectedId = null">
+            <ArrowLeft :size="14" />
+            {{ t('common.backToFilters') }}
+          </button>
+
+          <hr class="manager-panel__divider" />
+
           <p class="manager-panel__kicker">{{ t('pages.panelTitle') }}</p>
 
           <!-- Acciones PRIMERO; después, secciones separadas (patrón panel) -->

@@ -11,10 +11,11 @@ import { parseSort, type SortOption } from '@/entities/catalogSort'
 // Índice público de facciones: tarjetas CSS con el color y el emblema de
 // cada facción sobre GET /api/factions (pocas, sin paginar), con el patrón
 // unificado de los índices (IndexToolbar del motor: búsqueda multi-campo
-// con debounce y toggles de orden; sin botón de filtros, no hay más campos
-// que filtrar). 'name' es el default histórico del endpoint. Todo vive en
-// la query string (useFiltersQuery). Cada tarjeta enlaza a su single por
-// el slug del locale activo.
+// con debounce y toggles de orden). No hay más campos que filtrar: la vista
+// NO registra nada en la barra derecha contextual (el botón Funnel del
+// header no aparece aquí). 'name' es el default histórico del endpoint.
+// Todo vive en la query string (useFiltersQuery). Cada tarjeta enlaza a su
+// single por el slug del locale activo.
 interface FactionRow {
   id: number
   name: string
@@ -91,12 +92,11 @@ watch(
       <h1 class="factions-index__title">{{ t(section.titleKey) }}</h1>
     </header>
 
-    <!-- Sin botón de filtros: facciones solo busca y ordena -->
+    <!-- Sin filtros que registrar: facciones solo busca y ordena -->
     <IndexToolbar
       v-model="search"
       v-model:sort="sort"
       :search-placeholder="t('catalog.searchPlaceholder')"
-      :show-filters="false"
       :latest-label="t('catalog.sort.latest')"
       :oldest-label="t('catalog.sort.oldest')"
       :name-label="t('catalog.sort.nameAsc')"

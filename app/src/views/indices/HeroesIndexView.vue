@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { FunnelX } from '@lucide/vue'
 import {
+  BaseButton,
   BasePagination,
   BaseSelect,
-  FiltersModal,
   IndexToolbar,
   PreviewGrid,
+  useAppRightSidebar,
   type CatalogItem,
   type PreviewGridItem,
 } from '@edc-motor/ui'
@@ -18,9 +20,11 @@ import { parseSort, type SortOption } from '@/entities/catalogSort'
 
 // Índice público de héroes: rejilla de previews sobre GET /api/heroes con el
 // patrón unificado de los índices (IndexToolbar del motor: búsqueda
-// multi-campo con debounce, toggles de orden y botón "Filtros" con badge) y
-// los filtros de facción/superclase/clase/raza en un FiltersModal (opciones
-// ya localizadas de GET /api/heroes/filters, aplican en vivo). Elegir
+// multi-campo con debounce y toggles de orden) y los filtros de
+// facción/superclase/clase/raza en la barra derecha contextual
+// (AppRightSidebar: registro + Teleport; el botón Funnel del header la
+// despliega). Opciones ya localizadas de GET /api/heroes/filters, aplican
+// en vivo. Elegir
 // superclase acota el select de clases a las suyas (client-side con el
 // superclass_id que trae cada clase). Todo vive en la query string
 // (useFiltersQuery): la UI empuja el estado a la URL y ES el cambio de
@@ -43,8 +47,10 @@ const page = ref(1)
 const pages = ref(0)
 const total = ref(0)
 
-// Modal de filtros (los campos aplican en vivo; el modal solo se abre/cierra).
-const filtersOpen = ref(false)
+// Filtros en la barra derecha contextual: se registra sin título (el
+// cascarón pone el suyo, reactivo al locale) y se limpia al salir de la
+// vista (el token evita pisar el registro de la vista entrante).
+useAppRightSidebar().useRegister()
 
 // Estado de los filtros (los selects usan string: '' = todos).
 const search = ref('')
@@ -115,7 +121,7 @@ watch([superclassId, classOptions], () => {
   }
 })
 
-// Nº de filtros activos (badge del botón de la barra y "Quitar filtros";
+// Nº de filtros activos (enseña el "Quitar filtros" de la barra derecha;
 // la búsqueda y el orden no cuentan).
 const activeFilters = computed(
   () =>
@@ -226,24 +232,14 @@ watch(() => locales.current, loadFilters, { immediate: true })
       v-model="search"
       v-model:sort="sort"
       :search-placeholder="t('catalog.searchPlaceholder')"
-      :filters-label="t('catalog.filters.toggle')"
-      :active-count="activeFilters"
-      show-filters
       :latest-label="t('catalog.sort.latest')"
       :oldest-label="t('catalog.sort.oldest')"
       :name-label="t('catalog.sort.nameAsc')"
       :name-desc-label="t('catalog.sort.nameDesc')"
-      @open-filters="filtersOpen = true"
     />
 
-    <FiltersModal
-      v-model="filtersOpen"
-      :title="t('catalog.filters.toggle')"
-      :active-count="activeFilters"
-      :clear-label="t('catalog.filters.clear')"
-      :close-label="t('catalog.filters.close')"
-      @clear="clearFilters"
-    >
+    <!-- Filtros en la barra derecha contextual (aplican en vivo) -->
+    <Teleport defer to="#app-right-sidebar-target">
       <BaseSelect
         v-model="factionId"
         :label="t('catalog.filters.faction')"
@@ -256,7 +252,14 @@ watch(() => locales.current, loadFilters, { immediate: true })
       />
       <BaseSelect v-model="classId" :label="t('catalog.filters.class')" :options="classSelect" />
       <BaseSelect v-model="raceId" :label="t('catalog.filters.race')" :options="raceSelect" />
-    </FiltersModal>
+
+      <!-- "Quitar filtros" (solo con filtros activos), como el pie del
+           antiguo modal: la búsqueda y el orden se quedan como están -->
+      <BaseButton v-if="activeFilters > 0" variant="secondary" type="button" @click="clearFilters">
+        <template #icon><FunnelX :size="16" /></template>
+        {{ t('catalog.filters.clear') }}
+      </BaseButton>
+    </Teleport>
 
     <BasePagination
       class="catalog-index__pagination"

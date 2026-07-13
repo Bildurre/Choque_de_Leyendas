@@ -16,6 +16,14 @@ $header-row2: 46px;
   @media (min-width: #{$bp-lg}) { --logo-h: 50px; }
 
   --header-row1: calc(var(--logo-h) + 22px);
+
+  // Techo de la barra derecha contextual (AppRightSidebar de @edc-motor/ui):
+  // arranca justo bajo la cabecera fija (con la fila de navegación en ancho).
+  --app-right-sidebar-top: var(--header-row1);
+
+  @media (min-width: 900px) {
+    --app-right-sidebar-top: calc(var(--header-row1) + #{$header-row2});
+  }
 }
 
 .site-header {
@@ -104,6 +112,24 @@ $header-row2: 46px;
       align-items: center;
       gap: $space-2;
     }
+  }
+
+  // Botón de los filtros de la vista (despliega la barra derecha
+  // contextual). Vive FUERA de &__actions: visible también en móvil, donde
+  // las acciones se van al off-canvas pero los filtros se quedan a mano.
+  &__filters {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    color: $text-1;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover,
+    &[aria-expanded="true"] { color: $accent-500; }
   }
 
   // Contador de la colección "para imprimir" (enlaza con Descargas).

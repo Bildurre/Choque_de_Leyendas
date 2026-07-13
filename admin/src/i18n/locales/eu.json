@@ -126,7 +126,7 @@
     "imageDrag": "Arrastatu irudi bat edo egin klik",
     "close": "Itxi",
     "filters": "Iragazkiak",
-    "clearFilters": "Iragazkiak kendu",
+    "backToFilters": "Itzuli iragazkietara",
     "imageHint": "Geh. 4 MB",
     "confirm": "Berretsi",
     "dice": {

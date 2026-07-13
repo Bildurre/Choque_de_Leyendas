@@ -4,7 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { Plus, SquarePen, Trash2 } from '@lucide/vue'
 import { BaseButton, BaseCheckbox, BasePagination, useConfirm, useToast } from '@edc-motor/ui'
 import type { SortValue } from '@edc-motor/ui'
-import { ManagerCard, useRightSidebar } from '@edc-motor/admin-kit'
+import { ManagerCard, useCardDeselect, useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 import { useAuthStore } from '@/stores/auth'
 import ListToolbar from '@/components/ListToolbar.vue'
@@ -72,6 +72,10 @@ function select(user: UserRow) {
   selectedId.value = user.id
   sidebar.reveal()
 }
+
+// Click en la zona vacía del contenido (fuera de una card o control):
+// deselecciona y el panel vuelve a su mensaje de "selecciona".
+useCardDeselect(() => (selectedId.value = null))
 
 function openCreate() {
   editing.value = null

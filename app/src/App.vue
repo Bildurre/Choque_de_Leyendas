@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { useI18n } from 'vue-i18n'
+import { AppRightSidebar } from '@edc-motor/ui'
 import AppHeader from '@/components/AppHeader.vue'
 import { useAuthStore } from '@/stores/auth'
 import { useLocalesStore } from '@/stores/locales'
@@ -10,6 +12,7 @@ const auth = useAuthStore()
 const route = useRoute()
 const site = useSiteStore()
 const locales = useLocalesStore()
+const { t } = useI18n()
 
 // Las rutas "desnudas" (p. ej. /_render para la captura a PNG) van sin nav.
 const bare = computed(() => route.meta.bare === true)
@@ -24,10 +27,17 @@ onMounted(async () => {
 
 <template>
   <AppHeader v-if="!bare" />
-  <!-- La cabecera es fija (CDL): el contenido le deja hueco arriba -->
-  <div :class="{ 'site-content': !bare }">
-    <RouterView />
+  <!-- La cabecera es fija (CDL): el contenido le deja hueco arriba. El
+       cuerpo es contenido + barra derecha contextual: cada vista registra
+       sus filtros con useAppRightSidebar() y Teleport a
+       #app-right-sidebar-target; se despliega con el botón del header. -->
+  <div v-if="!bare" class="site-main">
+    <div class="site-content">
+      <RouterView />
+    </div>
+    <AppRightSidebar :close-label="t('nav.closeFilters')" :fallback-title="t('nav.filters')" />
   </div>
+  <RouterView v-else />
   <footer v-if="!bare && (site.footerText || site.title)" class="app-footer">
     <!-- eslint-disable-next-line vue/no-v-html -- pie saneado en servidor (lista blanca) -->
     <div v-if="site.footerText" class="rich-content" v-html="site.footerText" />
