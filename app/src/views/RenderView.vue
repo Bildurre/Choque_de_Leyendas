@@ -58,3 +58,14 @@ onMounted(async () => {
     <component :is="component" v-if="component && item" :item="item" :locale="locale" />
   </div>
 </template>
+
+<style>
+/* La captura omite el fondo por defecto de Chromium (hideBackground en el
+   PreviewRenderer del core): para que el PNG salga con alfa de verdad,
+   html/body tampoco pintan fondo en esta ruta. El fondo, si lo hay, lo
+   decide el componente de cada entidad (cartas y héroes pintan el suyo). */
+html:has(.render-stage),
+html:has(.render-stage) body {
+  background: transparent;
+}
+</style>

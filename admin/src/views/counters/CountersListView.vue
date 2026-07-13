@@ -127,7 +127,8 @@ onMounted(async () => {
             t('counters.state.published')
           }}</span>
           <span v-else class="chip">{{ t('counters.state.draft') }}</span>
-          <span class="chip" :class="item.type === 'boon' ? 'is-ok' : 'is-failed'">{{
+          <!-- Beneficio en azul ($info), perjuicio en rojo (mismo código que el panel) -->
+          <span class="chip" :class="item.type === 'boon' ? 'is-info' : 'is-failed'">{{
             t(`counters.types.${item.type}`)
           }}</span>
         </template>
@@ -180,8 +181,10 @@ onMounted(async () => {
 
       <template #meta>
         <p v-if="selected" class="manager-detail__meta">
-          <strong>{{ t('counters.fields.type') }}</strong>
-          {{ t(`counters.types.${selected.type}`) }}
+          <strong>{{ t('counters.fields.type') }}:</strong>
+          <span class="counters__type" :class="`counters__type--${selected.type}`">{{
+            t(`counters.types.${selected.type}`)
+          }}</span>
         </p>
         <!-- eslint-disable-next-line vue/no-v-html -- wysiwyg saneado en servidor (DC-09) -->
         <div

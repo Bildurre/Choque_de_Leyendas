@@ -220,7 +220,7 @@ onMounted(() => {
 
       <template #meta>
         <!-- Tipado completo en orden canónico: rango · tipo · subtipo · área -->
-        <p v-if="selected" class="manager-detail__meta">
+        <p v-if="selected" class="manager-detail__meta hero-abilities__panel-meta">
           <CostDice v-if="selected.cost" :cost="selected.cost" />
           <span v-if="typing(selected)">{{ typing(selected) }}</span>
         </p>

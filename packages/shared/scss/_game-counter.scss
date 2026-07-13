@@ -58,11 +58,8 @@
 }
 
 // En el escenario de captura ocupa el viewport entero (PNG 300x300). Las
-// esquinas fuera del círculo deben salir blancas (papel), no del tema oscuro.
-.render-stage:has(.game-counter) {
-  background: #fff;
-}
-
+// esquinas fuera del círculo quedan transparentes (alfa real en el PNG): el
+// RenderView del motor ya no pinta fondo en /_render y aquí tampoco.
 .render-stage .game-counter {
   width: 100vw;
   height: 100vh;

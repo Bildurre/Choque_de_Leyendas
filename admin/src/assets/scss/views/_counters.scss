@@ -10,8 +10,9 @@
   justify-content: center;
   background: $surface-2;
 
-  // Tinte plano según el tipo (nada de iconos hardcodeados).
-  &--boon { background: color-mix(in srgb, $success 16%, $surface-2); }
+  // Tinte plano según el tipo (nada de iconos hardcodeados): beneficio en
+  // azul ($info, como la badge y el panel), perjuicio en rojo.
+  &--boon { background: color-mix(in srgb, $info 16%, $surface-2); }
   &--bane { background: color-mix(in srgb, $danger 16%, $surface-2); }
 
   img { width: 100%; height: 100%; object-fit: contain; }
@@ -43,3 +44,10 @@
 
 .counters__effect p { margin: 0; }
 .counters__effect p + p { margin-top: $space-1; }
+
+// "Tipo: …" en el panel derecho (teleportado; selector plano): la palabra va
+// teñida con el mismo código de color que la badge de la card. El margen pone
+// el espacio tras los dos puntos (Vue condensa el whitespace entre elementos).
+.counters__type { margin-left: $space-1; }
+.counters__type--boon { color: $info; }
+.counters__type--bane { color: $danger; }

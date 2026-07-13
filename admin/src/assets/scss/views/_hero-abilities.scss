@@ -11,6 +11,12 @@
     min-width: 0;
   }
 
+  // Coste + tipado en el panel derecho (teleportado; selector plano): aire
+  // entre los dados del coste y el tipado, que iban pegados.
+  &__panel-meta .cost-dice {
+    margin-right: $space-2;
+  }
+
   // HTML de la descripción en el panel derecho (teleportado; selector plano).
   &__description {
     margin-top: $space-2;
