@@ -24,6 +24,7 @@
     "cardTypes": "tipos-de-carta",
     "cardSubtypes": "subtipos-de-carta",
     "equipmentTypes": "tipos-de-equipo",
+    "equipmentSubtypes": "subtipos-de-equipo",
     "gameModes": "modos-de-juego"
   },
   "breadcrumbs": {
@@ -51,6 +52,7 @@
     "cardTypes": "Tipos de carta",
     "cardSubtypes": "Subtipos de carta",
     "equipmentTypes": "Tipos de equipo",
+    "equipmentSubtypes": "Subtipos de equipo",
     "gameModes": "Modos de juego"
   },
   "nav": {
@@ -79,6 +81,7 @@
     "cardTypes": "Tipos de carta",
     "cardSubtypes": "Subtipos de carta",
     "equipmentTypes": "Tipos de equipo",
+    "equipmentSubtypes": "Subtipos de equipo",
     "gameModes": "Modos de juego"
   },
   "icons": {
@@ -144,7 +147,9 @@
       "prev": "Anterior",
       "next": "Siguiente",
       "of": "{page} de {pages}"
-    }
+    },
+    "yes": "Sí",
+    "no": "No"
   },
   "login": {
     "title": "Acceso al panel",
@@ -738,7 +743,8 @@
     "state": {
       "published": "Publicada",
       "draft": "Borrador",
-      "trashed": "Papelera"
+      "trashed": "Papelera",
+      "unique": "Única"
     },
     "sections": {
       "basic": "Información básica",
@@ -749,6 +755,7 @@
       "name": "Nombre",
       "faction": "Facción",
       "noFaction": "Sin facción",
+      "selectFaction": "Seleccionar facción",
       "cost": "Coste",
       "removeDie": "Quitar el último dado",
       "published": "Publicada",
@@ -759,6 +766,8 @@
       "noSubtype": "Sin subtipo",
       "equipmentType": "Tipo de equipo",
       "noEquipmentType": "Sin tipo de equipo",
+      "equipmentSubtype": "Subtipo de equipo",
+      "noEquipmentSubtype": "Sin subtipo de equipo",
       "hands": "Manos",
       "selectHands": "Seleccionar manos",
       "oneHand": "1 mano",
@@ -772,6 +781,7 @@
       "attackSubtype": "Subtipo de ataque",
       "noAttackSubtype": "Sin subtipo de ataque",
       "area": "Es ataque de área",
+      "areaChip": "Área",
       "image": "Imagen",
       "effect": "Efecto",
       "restriction": "Restricción",
@@ -1188,8 +1198,6 @@
     "panelEmpty": "Selecciona un tipo de equipo para ver sus acciones.",
     "tabs": {
       "all": "Todos",
-      "weapon": "Armas",
-      "armor": "Armaduras",
       "trashed": "Papelera"
     },
     "state": {
@@ -1197,13 +1205,8 @@
     },
     "fields": {
       "name": "Nombre",
-      "category": "Categoría"
+      "usesHands": "Lleva manos"
     },
-    "categories": {
-      "weapon": "Arma",
-      "armor": "Armadura"
-    },
-    "selectCategory": "Seleccionar categoría",
     "confirmDelete": {
       "title": "Enviar a la papelera",
       "message": "¿Enviar \"{name}\" a la papelera?"
@@ -1218,6 +1221,45 @@
       "deleted": "Tipo de equipo enviado a la papelera",
       "restored": "Tipo de equipo restaurado",
       "forceDeleted": "Tipo de equipo borrado definitivamente",
+      "saveError": "No se pudo guardar."
+    }
+  },
+  "equipmentSubtypes": {
+    "title": "Subtipos de equipo",
+    "new": "Nuevo subtipo de equipo",
+    "edit": "Editar subtipo de equipo",
+    "newButton": "Nuevo subtipo de equipo",
+    "panelTitle": "Subtipo de equipo",
+    "panelEmpty": "Selecciona un subtipo de equipo para ver sus acciones.",
+    "tabs": {
+      "all": "Todos",
+      "trashed": "Papelera"
+    },
+    "state": {
+      "trashed": "Papelera"
+    },
+    "fields": {
+      "name": "Nombre",
+      "type": "Tipo de equipo"
+    },
+    "selectType": "Seleccionar tipo de equipo",
+    "filters": {
+      "allTypes": "Todos los tipos"
+    },
+    "confirmDelete": {
+      "title": "Enviar a la papelera",
+      "message": "¿Enviar \"{name}\" a la papelera?"
+    },
+    "confirmForceDelete": {
+      "title": "Borrar definitivamente",
+      "message": "¿Borrar \"{name}\" para siempre? Esta acción no se puede deshacer."
+    },
+    "toast": {
+      "created": "Subtipo de equipo creado correctamente.",
+      "updated": "Subtipo de equipo actualizado correctamente.",
+      "deleted": "Subtipo de equipo enviado a la papelera",
+      "restored": "Subtipo de equipo restaurado",
+      "forceDeleted": "Subtipo de equipo borrado definitivamente",
       "saveError": "No se pudo guardar."
     }
   },

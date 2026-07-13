@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, reactive, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { EditModal, TranslatableInput, BaseSelect, useToast } from '@edc-motor/ui'
+import { BaseCheckbox, EditModal, TranslatableInput, useToast } from '@edc-motor/ui'
 import { useResource } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 import { fieldErrors } from '@/lib/apiError'
@@ -9,7 +9,8 @@ import { useLocalesStore } from '@/stores/locales'
 import type { EquipmentType } from '@juego/shared'
 
 // Formulario de tipo de equipo en modal (por id, sin endpoint show: en
-// edición se rellena desde el ítem del listado). Categoría weapon|armor.
+// edición se rellena desde el ítem del listado). uses_hands marca los tipos
+// que llevan manos (armas): sus cartas exigen el campo manos.
 const props = defineProps<{
   modelValue: boolean
   mode: 'create' | 'edit'
@@ -26,17 +27,13 @@ const { create, update } = useResource<EquipmentType>(api, '/admin/equipment-typ
 const saving = ref(false)
 const errors = reactive<Record<string, string>>({})
 
-const form = reactive<{ name: Record<string, string>; category: string }>({
+const form = reactive<{ name: Record<string, string>; uses_hands: boolean }>({
   name: {},
-  category: '',
+  uses_hands: false,
 })
 
 const title = computed(() =>
   props.mode === 'create' ? t('equipmentTypes.new') : t('equipmentTypes.edit'),
-)
-
-const categoryOptions = computed(() =>
-  ['weapon', 'armor'].map((c) => ({ value: c, label: t(`equipmentTypes.categories.${c}`) })),
 )
 
 function clearErrors() {
@@ -46,7 +43,7 @@ function clearErrors() {
 function mapServerErrors(e: unknown) {
   for (const [k, v] of Object.entries(fieldErrors(e))) {
     if (k === 'name' || k.startsWith('name.')) errors.name = v
-    if (k === 'category') errors.category = v
+    if (k === 'uses_hands') errors.uses_hands = v
   }
 }
 
@@ -55,7 +52,7 @@ const hasName = () => Object.values(form.name).some((v) => v && v.trim() !== '')
 
 function reset() {
   form.name = {}
-  form.category = ''
+  form.uses_hands = false
   clearErrors()
 }
 
@@ -72,7 +69,7 @@ watch(
     }
     if (props.mode === 'edit' && props.target) {
       form.name = { ...(props.target.name ?? {}) }
-      form.category = props.target.category ?? ''
+      form.uses_hands = !!props.target.uses_hands
     }
   },
 )
@@ -81,18 +78,15 @@ async function submit() {
   clearErrors()
   if (!hasName()) {
     errors.name = t('common.required')
+    return
   }
-  if (!form.category) {
-    errors.category = t('common.required')
-  }
-  if (errors.name || errors.category) return
   saving.value = true
   try {
     if (props.mode === 'edit' && props.target) {
-      await update(props.target.id, { name: form.name, category: form.category })
+      await update(props.target.id, { name: form.name, uses_hands: form.uses_hands })
       toast.success(t('equipmentTypes.toast.updated'))
     } else {
-      await create({ name: form.name, category: form.category })
+      await create({ name: form.name, uses_hands: form.uses_hands })
       toast.success(t('equipmentTypes.toast.created'))
     }
     emit('saved')
@@ -124,13 +118,6 @@ async function submit() {
       :error="errors.name"
     />
 
-    <BaseSelect
-      v-model="form.category"
-      :options="categoryOptions"
-      :label="t('equipmentTypes.fields.category')"
-      :placeholder="t('equipmentTypes.selectCategory')"
-      required
-      :error="errors.category"
-    />
+    <BaseCheckbox v-model="form.uses_hands" :label="t('equipmentTypes.fields.usesHands')" />
   </EditModal>
 </template>

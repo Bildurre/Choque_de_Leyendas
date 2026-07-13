@@ -8,6 +8,7 @@ use App\Http\Controllers\CardTypeController;
 use App\Http\Controllers\CounterController;
 use App\Http\Controllers\DashboardStatsController;
 use App\Http\Controllers\DeckAttributesConfigurationController;
+use App\Http\Controllers\EquipmentSubtypeController;
 use App\Http\Controllers\EquipmentTypeController;
 use App\Http\Controllers\FactionController;
 use App\Http\Controllers\FactionDeckController;
@@ -136,6 +137,16 @@ Route::middleware(['auth:sanctum', 'motor.admin', 'can:manage-game'])
         Route::delete('equipment-types/{id}', [EquipmentTypeController::class, 'destroy']);
         Route::post('equipment-types/{id}/restore', [EquipmentTypeController::class, 'restore']);
         Route::delete('equipment-types/{id}/force', [EquipmentTypeController::class, 'forceDestroy']);
+
+        // Equipment subtypes
+        Route::get('equipment-subtypes/options', [EquipmentSubtypeController::class, 'options']); // antes de {id}
+        Route::get('equipment-subtypes', [EquipmentSubtypeController::class, 'index']);
+        Route::post('equipment-subtypes', [EquipmentSubtypeController::class, 'store']);
+        Route::get('equipment-subtypes/{id}', [EquipmentSubtypeController::class, 'show']);
+        Route::put('equipment-subtypes/{id}', [EquipmentSubtypeController::class, 'update']);
+        Route::delete('equipment-subtypes/{id}', [EquipmentSubtypeController::class, 'destroy']);
+        Route::post('equipment-subtypes/{id}/restore', [EquipmentSubtypeController::class, 'restore']);
+        Route::delete('equipment-subtypes/{id}/force', [EquipmentSubtypeController::class, 'forceDestroy']);
 
         // Faction decks (+ editor de cartas y héroes de la single)
         Route::get('faction-decks', [FactionDeckController::class, 'index']);

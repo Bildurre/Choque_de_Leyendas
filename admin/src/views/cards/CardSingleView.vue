@@ -39,7 +39,35 @@ const attackChips = computed(() => {
   if (item.value.attack_range) chips.push(tr(item.value.attack_range.name))
   if (item.value.attack_type) chips.push(t(`cards.attackTypes.${item.value.attack_type}`))
   if (item.value.attack_subtype) chips.push(tr(item.value.attack_subtype.name))
-  if (item.value.area) chips.push(t('cards.fields.area'))
+  if (item.value.area) chips.push(t('cards.fields.areaChip'))
+  return chips
+})
+
+/**
+ * Tipado como chips: tipo · subtipo · tipo de equipo · subtipo de equipo ·
+ * manos (badge, no ficha). La única va aparte (chip coloreado).
+ */
+const typeChips = computed(() => {
+  if (!item.value) return []
+  const chips: string[] = []
+  if (item.value.card_type) chips.push(tr(item.value.card_type.name))
+  if (item.value.card_subtype) chips.push(tr(item.value.card_subtype.name))
+  if (item.value.equipment_type) chips.push(tr(item.value.equipment_type.name))
+  if (item.value.equipment_subtype) chips.push(tr(item.value.equipment_subtype.name))
+  if (item.value.hands)
+    chips.push(t(item.value.hands > 1 ? 'cards.fields.twoHands' : 'cards.fields.oneHand'))
+  return chips
+})
+
+/** Tipado de la habilidad otorgada: rango → tipo → subtipo → área. */
+const abilityChips = computed(() => {
+  const ability = item.value?.hero_ability
+  if (!ability) return []
+  const chips: string[] = []
+  if (ability.attack_range) chips.push(tr(ability.attack_range.name))
+  if (ability.attack_type) chips.push(t(`cards.attackTypes.${ability.attack_type}`))
+  if (ability.attack_subtype) chips.push(tr(ability.attack_subtype.name))
+  if (ability.area) chips.push(t('cards.fields.areaChip'))
   return chips
 })
 
@@ -114,27 +142,17 @@ onBeforeUnmount(() => {
           <span class="chip">{{
             item.faction ? tr(item.faction.name) : t('cards.fields.noFaction')
           }}</span>
-          <span v-if="item.card_type" class="chip">{{ tr(item.card_type.name) }}</span>
-          <span v-if="item.card_subtype" class="chip">{{ tr(item.card_subtype.name) }}</span>
-          <span v-if="item.equipment_type" class="chip">{{ tr(item.equipment_type.name) }}</span>
-          <span v-if="item.is_unique" class="chip">{{ t('cards.fields.isUnique') }}</span>
         </p>
 
-        <ul class="card-single__facts">
-          <li>
-            <strong>{{ t('cards.fields.cost') }}</strong>
-            <CostDice v-if="item.cost" :cost="item.cost" size="medium" />
-            <span v-else>—</span>
-          </li>
-          <li v-if="item.hands">
-            <strong>{{ t('cards.fields.hands') }}</strong>
-            <span>{{ item.hands }}</span>
-          </li>
-          <li v-if="item.hero_ability">
-            <strong>{{ t('cards.fields.heroAbility') }}</strong>
-            <span>{{ tr(item.hero_ability.name) }}</span>
-          </li>
-        </ul>
+        <!-- Coste DELANTE de la línea de tipado; todo el tipado en badges
+             (manos incluidas) y la única en su chip coloreado -->
+        <p class="single__meta">
+          <CostDice v-if="item.cost" :cost="item.cost" size="medium" />
+          <span v-for="chip in typeChips" :key="chip" class="chip">{{ chip }}</span>
+          <span v-if="item.is_unique" class="chip is-unique">{{ t('cards.state.unique') }}</span>
+        </p>
+
+        <!-- Tipado del ataque, también en badges -->
         <p v-if="attackChips.length" class="single__meta">
           <span v-for="chip in attackChips" :key="chip" class="chip">{{ chip }}</span>
         </p>
@@ -146,6 +164,27 @@ onBeforeUnmount(() => {
             <h3 class="card-single__restriction">{{ t('cards.fields.restriction') }}</h3>
             <div class="rich-content" v-html="tr(item.restriction)" />
           </template>
+        </template>
+
+        <!-- Habilidad de héroe otorgada: nombre + tipado + coste + descripción -->
+        <template v-if="item.hero_ability">
+          <h2 class="single__section">{{ t('cards.fields.heroAbility') }}</h2>
+          <div class="card-single__ability">
+            <p class="card-single__ability-header">
+              <CostDice
+                v-if="item.hero_ability.cost"
+                :cost="item.hero_ability.cost"
+                size="medium"
+              />
+              <strong class="card-single__ability-name">{{ tr(item.hero_ability.name) }}</strong>
+              <span v-for="chip in abilityChips" :key="chip" class="chip">{{ chip }}</span>
+            </p>
+            <div
+              v-if="tr(item.hero_ability.description) !== '—'"
+              class="rich-content"
+              v-html="tr(item.hero_ability.description)"
+            />
+          </div>
         </template>
       </div>
     </div>

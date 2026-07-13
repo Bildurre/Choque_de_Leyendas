@@ -37,14 +37,15 @@
     padding: 1.2cqw 2.4cqw 0;
     background-color: var(--fc);
 
-    // Remate inferior en diagonal de la banda.
+    // Remate inferior en diagonal de la banda (solapada 1px con la banda:
+    // en el render aparecía un hueco de 1px entre ambas).
     &::after {
       content: '';
       position: absolute;
       left: -1px;
-      top: 100%;
+      top: calc(100% - 1px);
       width: calc(100% + 2px);
-      height: 40%;
+      height: calc(40% + 1px);
       background-color: var(--fc);
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);
     }

@@ -10,6 +10,7 @@ use App\Models\AttackSubtype;
 use App\Models\Card;
 use App\Models\CardSubtype;
 use App\Models\CardType;
+use App\Models\EquipmentSubtype;
 use App\Models\EquipmentType;
 use App\Models\Faction;
 use App\Support\GameIcons;
@@ -31,7 +32,8 @@ class PublicCardController extends Controller
      * (multi-campo vía scopeFilter del motor: LIKE sobre el json de cada
      * columna de $searchable — nombre, efecto, restricción, lore y cita —
      * en cualquier locale), faction_id, card_type_id, card_subtype_id,
-     * equipment_type_id, attack_range_id, attack_subtype_id, attack_type
+     * equipment_type_id, equipment_subtype_id, attack_range_id,
+     * attack_subtype_id, attack_type
      * (physical|magical), area ('1'/'0'; ausente = no filtra), cost_total
      * (0..5; 0 = cartas sin coste), cost_colors (subconjunto de "RGB": la
      * carta debe contener al menos esos dados) y sort (name|name_desc|
@@ -52,7 +54,7 @@ class PublicCardController extends Controller
         }
 
         // Filtros por columna directa (ids de taxonomías del juego).
-        foreach (['card_subtype_id', 'equipment_type_id', 'attack_range_id', 'attack_subtype_id'] as $column) {
+        foreach (['card_subtype_id', 'equipment_type_id', 'equipment_subtype_id', 'attack_range_id', 'attack_subtype_id'] as $column) {
             if (($id = (int) $request->query($column)) > 0) {
                 $query->where($column, $id);
             }
@@ -138,6 +140,17 @@ class PublicCardController extends Controller
                 ->values(),
             'subtypes' => $taxonomy(CardSubtype::class),
             'equipment_types' => $taxonomy(EquipmentType::class),
+            // Con el tipo al que pertenecen: el front acota el select de
+            // subtipos al tipo de equipo elegido.
+            'equipment_subtypes' => EquipmentSubtype::query()
+                ->orderBy("name->{$locale}")
+                ->get()
+                ->map(fn (EquipmentSubtype $subtype) => [
+                    'id' => $subtype->id,
+                    'name' => $subtype->getTranslation('name', $locale),
+                    'equipment_type_id' => $subtype->equipment_type_id,
+                ])
+                ->values(),
             'attack_ranges' => $taxonomy(AttackRange::class),
             'attack_subtypes' => $taxonomy(AttackSubtype::class),
             // url|null por dado; el front omite (o sustituye) los null.
@@ -155,6 +168,7 @@ class PublicCardController extends Controller
                 'cardType.heroSuperclass',
                 'cardSubtype',
                 'equipmentType',
+                'equipmentSubtype',
                 'attackRange',
                 'attackSubtype',
                 'heroAbility.attackRange',

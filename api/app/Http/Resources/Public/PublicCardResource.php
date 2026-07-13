@@ -38,6 +38,7 @@ class PublicCardResource extends JsonResource
                 : null,
             'equipment' => $type?->is_equipment ? [
                 'type' => $this->equipmentType?->getTranslation('name', $locale),
+                'subtype' => $this->equipmentSubtype?->getTranslation('name', $locale),
                 'hands' => $this->hands,
             ] : null,
             'cost' => $this->cost,

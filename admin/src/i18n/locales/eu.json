@@ -24,6 +24,7 @@
     "cardTypes": "karta-motak",
     "cardSubtypes": "karta-azpimotak",
     "equipmentTypes": "ekipamendu-motak",
+    "equipmentSubtypes": "ekipamendu-azpimotak",
     "gameModes": "joko-moduak"
   },
   "breadcrumbs": {
@@ -51,6 +52,7 @@
     "cardTypes": "Karta motak",
     "cardSubtypes": "Karta azpimotak",
     "equipmentTypes": "Ekipamendu motak",
+    "equipmentSubtypes": "Ekipamendu azpimotak",
     "gameModes": "Joko moduak"
   },
   "nav": {
@@ -79,6 +81,7 @@
     "cardTypes": "Karta motak",
     "cardSubtypes": "Karta azpimotak",
     "equipmentTypes": "Ekipamendu motak",
+    "equipmentSubtypes": "Ekipamendu azpimotak",
     "gameModes": "Joko moduak"
   },
   "icons": {
@@ -144,7 +147,9 @@
       "prev": "Aurrekoa",
       "next": "Hurrengoa",
       "of": "{page} / {pages}"
-    }
+    },
+    "yes": "Bai",
+    "no": "Ez"
   },
   "login": {
     "title": "Panelerako sarrera",
@@ -807,7 +812,8 @@
     "state": {
       "published": "Argitaratuta",
       "draft": "Zirriborroa",
-      "trashed": "Zakarrontzia"
+      "trashed": "Zakarrontzia",
+      "unique": "Bakarra"
     },
     "sections": {
       "basic": "Oinarrizko informazioa",
@@ -818,6 +824,7 @@
       "name": "Izena",
       "faction": "Fakzioa",
       "noFaction": "Fakziorik gabe",
+      "selectFaction": "Aukeratu fakzioa",
       "cost": "Kostua",
       "removeDie": "Kendu azken dadoa",
       "published": "Argitaratuta",
@@ -828,6 +835,8 @@
       "noSubtype": "Azpimotarik gabe",
       "equipmentType": "Ekipamendu mota",
       "noEquipmentType": "Ekipamendu motarik gabe",
+      "equipmentSubtype": "Ekipamendu azpimota",
+      "noEquipmentSubtype": "Ekipamendu azpimotarik gabe",
       "hands": "Eskuak",
       "selectHands": "Aukeratu eskuak",
       "oneHand": "Esku 1",
@@ -841,6 +850,7 @@
       "attackSubtype": "Eraso-azpimota",
       "noAttackSubtype": "Eraso-azpimotarik gabe",
       "area": "Area erasoa da",
+      "areaChip": "Eremua",
       "image": "Irudia",
       "effect": "Efektua",
       "restriction": "Murrizketa",
@@ -1257,8 +1267,6 @@
     "panelEmpty": "Aukeratu ekipamendu mota bat bere ekintzak ikusteko.",
     "tabs": {
       "all": "Guztiak",
-      "weapon": "Armak",
-      "armor": "Armadurak",
       "trashed": "Zakarrontzia"
     },
     "state": {
@@ -1266,13 +1274,8 @@
     },
     "fields": {
       "name": "Izena",
-      "category": "Kategoria"
+      "usesHands": "Eskuak behar ditu"
     },
-    "categories": {
-      "weapon": "Arma",
-      "armor": "Armadura"
-    },
-    "selectCategory": "Aukeratu kategoria",
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
       "message": "\"{name}\" zakarrontzira bidali?"
@@ -1287,6 +1290,45 @@
       "deleted": "Ekipamendu mota zakarrontzira bidali da",
       "restored": "Ekipamendu mota berreskuratu da",
       "forceDeleted": "Ekipamendu mota betiko ezabatu da",
+      "saveError": "Ezin izan da gorde."
+    }
+  },
+  "equipmentSubtypes": {
+    "title": "Ekipamendu azpimotak",
+    "new": "Ekipamendu azpimota berria",
+    "edit": "Editatu ekipamendu azpimota",
+    "newButton": "Ekipamendu azpimota berria",
+    "panelTitle": "Ekipamendu azpimota",
+    "panelEmpty": "Aukeratu ekipamendu azpimota bat bere ekintzak ikusteko.",
+    "tabs": {
+      "all": "Guztiak",
+      "trashed": "Zakarrontzia"
+    },
+    "state": {
+      "trashed": "Zakarrontzia"
+    },
+    "fields": {
+      "name": "Izena",
+      "type": "Ekipamendu mota"
+    },
+    "selectType": "Aukeratu ekipamendu mota",
+    "filters": {
+      "allTypes": "Mota guztiak"
+    },
+    "confirmDelete": {
+      "title": "Zakarrontzira bidali",
+      "message": "\"{name}\" zakarrontzira bidali?"
+    },
+    "confirmForceDelete": {
+      "title": "Betiko ezabatu",
+      "message": "\"{name}\" betiko ezabatu? Ekintza hau ezin da desegin."
+    },
+    "toast": {
+      "created": "Ekipamendu azpimota ondo sortu da.",
+      "updated": "Ekipamendu azpimota ondo eguneratu da.",
+      "deleted": "Ekipamendu azpimota zakarrontzira bidali da",
+      "restored": "Ekipamendu azpimota berreskuratu da",
+      "forceDeleted": "Ekipamendu azpimota betiko ezabatu da",
       "saveError": "Ezin izan da gorde."
     }
   },

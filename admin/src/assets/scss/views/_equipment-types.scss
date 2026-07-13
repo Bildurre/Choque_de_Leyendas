@@ -1,15 +1,10 @@
 @use "tokens" as *;
 
-// Listado de tipos de equipo: el chip de categoría distingue arma/armadura
+// Listado de tipos de equipo: el chip "lleva manos" (armas) se distingue
 // con un acento de color propio.
 .equipment-types {
-  &__category {
-    &--weapon {
-      border-color: color-mix(in srgb, $danger 45%, $border);
-    }
-
-    &--armor {
-      border-color: color-mix(in srgb, $info 45%, $border);
-    }
+  &__hands {
+    color: $danger;
+    border-color: color-mix(in srgb, $danger 45%, transparent);
   }
 }

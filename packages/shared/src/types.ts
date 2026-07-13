@@ -66,7 +66,14 @@ export interface CardType extends TaxonomyBase {
 }
 
 export interface EquipmentType extends TaxonomyBase {
-  category: 'weapon' | 'armor'
+  /** Las cartas de este tipo llevan manos (armas). */
+  uses_hands: boolean
+}
+
+export interface EquipmentSubtype extends TaxonomyBase {
+  /** Tipo de equipo al que pertenece (obligatorio). */
+  equipment_type_id: number
+  equipment_type?: EquipmentTypeOption | null
 }
 
 export interface GameMode extends TaxonomyBase {
@@ -181,9 +188,15 @@ export interface CardTypeOption extends TaxonomyOption {
   is_equipment: boolean
 }
 
-/** Opción del selector de tipos de equipo (endpoint options: con categoría). */
+/** Opción del selector de tipos de equipo (endpoint options: con flag). */
 export interface EquipmentTypeOption extends TaxonomyOption {
-  category: 'weapon' | 'armor'
+  /** Las cartas de este tipo llevan manos (armas). */
+  uses_hands: boolean
+}
+
+/** Opción del selector de subtipos de equipo (con su tipo, para acotar). */
+export interface EquipmentSubtypeOption extends TaxonomyOption {
+  equipment_type_id: number
 }
 
 /** Carta jugable (con slug y single). Renderizable a PNG (750x1050). */
@@ -197,6 +210,7 @@ export interface Card extends EntityBase {
   card_type_id: number
   card_subtype_id: number | null
   equipment_type_id: number | null
+  equipment_subtype_id: number | null
   attack_type: 'physical' | 'magical' | null
   attack_range_id: number | null
   attack_subtype_id: number | null
@@ -209,9 +223,25 @@ export interface Card extends EntityBase {
   card_type?: CardTypeOption | null
   card_subtype?: TaxonomyOption | null
   equipment_type?: EquipmentTypeOption | null
+  equipment_subtype?: TaxonomyOption | null
   attack_range?: TaxonomyOption | null
   attack_subtype?: TaxonomyOption | null
-  hero_ability?: HeroAbilityOption | null
+  hero_ability?: CardHeroAbilityRef | null
+}
+
+/**
+ * Habilidad otorgada dentro de una carta (Resource del admin): completa,
+ * para pintarla en el single con su tipado, coste y descripción.
+ */
+export interface CardHeroAbilityRef {
+  id: number
+  name: Translations
+  description: Translations
+  cost: string | null
+  attack_type: 'physical' | 'magical' | null
+  area: boolean
+  attack_range?: TaxonomyOption | null
+  attack_subtype?: TaxonomyOption | null
 }
 
 // --- Mazos de facción y su configuración (cluster deck-cluster) ---
@@ -296,10 +326,13 @@ export interface CardRenderData {
   type: string | null
   subtype: string | null
   equipment_type: string | null
+  equipment_subtype: string | null
   hands: number | null
   attack: RenderAttack | null
   area: boolean
   is_unique: boolean
+  /** Habilidad de héroe otorgada (se pinta al pie de la caja de texto). */
+  hero_ability?: HeroAbilityRenderData | null
   effect: string | null
   restriction: string | null
   lore_text: string | null

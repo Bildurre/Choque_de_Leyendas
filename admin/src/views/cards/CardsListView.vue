@@ -63,6 +63,21 @@ const factionOptions = computed(() => [
   { value: '', label: t('cards.filters.allFactions') },
   ...factions.value.map((f) => ({ value: String(f.id), label: tr(f.name) })),
 ])
+
+/**
+ * Línea de tipado de una carta: tipo · subtipo · tipo de equipo · subtipo
+ * de equipo · manos (como el render de la carta). El coste va DELANTE.
+ */
+function typeLine(item: Card): string {
+  const parts = [
+    item.card_type ? tr(item.card_type.name) : null,
+    item.card_subtype ? tr(item.card_subtype.name) : null,
+    item.equipment_type ? tr(item.equipment_type.name) : null,
+    item.equipment_subtype ? tr(item.equipment_subtype.name) : null,
+    item.hands ? t(item.hands > 1 ? 'cards.fields.twoHands' : 'cards.fields.oneHand') : null,
+  ]
+  return parts.filter(Boolean).join(' · ')
+}
 const cardTypeOptions = computed(() => [
   { value: '', label: t('cards.filters.allTypes') },
   ...cardTypes.value.map((ct) => ({ value: String(ct.id), label: tr(ct.name) })),
@@ -139,12 +154,15 @@ onMounted(async () => {
             t('cards.state.published')
           }}</span>
           <span v-else class="chip">{{ t('cards.state.draft') }}</span>
+          <!-- Carta única: badge propia (ámbar) -->
+          <span v-if="item.is_unique" class="chip is-unique">{{ t('cards.state.unique') }}</span>
         </template>
 
+        <!-- Coste DELANTE de la línea de tipado -->
         <template #meta>
+          <span v-if="item.cost"><CostDice :cost="item.cost" /></span>
+          <span v-if="typeLine(item)">{{ typeLine(item) }} ·</span>
           <span>{{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}</span>
-          <span v-if="item.card_type">· {{ tr(item.card_type.name) }}</span>
-          <span v-if="item.cost">· <CostDice :cost="item.cost" /></span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -190,16 +208,18 @@ onMounted(async () => {
       </template>
 
       <template #meta>
-        <p v-if="selected" class="manager-detail__meta">
-          <span>{{ selected.card_type ? tr(selected.card_type.name) : '—' }}</span>
-          <span v-if="selected.card_subtype">· {{ tr(selected.card_subtype.name) }}</span>
+        <!-- Coste DELANTE del tipado; única dentro del tipado (coloreada) -->
+        <p v-if="selected" class="manager-detail__meta card-panel-meta">
+          <span v-if="selected.cost"><CostDice :cost="selected.cost" /></span>
+          <span>{{ typeLine(selected) || '—' }}</span>
+          <span v-if="selected.is_unique" class="chip is-unique">{{
+            t('cards.state.unique')
+          }}</span>
         </p>
         <p v-if="selected" class="manager-detail__meta">
           <span>{{
             selected.faction ? tr(selected.faction.name) : t('cards.fields.noFaction')
           }}</span>
-          <span v-if="selected.cost">· <CostDice :cost="selected.cost" /></span>
-          <span v-if="selected.is_unique">· {{ t('cards.fields.isUnique') }}</span>
         </p>
       </template>
     </EntityPanel>

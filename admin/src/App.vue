@@ -3,6 +3,7 @@ import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import {
+  Axe,
   Coins,
   DatabaseBackup,
   Dices,
@@ -255,6 +256,16 @@ function navActive(section: string) {
       >
         <Swords class="nav-icon" :size="20" /><span class="nav-label">{{
           t('nav.equipmentTypes')
+        }}</span>
+      </RouterLink>
+      <RouterLink
+        v-if="auth.can('manage-game')"
+        class="nav-item"
+        :class="navActive('equipmentSubtypes')"
+        :to="{ name: 'equipment-subtypes' }"
+      >
+        <Axe class="nav-icon" :size="20" /><span class="nav-label">{{
+          t('nav.equipmentSubtypes')
         }}</span>
       </RouterLink>
       <RouterLink

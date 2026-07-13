@@ -21,7 +21,8 @@ class CardController extends Controller
     public function index(Request $request)
     {
         $cards = Card::query()
-            ->with(['faction', 'cardType', 'cardSubtype'])
+            // El listado pinta el tipado completo: tipo, subtipo y equipo.
+            ->with(['faction', 'cardType', 'cardSubtype', 'equipmentType', 'equipmentSubtype'])
             ->filter($request->only('search', 'status'))
             // Filtros del listado (selects junto a la búsqueda).
             ->when(
@@ -129,24 +130,39 @@ class CardController extends Controller
     protected function validateData(Request $request): array
     {
         $default = config('motor.default_locale');
+        // Flags que condicionan el equipo: si el tipo de carta es equipo,
+        // tipo y subtipo de equipo son obligatorios (todo equipo se tipa
+        // "Equipo - tipo - subtipo"); si el tipo de equipo lleva manos
+        // (armas), las manos también.
+        $cardType = CardType::find($request->input('card_type_id'));
+        $isEquipment = (bool) $cardType?->is_equipment;
+        $equipment = $isEquipment
+            ? EquipmentType::find($request->input('equipment_type_id'))
+            : null;
+        // El subtipo debe pertenecer al tipo de equipo elegido.
+        $subtypeExists = Rule::exists('equipment_subtypes', 'id');
+        if ($equipment) {
+            $subtypeExists->where('equipment_type_id', $equipment->id);
+        }
         $rules = [
-            'faction_id' => ['nullable', 'integer', 'exists:factions,id'],
+            'faction_id' => ['required', 'integer', 'exists:factions,id'],
             'card_type_id' => ['required', 'integer', 'exists:card_types,id'],
             'card_subtype_id' => ['nullable', 'integer', 'exists:card_subtypes,id'],
-            'equipment_type_id' => ['nullable', 'integer', 'exists:equipment_types,id'],
+            'equipment_type_id' => [
+                $isEquipment ? 'required' : 'nullable',
+                'integer', 'exists:equipment_types,id',
+            ],
+            'equipment_subtype_id' => [
+                $isEquipment ? 'required' : 'nullable', 'integer', $subtypeExists,
+            ],
             'attack_type' => ['nullable', 'string', Rule::in(Card::ATTACK_TYPES)],
             'attack_range_id' => ['nullable', 'integer', 'exists:attack_ranges,id'],
             'attack_subtype_id' => ['nullable', 'integer', 'exists:attack_subtypes,id'],
             'hero_ability_id' => ['nullable', 'integer', 'exists:hero_abilities,id'],
             'hands' => [
-                'nullable', 'integer', Rule::in(Card::HANDS),
-                // Obligatorias si el equipo es un arma (regla del viejo).
-                function ($attribute, $value, $fail) use ($request) {
-                    $equipment = EquipmentType::find($request->input('equipment_type_id'));
-                    if ($equipment?->category === 'weapon' && $value === null) {
-                        $fail(__('Hands are required for weapons.'));
-                    }
-                },
+                // Obligatorias si el tipo de equipo lleva manos (armas).
+                $equipment?->uses_hands ? 'required' : 'nullable',
+                'integer', Rule::in(Card::HANDS),
             ],
             'cost' => Card::costRules(),
             'area' => ['boolean'],
@@ -174,10 +190,11 @@ class CardController extends Controller
         foreach (['lore_text', 'epic_quote', 'effect', 'restriction'] as $field) {
             $card->replaceTranslations($field, $this->cleanRich(array_filter($data[$field] ?? [], fn ($v) => $v !== null && $v !== '')));
         }
-        $card->faction_id = $data['faction_id'] ?? null;
+        $card->faction_id = (int) $data['faction_id'];
         $card->card_type_id = (int) $data['card_type_id'];
         $card->card_subtype_id = $data['card_subtype_id'] ?? null;
         $card->equipment_type_id = $data['equipment_type_id'] ?? null;
+        $card->equipment_subtype_id = $data['equipment_subtype_id'] ?? null;
         $card->attack_type = $data['attack_type'] ?? null;
         $card->attack_range_id = $data['attack_range_id'] ?? null;
         $card->attack_subtype_id = $data['attack_subtype_id'] ?? null;
@@ -198,6 +215,11 @@ class CardController extends Controller
         }
         if (! $type?->is_equipment) {
             $card->equipment_type_id = null;
+            $card->equipment_subtype_id = null;
+            $card->hands = null;
+        }
+        // Las manos solo aplican a tipos de equipo que las llevan (armas).
+        if ($card->equipment_type_id && ! EquipmentType::find($card->equipment_type_id)?->uses_hands) {
             $card->hands = null;
         }
     }
@@ -210,9 +232,12 @@ class CardController extends Controller
             'cardType',
             'cardSubtype',
             'equipmentType',
+            'equipmentSubtype',
             'attackRange',
             'attackSubtype',
-            'heroAbility',
+            // Con su tipado: el single pinta la habilidad completa.
+            'heroAbility.attackRange',
+            'heroAbility.attackSubtype',
         ];
     }
 

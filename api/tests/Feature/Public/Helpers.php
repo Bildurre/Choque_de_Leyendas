@@ -6,6 +6,7 @@ use App\Models\Card;
 use App\Models\CardSubtype;
 use App\Models\CardType;
 use App\Models\Counter;
+use App\Models\EquipmentSubtype;
 use App\Models\EquipmentType;
 use App\Models\Faction;
 use App\Models\FactionDeck;
@@ -82,10 +83,14 @@ if (! function_exists('ensurePublicApiRoutes')) {
         if (isset($overrides['epic_quote'])) {
             $card->setTranslations('epic_quote', $overrides['epic_quote']);
         }
-        $card->faction_id = $overrides['faction_id'] ?? null;
+        // La facción ya es obligatoria: si el test no la pasa se crea una
+        // SIN publicar (no contamina los índices/filtros públicos).
+        $card->faction_id = $overrides['faction_id']
+            ?? publicFaction(['name' => ['es' => 'Facción de pruebas', 'en' => 'Test faction'], 'is_published' => false])->id;
         $card->card_type_id = $overrides['card_type_id'] ?? publicCardType()->id;
         $card->card_subtype_id = $overrides['card_subtype_id'] ?? null;
         $card->equipment_type_id = $overrides['equipment_type_id'] ?? null;
+        $card->equipment_subtype_id = $overrides['equipment_subtype_id'] ?? null;
         $card->attack_type = $overrides['attack_type'] ?? null;
         $card->attack_range_id = $overrides['attack_range_id'] ?? null;
         $card->attack_subtype_id = $overrides['attack_subtype_id'] ?? null;
@@ -111,15 +116,26 @@ if (! function_exists('ensurePublicApiRoutes')) {
         return $subtype;
     }
 
-    /** Tipo de equipo mínimo. */
+    /** Tipo de equipo mínimo (Arma: lleva manos por defecto). */
     function publicEquipmentType(array $overrides = []): EquipmentType
     {
         $type = new EquipmentType;
-        $type->setTranslations('name', $overrides['name'] ?? ['es' => 'Espada', 'en' => 'Sword']);
-        $type->category = $overrides['category'] ?? 'weapon';
+        $type->setTranslations('name', $overrides['name'] ?? ['es' => 'Arma', 'en' => 'Weapon']);
+        $type->uses_hands = $overrides['uses_hands'] ?? true;
         $type->save();
 
         return $type;
+    }
+
+    /** Subtipo de equipo mínimo (crea su tipo si no se pasa). */
+    function publicEquipmentSubtype(array $overrides = []): EquipmentSubtype
+    {
+        $subtype = new EquipmentSubtype;
+        $subtype->setTranslations('name', $overrides['name'] ?? ['es' => 'Espada', 'en' => 'Sword']);
+        $subtype->equipment_type_id = $overrides['equipment_type_id'] ?? publicEquipmentType()->id;
+        $subtype->save();
+
+        return $subtype;
     }
 
     /** Rango de ataque mínimo. */

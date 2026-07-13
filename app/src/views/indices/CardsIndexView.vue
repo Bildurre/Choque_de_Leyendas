@@ -26,8 +26,8 @@ import { parseSort, type SortOption } from '@/entities/catalogSort'
 // GET /api/cards/filters, aplican en vivo. Facción, tipo, subtipo, dados
 // del coste (0..5, 0 = sin coste) y colores (toggles R/G/B con los iconos
 // de los dados del gestor) siempre; según los flags del tipo elegido se
-// añaden tipo de equipo (is_equipment) y rango/tipo/subtipo de ataque +
-// área (allows_subtypes). Todo vive en la query string (useFiltersQuery):
+// añaden tipo y subtipo de equipo (is_equipment) y rango/tipo/subtipo de
+// ataque + área (allows_subtypes). Todo vive en la query string (useFiltersQuery):
 // la UI empuja el estado a la URL y ES el cambio de query el que dispara
 // la recarga.
 const COLORS = ['R', 'G', 'B'] as const
@@ -50,6 +50,10 @@ interface TypeOption extends FilterOption {
   is_equipment: boolean
 }
 
+interface EquipmentSubtypeOption extends FilterOption {
+  equipment_type_id: number
+}
+
 const { t } = useI18n()
 const { route, router, locales, site, segment, section, canonicalize, applyHead } = useIndexPage()
 
@@ -70,6 +74,7 @@ const factionId = ref('')
 const typeId = ref('')
 const subtypeId = ref('')
 const equipmentTypeId = ref('')
+const equipmentSubtypeId = ref('')
 const attackRangeId = ref('')
 const attackSubtypeId = ref('')
 const colors = ref<CostColor[]>([])
@@ -128,6 +133,7 @@ const { queryToState, pushQuery } = useFiltersQuery({
     type: typeId,
     subtype: subtypeId,
     equip: equipmentTypeId,
+    esub: equipmentSubtypeId,
     range: attackRangeId,
     atk: attackType,
     asub: attackSubtypeId,
@@ -143,6 +149,7 @@ const factionOptions = ref<FilterOption[]>([])
 const typeOptions = ref<TypeOption[]>([])
 const subtypeOptions = ref<FilterOption[]>([])
 const equipmentTypeOptions = ref<FilterOption[]>([])
+const equipmentSubtypeOptions = ref<EquipmentSubtypeOption[]>([])
 const attackRangeOptions = ref<FilterOption[]>([])
 const attackSubtypeOptions = ref<FilterOption[]>([])
 const diceIcons = ref<Record<string, string | null>>({})
@@ -164,6 +171,16 @@ const subtypeSelect = computed(() =>
 )
 const equipmentTypeSelect = computed(() =>
   withAll(equipmentTypeOptions.value, t('catalog.filters.allEquipmentTypes')),
+)
+// Subtipos de equipo acotados al tipo de equipo elegido (todos si no hay).
+const equipmentSubtypeSelect = computed(() =>
+  withAll(
+    equipmentSubtypeOptions.value.filter(
+      (option) =>
+        !equipmentTypeId.value || String(option.equipment_type_id) === equipmentTypeId.value,
+    ),
+    t('catalog.filters.allEquipmentSubtypes'),
+  ),
 )
 const attackRangeSelect = computed(() =>
   withAll(attackRangeOptions.value, t('catalog.filters.allAttackRanges')),
@@ -205,13 +222,27 @@ const showAttack = computed(() => !!selectedType.value?.allows_subtypes)
 // (también al cargar las opciones, para sanear URLs pegadas).
 watch([selectedType, typeOptions], () => {
   if (!typeOptions.value.length) return
-  if (!showEquipment.value) equipmentTypeId.value = ''
+  if (!showEquipment.value) {
+    equipmentTypeId.value = ''
+    equipmentSubtypeId.value = ''
+  }
   if (!showAttack.value) {
     attackRangeId.value = ''
     attackType.value = ''
     attackSubtypeId.value = ''
     area.value = ''
   }
+})
+
+// Al cambiar el tipo de equipo se limpia el subtipo que no le pertenezca.
+watch([equipmentTypeId, equipmentSubtypeOptions], () => {
+  if (!equipmentSubtypeId.value || !equipmentSubtypeOptions.value.length) return
+  const valid = equipmentSubtypeOptions.value.some(
+    (option) =>
+      String(option.id) === equipmentSubtypeId.value &&
+      (!equipmentTypeId.value || String(option.equipment_type_id) === equipmentTypeId.value),
+  )
+  if (!valid) equipmentSubtypeId.value = ''
 })
 
 // Nº de filtros activos (enseña el "Quitar filtros" de la barra derecha;
@@ -223,6 +254,7 @@ const activeFilters = computed(
       typeId.value,
       subtypeId.value,
       equipmentTypeId.value,
+      equipmentSubtypeId.value,
       attackRangeId.value,
       attackType.value,
       attackSubtypeId.value,
@@ -256,6 +288,9 @@ async function loadFilters() {
     equipmentTypeOptions.value = Array.isArray(payload.equipment_types)
       ? payload.equipment_types
       : []
+    equipmentSubtypeOptions.value = Array.isArray(payload.equipment_subtypes)
+      ? payload.equipment_subtypes
+      : []
     attackRangeOptions.value = Array.isArray(payload.attack_ranges) ? payload.attack_ranges : []
     attackSubtypeOptions.value = Array.isArray(payload.attack_subtypes)
       ? payload.attack_subtypes
@@ -266,6 +301,7 @@ async function loadFilters() {
     typeOptions.value = []
     subtypeOptions.value = []
     equipmentTypeOptions.value = []
+    equipmentSubtypeOptions.value = []
     attackRangeOptions.value = []
     attackSubtypeOptions.value = []
     diceIcons.value = {}
@@ -285,6 +321,7 @@ async function load() {
         card_type_id: typeId.value || undefined,
         card_subtype_id: subtypeId.value || undefined,
         equipment_type_id: equipmentTypeId.value || undefined,
+        equipment_subtype_id: equipmentSubtypeId.value || undefined,
         attack_range_id: attackRangeId.value || undefined,
         attack_type: attackType.value || undefined,
         attack_subtype_id: attackSubtypeId.value || undefined,
@@ -323,6 +360,7 @@ function clearFilters() {
   typeId.value = ''
   subtypeId.value = ''
   equipmentTypeId.value = ''
+  equipmentSubtypeId.value = ''
   attackRangeId.value = ''
   attackType.value = ''
   attackSubtypeId.value = ''
@@ -384,12 +422,18 @@ watch(() => locales.current, loadFilters, { immediate: true })
       />
 
       <!-- Condicionales del tipo elegido (flags del endpoint de filtros) -->
-      <BaseSelect
-        v-if="showEquipment"
-        v-model="equipmentTypeId"
-        :label="t('catalog.filters.equipmentType')"
-        :options="equipmentTypeSelect"
-      />
+      <template v-if="showEquipment">
+        <BaseSelect
+          v-model="equipmentTypeId"
+          :label="t('catalog.filters.equipmentType')"
+          :options="equipmentTypeSelect"
+        />
+        <BaseSelect
+          v-model="equipmentSubtypeId"
+          :label="t('catalog.filters.equipmentSubtype')"
+          :options="equipmentSubtypeSelect"
+        />
+      </template>
       <template v-if="showAttack">
         <!-- Orden canónico: rango · tipo · subtipo · área -->
         <BaseSelect

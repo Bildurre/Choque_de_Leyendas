@@ -281,6 +281,19 @@ export function createLocalizedRoutes(locale: string): RouteRecordRaw[] {
       },
     },
     {
+      path: `/${p.equipmentSubtypes}`,
+      name: 'equipment-subtypes',
+      component: () => import('@/views/equipment-subtypes/EquipmentSubtypesListView.vue'),
+      alias: buildAliases((t) => `/${t.equipmentSubtypes}`, locale),
+      meta: {
+        admin: true,
+        nav: 'equipmentSubtypes',
+        permission: 'manage-game',
+        titleKey: 'equipmentSubtypes.title',
+        breadcrumbs: [{ key: 'equipmentSubtypes' }],
+      },
+    },
+    {
       path: `/${p.gameModes}`,
       name: 'game-modes',
       component: () => import('@/views/game-modes/GameModesListView.vue'),

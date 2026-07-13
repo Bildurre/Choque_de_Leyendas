@@ -13,6 +13,8 @@ const props = defineProps<{ item: CardRenderData; locale: string }>()
 const STRINGS: Record<string, Record<string, string>> = {
   unique: { es: 'Única', eu: 'Bakarra', en: 'Unique' },
   area: { es: 'Área', eu: 'Eremua', en: 'Area' },
+  physical: { es: 'Físico', eu: 'Fisikoa', en: 'Physical' },
+  magical: { es: 'Mágico', eu: 'Magikoa', en: 'Magical' },
   hands1: { es: '1 mano', eu: 'Esku 1', en: '1 hand' },
   hands2: { es: '2 manos', eu: '2 esku', en: '2 hands' },
   gameTitle: { es: 'Espadas de Ceniza', eu: 'Espadas de Ceniza', en: 'Blades of Ash' },
@@ -29,18 +31,43 @@ const vars = computed(() => ({
   '--ftx': props.item.faction?.text_is_dark ? '#000000' : '#ffffff',
 }))
 
-// Línea de clase bajo el nombre: tipo • subtipo • tipo de equipo • manos.
+// Línea de clase bajo el nombre. Equipo: tipo de carta • tipo de equipo •
+// subtipo de equipo • manos (solo armas). Resto: tipo • subtipo.
 const classLine = computed(() => {
-  const parts = [props.item.type, props.item.subtype, props.item.equipment_type]
+  const parts = [
+    props.item.type,
+    props.item.subtype,
+    props.item.equipment_type,
+    props.item.equipment_subtype,
+  ]
   if (props.item.hands) parts.push(t(props.item.hands > 1 ? 'hands2' : 'hands1'))
   return parts.filter(Boolean).join(' • ')
 })
 
+// La clave physical|magical llega cruda del server: se localiza aquí.
+function attackTypeLabel(type: string | null | undefined): string | null {
+  if (!type) return null
+  return STRINGS[type]?.[props.locale] ?? STRINGS[type]?.es ?? type
+}
+
 // Línea de tipos de ataque: rango • tipo • subtipo • área.
 const typesLine = computed(() => {
   const a = props.item.attack
-  const parts = [a?.range, a?.type, a?.subtype]
+  const parts = [a?.range, attackTypeLabel(a?.type), a?.subtype]
   if (props.item.area) parts.push(t('area'))
+  return parts.filter(Boolean).join(' • ')
+})
+
+// Tipado de la habilidad otorgada: rango • tipo • subtipo • área.
+const abilityTypesLine = computed(() => {
+  const ability = props.item.hero_ability
+  if (!ability) return ''
+  const parts = [
+    ability.attack?.range,
+    attackTypeLabel(ability.attack?.type),
+    ability.attack?.subtype,
+  ]
+  if (ability.area) parts.push(t('area'))
   return parts.filter(Boolean).join(' • ')
 })
 </script>
@@ -88,6 +115,42 @@ const typesLine = computed(() => {
         <hr v-if="item.restriction && item.effect" />
         <div v-if="item.effect" class="game-card__effect" v-html="item.effect" />
       </div>
+
+      <!-- Habilidad de héroe otorgada, como en el preview del viejo:
+           nombre + tipado + coste en dados + descripción -->
+      <template v-if="item.hero_ability">
+        <hr />
+        <div class="game-card__active">
+          <div class="game-card__active-header">
+            <div class="game-card__active-info">
+              <span class="game-card__active-name">{{ item.hero_ability.name }}</span>
+              <span v-if="abilityTypesLine" class="game-card__active-types">
+                {{ abilityTypesLine }}
+              </span>
+            </div>
+            <div v-if="item.hero_ability.cost_parsed?.length" class="game-card__active-cost">
+              <span
+                v-for="(die, i) in item.hero_ability.cost_parsed"
+                :key="i"
+                class="game-card__die"
+                :class="`game-card__die--${die.color}`"
+              >
+                <img
+                  v-if="item.icons[`dice-${die.color}`]"
+                  :src="item.icons[`dice-${die.color}`]!"
+                  alt=""
+                />
+                <i v-else>{{ die.letter }}</i>
+              </span>
+            </div>
+          </div>
+          <div
+            v-if="item.hero_ability.description"
+            class="game-card__active-description"
+            v-html="item.hero_ability.description"
+          />
+        </div>
+      </template>
     </section>
 
     <footer class="game-card__footer">

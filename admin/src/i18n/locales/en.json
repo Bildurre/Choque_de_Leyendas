@@ -24,6 +24,7 @@
     "cardTypes": "card-types",
     "cardSubtypes": "card-subtypes",
     "equipmentTypes": "equipment-types",
+    "equipmentSubtypes": "equipment-subtypes",
     "gameModes": "game-modes"
   },
   "breadcrumbs": {
@@ -51,6 +52,7 @@
     "cardTypes": "Card types",
     "cardSubtypes": "Card subtypes",
     "equipmentTypes": "Equipment types",
+    "equipmentSubtypes": "Equipment subtypes",
     "gameModes": "Game modes"
   },
   "nav": {
@@ -79,6 +81,7 @@
     "cardTypes": "Card types",
     "cardSubtypes": "Card subtypes",
     "equipmentTypes": "Equipment types",
+    "equipmentSubtypes": "Equipment subtypes",
     "gameModes": "Game modes"
   },
   "icons": {
@@ -144,7 +147,9 @@
       "prev": "Previous",
       "next": "Next",
       "of": "{page} of {pages}"
-    }
+    },
+    "yes": "Yes",
+    "no": "No"
   },
   "login": {
     "title": "Panel access",
@@ -807,7 +812,8 @@
     "state": {
       "published": "Published",
       "draft": "Draft",
-      "trashed": "Trash"
+      "trashed": "Trash",
+      "unique": "Unique"
     },
     "sections": {
       "basic": "Basic information",
@@ -818,6 +824,7 @@
       "name": "Name",
       "faction": "Faction",
       "noFaction": "No faction",
+      "selectFaction": "Select a faction",
       "cost": "Cost",
       "removeDie": "Remove last die",
       "published": "Published",
@@ -828,6 +835,8 @@
       "noSubtype": "No subtype",
       "equipmentType": "Equipment type",
       "noEquipmentType": "No equipment type",
+      "equipmentSubtype": "Equipment subtype",
+      "noEquipmentSubtype": "No equipment subtype",
       "hands": "Hands",
       "selectHands": "Select hands",
       "oneHand": "1 hand",
@@ -841,6 +850,7 @@
       "attackSubtype": "Attack subtype",
       "noAttackSubtype": "No attack subtype",
       "area": "Is area attack",
+      "areaChip": "Area",
       "image": "Image",
       "effect": "Effect",
       "restriction": "Restriction",
@@ -1257,8 +1267,6 @@
     "panelEmpty": "Select an equipment type to see its actions.",
     "tabs": {
       "all": "All",
-      "weapon": "Weapons",
-      "armor": "Armor",
       "trashed": "Trash"
     },
     "state": {
@@ -1266,13 +1274,8 @@
     },
     "fields": {
       "name": "Name",
-      "category": "Category"
+      "usesHands": "Uses hands"
     },
-    "categories": {
-      "weapon": "Weapon",
-      "armor": "Armor"
-    },
-    "selectCategory": "Select a category",
     "confirmDelete": {
       "title": "Send to trash",
       "message": "Send \"{name}\" to the trash?"
@@ -1287,6 +1290,45 @@
       "deleted": "Equipment type sent to the trash",
       "restored": "Equipment type restored",
       "forceDeleted": "Equipment type permanently deleted",
+      "saveError": "Could not save."
+    }
+  },
+  "equipmentSubtypes": {
+    "title": "Equipment subtypes",
+    "new": "New equipment subtype",
+    "edit": "Edit equipment subtype",
+    "newButton": "New equipment subtype",
+    "panelTitle": "Equipment subtype",
+    "panelEmpty": "Select an equipment subtype to see its actions.",
+    "tabs": {
+      "all": "All",
+      "trashed": "Trash"
+    },
+    "state": {
+      "trashed": "Trash"
+    },
+    "fields": {
+      "name": "Name",
+      "type": "Equipment type"
+    },
+    "selectType": "Select an equipment type",
+    "filters": {
+      "allTypes": "All types"
+    },
+    "confirmDelete": {
+      "title": "Send to trash",
+      "message": "Send \"{name}\" to the trash?"
+    },
+    "confirmForceDelete": {
+      "title": "Delete permanently",
+      "message": "Delete \"{name}\" forever? This action cannot be undone."
+    },
+    "toast": {
+      "created": "Equipment subtype created successfully.",
+      "updated": "Equipment subtype updated successfully.",
+      "deleted": "Equipment subtype sent to the trash",
+      "restored": "Equipment subtype restored",
+      "forceDeleted": "Equipment subtype permanently deleted",
       "saveError": "Could not save."
     }
   },

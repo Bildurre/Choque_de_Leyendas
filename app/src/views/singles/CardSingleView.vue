@@ -46,7 +46,7 @@ interface CardPayload {
     is_equipment: boolean
   } | null
   subtype: string | null
-  equipment: { type: string | null; hands: number | null } | null
+  equipment: { type: string | null; subtype: string | null; hands: number | null } | null
   cost: string | null
   cost_parsed: CostDie[]
   is_unique: boolean
@@ -145,6 +145,11 @@ watch(
             <template v-if="item.equipment?.type">
               <dt>{{ t('singles.card.equipmentType') }}</dt>
               <dd>{{ item.equipment.type }}</dd>
+            </template>
+
+            <template v-if="item.equipment?.subtype">
+              <dt>{{ t('singles.card.equipmentSubtype') }}</dt>
+              <dd>{{ item.equipment.subtype }}</dd>
             </template>
 
             <template v-if="item.equipment?.hands">

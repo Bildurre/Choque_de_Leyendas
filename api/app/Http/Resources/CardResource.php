@@ -23,6 +23,7 @@ class CardResource extends JsonResource
             'card_type_id' => $this->card_type_id,
             'card_subtype_id' => $this->card_subtype_id,
             'equipment_type_id' => $this->equipment_type_id,
+            'equipment_subtype_id' => $this->equipment_subtype_id,
             'attack_type' => $this->attack_type,
             'attack_range_id' => $this->attack_range_id,
             'attack_subtype_id' => $this->attack_subtype_id,
@@ -51,7 +52,11 @@ class CardResource extends JsonResource
             'equipment_type' => $this->whenLoaded('equipmentType', fn () => [
                 'id' => $this->equipmentType->id,
                 'name' => $this->equipmentType->getTranslations('name'),
-                'category' => $this->equipmentType->category,
+                'uses_hands' => (bool) $this->equipmentType->uses_hands,
+            ]),
+            'equipment_subtype' => $this->whenLoaded('equipmentSubtype', fn () => [
+                'id' => $this->equipmentSubtype->id,
+                'name' => $this->equipmentSubtype->getTranslations('name'),
             ]),
             'attack_range' => $this->whenLoaded('attackRange', fn () => [
                 'id' => $this->attackRange->id,
@@ -61,10 +66,23 @@ class CardResource extends JsonResource
                 'id' => $this->attackSubtype->id,
                 'name' => $this->attackSubtype->getTranslations('name'),
             ]),
+            // Habilidad completa (tipado + coste + descripción): el single
+            // del admin la pinta como el render de la carta.
             'hero_ability' => $this->whenLoaded('heroAbility', fn () => [
                 'id' => $this->heroAbility->id,
                 'name' => $this->heroAbility->getTranslations('name'),
+                'description' => $this->heroAbility->getTranslations('description'),
                 'cost' => $this->heroAbility->cost,
+                'attack_type' => $this->heroAbility->attack_type,
+                'area' => (bool) $this->heroAbility->area,
+                'attack_range' => $this->heroAbility->attackRange ? [
+                    'id' => $this->heroAbility->attackRange->id,
+                    'name' => $this->heroAbility->attackRange->getTranslations('name'),
+                ] : null,
+                'attack_subtype' => $this->heroAbility->attackSubtype ? [
+                    'id' => $this->heroAbility->attackSubtype->id,
+                    'name' => $this->heroAbility->attackSubtype->getTranslations('name'),
+                ] : null,
             ]),
             'is_published' => $this->is_published,
             'previews' => $this->previewUrls(),

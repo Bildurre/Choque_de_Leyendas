@@ -134,12 +134,12 @@ class DashboardStatsController extends Controller
             ->groupBy('attack_type')
             ->pluck('total', 'attack_type');
 
-        // Equipo por categoría (weapon/armor del tipo de equipo).
+        // Equipo por categoría (armas = tipos con manos; el resto, armaduras).
         $equipment = Card::query()
             ->join('equipment_types', 'equipment_types.id', '=', 'cards.equipment_type_id')
             ->whereNull('equipment_types.deleted_at')
-            ->selectRaw('equipment_types.category, count(*) as total')
-            ->groupBy('equipment_types.category')
+            ->selectRaw("case when equipment_types.uses_hands then 'weapon' else 'armor' end as category, count(*) as total")
+            ->groupBy('equipment_types.uses_hands')
             ->pluck('total', 'category');
 
         return [

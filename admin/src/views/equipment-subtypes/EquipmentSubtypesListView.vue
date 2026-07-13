@@ -1,16 +1,18 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BasePagination, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
-import type { EquipmentType } from '@juego/shared'
-import EquipmentTypeFormModal from '@/components/equipment-types/EquipmentTypeFormModal.vue'
+import { api } from '@/lib/api'
+import type { EquipmentSubtype, EquipmentTypeOption } from '@juego/shared'
+import EquipmentSubtypeFormModal from '@/components/equipment-subtypes/EquipmentSubtypeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
 
-// Taxonomía sin slug, sin publicación y sin single: CRUD por id. El chip
-// marca los tipos que llevan manos (armas): sus cartas exigen el campo manos.
+// Taxonomía sin slug, sin publicación y sin single: CRUD por id. Cada
+// subtipo pertenece a un tipo de equipo; el listado filtra por tipo con un
+// select en el panel derecho (slot `filters` del EntityPanel).
 const {
   t,
   items,
@@ -20,6 +22,7 @@ const {
   status,
   search,
   sort,
+  filters,
   tabs,
   tr,
   init,
@@ -35,23 +38,42 @@ const {
   selectedId,
   selected,
   select,
-} = useEntityList<EquipmentType>({
-  resource: '/admin/equipment-types',
-  ns: 'equipmentTypes',
+} = useEntityList<EquipmentSubtype>({
+  resource: '/admin/equipment-subtypes',
+  ns: 'equipmentSubtypes',
   resolveBy: 'id',
   tabKeys: ['all', 'trashed'],
   nameOf: (item) => item.name,
 })
 
-onMounted(init)
+// Opciones del select de filtro por tipo de equipo (endpoint options).
+const equipmentTypes = ref<EquipmentTypeOption[]>([])
+
+const typeOptions = computed(() => [
+  { value: '', label: t('equipmentSubtypes.filters.allTypes') },
+  ...equipmentTypes.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
+])
+
+async function loadFilterOptions() {
+  try {
+    const { data } = await api.get('/admin/equipment-types/options')
+    equipmentTypes.value = data.data
+  } catch {
+    // Sin opciones no hay filtro, pero el listado sigue funcionando.
+  }
+}
+
+onMounted(async () => {
+  await Promise.all([init(), loadFilterOptions()])
+})
 </script>
 
 <template>
-  <div class="equipment-types">
+  <div class="equipment-subtypes">
     <div class="list-view__top">
       <BaseButton @click="openCreate">
         <template #icon><Plus :size="16" /></template>
-        {{ t('equipmentTypes.newButton') }}
+        {{ t('equipmentSubtypes.newButton') }}
       </BaseButton>
     </div>
 
@@ -83,11 +105,9 @@ onMounted(init)
       >
         <template #badges>
           <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('equipmentTypes.state.trashed')
+            t('equipmentSubtypes.state.trashed')
           }}</span>
-          <span v-if="item.uses_hands" class="chip equipment-types__hands">{{
-            t('equipmentTypes.fields.usesHands')
-          }}</span>
+          <span v-if="item.equipment_type" class="chip">{{ tr(item.equipment_type.name) }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -101,7 +121,7 @@ onMounted(init)
       :of-label="t('common.pagination.of', { page, pages })"
     />
 
-    <EquipmentTypeFormModal
+    <EquipmentSubtypeFormModal
       v-model="formOpen"
       :mode="formMode"
       :target="formItem"
@@ -111,8 +131,8 @@ onMounted(init)
     <EntityPanel
       :item="selected"
       :name="selected ? tr(selected.name) : ''"
-      :kicker="t('equipmentTypes.panelTitle')"
-      :empty="t('equipmentTypes.panelEmpty')"
+      :kicker="t('equipmentSubtypes.panelTitle')"
+      :empty="t('equipmentSubtypes.panelEmpty')"
       :has-single="false"
       :has-publish="false"
       @edit="selected && edit(selected)"
@@ -120,10 +140,19 @@ onMounted(init)
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
+      <!-- Filtro del listado: aplica en vivo (sin guardar) -->
+      <template #filters>
+        <BaseSelect
+          v-model="filters.equipment_type_id"
+          :label="t('equipmentSubtypes.fields.type')"
+          :options="typeOptions"
+        />
+      </template>
+
       <template #meta>
         <p v-if="selected" class="manager-detail__meta">
-          {{ t('equipmentTypes.fields.usesHands') }}:
-          {{ selected.uses_hands ? t('common.yes') : t('common.no') }}
+          {{ t('equipmentSubtypes.fields.type') }}:
+          {{ selected.equipment_type ? tr(selected.equipment_type.name) : '—' }}
         </p>
       </template>
     </EntityPanel>

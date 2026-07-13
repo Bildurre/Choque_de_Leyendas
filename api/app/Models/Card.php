@@ -20,10 +20,10 @@ use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 /**
- * Carta jugable: coste en dados (HasCost), tipo obligatorio y el resto de
- * relaciones opcionales. Los flags allows_subtypes/is_equipment de su tipo
- * deciden qué campos aplican (sustituyen a los ids mágicos del viejo).
- * Renderizable a carta PNG (750x1050).
+ * Carta jugable: coste en dados (HasCost), facción y tipo obligatorios y el
+ * resto de relaciones opcionales. Los flags allows_subtypes/is_equipment de
+ * su tipo deciden qué campos aplican (sustituyen a los ids mágicos del
+ * viejo). Renderizable a carta PNG (750x1050).
  */
 class Card extends Model implements HasMedia, PreviewableContract
 {
@@ -56,6 +56,7 @@ class Card extends Model implements HasMedia, PreviewableContract
         'card_type_id',
         'card_subtype_id',
         'equipment_type_id',
+        'equipment_subtype_id',
         'attack_type',
         'attack_range_id',
         'attack_subtype_id',
@@ -93,7 +94,7 @@ class Card extends Model implements HasMedia, PreviewableContract
         ];
     }
 
-    /** Facción de la carta (opcional). */
+    /** Facción de la carta (obligatoria). */
     public function faction(): BelongsTo
     {
         return $this->belongsTo(Faction::class);
@@ -115,6 +116,12 @@ class Card extends Model implements HasMedia, PreviewableContract
     public function equipmentType(): BelongsTo
     {
         return $this->belongsTo(EquipmentType::class);
+    }
+
+    /** Subtipo de equipo (pertenece al tipo de equipo elegido). */
+    public function equipmentSubtype(): BelongsTo
+    {
+        return $this->belongsTo(EquipmentSubtype::class);
     }
 
     /** Rango de ataque (Melee, Alcance…), opcional. */
@@ -196,6 +203,7 @@ class Card extends Model implements HasMedia, PreviewableContract
             'card_type_id',
             'card_subtype_id',
             'equipment_type_id',
+            'equipment_subtype_id',
             'attack_type',
             'attack_range_id',
             'attack_subtype_id',
@@ -215,8 +223,11 @@ class Card extends Model implements HasMedia, PreviewableContract
             'cardType',
             'cardSubtype',
             'equipmentType',
+            'equipmentSubtype',
             'attackRange',
             'attackSubtype',
+            'heroAbility.attackRange',
+            'heroAbility.attackSubtype',
         ]);
 
         return [
@@ -237,6 +248,7 @@ class Card extends Model implements HasMedia, PreviewableContract
             'type_is_equipment' => (bool) $this->cardType?->is_equipment,
             'subtype' => $this->cardSubtype?->getTranslation('name', $locale),
             'equipment_type' => $this->equipmentType?->getTranslation('name', $locale),
+            'equipment_subtype' => $this->equipmentSubtype?->getTranslation('name', $locale),
             'hands' => $this->hands,
             'attack' => [
                 // La clave se localiza en el componente de render
@@ -246,6 +258,21 @@ class Card extends Model implements HasMedia, PreviewableContract
             ],
             'area' => (bool) $this->area,
             'is_unique' => (bool) $this->is_unique,
+            // Habilidad de héroe otorgada: se pinta al pie de la caja de
+            // texto (nombre, tipado, coste y descripción), como en el viejo.
+            'hero_ability' => $this->heroAbility ? [
+                'name' => $this->heroAbility->getTranslation('name', $locale),
+                'cost' => $this->heroAbility->cost,
+                'cost_parsed' => $this->heroAbility->parsed_cost,
+                'attack' => [
+                    // La clave se localiza en el componente de render
+                    'type' => $this->heroAbility->attack_type,
+                    'range' => $this->heroAbility->attackRange?->getTranslation('name', $locale),
+                    'subtype' => $this->heroAbility->attackSubtype?->getTranslation('name', $locale),
+                ],
+                'area' => (bool) $this->heroAbility->area,
+                'description' => $this->heroAbility->getTranslation('description', $locale),
+            ] : null,
             'effect' => $this->getTranslation('effect', $locale),
             'restriction' => $this->getTranslation('restriction', $locale),
             'lore_text' => $this->getTranslation('lore_text', $locale),

@@ -7,7 +7,6 @@ use App\Http\Resources\EquipmentTypeResource;
 use App\Models\EquipmentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 /** CRUD de admin para los tipos de equipo (taxonomía sin slug: por id). */
 class EquipmentTypeController extends Controller
@@ -16,30 +15,22 @@ class EquipmentTypeController extends Controller
 
     public function index(Request $request)
     {
-        $status = $request->query('status');
-
         $types = EquipmentType::query()
             ->filter($request->only('search', 'status'))
-            // El filtro por categoría del listado viaja como tab en `status`
-            // (weapon|armor); HasFilters ignora esos valores.
-            ->when(
-                in_array($status, EquipmentType::CATEGORIES, true),
-                fn ($query) => $query->where('category', $status),
-            )
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return EquipmentTypeResource::collection($types);
     }
 
-    /** Lista ligera para selectores; incluye la categoría (weapon|armor). */
+    /** Lista ligera para selectores; incluye si lleva manos (armas). */
     public function options()
     {
         return response()->json([
             'data' => EquipmentType::orderByDesc('id')->get()->map(fn (EquipmentType $type) => [
                 'id' => $type->id,
                 'name' => $type->getTranslations('name'),
-                'category' => $type->category,
+                'uses_hands' => (bool) $type->uses_hands,
             ]),
         ]);
     }
@@ -92,12 +83,12 @@ class EquipmentTypeController extends Controller
         return response()->noContent();
     }
 
-    /** Valida el nombre por locale (default required) + categoría. */
+    /** Valida el nombre por locale (default required) + flag de manos. */
     protected function validateData(Request $request): array
     {
         $default = config('motor.default_locale');
         $rules = [
-            'category' => ['required', 'string', Rule::in(EquipmentType::CATEGORIES)],
+            'uses_hands' => ['boolean'],
         ];
         foreach (array_keys(config('motor.locales', [])) as $locale) {
             $rules["name.$locale"] = [$locale === $default ? 'required' : 'nullable', 'string', 'max:255'];
@@ -109,6 +100,6 @@ class EquipmentTypeController extends Controller
     protected function fill(EquipmentType $type, array $data): void
     {
         $type->replaceTranslations('name', array_filter($data['name'] ?? [], fn ($v) => $v !== null && $v !== ''));
-        $type->category = $data['category'];
+        $type->uses_hands = (bool) ($data['uses_hands'] ?? false);
     }
 }

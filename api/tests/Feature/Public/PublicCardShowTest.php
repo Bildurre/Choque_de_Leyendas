@@ -14,10 +14,14 @@ it('muestra la carta publicada con coste parseado y campos según flags del tipo
     $faction = publicFaction();
     $type = publicCardType(['name' => ['es' => 'Equipo', 'en' => 'Equipment'], 'is_equipment' => true]);
     $ability = publicAbility();
+    $weapon = publicEquipmentType(); // 'Arma' / 'Weapon'
+    $sword = publicEquipmentSubtype(['equipment_type_id' => $weapon->id]); // 'Espada' / 'Sword'
     $card = publicCard([
         'faction_id' => $faction->id,
         'card_type_id' => $type->id,
         'hero_ability_id' => $ability->id,
+        'equipment_type_id' => $weapon->id,
+        'equipment_subtype_id' => $sword->id,
         'hands' => 2,
         'cost' => 'RRG',
         'is_unique' => true,
@@ -34,7 +38,8 @@ it('muestra la carta publicada con coste parseado y campos según flags del tipo
         ->and($data['type'])->toMatchArray(['name' => 'Equipo', 'allows_subtypes' => false, 'is_equipment' => true])
         // El tipo no admite subtipos → subtype null; es equipo → hands presentes
         ->and($data['subtype'])->toBeNull()
-        ->and($data['equipment'])->toBe(['type' => null, 'hands' => 2])
+        // Tipado completo del equipo: tipo, subtipo y manos
+        ->and($data['equipment'])->toBe(['type' => 'Arma', 'subtype' => 'Espada', 'hands' => 2])
         ->and($data['cost'])->toBe('RRG')
         ->and($data['cost_parsed'])->toBe([
             ['color' => 'red', 'letter' => 'R'],

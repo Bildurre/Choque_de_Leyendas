@@ -21,6 +21,7 @@ import SearchCombobox from '@/components/SearchCombobox.vue'
 import type {
   Card,
   CardTypeOption,
+  EquipmentSubtypeOption,
   EquipmentTypeOption,
   FactionOption,
   HeroAbilityOption,
@@ -55,6 +56,7 @@ const factions = ref<FactionOption[]>([])
 const cardTypes = ref<CardTypeOption[]>([])
 const cardSubtypes = ref<TaxonomyOption[]>([])
 const equipmentTypes = ref<EquipmentTypeOption[]>([])
+const equipmentSubtypes = ref<EquipmentSubtypeOption[]>([])
 const attackRanges = ref<TaxonomyOption[]>([])
 const attackSubtypes = ref<TaxonomyOption[]>([])
 const heroAbilities = ref<HeroAbilityOption[]>([])
@@ -75,6 +77,7 @@ function mapServerErrors(e: unknown) {
         'card_type_id',
         'card_subtype_id',
         'equipment_type_id',
+        'equipment_subtype_id',
         'attack_range_id',
         'attack_type',
         'attack_subtype_id',
@@ -99,6 +102,7 @@ const form = reactive<{
   card_type_id: string
   card_subtype_id: string
   equipment_type_id: string
+  equipment_subtype_id: string
   attack_range_id: string
   attack_type: string
   attack_subtype_id: string
@@ -118,6 +122,7 @@ const form = reactive<{
   card_type_id: '',
   card_subtype_id: '',
   equipment_type_id: '',
+  equipment_subtype_id: '',
   attack_range_id: '',
   attack_type: '',
   attack_subtype_id: '',
@@ -149,23 +154,37 @@ const isEquipment = computed(() => !!selectedType.value?.is_equipment)
 const selectedEquipment = computed(
   () => equipmentTypes.value.find((e) => String(e.id) === form.equipment_type_id) ?? null,
 )
-// Manos obligatorias solo para armas (regla del viejo; el server la valida).
-const handsRequired = computed(() => selectedEquipment.value?.category === 'weapon')
+// Manos: solo (y obligatorias) para tipos de equipo que las llevan (armas).
+const handsApply = computed(() => !!selectedEquipment.value?.uses_hands)
 
 // Al cambiar el tipo se limpia lo que sus flags ya no permiten.
 watch(selectedType, (type) => {
   if (!type?.allows_subtypes) form.card_subtype_id = ''
   if (!type?.is_equipment) {
     form.equipment_type_id = ''
+    form.equipment_subtype_id = ''
     form.hands = ''
   }
 })
 
-// Opción vacía explícita: permite volver a "sin valor" (placeholder es disabled).
-const factionOptions = computed(() => [
-  { value: '', label: t('cards.fields.noFaction') },
-  ...factions.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
-])
+// Al cambiar el tipo de equipo: fuera el subtipo que no le pertenezca y las
+// manos si el tipo nuevo no las lleva.
+watch(selectedEquipment, (equipment) => {
+  if (
+    form.equipment_subtype_id &&
+    !equipmentSubtypes.value.some(
+      (s) => String(s.id) === form.equipment_subtype_id && s.equipment_type_id === equipment?.id,
+    )
+  ) {
+    form.equipment_subtype_id = ''
+  }
+  if (!equipment?.uses_hands) form.hands = ''
+})
+
+// Facción obligatoria: sin opción vacía (el placeholder queda disabled).
+const factionOptions = computed(() =>
+  factions.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
+)
 const cardTypeOptions = computed(() =>
   cardTypes.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
 )
@@ -176,6 +195,13 @@ const cardSubtypeOptions = computed(() => [
 const equipmentTypeOptions = computed(() => [
   { value: '', label: t('cards.fields.noEquipmentType') },
   ...equipmentTypes.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
+])
+// Subtipos acotados al tipo de equipo elegido (todos si aún no hay tipo).
+const equipmentSubtypeOptions = computed(() => [
+  { value: '', label: t('cards.fields.noEquipmentSubtype') },
+  ...equipmentSubtypes.value
+    .filter((o) => !selectedEquipment.value || o.equipment_type_id === selectedEquipment.value.id)
+    .map((o) => ({ value: o.id, label: optionLabel(o) })),
 ])
 const handsOptions = computed(() => [
   { value: '', label: t('cards.fields.selectHands') },
@@ -219,6 +245,7 @@ function reset() {
   form.card_type_id = ''
   form.card_subtype_id = ''
   form.equipment_type_id = ''
+  form.equipment_subtype_id = ''
   form.attack_range_id = ''
   form.attack_type = ''
   form.attack_subtype_id = ''
@@ -241,11 +268,12 @@ watch(
     if (!open) return
     reset()
     try {
-      const [f, ct, cs, et, ar, as, ha] = await Promise.all([
+      const [f, ct, cs, et, es, ar, as, ha] = await Promise.all([
         api.get('/admin/factions/options'),
         api.get('/admin/card-types/options'),
         api.get('/admin/card-subtypes/options'),
         api.get('/admin/equipment-types/options'),
+        api.get('/admin/equipment-subtypes/options'),
         api.get('/admin/attack-ranges/options'),
         api.get('/admin/attack-subtypes/options'),
         api.get('/admin/hero-abilities/options'),
@@ -256,6 +284,7 @@ watch(
       cardTypes.value = ct.data.data
       cardSubtypes.value = cs.data.data
       equipmentTypes.value = et.data.data
+      equipmentSubtypes.value = es.data.data
       attackRanges.value = ar.data.data
       attackSubtypes.value = as.data.data
       heroAbilities.value = ha.data.data
@@ -274,6 +303,9 @@ watch(
         form.card_type_id = card.card_type_id ? String(card.card_type_id) : ''
         form.card_subtype_id = card.card_subtype_id ? String(card.card_subtype_id) : ''
         form.equipment_type_id = card.equipment_type_id ? String(card.equipment_type_id) : ''
+        form.equipment_subtype_id = card.equipment_subtype_id
+          ? String(card.equipment_subtype_id)
+          : ''
         form.attack_range_id = card.attack_range_id ? String(card.attack_range_id) : ''
         form.attack_type = card.attack_type ?? ''
         form.attack_subtype_id = card.attack_subtype_id ? String(card.attack_subtype_id) : ''
@@ -310,7 +342,8 @@ function toFormData(): FormData {
   // Los campos que los flags ocultan viajan vacíos (el server los anula igual)
   fd.append('card_subtype_id', allowsSubtypes.value ? form.card_subtype_id : '')
   fd.append('equipment_type_id', isEquipment.value ? form.equipment_type_id : '')
-  fd.append('hands', isEquipment.value ? form.hands : '')
+  fd.append('equipment_subtype_id', isEquipment.value ? form.equipment_subtype_id : '')
+  fd.append('hands', isEquipment.value && handsApply.value ? form.hands : '')
   fd.append('attack_range_id', form.attack_range_id)
   fd.append('attack_type', form.attack_type)
   fd.append('attack_subtype_id', form.attack_subtype_id)
@@ -328,6 +361,10 @@ async function submit() {
   // Validación mínima en cliente: evita un 422 innecesario y marca el campo.
   if (!hasName()) {
     errors.name = t('common.required')
+    return
+  }
+  if (!form.faction_id) {
+    errors.faction_id = t('common.required')
     return
   }
   if (!form.card_type_id) {
@@ -380,6 +417,8 @@ async function submit() {
           v-model="form.faction_id"
           :label="t('cards.fields.faction')"
           :options="factionOptions"
+          :placeholder="t('cards.fields.selectFaction')"
+          required
           :error="errors.faction_id"
         />
         <CostInput
@@ -416,19 +455,29 @@ async function submit() {
           :options="cardSubtypeOptions"
           :error="errors.card_subtype_id"
         />
-        <!-- Equipo + manos: solo si el tipo elegido es equipamiento -->
+        <!-- Equipo (tipo → subtipo) + manos: solo si el tipo es equipamiento -->
         <template v-if="isEquipment">
           <BaseSelect
             v-model="form.equipment_type_id"
             :label="t('cards.fields.equipmentType')"
             :options="equipmentTypeOptions"
+            required
             :error="errors.equipment_type_id"
           />
           <BaseSelect
+            v-model="form.equipment_subtype_id"
+            :label="t('cards.fields.equipmentSubtype')"
+            :options="equipmentSubtypeOptions"
+            required
+            :error="errors.equipment_subtype_id"
+          />
+          <!-- Manos: solo tipos de equipo que las llevan (armas) -->
+          <BaseSelect
+            v-if="handsApply"
             v-model="form.hands"
             :label="t('cards.fields.hands')"
             :options="handsOptions"
-            :required="handsRequired"
+            required
             :error="errors.hands"
           />
         </template>
