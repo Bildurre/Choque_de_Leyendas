@@ -18,6 +18,8 @@ return new class extends Migration
             // Se calcula al guardar por luminancia YIQ del color (no se edita)
             $table->boolean('text_is_dark')->default(false);
             $table->boolean('is_published')->default(false);
+            // Previews PNG por clave y locale (HasPreviewImage)
+            $table->json('preview_image')->nullable();
             $table->datetimes();
             $table->softDeletesDatetime();
         });

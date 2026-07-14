@@ -16,9 +16,10 @@ return new class extends Migration
             $table->json('epic_quote')->nullable();
             $table->json('passive_name')->nullable();
             $table->json('passive_description')->nullable();
-            $table->foreignId('faction_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('hero_race_id')->nullable()->constrained()->nullOnDelete();
-            $table->foreignId('hero_class_id')->nullable()->constrained()->nullOnDelete();
+            // Obligatorias; el borrado de la taxonomía se restringe si tiene héroes
+            $table->foreignId('faction_id')->constrained()->restrictOnDelete();
+            $table->foreignId('hero_race_id')->constrained()->restrictOnDelete();
+            $table->foreignId('hero_class_id')->constrained()->restrictOnDelete();
             // Enum del viejo como string + validación in:male,female
             $table->string('gender')->default('male');
             $table->integer('agility')->default(2);

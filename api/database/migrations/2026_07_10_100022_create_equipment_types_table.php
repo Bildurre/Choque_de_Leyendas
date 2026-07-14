@@ -11,8 +11,9 @@ return new class extends Migration
         Schema::create('equipment_types', function (Blueprint $table) {
             $table->id();
             $table->json('name');
-            // weapon|armor: string + in:... en el controller (nada de enum SQL)
-            $table->string('category', 20);
+            // Flag de comportamiento: las cartas de un tipo con uses_hands
+            // exigen manos (armas); el resto son armaduras/accesorios.
+            $table->boolean('uses_hands')->default(false);
             $table->datetimes();
             $table->softDeletesDatetime();
         });

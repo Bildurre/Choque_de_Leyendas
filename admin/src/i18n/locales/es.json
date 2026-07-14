@@ -170,6 +170,7 @@
       "totals": "Totales",
       "factions": "Facciones",
       "cards": "Cartas",
+      "abilities": "Habilidades",
       "heroes": "Héroes",
       "decks": "Mazos"
     },
@@ -189,6 +190,7 @@
       "cardsByType": "Cartas por tipo",
       "costCurve": "Curva de coste (dados)",
       "costColors": "Cartas por color de dado",
+      "abilityCostColors": "Habilidades por color de dado",
       "attackTypes": "Tipo de ataque",
       "equipment": "Equipo por categoría",
       "bySuperclass": "Héroes por superclase",

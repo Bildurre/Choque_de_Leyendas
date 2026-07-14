@@ -17,7 +17,8 @@ use Illuminate\Support\Facades\DB;
 /**
  * Estadísticas del panel (portado del dashboard del viejo): totales por
  * entidad, comparativa por facción, cartas (tipos, curva de coste, colores),
- * héroes (superclases, razas, género, atributos) y mazos por modo. Todo con
+ * habilidades (curva de coste, colores, ataque), héroes (superclases, razas,
+ * género, atributos) y mazos por modo. Todo con
  * agregados en BBDD (count/groupBy/avg, nada de cargar tablas enteras) y
  * nombres localizados al locale de la petición (SetLocale).
  */
@@ -32,6 +33,7 @@ class DashboardStatsController extends Controller
                 'totals' => $this->totals(),
                 'factions' => $this->factions($locale),
                 'cards' => $this->cards($locale),
+                'abilities' => $this->abilities(),
                 'heroes' => $this->heroes($locale),
                 'decks' => $this->decks($locale),
             ],
@@ -161,6 +163,52 @@ class DashboardStatsController extends Controller
             ],
             'area' => (int) $agg->area,
             'unique' => (int) $agg->uniques,
+        ];
+    }
+
+    /** Habilidades: curva de coste, colores y ataque (como las cartas). */
+    protected function abilities(): array
+    {
+        // Curva de coste por nº de dados: cost canónico ⇒ length = dados.
+        $byDice = HeroAbility::query()
+            ->selectRaw('coalesce(length(cost), 0) as dice, count(*) as total')
+            ->groupBy('dice')
+            ->pluck('total', 'dice');
+
+        $costCurve = [];
+        for ($dice = 0; $dice <= HeroAbility::COST_MAX; $dice++) {
+            $costCurve[] = ['dice' => $dice, 'count' => (int) ($byDice[$dice] ?? 0)];
+        }
+
+        // Habilidades con al menos un dado de cada color + media/área, una pasada.
+        $agg = HeroAbility::query()->selectRaw(
+            "coalesce(sum(case when cost like '%R%' then 1 else 0 end), 0) as red,"
+            ."coalesce(sum(case when cost like '%G%' then 1 else 0 end), 0) as green,"
+            ."coalesce(sum(case when cost like '%B%' then 1 else 0 end), 0) as blue,"
+            .'coalesce(avg(coalesce(length(cost), 0)), 0) as avg_cost,'
+            .'coalesce(sum(case when area then 1 else 0 end), 0) as area'
+        )->first();
+
+        // Físico/mágico (solo habilidades con tipo de ataque).
+        $attackTypes = HeroAbility::query()
+            ->whereNotNull('attack_type')
+            ->selectRaw('attack_type, count(*) as total')
+            ->groupBy('attack_type')
+            ->pluck('total', 'attack_type');
+
+        return [
+            'cost_curve' => $costCurve,
+            'cost_colors' => [
+                'R' => (int) $agg->red,
+                'G' => (int) $agg->green,
+                'B' => (int) $agg->blue,
+            ],
+            'avg_cost' => round((float) $agg->avg_cost, 1),
+            'attack_types' => [
+                'physical' => (int) ($attackTypes['physical'] ?? 0),
+                'magical' => (int) ($attackTypes['magical'] ?? 0),
+            ],
+            'area' => (int) $agg->area,
         ];
     }
 

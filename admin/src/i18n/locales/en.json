@@ -170,6 +170,7 @@
       "totals": "Totals",
       "factions": "Factions",
       "cards": "Cards",
+      "abilities": "Abilities",
       "heroes": "Heroes",
       "decks": "Decks"
     },
@@ -189,6 +190,7 @@
       "cardsByType": "Cards by type",
       "costCurve": "Cost curve (dice)",
       "costColors": "Cards by die color",
+      "abilityCostColors": "Abilities by die color",
       "attackTypes": "Attack type",
       "equipment": "Equipment by category",
       "bySuperclass": "Heroes by superclass",

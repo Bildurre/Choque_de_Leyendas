@@ -170,6 +170,7 @@
       "totals": "Guztizkoak",
       "factions": "Fakzioak",
       "cards": "Kartak",
+      "abilities": "Gaitasunak",
       "heroes": "Heroiak",
       "decks": "Sortak"
     },
@@ -189,6 +190,7 @@
       "cardsByType": "Kartak motaka",
       "costCurve": "Kostu-kurba (dadoak)",
       "costColors": "Kartak dado-koloreka",
+      "abilityCostColors": "Gaitasunak dado-koloreka",
       "attackTypes": "Eraso mota",
       "equipment": "Ekipamendua kategoriaka",
       "bySuperclass": "Heroiak superklaseka",

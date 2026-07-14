@@ -14,8 +14,11 @@ return new class extends Migration
             $table->json('slug');
             $table->json('description')->nullable();
             $table->json('epic_quote')->nullable();
-            $table->foreignId('game_mode_id')->nullable()->constrained()->nullOnDelete();
+            // Obligatorio; el borrado del modo se restringe si tiene mazos
+            $table->foreignId('game_mode_id')->constrained()->restrictOnDelete();
             $table->boolean('is_published')->default(false);
+            // Previews PNG por clave y locale (HasPreviewImage)
+            $table->json('preview_image')->nullable();
             $table->datetimes();
             $table->softDeletesDatetime();
         });

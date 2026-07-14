@@ -16,10 +16,13 @@ return new class extends Migration
             $table->json('epic_quote')->nullable();
             $table->json('effect')->nullable();
             $table->json('restriction')->nullable();
-            $table->foreignId('faction_id')->nullable()->constrained()->nullOnDelete();
+            // Obligatoria; el borrado de la facción se restringe si tiene cartas
+            $table->foreignId('faction_id')->constrained()->restrictOnDelete();
             $table->foreignId('card_type_id')->constrained()->restrictOnDelete();
             $table->foreignId('card_subtype_id')->nullable()->constrained()->nullOnDelete();
             $table->foreignId('equipment_type_id')->nullable()->constrained()->nullOnDelete();
+            // Subtipo de equipo (el tipado completo es "Equipo - tipo - subtipo")
+            $table->foreignId('equipment_subtype_id')->nullable()->constrained()->nullOnDelete();
             // Enum del viejo como string + validación in:physical,magical
             $table->string('attack_type')->nullable();
             $table->foreignId('attack_range_id')->nullable()->constrained()->nullOnDelete();

@@ -69,6 +69,10 @@ it('devuelve las estadísticas por secciones con los agregados', function () {
     dashHero($faction, 'male', agility: 2);
     dashHero($faction, 'female', agility: 4);
 
+    // 2 habilidades: RRG física de área (3 dados) y B mágica (1 dado).
+    publicAbility(['cost' => 'RRG', 'attack_type' => 'physical', 'area' => true]);
+    publicAbility(['cost' => 'B', 'attack_type' => 'magical']);
+
     $mode = new GameMode;
     $mode->setTranslations('name', ['es' => 'Estándar']);
     $mode->save();
@@ -97,6 +101,7 @@ it('devuelve las estadísticas por secciones con los agregados', function () {
                     'by_type', 'cost_curve', 'cost_colors', 'avg_cost',
                     'attack_types', 'equipment', 'area', 'unique',
                 ],
+                'abilities' => ['cost_curve', 'cost_colors', 'avg_cost', 'attack_types', 'area'],
                 'heroes' => ['by_superclass', 'by_race', 'gender', 'attributes'],
                 'decks' => ['by_game_mode', 'avg_cards', 'avg_heroes'],
             ],
@@ -121,6 +126,14 @@ it('devuelve las estadísticas por secciones con los agregados', function () {
         ->and($response->json('data.cards.cost_colors'))->toBe(['R' => 1, 'G' => 1, 'B' => 1])
         ->and($response->json('data.cards.by_type.0.name'))->toBe('Ataque')
         ->and($response->json('data.cards.by_type.0.count'))->toBe(3);
+
+    // Habilidades: curva de coste, colores, ataque y área (como las cartas).
+    $abilityCurve = collect($response->json('data.abilities.cost_curve'))->pluck('count', 'dice');
+    expect($abilityCurve[1])->toBe(1)->and($abilityCurve[3])->toBe(1)
+        ->and($response->json('data.abilities.cost_colors'))->toBe(['R' => 1, 'G' => 1, 'B' => 1])
+        ->and($response->json('data.abilities.avg_cost'))->toEqual(2)
+        ->and($response->json('data.abilities.attack_types'))->toBe(['physical' => 1, 'magical' => 1])
+        ->and($response->json('data.abilities.area'))->toBe(1);
 
     // Género y atributos (agility 2 y 4 ⇒ media 3, mín 2, máx 4).
     expect($response->json('data.heroes.gender'))->toBe(['male' => 1, 'female' => 1])

@@ -57,6 +57,13 @@ interface DashboardStats {
     area: number
     unique: number
   }
+  abilities: {
+    cost_curve: { dice: number; count: number }[]
+    cost_colors: Record<'R' | 'G' | 'B', number>
+    avg_cost: number
+    attack_types: { physical: number; magical: number }
+    area: number
+  }
   heroes: {
     by_superclass: NamedCount[]
     by_race: NamedCount[]
@@ -182,6 +189,50 @@ const cardTiles = computed(() =>
         { key: 'avgCost', value: stats.value.cards.avg_cost },
         { key: 'area', value: stats.value.cards.area },
         { key: 'unique', value: stats.value.cards.unique },
+      ]
+    : [],
+)
+
+// Habilidades: mismas gráficas que las cartas (colores de dado y ataque).
+const abilityPanels = computed<BarPanel[]>(() => {
+  if (!stats.value) return []
+  const abilities = stats.value.abilities
+  return [
+    panel(
+      'ability-cost-colors',
+      t('dashboard.charts.abilityCostColors'),
+      (['R', 'G', 'B'] as const).map((color) => ({
+        key: color,
+        label: t(`dashboard.labels.dice${color}`),
+        count: abilities.cost_colors[color],
+        color: DICE_COLORS[color],
+      })),
+    ),
+    panel('ability-attack-types', t('dashboard.charts.attackTypes'), [
+      {
+        key: 'physical',
+        label: t('dashboard.labels.physical'),
+        count: abilities.attack_types.physical,
+      },
+      {
+        key: 'magical',
+        label: t('dashboard.labels.magical'),
+        count: abilities.attack_types.magical,
+      },
+    ]),
+  ]
+})
+
+const abilityCostCurve = computed(() => stats.value?.abilities.cost_curve ?? [])
+const abilityCostCurveMax = computed(() =>
+  Math.max(...abilityCostCurve.value.map((c) => c.count), 1),
+)
+
+const abilityTiles = computed(() =>
+  stats.value
+    ? [
+        { key: 'avgCost', value: stats.value.abilities.avg_cost },
+        { key: 'area', value: stats.value.abilities.area },
       ]
     : [],
 )
@@ -317,6 +368,42 @@ onMounted(async () => {
           </article>
           <DashBarPanel
             v-for="p in cardPanels"
+            :key="p.key"
+            :title="p.title"
+            :rows="p.rows"
+            :max="p.max"
+          />
+        </div>
+      </section>
+
+      <!-- Habilidades -->
+      <section class="dashboard__section">
+        <h2 class="dashboard__section-title">{{ t('dashboard.sections.abilities') }}</h2>
+        <div class="dashboard__tiles dashboard__tiles--sub">
+          <article v-for="tile in abilityTiles" :key="tile.key" class="dash-tile">
+            <span class="dash-tile__value">{{ tile.value }}</span>
+            <span class="dash-tile__label">{{ t(`dashboard.labels.${tile.key}`) }}</span>
+          </article>
+        </div>
+        <div class="dashboard__grid">
+          <!-- Curva de coste: columnas por nº de dados -->
+          <article class="dash-panel">
+            <h3 class="dash-panel__title">{{ t('dashboard.charts.costCurve') }}</h3>
+            <div class="dash-curve">
+              <div v-for="col in abilityCostCurve" :key="col.dice" class="dash-curve__col">
+                <span class="dash-curve__count">{{ col.count }}</span>
+                <span class="dash-curve__track">
+                  <span
+                    class="dash-curve__fill"
+                    :style="{ height: pct(col.count, abilityCostCurveMax) }"
+                  ></span>
+                </span>
+                <span class="dash-curve__label">{{ col.dice }}</span>
+              </div>
+            </div>
+          </article>
+          <DashBarPanel
+            v-for="p in abilityPanels"
             :key="p.key"
             :title="p.title"
             :rows="p.rows"

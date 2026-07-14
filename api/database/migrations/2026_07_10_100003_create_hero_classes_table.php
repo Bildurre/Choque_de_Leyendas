@@ -13,7 +13,8 @@ return new class extends Migration
             $table->json('name');
             // Habilidad pasiva de la clase (HTML del editor, por locale)
             $table->json('passive')->nullable();
-            $table->foreignId('hero_superclass_id')->nullable()->constrained()->nullOnDelete();
+            // Obligatoria; el borrado de la superclase se restringe si tiene clases
+            $table->foreignId('hero_superclass_id')->constrained()->restrictOnDelete();
             $table->datetimes();
             $table->softDeletesDatetime();
         });
