@@ -10,6 +10,8 @@ use App\Models\Hero;
 // Estadísticas del panel: solo admin, estructura por secciones, agregados
 // (totales, curva de coste, colores) y nombres localizados por ?locale.
 
+require_once __DIR__.'/Public/Helpers.php';
+
 function dashFaction(array $names, string $color = '#aa3344', bool $published = true): Faction
 {
     $faction = new Faction;
@@ -34,11 +36,14 @@ function dashCard(CardType $type, ?Faction $faction, ?string $cost, bool $publis
     return $card;
 }
 
-function dashHero(?Faction $faction, string $gender = 'male', int $agility = 3): Hero
+function dashHero(Faction $faction, string $gender = 'male', int $agility = 3): Hero
 {
     $hero = new Hero;
     $hero->setTranslations('name', ['es' => 'Héroe '.uniqid()]);
-    $hero->faction_id = $faction?->id;
+    $hero->faction_id = $faction->id;
+    // Raza y clase (con superclase) ya son obligatorias: mínimas por héroe.
+    $hero->hero_race_id = publicHeroRace(['name' => ['es' => 'Raza '.uniqid()]])->id;
+    $hero->hero_class_id = publicHeroClass(['name' => ['es' => 'Clase '.uniqid()]])->id;
     $hero->gender = $gender;
     $hero->agility = $agility;
     $hero->save();

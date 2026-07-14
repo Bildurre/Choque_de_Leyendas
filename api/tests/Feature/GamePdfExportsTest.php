@@ -12,6 +12,8 @@ use Edc\Core\Pdf\PdfExportRegistry;
 // Exports de PDF del juego: contadores recortables (con tokens de vida) y
 // hojas por facción (héroes x1 + cartas x2).
 
+require_once __DIR__.'/Public/Helpers.php';
+
 function makeFaction(string $name, bool $published = true): Faction
 {
     $faction = new Faction;
@@ -54,6 +56,9 @@ it('faction imprime héroes x1 y cartas x2 de la facción, solo publicados', fun
     $hero = new Hero;
     $hero->setTranslations('name', ['es' => 'Aitor']);
     $hero->faction_id = $faction->id;
+    // Raza y clase ya son obligatorias: mínimas desde los helpers públicos.
+    $hero->hero_race_id = publicHeroRace()->id;
+    $hero->hero_class_id = publicHeroClass()->id;
     $hero->gender = 'male';
     $hero->is_published = true;
     $hero->save();

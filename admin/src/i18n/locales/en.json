@@ -651,11 +651,12 @@
     "fields": {
       "name": "Name",
       "faction": "Faction",
+      "selectFaction": "Select a faction",
       "noFaction": "No faction",
       "race": "Race",
-      "noRace": "No race",
+      "selectRace": "Select a race",
       "class": "Class",
-      "noClass": "No class",
+      "selectClass": "Select a class",
       "gender": "Gender",
       "published": "Published",
       "image": "Image",
@@ -904,7 +905,7 @@
     "fields": {
       "name": "Name",
       "gameMode": "Game mode",
-      "noGameMode": "No game mode",
+      "selectGameMode": "Select a game mode",
       "factions": "Factions",
       "noFactions": "No factions available.",
       "description": "Description",
@@ -1098,7 +1099,7 @@
     "fields": {
       "name": "Name",
       "superclass": "Superclass",
-      "noSuperclass": "No superclass",
+      "selectSuperclass": "Select a superclass",
       "passive": "Passive ability"
     },
     "confirmDelete": {

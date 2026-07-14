@@ -651,11 +651,12 @@
     "fields": {
       "name": "Izena",
       "faction": "Fakzioa",
+      "selectFaction": "Aukeratu fakzioa",
       "noFaction": "Fakziorik gabe",
       "race": "Arraza",
-      "noRace": "Arrazarik gabe",
+      "selectRace": "Aukeratu arraza",
       "class": "Klasea",
-      "noClass": "Klaserik gabe",
+      "selectClass": "Aukeratu klasea",
       "gender": "Generoa",
       "published": "Argitaratua",
       "image": "Irudia",
@@ -904,7 +905,7 @@
     "fields": {
       "name": "Izena",
       "gameMode": "Joko modua",
-      "noGameMode": "Joko modurik gabe",
+      "selectGameMode": "Aukeratu joko modua",
       "factions": "Fakzioak",
       "noFactions": "Ez dago fakziorik eskuragarri.",
       "description": "Deskribapena",
@@ -1098,7 +1099,7 @@
     "fields": {
       "name": "Izena",
       "superclass": "Superklasea",
-      "noSuperclass": "Superklaserik gabe",
+      "selectSuperclass": "Aukeratu superklasea",
       "passive": "Gaitasun pasiboa"
     },
     "confirmDelete": {

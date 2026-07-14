@@ -142,19 +142,14 @@ function optionLabel(option: { id: number; name: Translations }): string {
   return option.name?.[locales.current] || Object.values(option.name || {})[0] || `#${option.id}`
 }
 
-// Opción vacía explícita: permite volver a "sin valor" (placeholder es disabled).
-const factionOptions = computed(() => [
-  { value: '', label: t('heroes.fields.noFaction') },
-  ...factions.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
-])
-const raceOptions = computed(() => [
-  { value: '', label: t('heroes.fields.noRace') },
-  ...races.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
-])
-const classOptions = computed(() => [
-  { value: '', label: t('heroes.fields.noClass') },
-  ...classes.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
-])
+// Facción, raza y clase obligatorias: sin opción vacía (el placeholder es disabled).
+const factionOptions = computed(() =>
+  factions.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
+)
+const raceOptions = computed(() => races.value.map((o) => ({ value: o.id, label: optionLabel(o) })))
+const classOptions = computed(() =>
+  classes.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
+)
 const genderOptions = computed(() => [
   { value: 'male', label: t('heroes.genders.male') },
   { value: 'female', label: t('heroes.genders.female') },
@@ -370,6 +365,18 @@ async function submit() {
     errors.name = t('common.required')
     return
   }
+  if (!form.faction_id) {
+    errors.faction_id = t('common.required')
+    return
+  }
+  if (!form.hero_race_id) {
+    errors.hero_race_id = t('common.required')
+    return
+  }
+  if (!form.hero_class_id) {
+    errors.hero_class_id = t('common.required')
+    return
+  }
   saving.value = true
   try {
     if (props.mode === 'edit' && props.targetSlug) {
@@ -416,24 +423,31 @@ async function submit() {
           v-model="form.faction_id"
           :label="t('heroes.fields.faction')"
           :options="factionOptions"
+          :placeholder="t('heroes.fields.selectFaction')"
+          required
           :error="errors.faction_id"
         />
         <BaseSelect
           v-model="form.hero_race_id"
           :label="t('heroes.fields.race')"
           :options="raceOptions"
+          :placeholder="t('heroes.fields.selectRace')"
+          required
           :error="errors.hero_race_id"
         />
         <BaseSelect
           v-model="form.hero_class_id"
           :label="t('heroes.fields.class')"
           :options="classOptions"
+          :placeholder="t('heroes.fields.selectClass')"
+          required
           :error="errors.hero_class_id"
         />
         <BaseSelect
           v-model="form.gender"
           :label="t('heroes.fields.gender')"
           :options="genderOptions"
+          required
           :error="errors.gender"
         />
       </div>

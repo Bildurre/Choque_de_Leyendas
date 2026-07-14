@@ -72,10 +72,10 @@ function optionLabel(option: { id: number; name: Translations }): string {
   return option.name?.[locales.current] || Object.values(option.name || {})[0] || `#${option.id}`
 }
 
-const gameModeOptions = computed(() => [
-  { value: '', label: t('factionDecks.fields.noGameMode') },
-  ...gameModes.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
-])
+// Modo de juego obligatorio: sin opción vacía (el placeholder es disabled).
+const gameModeOptions = computed(() =>
+  gameModes.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
+)
 
 function toggleFaction(id: number, on: boolean) {
   form.faction_ids = on
@@ -177,6 +177,14 @@ async function submit() {
     errors.name = t('common.required')
     return
   }
+  if (form.game_mode_id === '') {
+    errors.game_mode_id = t('common.required')
+    return
+  }
+  if (!form.faction_ids.length) {
+    errors.faction_ids = t('common.required')
+    return
+  }
   saving.value = true
   try {
     if (props.mode === 'edit' && props.targetSlug) {
@@ -229,11 +237,15 @@ async function submit() {
       v-model="form.game_mode_id"
       :label="t('factionDecks.fields.gameMode')"
       :options="gameModeOptions"
+      :placeholder="t('factionDecks.fields.selectGameMode')"
+      required
       :error="errors.game_mode_id"
     />
 
     <fieldset class="faction-decks__factions">
-      <legend>{{ t('factionDecks.fields.factions') }}</legend>
+      <legend>
+        {{ t('factionDecks.fields.factions') }}<span class="form-field__required">*</span>
+      </legend>
       <p v-if="!factions.length" class="faction-decks__factions-empty">
         {{ t('factionDecks.fields.noFactions') }}
       </p>

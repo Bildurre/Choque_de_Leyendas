@@ -12,8 +12,8 @@ import { useHeroSuperclassesStore } from '@/stores/heroSuperclasses'
 import type { HeroClass } from '@juego/shared'
 
 // Formulario de clase de héroe en modal: nombre, pasiva (wysiwyg con los
-// iconos del gestor) y superclase opcional. Sin endpoint show: en edición se
-// rellena desde el ítem ya cargado en el listado (prop target).
+// iconos del gestor) y superclase obligatoria. Sin endpoint show: en edición
+// se rellena desde el ítem ya cargado en el listado (prop target).
 const props = defineProps<{
   modelValue: boolean
   mode: 'create' | 'edit'
@@ -105,8 +105,13 @@ function payload() {
 
 async function submit() {
   clearErrors()
+  // Validación mínima en cliente: evita un 422 innecesario y marca el campo.
   if (!hasName()) {
     errors.name = t('common.required')
+    return
+  }
+  if (!form.hero_superclass_id) {
+    errors.hero_superclass_id = t('common.required')
     return
   }
   saving.value = true
@@ -150,7 +155,8 @@ async function submit() {
       v-model="form.hero_superclass_id"
       :label="t('heroClasses.fields.superclass')"
       :options="superclassOptions"
-      :placeholder="t('heroClasses.fields.noSuperclass')"
+      :placeholder="t('heroClasses.fields.selectSuperclass')"
+      required
       :error="errors.hero_superclass_id"
     />
     <TranslatableInput

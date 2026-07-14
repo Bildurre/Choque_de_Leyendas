@@ -85,7 +85,7 @@ class HeroClassController extends Controller
     {
         $default = config('motor.default_locale');
         $rules = [
-            'hero_superclass_id' => ['nullable', 'integer', 'exists:hero_superclasses,id'],
+            'hero_superclass_id' => ['required', 'integer', 'exists:hero_superclasses,id'],
         ];
         foreach (array_keys(config('motor.locales', [])) as $locale) {
             $rules["name.$locale"] = [$locale === $default ? 'required' : 'nullable', 'string', 'max:255'];
@@ -99,6 +99,6 @@ class HeroClassController extends Controller
     {
         $class->replaceTranslations('name', array_filter($data['name'] ?? [], fn ($v) => $v !== null && $v !== ''));
         $class->replaceTranslations('passive', $this->cleanRich(array_filter($data['passive'] ?? [], fn ($v) => $v !== null && $v !== '')));
-        $class->hero_superclass_id = $data['hero_superclass_id'] ?? null;
+        $class->hero_superclass_id = $data['hero_superclass_id'];
     }
 }

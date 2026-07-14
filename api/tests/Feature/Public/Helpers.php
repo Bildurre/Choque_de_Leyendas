@@ -217,9 +217,13 @@ if (! function_exists('ensurePublicApiRoutes')) {
         if (isset($overrides['passive_description'])) {
             $hero->setTranslations('passive_description', $overrides['passive_description']);
         }
-        $hero->faction_id = $overrides['faction_id'] ?? null;
-        $hero->hero_class_id = $overrides['hero_class_id'] ?? null;
-        $hero->hero_race_id = $overrides['hero_race_id'] ?? null;
+        // Facción, raza y clase ya son obligatorias: si el test no las pasa
+        // se crean mínimas (facción SIN publicar para no contaminar los
+        // índices/filtros públicos).
+        $hero->faction_id = $overrides['faction_id']
+            ?? publicFaction(['name' => ['es' => 'Facción de pruebas', 'en' => 'Test faction'], 'is_published' => false])->id;
+        $hero->hero_class_id = $overrides['hero_class_id'] ?? publicHeroClass()->id;
+        $hero->hero_race_id = $overrides['hero_race_id'] ?? publicHeroRace()->id;
         $hero->agility = $overrides['agility'] ?? 3;
         $hero->mental = $overrides['mental'] ?? 2;
         $hero->will = $overrides['will'] ?? 4;
@@ -261,7 +265,8 @@ if (! function_exists('ensurePublicApiRoutes')) {
         $deck->setTranslations('name', $overrides['name'] ?? ['es' => 'Mazo inicial', 'en' => 'Starter deck']);
         $deck->setTranslations('description', $overrides['description'] ?? ['es' => '<p>Para empezar.</p>', 'en' => '<p>To get going.</p>']);
         $deck->setTranslations('epic_quote', $overrides['epic_quote'] ?? ['es' => 'Al combate', 'en' => 'To battle']);
-        $deck->game_mode_id = $overrides['game_mode_id'] ?? null;
+        // El modo de juego ya es obligatorio: si el test no lo pasa se crea uno.
+        $deck->game_mode_id = $overrides['game_mode_id'] ?? publicGameMode()->id;
         $deck->is_published = $overrides['is_published'] ?? true;
         $deck->save();
 

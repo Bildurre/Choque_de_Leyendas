@@ -123,9 +123,9 @@ class HeroController extends Controller
 
         $default = config('motor.default_locale');
         $rules = [
-            'faction_id' => ['nullable', 'integer', 'exists:factions,id'],
-            'hero_race_id' => ['nullable', 'integer', 'exists:hero_races,id'],
-            'hero_class_id' => ['nullable', 'integer', 'exists:hero_classes,id'],
+            'faction_id' => ['required', 'integer', 'exists:factions,id'],
+            'hero_race_id' => ['required', 'integer', 'exists:hero_races,id'],
+            'hero_class_id' => ['required', 'integer', 'exists:hero_classes,id'],
             'gender' => ['required', 'string', 'in:male,female'],
             'agility' => $attributeRules,
             'mental' => $attributeRules,
@@ -158,9 +158,9 @@ class HeroController extends Controller
         foreach (['lore_text', 'epic_quote', 'passive_description'] as $field) {
             $hero->replaceTranslations($field, $this->cleanRich(array_filter($data[$field] ?? [], fn ($v) => $v !== null && $v !== '')));
         }
-        $hero->faction_id = $data['faction_id'] ?? null;
-        $hero->hero_race_id = $data['hero_race_id'] ?? null;
-        $hero->hero_class_id = $data['hero_class_id'] ?? null;
+        $hero->faction_id = $data['faction_id'];
+        $hero->hero_race_id = $data['hero_race_id'];
+        $hero->hero_class_id = $data['hero_class_id'];
         $hero->gender = $data['gender'];
         foreach (['agility', 'mental', 'will', 'strength', 'armor'] as $attribute) {
             $hero->{$attribute} = (int) $data[$attribute];

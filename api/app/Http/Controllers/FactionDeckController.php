@@ -46,9 +46,7 @@ class FactionDeckController extends Controller
 
         $deck->save();
         $deck->setImageFromRequest($request);
-        if (array_key_exists('faction_ids', $data)) {
-            $deck->factions()->sync($data['faction_ids'] ?? []);
-        }
+        $deck->factions()->sync($data['faction_ids']);
         // Icono (MediaLibrary) y facciones (pivot) no son columnas: no
         // disparan la invalidación declarativa. Se regenera a mano.
         $deck->regeneratePreviews();
@@ -83,9 +81,7 @@ class FactionDeckController extends Controller
 
         $deck->save();
         $deck->setImageFromRequest($request);
-        if (array_key_exists('faction_ids', $data)) {
-            $deck->factions()->sync($data['faction_ids'] ?? []);
-        }
+        $deck->factions()->sync($data['faction_ids']);
         // Icono (MediaLibrary) y facciones (pivot) no son columnas: no
         // disparan la invalidación declarativa. Se regenera a mano.
         $deck->regeneratePreviews();
@@ -198,9 +194,9 @@ class FactionDeckController extends Controller
     {
         $default = config('motor.default_locale');
         $rules = [
-            'game_mode_id' => ['nullable', 'integer', 'exists:game_modes,id'],
-            // nullable: el form manda '' (→ null) para vaciar la selección
-            'faction_ids' => ['sometimes', 'nullable', 'array'],
+            'game_mode_id' => ['required', 'integer', 'exists:game_modes,id'],
+            // Un mazo sin facción no tiene sentido: al menos una siempre.
+            'faction_ids' => ['required', 'array', 'min:1'],
             'faction_ids.*' => ['integer', 'distinct', 'exists:factions,id'],
             'is_published' => ['boolean'],
             'image' => ['nullable', 'image', 'max:4096'],
@@ -219,9 +215,7 @@ class FactionDeckController extends Controller
         $deck->replaceTranslations('name', array_filter($data['name'] ?? [], fn ($v) => $v !== null && $v !== ''));
         $deck->replaceTranslations('description', $this->cleanRich(array_filter($data['description'] ?? [], fn ($v) => $v !== null && $v !== '')));
         $deck->replaceTranslations('epic_quote', $this->cleanRich(array_filter($data['epic_quote'] ?? [], fn ($v) => $v !== null && $v !== '')));
-        if (array_key_exists('game_mode_id', $data)) {
-            $deck->game_mode_id = $data['game_mode_id'];
-        }
+        $deck->game_mode_id = $data['game_mode_id'];
         if (array_key_exists('is_published', $data)) {
             $deck->is_published = (bool) $data['is_published'];
         }

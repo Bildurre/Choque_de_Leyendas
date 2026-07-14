@@ -14,6 +14,7 @@ it('muestra el héroe publicado con atributos, pasivas y habilidades', function 
     $faction = publicFaction();
     $hero = publicHero([
         'faction_id' => $faction->id,
+        'hero_race_id' => publicHeroRace(['name' => ['es' => 'Humano', 'en' => 'Human']])->id,
         'hero_class_id' => publicHeroClass()->id,
     ]);
     $hero->setTranslations('passive_name', ['es' => 'Instinto', 'en' => 'Instinct']);
@@ -28,7 +29,7 @@ it('muestra el héroe publicado con atributos, pasivas y habilidades', function 
         ->and($data['slug'])->toMatchArray(['es' => 'aritz', 'en' => 'aritz-the-bold'])
         ->and($data['attributes'])->toBe(['agility' => 3, 'mental' => 2, 'will' => 4, 'strength' => 3, 'armor' => 2])
         ->and($data['health'])->toBe($hero->health)
-        ->and($data['race'])->toBeNull()
+        ->and($data['race'])->toBe('Humano')
         ->and($data['gender'])->toBe('male')
         ->and($data['class'])->toBe('Guerrero')
         ->and($data['superclass'])->toBe('Luchador')
