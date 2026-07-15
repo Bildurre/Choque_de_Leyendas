@@ -1,0 +1,344 @@
+@use "tokens" as *;
+
+// Contador de vidas (herramienta pública, prioridad MÓVIL). Preparación: los
+// dos equipos se APILAN en estrecho (los selects necesitan ancho cómodo) y
+// van a dos columnas desde $bp-md. Partida: dos columnas SIEMPRE (también a
+// 360px) para ver ambos equipos de un vistazo, con −/+ grandes y táctiles.
+.life-counter {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: $space-4;
+  display: grid;
+  gap: $space-5;
+
+  @media (min-width: $bp-md) {
+    padding: $space-6;
+  }
+
+  &__title { margin: 0; }
+
+  &__intro,
+  &__hint {
+    margin: 0;
+    color: $text-3;
+    font-size: $fs-14;
+  }
+
+  &__error {
+    margin: 0;
+    color: $danger;
+    font-size: $fs-14;
+  }
+
+  // Fila superior: nº de héroes por equipo + empezar de cero.
+  &__config {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: $space-3;
+  }
+
+  &__count { max-width: 190px; }
+
+  &__teams {
+    display: grid;
+    gap: $space-5;
+
+    @media (min-width: $bp-md) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+  &__team {
+    display: grid;
+    gap: $space-4;
+    align-content: start;
+    padding: $space-4;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+  }
+
+  &__team-title {
+    margin: 0;
+    border-left: 4px solid $accent-500;
+    padding-left: $space-3;
+    font-size: $fs-18;
+  }
+
+  // Multiselect táctil de facciones: chips con el color de cada facción.
+  &__factions {
+    display: grid;
+    gap: $space-2;
+  }
+
+  &__factions-label {
+    font-size: $fs-13;
+    font-weight: $k-fw-semibold;
+    color: $text-2;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+  }
+
+  &__chip {
+    // --chip-color: el color de la facción (inline); sin él, el acento.
+    min-height: 40px; // objetivo táctil cómodo
+    padding: $space-1 $space-4;
+    background: none;
+    border: 1px solid color-mix(in srgb, var(--chip-color, #{$accent-500}) 60%, $border);
+    border-radius: $radius-pill;
+    color: $text-2;
+    font-size: $fs-14;
+    font-weight: $k-fw-semibold;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+
+    &:hover { color: $text-1; }
+
+    &.is-active {
+      color: $text-1;
+      border-color: var(--chip-color, #{$accent-500});
+      background: color-mix(in srgb, var(--chip-color, #{$accent-500}) 24%, transparent);
+    }
+  }
+
+  &__slots {
+    display: grid;
+    gap: $space-3;
+  }
+
+  &__actions {
+    display: grid;
+    justify-items: center;
+    gap: $space-2;
+
+    .edc-button { min-width: 220px; }
+  }
+
+  // --- Partida: el tablero ---
+
+  &__board {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-3;
+    align-items: start;
+
+    @media (min-width: $bp-md) {
+      gap: $space-5;
+    }
+  }
+
+  &__side {
+    display: grid;
+    gap: $space-3;
+    min-width: 0;
+  }
+
+  // --- Partidas anteriores (histórico, discreto) ---
+
+  &__history {
+    border-top: 1px solid $border;
+    padding-top: $space-4;
+    display: grid;
+    gap: $space-3;
+  }
+
+  &__history-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    justify-self: start;
+    padding: $space-1 0;
+    background: none;
+    border: none;
+    color: $text-2;
+    font-size: $fs-14;
+    font-weight: $k-fw-semibold;
+    cursor: pointer;
+
+    &:hover { color: $text-1; }
+
+    svg {
+      transition: transform 0.15s ease;
+      &.is-open { transform: rotate(180deg); }
+    }
+  }
+
+  &__history-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: $space-2;
+  }
+
+  &__history-item {
+    display: grid;
+    gap: $space-2;
+    padding: $space-3;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+  }
+
+  &__history-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-2;
+  }
+
+  &__history-date {
+    color: $text-3;
+    font-size: $fs-13;
+  }
+
+  &__history-status {
+    padding: 1px $space-3;
+    border-radius: $radius-pill;
+    font-size: $fs-12;
+    font-weight: $k-fw-semibold;
+    border: 1px solid $border;
+    color: $text-2;
+
+    &.is-active {
+      color: $success;
+      border-color: color-mix(in srgb, $success 50%, transparent);
+    }
+  }
+
+  &__history-summary {
+    margin: 0;
+    color: $text-2;
+    font-size: $fs-14;
+  }
+
+  &__history-actions { justify-self: end; }
+
+  &__history-detail {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-3;
+    border-top: 1px solid $border;
+    padding-top: $space-2;
+
+    h4 {
+      margin: 0 0 $space-1;
+      font-size: $fs-13;
+      color: $text-3;
+    }
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 2px;
+      font-size: $fs-14;
+    }
+
+    .is-defeated {
+      color: $text-3;
+      text-decoration: line-through;
+    }
+  }
+}
+
+// Tarjeta de héroe en partida: nombre, preview (o fallback con el nombre,
+// como el PreviewGrid) y las vidas con −/+ grandes. A 0: "derrotado", sutil
+// (desaturado y atenuado; las vidas siguen editables para revivir).
+.life-hero {
+  display: grid;
+  gap: $space-2;
+  padding: $space-2;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: $radius-md;
+  transition: opacity 0.2s ease;
+
+  @media (min-width: $bp-md) {
+    padding: $space-3;
+  }
+
+  &__name {
+    margin: 0;
+    font-size: $fs-14;
+    line-height: $k-lh-tight;
+    text-align: center;
+    overflow-wrap: anywhere;
+
+    @media (min-width: $bp-md) { font-size: $fs-16; }
+  }
+
+  &__image {
+    width: 100%;
+    max-width: 190px;
+    justify-self: center;
+    aspect-ratio: 750 / 1050; // proporción de la carta
+    object-fit: cover;
+    border-radius: $radius-sm;
+  }
+
+  &__fallback {
+    display: grid;
+    place-content: center;
+    width: 100%;
+    max-width: 190px;
+    justify-self: center;
+    aspect-ratio: 750 / 1050;
+    padding: $space-2;
+    background: $surface-2;
+    border: 1px dashed $border-strong;
+    border-radius: $radius-sm;
+    color: $text-3;
+    font-size: $fs-13;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  // Botones −/+ del NumericInput del motor, agrandados para el pulgar (el
+  // contenedor del motor trae altura fija: se sube entero a 52px).
+  &__lives {
+    .numeric-input {
+      height: 52px;
+    }
+
+    .numeric-input__btn {
+      width: 44px;
+
+      svg {
+        width: 22px;
+        height: 22px;
+      }
+    }
+
+    .numeric-input__field {
+      padding: 0;
+      font-size: $fs-18;
+      font-weight: $k-fw-bold;
+      font-variant-numeric: tabular-nums;
+    }
+  }
+
+  &__defeated {
+    justify-self: center;
+    color: $danger;
+    font-size: $fs-12;
+    font-weight: $k-fw-semibold;
+    text-transform: uppercase;
+    letter-spacing: $k-track-wide;
+  }
+
+  &.is-defeated {
+    opacity: 0.6;
+
+    .life-hero__image,
+    .life-hero__fallback {
+      filter: grayscale(1);
+    }
+  }
+}

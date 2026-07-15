@@ -114,6 +114,43 @@
     },
     "language": "Hizkuntza"
   },
+  "tools": {
+    "lifeCounter": {
+      "title": "Bizitza-kontagailua",
+      "intro": "Eraman heroien bizitzen kontua zuen mahai gaineko partidetan: aukeratu taldeak eta utzi mugikorra mahai gainean.",
+      "heroesPerTeam": "Heroi kopurua",
+      "myTeam": "Nire taldea",
+      "rivalTeam": "Aurkako taldea",
+      "myFactions": "Nire fakzioa",
+      "rivalFactions": "Aurkako fakzioa",
+      "factionsHint": "Fakziorik aukeratu gabe heroi guztiak zerrendatzen dira.",
+      "heroSlot": "{n}. heroia",
+      "selectHero": "Aukeratu heroia",
+      "loadingHeroes": "Heroiak kargatzen…",
+      "start": "Hasi partida",
+      "starting": "Hasten…",
+      "startHint": "Aukeratu heroi bat bi taldeetako hutsune bakoitzerako.",
+      "startError": "Ezin izan da partida hasi. Saiatu berriro.",
+      "reset": "Hasi hutsetik",
+      "lives": "Bizitzak",
+      "defeated": "Garaitua",
+      "end": "Amaitu partida",
+      "endConfirmTitle": "Amaitu partida",
+      "endConfirmMessage": "Ziur partida amaitu nahi duzula? Prestaketara itzuliko zara.",
+      "endConfirm": "Amaitu",
+      "cancel": "Utzi",
+      "history": {
+        "title": "Aurreko partidak",
+        "loading": "Kargatzen…",
+        "empty": "Oraindik ez duzu partida gorderik.",
+        "active": "Abian",
+        "finished": "Amaituta",
+        "resume": "Berrekin",
+        "view": "Ikusi",
+        "hide": "Ezkutatu"
+      }
+    }
+  },
   "collection": {
     "title": "Zure bilduma",
     "intro": "Gehitu kartak zerrendetatik eta sortu zure PDF pertsonalizatua; izenik eman gabe ere bai (bilduma nabigatzaile honetan bizi da eta berez iraungitzen da).",

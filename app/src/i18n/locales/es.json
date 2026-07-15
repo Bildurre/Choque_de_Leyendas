@@ -114,6 +114,43 @@
     },
     "language": "Idioma"
   },
+  "tools": {
+    "lifeCounter": {
+      "title": "Contador de vidas",
+      "intro": "Lleva la cuenta de las vidas de los héroes durante vuestras partidas físicas: elige los equipos y deja el móvil sobre la mesa.",
+      "heroesPerTeam": "Número de héroes",
+      "myTeam": "Mi equipo",
+      "rivalTeam": "Equipo rival",
+      "myFactions": "Mi facción",
+      "rivalFactions": "Facción rival",
+      "factionsHint": "Sin facción elegida se listan todos los héroes.",
+      "heroSlot": "Héroe {n}",
+      "selectHero": "Selecciona héroe",
+      "loadingHeroes": "Cargando héroes…",
+      "start": "Comenzar la partida",
+      "starting": "Comenzando…",
+      "startHint": "Elige un héroe para cada hueco de los dos equipos.",
+      "startError": "No se pudo comenzar la partida. Inténtalo de nuevo.",
+      "reset": "Empezar de cero",
+      "lives": "Vidas",
+      "defeated": "Derrotado",
+      "end": "Terminar partida",
+      "endConfirmTitle": "Terminar la partida",
+      "endConfirmMessage": "¿Seguro que quieres terminar la partida? Volverás a la preparación.",
+      "endConfirm": "Terminar",
+      "cancel": "Cancelar",
+      "history": {
+        "title": "Partidas anteriores",
+        "loading": "Cargando…",
+        "empty": "Aún no tienes partidas guardadas.",
+        "active": "En curso",
+        "finished": "Terminada",
+        "resume": "Retomar",
+        "view": "Ver",
+        "hide": "Ocultar"
+      }
+    }
+  },
   "collection": {
     "title": "Tu colección",
     "intro": "Añade cartas desde los listados y genera tu PDF personalizado; también sin registrarte (la colección vive en este navegador y caduca sola).",

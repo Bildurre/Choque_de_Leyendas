@@ -114,6 +114,43 @@
     },
     "language": "Language"
   },
+  "tools": {
+    "lifeCounter": {
+      "title": "Life counter",
+      "intro": "Keep track of your heroes' lives during your physical matches: pick the teams and leave your phone on the table.",
+      "heroesPerTeam": "Number of heroes",
+      "myTeam": "My team",
+      "rivalTeam": "Rival team",
+      "myFactions": "My faction",
+      "rivalFactions": "Rival faction",
+      "factionsHint": "With no faction selected, all heroes are listed.",
+      "heroSlot": "Hero {n}",
+      "selectHero": "Select a hero",
+      "loadingHeroes": "Loading heroes…",
+      "start": "Start the match",
+      "starting": "Starting…",
+      "startHint": "Pick a hero for every slot on both teams.",
+      "startError": "The match could not be started. Please try again.",
+      "reset": "Start over",
+      "lives": "Lives",
+      "defeated": "Defeated",
+      "end": "End match",
+      "endConfirmTitle": "End the match",
+      "endConfirmMessage": "Are you sure you want to end the match? You will go back to the setup.",
+      "endConfirm": "End",
+      "cancel": "Cancel",
+      "history": {
+        "title": "Previous matches",
+        "loading": "Loading…",
+        "empty": "You have no saved matches yet.",
+        "active": "In progress",
+        "finished": "Finished",
+        "resume": "Resume",
+        "view": "View",
+        "hide": "Hide"
+      }
+    }
+  },
   "collection": {
     "title": "Your collection",
     "intro": "Add cards from the listings and generate your custom PDF; no sign-up needed (the collection lives in this browser and expires on its own).",

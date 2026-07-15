@@ -19,6 +19,7 @@ use App\Http\Controllers\HeroClassController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\HeroRaceController;
 use App\Http\Controllers\HeroSuperclassController;
+use App\Http\Controllers\LifeCounterMatchController;
 use App\Http\Controllers\Public\PublicCardController;
 use App\Http\Controllers\Public\PublicFactionController;
 use App\Http\Controllers\Public\PublicFactionDeckController;
@@ -55,6 +56,22 @@ Route::get('cards/{slug}', [PublicCardController::class, 'show']);
 Route::get('heroes', [PublicHeroController::class, 'index']);
 Route::get('heroes/filters', [PublicHeroController::class, 'filters']); // antes de {slug}
 Route::get('heroes/{slug}', [PublicHeroController::class, 'show']);
+
+/*
+| Contador de vidas (herramienta de la web pública): histórico de partidas
+| del usuario autenticado (los invitados juegan solo con localStorage).
+| Sin rol de admin: cualquier usuario registrado. El PUT llega debounceado
+| (~2 s) desde el cliente al cambiar vidas; throttle por si acaso.
+*/
+Route::middleware('auth:sanctum')->prefix('life-counter')->group(function () {
+    Route::get('matches', [LifeCounterMatchController::class, 'index']);
+    Route::post('matches', [LifeCounterMatchController::class, 'store'])
+        ->middleware('throttle:30,1');
+    Route::put('matches/{id}', [LifeCounterMatchController::class, 'update'])
+        ->whereNumber('id')->middleware('throttle:60,1');
+    Route::post('matches/{id}/finish', [LifeCounterMatchController::class, 'finish'])
+        ->whereNumber('id')->middleware('throttle:30,1');
+});
 
 Route::middleware(['auth:sanctum', 'motor.admin', 'can:manage-game'])
     ->prefix('admin')->group(function () {

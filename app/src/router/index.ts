@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import { i18n } from '@/i18n'
 import { accountSections } from '@/account/registry'
 import { downloadsPattern } from '@/router/downloads'
+import { lifeCounterPattern, toolsPattern } from '@/router/tools'
 import { sectionPattern } from '@/entities/registry'
 import { useAuthStore } from '@/stores/auth'
 import { useLocalesStore } from '@/stores/locales'
@@ -80,6 +81,15 @@ const router = createRouter({
           path: `:dl(${downloadsPattern()})`,
           name: 'downloads',
           component: () => import('@/views/DownloadsView.vue'),
+        },
+        // Herramientas públicas: el contador de vidas para las partidas
+        // físicas. Segmentos traducibles (la vista redirige a la canónica
+        // del locale activo, DC-12); la página índice "Herramientas" es del
+        // CRM (un CTA apunta aquí).
+        {
+          path: `:tools(${toolsPattern()})/:tool(${lifeCounterPattern()})`,
+          name: 'life-counter',
+          component: () => import('@/views/tools/LifeCounterView.vue'),
         },
         // Listados de entidades del juego (doc 10): el segmento (en cualquier
         // locale) decide la sección; van ANTES que la página por slug.
