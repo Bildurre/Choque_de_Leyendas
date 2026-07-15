@@ -6,11 +6,13 @@ import {
   Axe,
   Cog,
   Coins,
+  Crosshair,
   DatabaseBackup,
   Dices,
   Drama,
   FileText,
   Flag,
+  FolderOpen,
   Globe,
   GraduationCap,
   LayoutDashboard,
@@ -106,23 +108,21 @@ function navActive(section: string) {
 
 // Los grupos plegables (NavGroup) se marcan activos — y se auto-despliegan —
 // si la ruta actual es de una de sus secciones (mismo meta.nav que navActive).
-const HERO_TAXONOMY_SECTIONS = ['heroSuperclasses', 'heroClasses', 'heroRaces']
-const CARD_TAXONOMY_SECTIONS = [
-  'cardTypes',
-  'cardSubtypes',
-  'equipmentTypes',
-  'equipmentSubtypes',
-  'attackRanges',
-  'attackSubtypes',
+const HERO_SYSTEM_SECTIONS = [
+  'heroRaces',
+  'heroClasses',
+  'heroSuperclasses',
+  'heroAttributesConfig',
 ]
-const GAME_CONFIG_SECTIONS = ['gameModes', 'heroAttributesConfig', 'deckAttributesConfigs']
-const heroTaxonomiesActive = computed(() =>
-  HERO_TAXONOMY_SECTIONS.includes(route.meta.nav as string),
-)
-const cardTaxonomiesActive = computed(() =>
-  CARD_TAXONOMY_SECTIONS.includes(route.meta.nav as string),
-)
-const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta.nav as string))
+const CARD_SYSTEM_SECTIONS = ['cardTypes', 'cardSubtypes', 'equipmentTypes', 'equipmentSubtypes']
+const ATTACK_SYSTEM_SECTIONS = ['heroAbilities', 'attackRanges', 'attackSubtypes']
+const GAME_SYSTEM_SECTIONS = ['gameModes', 'deckAttributesConfigs']
+const FILES_SECTIONS = ['icons', 'previews', 'pdfs']
+const heroSystemActive = computed(() => HERO_SYSTEM_SECTIONS.includes(route.meta.nav as string))
+const cardSystemActive = computed(() => CARD_SYSTEM_SECTIONS.includes(route.meta.nav as string))
+const attackSystemActive = computed(() => ATTACK_SYSTEM_SECTIONS.includes(route.meta.nav as string))
+const gameSystemActive = computed(() => GAME_SYSTEM_SECTIONS.includes(route.meta.nav as string))
+const filesActive = computed(() => FILES_SECTIONS.includes(route.meta.nav as string))
 </script>
 
 <template>
@@ -136,7 +136,7 @@ const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta
     :breadcrumbs="crumbs"
     @update:locale="locales.setCurrent"
   >
-    <!-- Menú agrupado: inicio | juego | generados | web | sistema -->
+    <!-- Menú agrupado: inicio | juego | sistemas y archivos (desplegables) | web y sistema -->
     <template #nav>
       <RouterLink class="nav-item" :class="navActive('dashboard')" :to="{ name: 'dashboard' }">
         <LayoutDashboard class="nav-icon" :size="20" /><span class="nav-label">{{
@@ -149,18 +149,18 @@ const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta
       <RouterLink
         v-if="auth.can('manage-game')"
         class="nav-item"
-        :class="navActive('factions')"
-        :to="{ name: 'factions' }"
-      >
-        <Flag class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.factions') }}</span>
-      </RouterLink>
-      <RouterLink
-        v-if="auth.can('manage-game')"
-        class="nav-item"
         :class="navActive('heroes')"
         :to="{ name: 'heroes' }"
       >
         <Swords class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.heroes') }}</span>
+      </RouterLink>
+      <RouterLink
+        v-if="auth.can('manage-game')"
+        class="nav-item"
+        :class="navActive('factions')"
+        :to="{ name: 'factions' }"
+      >
+        <Flag class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.factions') }}</span>
       </RouterLink>
       <RouterLink
         v-if="auth.can('manage-game')"
@@ -190,34 +190,20 @@ const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta
       >
         <Coins class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.counters') }}</span>
       </RouterLink>
-      <RouterLink
-        v-if="auth.can('manage-game')"
-        class="nav-item"
-        :class="navActive('heroAbilities')"
-        :to="{ name: 'hero-abilities' }"
-      >
-        <Sparkles class="nav-icon" :size="20" /><span class="nav-label">{{
-          t('nav.heroAbilities')
-        }}</span>
-      </RouterLink>
 
-      <!-- Taxonomías y configuraciones del juego, agrupadas en desplegables
-           (NavGroup): uso poco frecuente, no merecen ítem raíz -->
+      <!-- Sistemas del juego: taxonomías y configuraciones agrupadas en
+           desplegables (NavGroup): uso poco frecuente, no merecen ítem raíz -->
       <hr v-if="auth.can('manage-game')" class="sidebar-divider" />
       <NavGroup
         v-if="auth.can('manage-game')"
-        :label="t('nav.heroTaxonomies')"
-        storage-key="hero-taxonomies"
-        :active="heroTaxonomiesActive"
+        :label="t('nav.heroSystem')"
+        storage-key="hero-system"
+        :active="heroSystemActive"
       >
         <template #icon><Drama class="nav-icon" :size="20" /></template>
-        <RouterLink
-          class="nav-item"
-          :class="navActive('heroSuperclasses')"
-          :to="{ name: 'hero-superclasses' }"
-        >
-          <Shield class="nav-icon" :size="20" /><span class="nav-label">{{
-            t('nav.heroSuperclasses')
+        <RouterLink class="nav-item" :class="navActive('heroRaces')" :to="{ name: 'hero-races' }">
+          <Users class="nav-icon" :size="20" /><span class="nav-label">{{
+            t('nav.heroRaces')
           }}</span>
         </RouterLink>
         <RouterLink
@@ -229,17 +215,30 @@ const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta
             t('nav.heroClasses')
           }}</span>
         </RouterLink>
-        <RouterLink class="nav-item" :class="navActive('heroRaces')" :to="{ name: 'hero-races' }">
-          <Users class="nav-icon" :size="20" /><span class="nav-label">{{
-            t('nav.heroRaces')
+        <RouterLink
+          class="nav-item"
+          :class="navActive('heroSuperclasses')"
+          :to="{ name: 'hero-superclasses' }"
+        >
+          <Shield class="nav-icon" :size="20" /><span class="nav-label">{{
+            t('nav.heroSuperclasses')
+          }}</span>
+        </RouterLink>
+        <RouterLink
+          class="nav-item"
+          :class="navActive('heroAttributesConfig')"
+          :to="{ name: 'hero-attributes-configuration' }"
+        >
+          <SlidersHorizontal class="nav-icon" :size="20" /><span class="nav-label">{{
+            t('nav.heroAttributesConfig')
           }}</span>
         </RouterLink>
       </NavGroup>
       <NavGroup
         v-if="auth.can('manage-game')"
-        :label="t('nav.cardTaxonomies')"
-        storage-key="card-taxonomies"
-        :active="cardTaxonomiesActive"
+        :label="t('nav.cardSystem')"
+        storage-key="card-system"
+        :active="cardSystemActive"
       >
         <template #icon><Tags class="nav-icon" :size="20" /></template>
         <RouterLink class="nav-item" :class="navActive('cardTypes')" :to="{ name: 'card-types' }">
@@ -274,6 +273,23 @@ const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta
             t('nav.equipmentSubtypes')
           }}</span>
         </RouterLink>
+      </NavGroup>
+      <NavGroup
+        v-if="auth.can('manage-game')"
+        :label="t('nav.attackSystem')"
+        storage-key="attack-system"
+        :active="attackSystemActive"
+      >
+        <template #icon><Crosshair class="nav-icon" :size="20" /></template>
+        <RouterLink
+          class="nav-item"
+          :class="navActive('heroAbilities')"
+          :to="{ name: 'hero-abilities' }"
+        >
+          <Sparkles class="nav-icon" :size="20" /><span class="nav-label">{{
+            t('nav.heroAbilities')
+          }}</span>
+        </RouterLink>
         <RouterLink
           class="nav-item"
           :class="navActive('attackRanges')"
@@ -295,23 +311,14 @@ const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta
       </NavGroup>
       <NavGroup
         v-if="auth.can('manage-game')"
-        :label="t('nav.gameConfig')"
-        storage-key="game-config"
-        :active="gameConfigActive"
+        :label="t('nav.gameSystem')"
+        storage-key="game-system"
+        :active="gameSystemActive"
       >
         <template #icon><Cog class="nav-icon" :size="20" /></template>
         <RouterLink class="nav-item" :class="navActive('gameModes')" :to="{ name: 'game-modes' }">
           <Dices class="nav-icon" :size="20" /><span class="nav-label">{{
             t('nav.gameModes')
-          }}</span>
-        </RouterLink>
-        <RouterLink
-          class="nav-item"
-          :class="navActive('heroAttributesConfig')"
-          :to="{ name: 'hero-attributes-configuration' }"
-        >
-          <SlidersHorizontal class="nav-icon" :size="20" /><span class="nav-label">{{
-            t('nav.heroAttributesConfig')
           }}</span>
         </RouterLink>
         <RouterLink
@@ -324,36 +331,28 @@ const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta
           }}</span>
         </RouterLink>
       </NavGroup>
-      <RouterLink
+      <NavGroup
         v-if="auth.can('manage-game')"
-        class="nav-item"
-        :class="navActive('icons')"
-        :to="{ name: 'icons' }"
+        :label="t('nav.files')"
+        storage-key="files"
+        :active="filesActive"
       >
-        <Shapes class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.icons') }}</span>
-      </RouterLink>
+        <template #icon><FolderOpen class="nav-icon" :size="20" /></template>
+        <RouterLink class="nav-item" :class="navActive('icons')" :to="{ name: 'icons' }">
+          <Shapes class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.icons') }}</span>
+        </RouterLink>
+        <RouterLink class="nav-item" :class="navActive('previews')" :to="{ name: 'previews' }">
+          <Images class="nav-icon" :size="20" /><span class="nav-label">{{
+            t('nav.previews')
+          }}</span>
+        </RouterLink>
+        <RouterLink class="nav-item" :class="navActive('pdfs')" :to="{ name: 'pdfs' }">
+          <FileText class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.pdfs') }}</span>
+        </RouterLink>
+      </NavGroup>
 
-      <!-- Generados: imágenes PNG y PDF -->
-      <hr v-if="auth.can('manage-game')" class="sidebar-divider" />
-      <RouterLink
-        v-if="auth.can('manage-game')"
-        class="nav-item"
-        :class="navActive('previews')"
-        :to="{ name: 'previews' }"
-      >
-        <Images class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.previews') }}</span>
-      </RouterLink>
-      <RouterLink
-        v-if="auth.can('manage-game')"
-        class="nav-item"
-        :class="navActive('pdfs')"
-        :to="{ name: 'pdfs' }"
-      >
-        <FileText class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.pdfs') }}</span>
-      </RouterLink>
-
-      <!-- La web: CRM y configuración -->
-      <hr v-if="auth.can('manage-web')" class="sidebar-divider" />
+      <!-- La web y el sistema: CRM, usuarios, copias y configuración -->
+      <hr v-if="auth.can('manage-web') || auth.can('manage-users')" class="sidebar-divider" />
       <RouterLink
         v-if="auth.can('manage-web')"
         class="nav-item"
@@ -363,18 +362,13 @@ const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta
         <FileText class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.pages') }}</span>
       </RouterLink>
       <RouterLink
-        v-if="auth.can('manage-web')"
+        v-if="auth.can('manage-users')"
         class="nav-item"
-        :class="navActive('settings')"
-        :to="{ name: 'settings' }"
+        :class="navActive('users')"
+        :to="{ name: 'users' }"
       >
-        <Settings class="nav-icon" :size="20" /><span class="nav-label">{{
-          t('nav.settings')
-        }}</span>
+        <Users class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.users') }}</span>
       </RouterLink>
-
-      <!-- Sistema: copias y usuarios -->
-      <hr v-if="auth.can('manage-web') || auth.can('manage-users')" class="sidebar-divider" />
       <RouterLink
         v-if="auth.can('manage-web')"
         class="nav-item"
@@ -386,12 +380,14 @@ const gameConfigActive = computed(() => GAME_CONFIG_SECTIONS.includes(route.meta
         }}</span>
       </RouterLink>
       <RouterLink
-        v-if="auth.can('manage-users')"
+        v-if="auth.can('manage-web')"
         class="nav-item"
-        :class="navActive('users')"
-        :to="{ name: 'users' }"
+        :class="navActive('settings')"
+        :to="{ name: 'settings' }"
       >
-        <Users class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.users') }}</span>
+        <Settings class="nav-icon" :size="20" /><span class="nav-label">{{
+          t('nav.settings')
+        }}</span>
       </RouterLink>
     </template>
 

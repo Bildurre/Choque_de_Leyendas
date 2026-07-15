@@ -83,9 +83,11 @@
     "equipmentTypes": "Ekipamendu motak",
     "equipmentSubtypes": "Ekipamendu azpimotak",
     "gameModes": "Joko moduak",
-    "heroTaxonomies": "Heroiak · kategoriak",
-    "cardTaxonomies": "Kartak · kategoriak",
-    "gameConfig": "Jokoa · konfigurazioa"
+    "heroSystem": "Heroien sistema",
+    "cardSystem": "Karten sistema",
+    "attackSystem": "Erasoen sistema",
+    "gameSystem": "Joko-sistema",
+    "files": "Fitxategiak"
   },
   "icons": {
     "title": "Ikonoak",

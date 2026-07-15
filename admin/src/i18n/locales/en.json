@@ -83,9 +83,11 @@
     "equipmentTypes": "Equipment types",
     "equipmentSubtypes": "Equipment subtypes",
     "gameModes": "Game modes",
-    "heroTaxonomies": "Heroes · categories",
-    "cardTaxonomies": "Cards · categories",
-    "gameConfig": "Game · settings"
+    "heroSystem": "Hero system",
+    "cardSystem": "Card system",
+    "attackSystem": "Attack system",
+    "gameSystem": "Game system",
+    "files": "Files"
   },
   "icons": {
     "title": "Icons",
