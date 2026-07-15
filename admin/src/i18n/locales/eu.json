@@ -82,7 +82,10 @@
     "cardSubtypes": "Karta azpimotak",
     "equipmentTypes": "Ekipamendu motak",
     "equipmentSubtypes": "Ekipamendu azpimotak",
-    "gameModes": "Joko moduak"
+    "gameModes": "Joko moduak",
+    "heroTaxonomies": "Heroiak · kategoriak",
+    "cardTaxonomies": "Kartak · kategoriak",
+    "gameConfig": "Jokoa · konfigurazioa"
   },
   "icons": {
     "title": "Ikonoak",

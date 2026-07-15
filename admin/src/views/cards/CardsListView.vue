@@ -131,6 +131,7 @@ onMounted(async () => {
         :title="tr(item.name)"
         :muted="!!item.deleted_at"
         :active="selectedId === item.id"
+        :accent-color="item.faction?.color || undefined"
         clickable
         @view="select(item)"
       >

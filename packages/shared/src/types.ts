@@ -148,7 +148,8 @@ export interface Hero extends EntityBase {
   faction_id: number | null
   hero_race_id: number | null
   hero_class_id: number | null
-  faction?: TaxonomyOption | null
+  /** Facción en mínimo (con su color, que tiñe la tarjeta del listado). */
+  faction?: FactionOption | null
   hero_race?: TaxonomyOption | null
   hero_class?: HeroClass | null
   gender: 'male' | 'female'

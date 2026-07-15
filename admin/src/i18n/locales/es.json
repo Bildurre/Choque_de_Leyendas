@@ -82,7 +82,10 @@
     "cardSubtypes": "Subtipos de carta",
     "equipmentTypes": "Tipos de equipo",
     "equipmentSubtypes": "Subtipos de equipo",
-    "gameModes": "Modos de juego"
+    "gameModes": "Modos de juego",
+    "heroTaxonomies": "Héroes · categorías",
+    "cardTaxonomies": "Cartas · categorías",
+    "gameConfig": "Juego · configuración"
   },
   "icons": {
     "title": "Iconos",
