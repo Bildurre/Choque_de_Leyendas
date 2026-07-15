@@ -149,6 +149,45 @@
         "view": "Ikusi",
         "hide": "Ezkutatu"
       }
+    },
+    "diceRoller": {
+      "title": "Dado-jaurtitzailea",
+      "intro": "Jaurti jokoko ekintza-dadoak: finkatu koloreak jaurti aurretik, jaurti berriro nahi dituzunak gordeta, eta gastatu edo berreskuratu dadoak txandan zehar.",
+      "diceCount": "Dado kopurua",
+      "prepHint": "Ukitu dado bat jaurtiketaren aurretik bere kolorea finkatzeko: finkatutakoak ez dira jaurtitzen.",
+      "roll": "Jaurti",
+      "resultHint": "Ukitu dado bat gordetzeko (edo askatzeko) eta jaurti besteak nahi adina aldiz.",
+      "reroll": "Jaurti berriro",
+      "saveResult": "Gorde emaitza",
+      "gameHint": "Ukitu dado bat berriro jaurtitzeko, gastatzeko edo kolorea aldatzeko; ukitu gastatutako bat berreskuratzeko.",
+      "die": "{n}. dadoa",
+      "noResult": "emaitzarik gabe",
+      "held": "gordeta",
+      "spent": "gastatuta",
+      "colors": {
+        "red": "Gorria",
+        "green": "Berdea",
+        "blue": "Urdina"
+      },
+      "setColor": "Finkatu kolorea",
+      "release": "Askatu",
+      "rerollOne": "Jaurti berriro",
+      "spend": "Gastatu",
+      "changeColor": "Aldatu kolorea",
+      "recover": "Berreskuratu",
+      "recoverReroll": "Berriro jaurtita",
+      "recoverKeep": "Mantenduta",
+      "recoverChoose": "Kolorea aukeratuta",
+      "randomCount": "Zenbat",
+      "randomReroll": "Jaurti ausazkoak",
+      "randomRecover": "Berreskuratu ausazkoak",
+      "recoverMode": "Nola berreskuratu",
+      "recoverColor": "Aukeratutako kolorea",
+      "clear": "Garbitu",
+      "clearConfirmTitle": "Garbitu jaurtitzailea",
+      "clearConfirmMessage": "Ziur dadoak garbitu nahi dituzula? Prestaketara itzuliko zara.",
+      "clearConfirm": "Garbitu",
+      "cancel": "Utzi"
     }
   },
   "collection": {

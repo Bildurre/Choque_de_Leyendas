@@ -12,6 +12,7 @@ import {
   useHead,
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
+import DiceRoller from '@/components/tools/DiceRoller.vue'
 import { LIFE_COUNTER_PATHS, TOOLS_PATHS } from '@/router/tools'
 import { useAuthStore } from '@/stores/auth'
 import { useLocalesStore } from '@/stores/locales'
@@ -440,6 +441,13 @@ function onVisibilityChange() {
   if (document.visibilityState === 'visible') void acquireWakeLock()
 }
 
+// --- Lanzador de dados embebido (partida) ---
+
+// Plegable bajo los equipos, cerrado por defecto: disponible durante la
+// partida sin estorbar al conteo. Es el MISMO lanzador que la vista propia
+// (el componente comparte su estado por localStorage).
+const diceOpen = ref(false)
+
 // --- Histórico (solo usuarios registrados) ---
 
 const historyOpen = ref(false)
@@ -737,6 +745,21 @@ onUnmounted(() => {
           </article>
         </section>
       </div>
+
+      <!-- Lanzador de dados a mano durante la partida (plegable, discreto);
+           mismo patrón de toggle que "Partidas anteriores" -->
+      <section class="life-counter__dice">
+        <button
+          type="button"
+          class="life-counter__history-toggle"
+          :aria-expanded="diceOpen"
+          @click="diceOpen = !diceOpen"
+        >
+          {{ t('tools.diceRoller.title') }}
+          <ChevronDown :size="16" :class="{ 'is-open': diceOpen }" />
+        </button>
+        <DiceRoller v-if="diceOpen" />
+      </section>
 
       <div class="life-counter__actions">
         <BaseButton variant="danger" @click="finishMatch">

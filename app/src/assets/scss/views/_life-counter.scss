@@ -138,6 +138,15 @@
     min-width: 0;
   }
 
+  // --- Lanzador de dados embebido en la partida (plegable, discreto) ---
+
+  &__dice {
+    border-top: 1px solid $border;
+    padding-top: $space-4;
+    display: grid;
+    gap: $space-3;
+  }
+
   // --- Partidas anteriores (histórico, discreto) ---
 
   &__history {

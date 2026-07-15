@@ -149,6 +149,45 @@
         "view": "View",
         "hide": "Hide"
       }
+    },
+    "diceRoller": {
+      "title": "Dice roller",
+      "intro": "Roll the game's action dice: fix colors before rolling, reroll while keeping the ones you want, and spend or recover dice during the turn.",
+      "diceCount": "Number of dice",
+      "prepHint": "Tap a die to fix its color before the roll: fixed dice are not rolled.",
+      "roll": "Roll",
+      "resultHint": "Tap a die to keep it (or release it) and reroll the rest as many times as you want.",
+      "reroll": "Reroll",
+      "saveResult": "Save the result",
+      "gameHint": "Tap a die to reroll it, spend it or change its color; tap a spent one to recover it.",
+      "die": "Die {n}",
+      "noResult": "no result",
+      "held": "kept",
+      "spent": "spent",
+      "colors": {
+        "red": "Red",
+        "green": "Green",
+        "blue": "Blue"
+      },
+      "setColor": "Fix color",
+      "release": "Release",
+      "rerollOne": "Reroll",
+      "spend": "Spend",
+      "changeColor": "Change color",
+      "recover": "Recover",
+      "recoverReroll": "By rerolling",
+      "recoverKeep": "Keeping it",
+      "recoverChoose": "Choosing color",
+      "randomCount": "How many",
+      "randomReroll": "Reroll random",
+      "randomRecover": "Recover random",
+      "recoverMode": "How to recover them",
+      "recoverColor": "Chosen color",
+      "clear": "Clear",
+      "clearConfirmTitle": "Clear the roller",
+      "clearConfirmMessage": "Are you sure you want to clear the dice? You will go back to setup.",
+      "clearConfirm": "Clear",
+      "cancel": "Cancel"
     }
   },
   "collection": {

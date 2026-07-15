@@ -2,7 +2,8 @@
 // la canónica de la vista (misma mecánica que las Descargas). La página
 // "Herramientas" en sí es del CRM (la crea el usuario con el editor y un CTA
 // hacia la herramienta); aquí solo vive la ruta de cada herramienta:
-// /es/herramientas/contador-de-vidas y /en/tools/life-counter (eu queda
+// /es/herramientas/contador-de-vidas y /en/tools/life-counter,
+// /es/herramientas/lanzador-de-dados y /en/tools/dice-roller (eu queda
 // preparado hasta que se active el locale — el router solo enruta es/en).
 export const TOOLS_PATHS: Record<string, string> = {
   es: 'herramientas',
@@ -16,10 +17,20 @@ export const LIFE_COUNTER_PATHS: Record<string, string> = {
   en: 'life-counter',
 }
 
+export const DICE_ROLLER_PATHS: Record<string, string> = {
+  es: 'lanzador-de-dados',
+  eu: 'dado-jaurtitzailea',
+  en: 'dice-roller',
+}
+
 export function toolsPattern(): string {
   return [...new Set(Object.values(TOOLS_PATHS))].join('|')
 }
 
 export function lifeCounterPattern(): string {
   return [...new Set(Object.values(LIFE_COUNTER_PATHS))].join('|')
+}
+
+export function diceRollerPattern(): string {
+  return [...new Set(Object.values(DICE_ROLLER_PATHS))].join('|')
 }

@@ -1,0 +1,254 @@
+@use "tokens" as *;
+
+// Lanzador de dados (componente reutilizable, prioridad MÓVIL): bandeja de
+// dados grandes y táctiles (56px ≥ 44px), panel de acciones EN FLUJO bajo la
+// bandeja (bottom-sheet anclado: nada flotante que tape los dados) y
+// acciones en lote de la fase de juego. El dado pinta el icono del gestor
+// si está subido; sin él, cuadrado redondeado con el color y borde (mismos
+// colores planos que los toggles .cost-colors del índice de cartas).
+.dice-roller {
+  display: grid;
+  gap: $space-4;
+
+  &__config {
+    display: grid;
+    gap: $space-2;
+  }
+
+  &__count { max-width: 190px; }
+
+  &__hint {
+    margin: 0;
+    color: $text-3;
+    font-size: $fs-14;
+  }
+
+  // --- La bandeja de dados ---
+
+  &__tray {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+  }
+
+  &__die {
+    // --die-color: el color del resultado (gris en los aún sin lanzar).
+    --die-color: #888888;
+
+    position: relative;
+    width: 56px;
+    height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $input-bg;
+    border: 1px solid color-mix(in srgb, var(--die-color) 55%, $border);
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, opacity 0.2s ease;
+
+    &:hover { border-color: var(--die-color); }
+
+    // Mismos colores que los dados planos del render (_game-card.scss).
+    &--red { --die-color: #f15959; }
+    &--green { --die-color: #29ab5f; }
+    &--blue { --die-color: #408cfd; }
+
+    &--blank { border-style: dashed; }
+
+    // Guardado: anillo con el color + candado (no entra en el lanzamiento).
+    &.is-held {
+      border-color: var(--die-color);
+      box-shadow: inset 0 0 0 2px var(--die-color);
+    }
+
+    // Seleccionado: outline con el acento (independiente del anillo).
+    &.is-selected {
+      outline: 2px solid $accent-500;
+      outline-offset: 2px;
+    }
+
+    // Gastado: desaturado y atenuado, visible pero fuera de juego.
+    &.is-spent {
+      opacity: 0.45;
+
+      .dice-roller__icon,
+      .dice-roller__fill {
+        filter: grayscale(1);
+      }
+    }
+  }
+
+  &__icon {
+    display: block;
+    width: 38px;
+    height: 38px;
+    pointer-events: none;
+  }
+
+  // Fallback sin icono subido: relleno redondeado con el color del dado.
+  &__fill {
+    width: 34px;
+    height: 34px;
+    border-radius: $radius-sm;
+    background: var(--die-color);
+    border: 1px solid color-mix(in srgb, var(--die-color) 60%, black);
+    pointer-events: none;
+  }
+
+  // Dado sin resultado aún (preparación).
+  &__blank {
+    color: $text-3;
+    font-size: $fs-20;
+    font-weight: $k-fw-bold;
+    pointer-events: none;
+  }
+
+  // Insignias de estado (candado del guardado, aspa del gastado).
+  &__badge {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: $surface-3;
+    border: 1px solid $border-strong;
+    color: $text-2;
+
+    &--spent { color: $danger; }
+  }
+
+  // El gastado puede llevar las dos: el aspa se desplaza para no solaparse.
+  &__badge--held + &__badge--spent { right: 14px; }
+
+  // Animación breve del lanzamiento (traqueteo del cubilete).
+  &__die.is-rolling {
+    animation: dice-roller-shake 0.45s ease;
+  }
+
+  // --- Panel de acciones del dado seleccionado (en flujo) ---
+
+  &__panel {
+    display: grid;
+    gap: $space-2;
+    padding: $space-3;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+  }
+
+  &__panel-title,
+  &__panel-subtitle {
+    font-size: $fs-13;
+    font-weight: $k-fw-semibold;
+    color: $text-2;
+  }
+
+  &__panel-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  // Muestrario de color (fijar/cambiar/recuperar eligiendo): mismo cuadrado
+  // táctil que los toggles .cost-colors, a tamaño de pulgar.
+  &__swatch {
+    --die-color: #888888;
+
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: $input-bg;
+    border: 1px solid $input-border;
+    border-radius: $input-radius;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+
+    &:hover { border-color: var(--die-color); }
+
+    &.is-active {
+      border-color: var(--die-color);
+      background: color-mix(in srgb, var(--die-color) 20%, transparent);
+      box-shadow: inset 0 0 0 1px var(--die-color);
+    }
+
+    &--red { --die-color: #f15959; }
+    &--green { --die-color: #29ab5f; }
+    &--blue { --die-color: #408cfd; }
+
+    .dice-roller__icon {
+      width: 28px;
+      height: 28px;
+    }
+
+    .dice-roller__fill {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  // --- Acciones de fase y lotes (relanzar/recuperar X aleatorios) ---
+
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-2;
+  }
+
+  &__batch {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: $space-2;
+    padding: $space-3;
+    background: $surface;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+  }
+
+  &__batch-count { width: 130px; }
+
+  &__batch-mode { min-width: 180px; }
+}
+
+@keyframes dice-roller-shake {
+  0% { transform: rotate(0) scale(1); }
+  25% { transform: rotate(-12deg) scale(0.92); }
+  50% { transform: rotate(10deg) scale(1.06); }
+  75% { transform: rotate(-6deg) scale(0.98); }
+  100% { transform: rotate(0) scale(1); }
+}
+
+// La animación es puro adorno: fuera con movimiento reducido.
+@media (prefers-reduced-motion: reduce) {
+  .dice-roller__die.is-rolling { animation: none; }
+}
+
+// Vista propia del lanzador (misma caja que el contador de vidas).
+.dice-roller-view {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: $space-4;
+  display: grid;
+  gap: $space-5;
+
+  @media (min-width: $bp-md) {
+    padding: $space-6;
+  }
+
+  &__title { margin: 0; }
+
+  &__intro {
+    margin: 0;
+    color: $text-3;
+    font-size: $fs-14;
+  }
+}

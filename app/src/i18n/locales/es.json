@@ -149,6 +149,45 @@
         "view": "Ver",
         "hide": "Ocultar"
       }
+    },
+    "diceRoller": {
+      "title": "Lanzador de dados",
+      "intro": "Lanza los dados de acción del juego: fija colores antes de lanzar, relanza guardando los que quieras y gasta o recupera dados durante el turno.",
+      "diceCount": "Número de dados",
+      "prepHint": "Toca un dado para fijar su color antes del lanzamiento: los fijados no se lanzan.",
+      "roll": "Lanzar",
+      "resultHint": "Toca un dado para guardarlo (o soltarlo) y relanza los demás las veces que quieras.",
+      "reroll": "Relanzar",
+      "saveResult": "Salvar el resultado",
+      "gameHint": "Toca un dado para relanzarlo, gastarlo o cambiar su color; toca uno gastado para recuperarlo.",
+      "die": "Dado {n}",
+      "noResult": "sin resultado",
+      "held": "guardado",
+      "spent": "gastado",
+      "colors": {
+        "red": "Rojo",
+        "green": "Verde",
+        "blue": "Azul"
+      },
+      "setColor": "Fijar color",
+      "release": "Soltar",
+      "rerollOne": "Relanzar",
+      "spend": "Gastar",
+      "changeColor": "Cambiar color",
+      "recover": "Recuperar",
+      "recoverReroll": "Relanzándolo",
+      "recoverKeep": "Manteniéndolo",
+      "recoverChoose": "Eligiendo color",
+      "randomCount": "Cuántos",
+      "randomReroll": "Relanzar aleatorios",
+      "randomRecover": "Recuperar aleatorios",
+      "recoverMode": "Cómo recuperarlos",
+      "recoverColor": "Color elegido",
+      "clear": "Limpiar",
+      "clearConfirmTitle": "Limpiar el lanzador",
+      "clearConfirmMessage": "¿Seguro que quieres limpiar los dados? Volverás a la preparación.",
+      "clearConfirm": "Limpiar",
+      "cancel": "Cancelar"
     }
   },
   "collection": {
