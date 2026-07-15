@@ -27,15 +27,21 @@ onMounted(async () => {
 
 <template>
   <AppHeader v-if="!bare" />
-  <!-- La cabecera es fija (CDL): el contenido le deja hueco arriba. El
-       cuerpo es contenido + barra derecha contextual: cada vista registra
-       sus filtros con useAppRightSidebar() y Teleport a
-       #app-right-sidebar-target; se despliega con el botón del header. -->
+  <!-- La cabecera es fija (CDL): el contenido le deja hueco arriba. La
+       barra derecha contextual es FIJA (fuera del flujo): cada vista
+       registra sus filtros con useAppRightSidebar() y Teleport a
+       #app-right-sidebar-target; se abre/cierra con el asa anclada a la
+       propia barra, y desplegada en ancho el contenido le hace hueco
+       (padding-right sobre .app-right-sidebar--docked, ver scss). -->
   <div v-if="!bare" class="site-main">
     <div class="site-content">
       <RouterView />
     </div>
-    <AppRightSidebar :close-label="t('nav.closeFilters')" :fallback-title="t('nav.filters')" />
+    <AppRightSidebar
+      :open-label="t('nav.filters')"
+      :close-label="t('nav.closeFilters')"
+      :fallback-title="t('nav.filters')"
+    />
   </div>
   <RouterView v-else />
   <footer v-if="!bare && (site.footerText || site.title)" class="app-footer">

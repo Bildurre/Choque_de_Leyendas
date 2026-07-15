@@ -29,9 +29,11 @@ h6 {
   flex-direction: column;
 }
 
-// El cuerpo (contenido + barra derecha contextual) ocupa el alto sobrante:
-// el pie sigue pegado abajo. En ancho la barra es una columna junto al
-// contenido; en estrecho se superpone (drawer del propio componente).
+// El cuerpo ocupa el alto sobrante: el pie sigue pegado abajo. La barra
+// derecha contextual (AppRightSidebar) vive aquí pero es FIJA (fuera del
+// flujo): desplegada en ancho, contenido, cabecera y pie le hacen hueco
+// (padding-right abajo y en _app-header.scss); en estrecho se superpone
+// (drawer del propio componente, con telón).
 .site-main {
   flex: 1 0 auto;
   display: flex;
@@ -41,6 +43,18 @@ h6 {
 .site-content {
   flex: 1 1 auto;
   min-width: 0;
+  transition: padding-right 0.25s ease;
+}
+
+// El hueco de la barra desplegada en ancho, al ritmo de su transform.
+body:has(.app-right-sidebar--docked) {
+  .site-content {
+    padding-right: var(--app-right-sidebar-width, 320px);
+  }
+
+  .app-footer {
+    padding-right: calc(var(--app-right-sidebar-width, 320px) + #{$space-6});
+  }
 }
 
 // Pie con el texto de la configuración (texto rico del wysiwyg).
@@ -52,6 +66,7 @@ h6 {
   color: $text-3;
   font-size: $fs-13;
   text-align: center;
+  transition: padding-right 0.25s ease;
 
   // El contenido enriquecido hereda la escala discreta del pie.
   .rich-content {

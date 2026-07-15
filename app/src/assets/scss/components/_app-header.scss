@@ -17,12 +17,14 @@ $header-row2: 46px;
 
   --header-row1: calc(var(--logo-h) + 22px);
 
-  // Techo de la barra derecha contextual (AppRightSidebar de @edc-motor/ui):
-  // arranca justo bajo la cabecera fija (con la fila de navegación en ancho).
-  --app-right-sidebar-top: var(--header-row1);
+  // Asa de la barra derecha contextual (AppRightSidebar de @edc-motor/ui):
+  // la barra es fija a toda altura y por encima de la cabecera; el asa se
+  // ancla justo bajo ella (con la fila de navegación en ancho) para no
+  // pisar sus acciones mientras la cabecera está a la vista.
+  --app-right-sidebar-handle-top: calc(var(--header-row1) + #{$space-4});
 
   @media (min-width: 900px) {
-    --app-right-sidebar-top: calc(var(--header-row1) + #{$header-row2});
+    --app-right-sidebar-handle-top: calc(var(--header-row1) + #{$header-row2} + #{$space-4});
   }
 }
 
@@ -32,7 +34,7 @@ $header-row2: 46px;
   left: 0;
   width: 100%;
   z-index: 50;
-  transition: transform 0.25s ease-in-out;
+  transition: transform 0.25s ease-in-out, padding-right 0.25s ease;
 
   &.is-hidden {
     transform: translateY(-100%);
@@ -112,24 +114,6 @@ $header-row2: 46px;
       align-items: center;
       gap: $space-2;
     }
-  }
-
-  // Botón de los filtros de la vista (despliega la barra derecha
-  // contextual). Vive FUERA de &__actions: visible también en móvil, donde
-  // las acciones se van al off-canvas pero los filtros se quedan a mano.
-  &__filters {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    padding: 0;
-    color: $text-1;
-    cursor: pointer;
-    transition: color 0.15s ease;
-
-    &:hover,
-    &[aria-expanded="true"] { color: $accent-500; }
   }
 
   // Contador de la colección "para imprimir" (enlaza con Descargas).
@@ -460,4 +444,11 @@ $header-row2: 46px;
   @media (min-width: 900px) {
     padding-top: calc(var(--header-row1) + #{$header-row2});
   }
+}
+
+// Con la barra derecha contextual desplegada en ANCHO (fija, por encima de
+// la cabecera), la cabecera le hace hueco igual que el contenido: sus
+// acciones nunca quedan debajo de la barra. Sin telón: solo se re-centra.
+body:has(.app-right-sidebar--docked) .site-header {
+  padding-right: var(--app-right-sidebar-width, 320px);
 }
