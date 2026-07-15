@@ -1,0 +1,164 @@
+[
+    {
+        "name": {
+            "en": "Vanguard",
+            "es": "Vanguardia"
+        },
+        "superclass": {
+            "en": "Fighter",
+            "es": "Combatiente"
+        },
+        "passive": {
+            "en": "<p>The first Single Target Physical Attack this hero performs in each Clash deals +1 damage.<\/p>",
+            "es": "<p>El primer Ataque F&iacute;sico de 1 Objetivo que realice este h&eacute;roe en cada Choque hace +1 de da&ntilde;o.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Paragon",
+            "es": "Paragon"
+        },
+        "superclass": {
+            "en": "Fighter",
+            "es": "Combatiente"
+        },
+        "passive": {
+            "en": "<p>At the end of the Clash, if you played a Tactic, draw 1 Card.<\/p>",
+            "es": "<p>Al final del Choque, si jugaste una T&aacute;ctica, roba 1 Carta.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Harrier",
+            "es": "Hostigador"
+        },
+        "superclass": {
+            "en": "Fighter",
+            "es": "Combatiente"
+        },
+        "passive": {
+            "en": "<p>Takes -1 damage from Area Attacks.<\/p>",
+            "es": "<p>Recibe -1 de da&ntilde;o de Ataques de &Aacute;rea.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Stalker",
+            "es": "Acechador"
+        },
+        "superclass": {
+            "en": "Fighter",
+            "es": "Combatiente"
+        },
+        "passive": {
+            "en": "<p>Has +1 on their Initiative roll.<\/p>",
+            "es": "<p>Tiene +1 en la tirada de Iniciativa.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Harbinger",
+            "es": "Adalid"
+        },
+        "superclass": {
+            "en": "Devotee",
+            "es": "Devoto"
+        },
+        "passive": {
+            "en": "<p>Can play Tactic and Bulwark Techniques but not Penances.<\/p>",
+            "es": "<p>Puede jugar T&eacute;cnicas Baluarte y T&aacute;ctica, pero no Penitencias.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Spellblade",
+            "es": "Spellblade"
+        },
+        "superclass": {
+            "en": "Caster",
+            "es": "Conjurador"
+        },
+        "passive": {
+            "en": "<p>Can play Assault and Pressure Techniques, but not Delusions.<\/p>",
+            "es": "<p>Puede jugar T&eacute;cnicas Asalto y Presi&oacute;n pero no Ilusiones.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Arcanist",
+            "es": "Arcanista"
+        },
+        "superclass": {
+            "en": "Caster",
+            "es": "Conjurador"
+        },
+        "passive": {
+            "en": "<p>The first Spell this hero plays in each Clash may be paid with dice of any color.<\/p>",
+            "es": "<p>El primer Hechizo que juegue este h&eacute;roe en cada Choque puede pagarse con dados de cualquier color.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Elementalist",
+            "es": "Elementalista"
+        },
+        "superclass": {
+            "en": "Caster",
+            "es": "Conjurador"
+        },
+        "passive": {
+            "en": "<p>The first Single Target Elemental Spell this hero plays in each Clash deals +1 damage.<\/p>",
+            "es": "<p>El primer Hechizo Elemental de 1 Objetivo que juegue este h&eacute;roe en cada Choque hace +1 de da&ntilde;o.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Illusionist",
+            "es": "Ilusionista"
+        },
+        "superclass": {
+            "en": "Caster",
+            "es": "Conjurador"
+        },
+        "passive": {
+            "en": "<p data-start=\"0\" data-end=\"113\" data-is-last-node=\"\" data-is-only-node=\"\">When this hero plays the first Illusion Spell in each Clash, choose 1 of the rival player's Prepared Dice and reroll it.<\/p>",
+            "es": "<p>Cuando este h&eacute;roe juegue el primer Hechizo Ilusion en cada Choque, elige un Dado Preparado del jugador rival y relanzalo.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Chosen",
+            "es": "Elegido"
+        },
+        "superclass": {
+            "en": "Devotee",
+            "es": "Devoto"
+        },
+        "passive": {
+            "en": "<p>The first Litany this hero plays in each Clash heals +1 health or deals +1 damage.<\/p>",
+            "es": "<p>La primera Letan&iacute;a que juegue este h&eacute;roe en cada Choque cura +1 de vida o inflige +1 de da&ntilde;o.<\/p>"
+        }
+    },
+    {
+        "name": {
+            "en": "Fanatic",
+            "es": "Fanático"
+        },
+        "superclass": {
+            "en": "Devotee",
+            "es": "Devoto"
+        },
+        "passive": []
+    },
+    {
+        "name": {
+            "en": "Inquisitor",
+            "es": "Inquisidor"
+        },
+        "superclass": {
+            "en": "Devotee",
+            "es": "Devoto"
+        },
+        "passive": []
+    }
+]

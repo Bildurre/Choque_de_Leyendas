@@ -1,0 +1,16 @@
+{
+    "name": {
+        "en": "Mercenaries",
+        "es": "Mercenarios"
+    },
+    "lore_text": {
+        "en": "<p>The Mercenaries have no flag, no homeland, no loyalty beyond gold. They are warriors from all corners of Ulkhimarel, united only by their willingness to fight for the highest bidder. In battle, they are unpredictable and diverse, bringing skills from every faction. Where others see betrayal, they see opportunity.<\/p>",
+        "es": "<p>Los Mercenarios no tienen bandera, ni patria, ni lealtad m&aacute;s all&aacute; del oro. Son guerreros de todos los rincones de Ulkhimarel, unidos solo por su disposici&oacute;n a luchar por el mejor postor. En batalla, son impredecibles y diversos, trayendo habilidades de cada facci&oacute;n. Donde otros ven traici&oacute;n, ellos ven oportunidad.<\/p>"
+    },
+    "epic_quote": {
+        "en": "<p>Loyalty is golden, and gold is our only master.<\/p>",
+        "es": "<p>La lealtad es dorada, y el oro es nuestro &uacute;nico amo.<\/p>"
+    },
+    "heroes": [],
+    "cards": []
+}

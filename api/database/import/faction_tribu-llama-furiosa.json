@@ -1,0 +1,2049 @@
+{
+    "name": {
+        "en": "Raging Flame Tribe",
+        "es": "Tribu Llama Furiosa"
+    },
+    "lore_text": {
+        "en": "Nomads, raiders, devourers of hope. The Raging Flame Tribe devastates like a wildfire, leaving only ruin in their wake. Without a fixed home, without loyalties, their brutality is their law. Night and day, their ambushes drink the fear of their victims before tearing away their lives. Where they trample, not even the earth grows again.",
+        "es": "Nómadas, saqueadores, devoradores de esperanza. La Tribu Llama Furiosa arrasa como un incendio, dejando solo ruina a su paso. Sin hogar fijo, sin lealtades, su brutalidad es su ley. Noche y día, sus emboscadas sorben el miedo de sus víctimas antes de arrancarles la vida. Donde pisotean, ni la tierra vuelve a crecer."
+    },
+    "epic_quote": {
+        "en": "We are the hunger that devours even ashes.",
+        "es": "Somos el hambre que devora incluso las cenizas."
+    },
+    "heroes": [
+        {
+            "name": {
+                "en": "Antral",
+                "es": "Antral"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Vanguard",
+                "es": "Vanguardia"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 3,
+                "strength": 3,
+                "armor": 3,
+                "health": 20
+            },
+            "passive_name": {
+                "en": "Bloody Tribute",
+                "es": "Tributo Sangriento"
+            },
+            "passive_description": {
+                "en": "<p>Each time this hero deals damage to a hero with at least 1 bane counter on them, that hero takes 1 Direct damage.<\/p>",
+                "es": "<p>Cada vez que este h&eacute;roe haga da&ntilde;o a un h&eacute;roe con al menos 1 contador de perjuicio sobre &eacute;l, ese h&eacute;roe recibe 1 da&ntilde;o Directo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Antral knows no honor, only hunger. His sword makes no distinction between bone and flesh, and his laughter echoes with each torn victim. For him, war is not a means, but a feast. Every massacre is a poem written in blood, every battle, a celebration of annihilation.<\/p>",
+                "es": "<p>Antral no conoce el honor, solo el hambre. Su espada no distingue entre huesos y carne, y su risa resuena con cada v&iacute;ctima desgarrada. Para &eacute;l, la guerra no es un medio, es un banquete. Cada masacre es un poema escrito en sangre, cada batalla, una celebraci&oacute;n de la aniquilaci&oacute;n.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Each massacre, a verse in blood's dark poetry.<\/p>",
+                "es": "<p>Cada masacre, un verso en la oscura poes&iacute;a de la sangre.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Fleeting Cut",
+                        "es": "Corte Fugaz"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Oppressive Strike:",
+                        "es": "Golpe Opresor"
+                    },
+                    "cost": "GG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the target hero has at least 1 bane counter: Terrified, deal +2 damage.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el h&eacute;roe objetivo tiene al menos 1 contador de perjuicio: Aterrado, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Arila",
+                "es": "Arila"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Harrier",
+                "es": "Hostigador"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 3,
+                "strength": 4,
+                "armor": 2,
+                "health": 19
+            },
+            "passive_name": {
+                "en": "Harassment",
+                "es": "Acoso"
+            },
+            "passive_description": {
+                "en": "<p>At the start of the Clash, look at the top Card of the rival player&rsquo;s Deck. Put that Card on the top or bottom of their Deck.<\/p>",
+                "es": "<p>Al inicio del Choque, mira la primera Carta de la Biblioteca del jugador rival. Pon esa Carta en la parte superior o inferior de su Biblioteca.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Arila doesn't walk, she drags storms. Where she steps, the earth spits ash. Her cunning is a knife in the enemy's ribs; her strength, a hammer that crushes skulls. There is no legend, only warning: if you see her silhouette against the fire, it's already too late. The Furious Flame forgives not... and she is its worst punishment.<\/p>",
+                "es": "<p>Arila no camina, arrastra tormentas. Donde pisa, la tierra escupe ceniza. Su astucia es un cuchillo en las costillas del enemigo; su fuerza, un martillo que aplasta cr&aacute;neos. No hay leyenda, solo advertencia: si ves su silueta contra el fuego, ya es demasiado tarde. La Llama Furiosa no perdona&hellip; y ella es su peor castigo.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Ash follows my footsteps; death rides in my wake.<\/p>",
+                "es": "<p>La ceniza sigue mis pasos; la muerte cabalga en mi estela.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Void Arrow",
+                        "es": "Flecha del Vacío"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deal 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the rival player has discarded at least 1 Card this Clash, reroll 1 of their Prepared Dice of your choice and deals +1 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el jugador rival ha descartado al menos 1 Carta en este Choque, relanza 1 de sus Dados Preparados a tu elecci&oacute;n y hace +1 de da&ntilde;o.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Black Arrow",
+                        "es": "Saeta Negra"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If you have already played a Subterfuge or Pressure Action this Clash, it deals +2 damage.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si ya jugaste una Acci&oacute;n Subterfugio o Presi&oacute;n en este Choque, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Eistanaak",
+                "es": "Eistanaak"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Vanguard",
+                "es": "Vanguardia"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 2,
+                "mental": 2,
+                "will": 2,
+                "strength": 4,
+                "armor": 3,
+                "health": 21
+            },
+            "passive_name": {
+                "en": "Intimidating Presence",
+                "es": "Presencia Intimidante"
+            },
+            "passive_description": {
+                "en": "<p>At the start of the Clash, if the rival player has 4 or more Cards in hand, they discard 1 random Card.<\/p>",
+                "es": "<p>Al inicio del Choque, si el jugador rival tiene 4 o m&aacute;s Cartas en la mano, descarta 1 Carta aleatoria.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Eistanaak knows no fear, only the roar of battle. His muscles, hardened in the fire of a thousand raids, shatter bones like dry branches. No cry stops him, no shield withstands his onslaught. The blood of his enemies feeds the earth, but his thirst is never quenched. He is fury made flesh and will not rest until the world burns at his feet.<\/p>",
+                "es": "<p>Eistanaak no conoce el miedo, solo el rugido de la batalla. Sus m&uacute;sculos, curtidos en el fuego de mil saqueos, destrozan huesos como ramas secas. No hay grito que lo detenga, ni escudo que resista sus embates. La sangre de sus enemigos alimenta la tierra, pero su sed nunca se sacia. Es la furia hecha carne y no descansar&aacute; hasta que el mundo arda a sus pies.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Bones break like promises before my rage.<\/p>",
+                "es": "<p>Los huesos se rompen como promesas ante mi furia.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Yoke Slash",
+                        "es": "Tajo del Yugo"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the rival player has discarded at least 1 Card this Clash, it deals +2 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el jugador rival ha descartado al menos 1 Carta en este Choque, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Sweep",
+                        "es": "Barrido"
+                    },
+                    "cost": "GGB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": true,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero and to each enemy hero from previous pairings.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y a cada h&eacute;roe rival de los emparejamientos anteriores.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Elreik",
+                "es": "Elreik"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Vanguard",
+                "es": "Vanguardia"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 2,
+                "strength": 4,
+                "armor": 3,
+                "health": 19
+            },
+            "passive_name": {
+                "en": "Savage Impetus",
+                "es": "Ímpetu Salvaje"
+            },
+            "passive_description": {
+                "en": "<p>When you play your first Assault or Pressure Technique in each Clash, you may reroll 1 of your Spent Dice and keep it as a Prepared Die.<\/p>",
+                "es": "<p>Cuando juegues tu primera T&eacute;cnica Asalto o Presi&oacute;n en cada Choque, puedes relanzar 1 de tus Dados Gastados y guardarlo como Dado Preparado.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Elreik knows no mercy, only the pleasure of carnage. Her hands are stained with dried blood, her smile is a promise of pain. Where she steps, fear blossoms. She is not a warrior, but a hurricane of broken bones and torn flesh. Around the Fire Mountains, her name is whispered like a curse.<\/p>",
+                "es": "<p>Elreik no conoce la piedad, solo el placer de la carnicer&iacute;a. Sus manos est&aacute;n te&ntilde;idas de sangre seca, su sonrisa es una promesa de dolor. Donde pisa, el miedo florece. No es una guerrera, es un hurac&aacute;n de huesos rotos y carne desgarrada. En los alrededores de las Monta&ntilde;as de Fuego, su nombre se susurra como una maldici&oacute;n.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Fear blooms where mercy dies.<\/p>",
+                "es": "<p>El miedo florece donde muere la piedad.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Dusk Blade",
+                        "es": "Cuchilla del Ocaso"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the target hero has at least 1 bane counter: Terrified, place 1 bane counter: Exhausted on them if they don&rsquo;t already have one; if they do, deal +2 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el h&eacute;roe objetivo tiene al menos 1 contador de perjuicio: Aterrado, col&oacute;cale 1 contador de perjuicio: Exhausto si no tiene ya al menos 1; si lo tiene, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Lethal Slash",
+                        "es": "Tajo Letal"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 4 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 4 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Erdel",
+                "es": "Erdel"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Harrier",
+                "es": "Hostigador"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 3,
+                "strength": 3,
+                "armor": 2,
+                "health": 21
+            },
+            "passive_name": {
+                "en": "Preying on the Weak",
+                "es": "Ensañarse con el débil"
+            },
+            "passive_description": {
+                "en": "<p>The first time it deals damage to each enemy hero in each Clash, that hero removes 1 random boon counter.<\/p>",
+                "es": "<p>La primera vez que haga da&ntilde;o a cada h&eacute;roe rival en cada Choque, ese h&eacute;roe remueve 1 contador de beneficio aleatorio.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Erdel doesn't shoot arrows, he sows agony. Each projectile pierces eyes, throats, entrails, leaving prey alive but broken. He lurks from the darkness, laughing as the wounded drag their bodies. He is not an archer, but a butcher at a distance, turning hunting into a spectacle of blood and despair.<\/p>",
+                "es": "<p>Erdel no dispara flechas, siembra agon&iacute;a. Cada proyectil perfora ojos, gargantas, entra&ntilde;as, dejando a las presas vivas pero rotas. Acecha desde la oscuridad, riendo mientras los heridos arrastran sus cuerpos. No es un arquero, es un carnicero a distancia, que convierte la caza en un espect&aacute;culo de sangre y desesperaci&oacute;n.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Distance matters not when agony is the prize.<\/p>",
+                "es": "<p>La distancia no importa cuando la agon&iacute;a es el premio.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Profane Shot",
+                        "es": "Tiro Profano"
+                    },
+                    "cost": "RB",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the rival player has discarded at least 1 Card this Clash, deals +1 damage and places 1 bane counter: Dimmed on that hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el jugador rival ha descartado al menos 1 Carta en este Choque, hace +1 de da&ntilde;o y le coloca 1 contador de perjuicio: Ofuscado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Treacherous Shot",
+                        "es": "Tiro a Traición"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero or to an adjacent enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado o a un h&eacute;roe rival adyacente.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Erinla",
+                "es": "Erinla"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Harrier",
+                "es": "Hostigador"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 2,
+                "strength": 4,
+                "armor": 2,
+                "health": 20
+            },
+            "passive_name": {
+                "en": "The Taste of Fear",
+                "es": "El Sabor del Miedo"
+            },
+            "passive_description": {
+                "en": "<p>If this hero has played at least 1 Subterfuge or Presure in this Clash, deals +1 damage with Single-Target Attacks.<\/p>",
+                "es": "<p>Si este h&eacute;roe ha jugado al menos 1 carta de Subterfugio o Presi&oacute;n en este Choque, hace +1 de da&ntilde;o con sus Ataques de 1 Objetivo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Erinla's bone bow demands death. Each arrow is a lightning bolt that pierces hearts at a hundred paces. There is no escape, no mercy. She trains until her fingers bleed, because in the Furious Flame, to fail is to rot in the desert. She does not fail. She only accumulates corpses.<\/p>",
+                "es": "<p>El arco de hueso de Erinla exige muerte. Cada flecha es un rel&aacute;mpago que perfora corazones a cien pasos. No hay fuga, no hay clemencia. Entrena hasta que sus dedos sangran, porque en la Llama Furiosa, fallar es pudrirse en el desierto. Ella no falla. Solo acumula cad&aacute;veres.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Failure feeds the desert; I feed it enemies.<\/p>",
+                "es": "<p>El fracaso alimenta al desierto; yo lo alimento con enemigos.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Arrow Shot",
+                        "es": "Flechazo"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Double Shot",
+                        "es": "Tiro Doble"
+                    },
+                    "cost": "RGG",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": true,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero and to 1 random adjacent enemy hero.<\/p>\r\n<p>If you have already played a Subterfuge or Pressure Action in this Clash, they each take +1 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y a 1 heroe rival adyacente aleatorio.<\/p>\r\n<p>Si ya jugaste una Acci&oacute;n Subterfugio o Presi&oacute;n en este Choque, les hace +1 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Granaak, the Relentless",
+                "es": "Granaak, el Implacable"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Paragon",
+                "es": "Paragon"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 2,
+                "mental": 2,
+                "will": 3,
+                "strength": 3,
+                "armor": 4,
+                "health": 21
+            },
+            "passive_name": {
+                "en": "Oppressive Pressure",
+                "es": "Presión Opresiva"
+            },
+            "passive_description": {
+                "en": "<p>When preparing Action Dice, before making any roll, the paired enemy hero must keep 2 <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red.svg\" alt=\"Dado Rojo\"> Dice.<\/p>",
+                "es": "<p>A la hora de preparar los Dados de Acci&oacute;n, antes de hacer ninguna tirada, el h&eacute;roe rival emparejado debe guardar 2 Dados <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red.svg\" alt=\"Dado Rojo\">.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Granaak does not rule, he dominates. His sword, forged with iron from defeated enemies, crushes skulls like shells. He ascended bathed in his predecessor's blood, and since then the Furious Flame burns beyond the mountains. He doesn't lead with words, but with broken bones and villages reduced to ashes. His legend is a warning: to resist is to burn.<\/p>",
+                "es": "<p>Granaak no gobierna, domina. Su espada, forjada con el hierro de enemigos derrotados, aplasta cr&aacute;neos como c&aacute;scaras. Ascendi&oacute; ba&ntilde;ado en la sangre de su predecesor, y desde entonces la Llama Furiosa quema m&aacute;s all&aacute; de las monta&ntilde;as. No lidera con palabras, sino con huesos rotos y aldeas reducidas a cenizas. Su leyenda es una advertencia: resistirse es arder.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>To resist is to burn; to submit is to serve ashes.<\/p>",
+                "es": "<p>Resistir es arder; someterse es servir a las cenizas.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Voracious Cut",
+                        "es": "Corte Voraz"
+                    },
+                    "cost": "GG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>For each card the rival player has discarded this Clash, it deals +1 damage.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al heroe rival emparejado.<\/p>\r\n<p>Por cada carta que el jugador rival haya descartado este Choque, hace +1 de da&ntilde;o.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Terrifying Strike",
+                        "es": "Golpe Aterrador"
+                    },
+                    "cost": "BB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Streght damage to the paired enemy hero.<\/p>\r\n<p>Choose the target hero and 1 adjacent enemy hero. Place 1 bane counter: Terrified on one of them and 1 bane counter: Weakened on the other.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Elige al h&eacute;roe objetivo y a 1 h&eacute;roe rival adyacente. Coloca 1 contador de perjuicio: Aterrado sobre 1 de ellos y 1 contador de perjuicio: Debilitado sobre el otro.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Grendel",
+                "es": "Grendel"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Stalker",
+                "es": "Acechador"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 4,
+                "mental": 2,
+                "will": 2,
+                "strength": 4,
+                "armor": 2,
+                "health": 18
+            },
+            "passive_name": {
+                "en": "Furtive Shadow",
+                "es": "Sombra Furtiva"
+            },
+            "passive_description": {
+                "en": "<p>If this hero is not the active hero, they take -2 damage from Area or Random Target Attacks.<\/p>",
+                "es": "<p>Si este h&eacute;roe no es el h&eacute;roe activo, recibe -2 de da&ntilde;o de Ataques de &Aacute;rea o de Objetivo Aleatorio.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Grendel doesn't speak, doesn't laugh, doesn't play. She only stalks. Her victims never see her coming; they only feel the cold steel sinking into their backs. No warnings, no provocations, no theater. Only quick, silent death. In the Furious Flame, she is the shadow everyone fears... because when you notice her, it's already too late.<\/p>",
+                "es": "<p>Grendel no habla, no r&iacute;e, no juega. Solo acecha. Sus v&iacute;ctimas nunca la ven llegar; solo sienten el fr&iacute;o del acero al hundirse en sus espaldas. No hay advertencias, ni provocaciones, ni teatro. Solo muerte r&aacute;pida y silenciosa. En la Llama Furiosa, es la sombra que todos temen&hellip; porque cuando la notas, ya es demasiado tarde.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Silence speaks louder than screams.<\/p>",
+                "es": "<p>El silencio habla m&aacute;s alto que los gritos.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Silent Stab",
+                        "es": "Puñalada Silente"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strenght damage to the paired enemy hero.<\/p>\r\n<p>If this is this hero&rsquo;s first Action in the Clash, deals +1 damage and the damage from this Attack cannot be reduced or prevented.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si es la primera Acci&oacute;n de este h&eacute;roe en el Choque, hace +1 de da&ntilde;o y el da&ntilde;o de este Ataque no puede ser reducido ni prevenido.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Shadow Strike",
+                        "es": "Golpe Sombrío"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Darkness",
+                        "es": "Oscuridad"
+                    },
+                    "attack_type": "magical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the target hero has at least 1 bane counter: Terrified, place 1 bane counter: Dimmed on them, and the rival player rerolls 1 of their Prepared Dice at random.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el h&eacute;roe objetivo tiene al menos 1 contador de perjuicio: Aterrado, col&oacute;cale 1 contador de perjuicio: Ofuscado y el jugador rival relanza 1 de sus Dados Preparados al azar.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Váreka, Voice of the Shattered",
+                "es": "Váreka, Voz del Quebranto"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Paragon",
+                "es": "Paragon"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 2,
+                "mental": 3,
+                "will": 4,
+                "strength": 3,
+                "armor": 2,
+                "health": 20
+            },
+            "passive_name": {
+                "en": "Unbearable Whisper",
+                "es": "Susurro Insoportable"
+            },
+            "passive_description": {
+                "en": "<p>At the start of the Clash, the rival player reveals 1 random Card from their hand. They may discard it or have the paired enemy hero take Direct damage equal to its Cost +1.<\/p>",
+                "es": "<p>Al inicio del Choque, el jugador rival revela 1 Carta al azar de su mano. Puede descartarla o hacer que el h&eacute;roe rival emparejado reciba da&ntilde;o Directo igual a su Coste +1.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>V&aacute;reka was one of the few orcs born in silence. Her tribe said the spirits stole her cry to fill her with whispers. She grew up hearing the confessions of the dying, the fears of cowards, and the lies of leaders. In battle, she neither roars nor shout: she whispers words the enemy was never meant to hear: words that wound the mind, awaken guilt, and unravel will. None have met her gaze without feeling something within them crumble. Wherever V&aacute;reka advances, thoughts rot before flesh.<\/p>",
+                "es": "<p>V&aacute;reka fue una de las pocas orcas nacidas en silencio. Su tribu dec&iacute;a que los esp&iacute;ritus le robaron el grito para llenarla de susurros. Creci&oacute; oyendo las confesiones de los moribundos, los temores de los cobardes y las mentiras de los l&iacute;deres. En batalla, no grita ni ruge: susurra palabras que el enemigo no deber&iacute;a o&iacute;r: palabras que hieren la mente, que despiertan culpas, que deshacen la voluntad. Nadie ha resistido su mirada sin sentir que algo dentro de s&iacute; se desmorona. Donde V&aacute;reka avanza, los pensamientos se pudren antes que la carne.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>I don&rsquo;t need your silence. Only the moment you realize you have nothing left to say.<\/p>",
+                "es": "<p>No necesito tu silencio. Solo el momento en que entiendas que ya no te queda nada que decir.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Yoke Slash",
+                        "es": "Tajo del Yugo"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the rival player has discarded at least 1 Card this Clash, it deals +2 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el jugador rival ha descartado al menos 1 Carta en este Choque, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Lethal Slash",
+                        "es": "Tajo Letal"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 4 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 4 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Saira",
+                "es": "Saira"
+            },
+            "race": {
+                "en": "Orc",
+                "es": "Orco"
+            },
+            "class": {
+                "en": "Stalker",
+                "es": "Acechador"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 4,
+                "mental": 2,
+                "will": 3,
+                "strength": 3,
+                "armor": 2,
+                "health": 19
+            },
+            "passive_name": {
+                "en": "Punish",
+                "es": "Castigar"
+            },
+            "passive_description": {
+                "en": "<p>Each time the paired rival hero plays a Card, they take 1 Direct damage.<\/p>",
+                "es": "<p>Cada vez que el h&eacute;roe rival emparejado juegue una Carta, recibe 1 da&ntilde;o Directo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Saira leaves no trace. She speaks little, observes much. Her laugh, brief and dry, is not of joy but of certainty: the sound she makes when everything unfolds exactly as she planned. In battle, she never improvises; she sharpens fear as others sharpen a blade. Every enemy&rsquo;s breath, every doubt, every mistake is a string she has already pulled tight. When she strikes, she doesn&rsquo;t seek blood: she seeks silence.<\/p>",
+                "es": "<p>Saira no deja huellas. Habla poco, observa mucho. Su risa, breve y seca, no es de alegr&iacute;a sino de certeza: el sonido que hace cuando todo ocurre exactamente como lo plane&oacute;. En combate no improvisa; prepara el miedo como otros afilan un cuchillo. Cada respiraci&oacute;n del enemigo, cada duda, cada error, es una cuerda que ella misma ha tensado de antemano. Cuando ataca, no busca sangre: busca silencio.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Fear isn&rsquo;t felt. It&rsquo;s calculated.<\/p>",
+                "es": "<p>El miedo no se siente. Se calcula.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Blade of Dread",
+                        "es": "Filo del Pavor"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deal 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the target hero has at least 1 bane counter: Terrified, make another Attack dealing 2 + Strength Darkness Magic Melee damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el h&eacute;roe objetivo tiene al menos 1 contador de perjuicio: Aterrado, hace otro Ataque de 2 + Fuerza de da&ntilde;o Melee M&aacute;gico Oscuridad.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Premeditatted Assault",
+                        "es": "Asalto Premeditado"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deal 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If this is this hero&rsquo;s first Action in the Clash, return 1 Subterfuge or Pressure Card from your Graveyard to your hand.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si es la primera Acci&oacute;n de este h&eacute;roe en el Choque, devuelve 1 Carta Subterfugio o Presi&oacute;n de tu Cementerio a tu mano.<\/p>"
+                    }
+                }
+            ]
+        }
+    ],
+    "cards": [
+        {
+            "name": {
+                "en": "Savage Onslaught",
+                "es": "Arremetida Salvaje"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Assault",
+                "es": "Asalto"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Slashing",
+                "es": "Cortante"
+            },
+            "area": false,
+            "cost": "GG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>Place 1 bane counter: Terrified on that hero.<\/p>",
+                "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Coloca 1 contador de perjuicio: Aterrado sobre ese h&eacute;roe.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p data-start=\"645\" data-end=\"928\">The warrior charges with a roar that drowns out all sound. The air trembles, the ground splits beneath his steps, and fear spreads before the blade even strikes. In the Raging Flame Tribe, there are no warnings&mdash;only the certainty that terror comes before the blow.<\/p>",
+                "es": "<p data-start=\"157\" data-end=\"455\">El guerrero carga con un rugido que apaga todos los dem&aacute;s sonidos. El aire vibra, la tierra se abre bajo sus pasos, y el miedo se propaga antes de que la hoja alcance la carne. En la Tribu Llama Furiosa, no hay advertencias: solo la certeza de que el terror llega antes que el golpe.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>First they scream&hellip; then they bleed.<\/p>",
+                "es": "<p>Primero gritan&hellip; luego sangran.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Curse of the Inner Flame",
+                "es": "Maldición del Fuego Interior"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "R",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Place 1 bane counter: Terrified on the paired enemy hero and on 1 random adjacent enemy hero.<\/p>\r\n<p>Instead, place 1 bane counter: Exhausted on each that already had at least 1 bane counter: Terrified.<\/p>",
+                "es": "<p>Coloca 1 contador de perjuicio: Aterrado sobre el h&eacute;roe rival emparejado y sobre 1 h&eacute;roe rival adyacente aleatorio.<\/p>\r\n<p>En lugar de eso, coloca 1 contador de perjuicio: Exhausto sobre cada uno que ya tuviera al menos 1 contador de perjuicio: Aterrado.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Dicen que el fuego de los orcos no se apaga: se esconde bajo la piel, esperando brotar. Un susurro, una maldici&oacute;n, y la llama del miedo prende en el alma del enemigo. Ni los m&aacute;s valientes pueden contener el temblor cuando arde desde dentro.<\/p>",
+                "es": "<p>They say the orcs&rsquo; fire never dies: it hides beneath the skin, waiting to ignite. A whisper, a curse, and the flame of fear burns within the enemy&rsquo;s soul. Even the bravest tremble when the blaze comes from inside.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>El miedo tambi&eacute;n es fuego; solo necesita ox&iacute;geno.<\/p>",
+                "es": "<p>Fear is fire too; it only needs air to burn.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Intimidating Gaze",
+                "es": "Mirada Intimidante"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Pressure",
+                "es": "Presión"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Ranged",
+                "es": "A Distancia"
+            },
+            "attack_type": "magical",
+            "attack_subtype": {
+                "en": "Darkness",
+                "es": "Oscuridad"
+            },
+            "area": false,
+            "cost": "B",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Mental damage to the paired enemy hero.<\/p>\r\n<p>Place 1 bane counter: Terrified on that hero.<\/p>",
+                "es": "<p>Hace 2 + Mente de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Coloca 1 contador de perjuicio: Aterrado sobre ese h&eacute;roe.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p data-start=\"1930\" data-end=\"2162\">A single glance is enough to shatter will. There is no spell or promise in those eyes, only the certainty of death to come. Enemies feel their chests tighten, as if their souls already knew they&rsquo;ve been hunted.<\/p>\r\n<p data-start=\"2164\" data-end=\"2392\">&nbsp;<\/p>",
+                "es": "<p>Una sola mirada basta para quebrar la voluntad. No hay hechizo ni promesa en esos ojos, solo la certeza de la muerte pr&oacute;xima. Los enemigos sienten su pecho oprimirse, como si el alma supiera que ya ha sido cazada.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>I need no words to make them tremble.<\/p>",
+                "es": "<p>No necesito palabras para que empiecen a temblar.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Echoes of Terror",
+                "es": "Ecos del Terror"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": {
+                "en": "<p><strong>Reaction<\/strong>: When the paired enemy hero takes Physical damage.<\/p>",
+                "es": "<p><strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe rival emparejado reciba da&ntilde;o F&iacute;sico.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Place 1 bane counter: Terrified on that hero.<\/p>\r\n<p><strong>Resonate<\/strong>: The rival player rerolls 1 of their Prepared Dice at random.<\/p>",
+                "es": "<p>Coloca 1 contador de perjuicio: Aterrado sobre ese h&eacute;roe.<\/p>\r\n<p><strong>Resonar<\/strong>: El jugador rival relanza 1 de sus Dados Preparados al azar.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Fear remembers. Every wound leaves an echo that repeats inside the enemy&rsquo;s mind, a whisper that the next strike will be their last. The Raging Flame Tribe does not fight; it lets panic finish the battle.<\/p>",
+                "es": "<p data-start=\"2634\" data-end=\"2876\">El miedo tiene memoria. Cada herida deja un eco que se repite en la mente del enemigo, una voz invisible que susurra que el pr&oacute;ximo golpe ser&aacute; el &uacute;ltimo. La Tribu Llama Furiosa no lucha: deja que el p&aacute;nico acabe el trabajo.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The echo of fear is louder than the scream.<\/p>",
+                "es": "<p>El eco del miedo suena m&aacute;s alto que el grito.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Savage Disruption",
+                "es": "Interrupción Salvaje"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Subterfuge",
+                "es": "Subterfugio"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Piercing",
+                "es": "Perforante"
+            },
+            "area": false,
+            "cost": "R",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 1 + Agility damage to the paired enemy hero.<\/p>\r\n<p>The rival player rerolls 1 of their Prepared Dice at random.<\/p>",
+                "es": "<p>Hace 1 + Agilidad de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>El jugador rival relanza 1 de sus Dados Preparados al azar.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Steel emerges from the void like a forgotten memory. There is no warning, only the precise strike that tears air and flesh alike. The orcs of the Raging Flame strike when unseen, vanishing before blood even touches the ground.<\/p>",
+                "es": "<p>El acero surge del vac&iacute;o como un recuerdo olvidado. No hay advertencia, solo el golpe preciso que desgarra el aire y la carne. Los orcos de la Llama Furiosa atacan cuando nadie mira, y desaparecen antes de que la sangre toque el suelo.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>If you see my shadow, it&rsquo;s already too late.<\/p>",
+                "es": "<p>Si ves mi sombra, ya es demasiado tarde.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Ambush of Sand",
+                "es": "Emboscada de Arena"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Pressure",
+                "es": "Presión"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Slashing",
+                "es": "Cortante"
+            },
+            "area": false,
+            "cost": "RB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>The rival player discards 1 card at random.<\/p>",
+                "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>El jugador rival descarta 1 carta al azar.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The desert is their ally. From nothing rises a storm of dust, carrying blades of wind and fury. Enemies fall not from the blade itself, but from the fear of not knowing where the next strike will come from.<\/p>",
+                "es": "<p>El desierto es su aliado. De la nada surge una tormenta de polvo, y con ella, cuchillas envueltas en viento y furia. Los enemigos no caen por el filo, sino por el miedo de no saber de d&oacute;nde vendr&aacute; el siguiente ataque.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The dust hides my steps, but not my intent.<\/p>",
+                "es": "<p>El polvo cubre mis pasos, pero no mis intenciones.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Shadows in the Mist",
+                "es": "Sombras en la Niebla"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Subterfuge",
+                "es": "Subterfugio"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Aura",
+                "es": "Aura"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Darkness",
+                "es": "Oscuridad"
+            },
+            "area": false,
+            "cost": "B",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Place 1 bane counter: Dimmed and 1 bane counter: Numbed on the paired enemy hero.<\/p>\r\n<p>Place 1 boon counter: Elusive on the active allied hero.<\/p>",
+                "es": "<p>Coloca 1 contador de perjuicio: Ofuscado y 1 contador de perjuicio: Entumecido sobre el h&eacute;roe rival emparejado.<\/p>\r\n<p>Coloca 1 contador de beneficio: Escurridizo sobre el h&eacute;roe aliado activo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Smoke twists around the senses, clouding sight and thought. Where enemies once stood, only a curtain of ash and deceit remains. In the Raging Flame Tribe, mist does not conceal, it hunts.<\/p>",
+                "es": "<p data-start=\"2190\" data-end=\"2392\">El humo se enreda en los sentidos, confunde la vista y la mente. Donde antes hab&iacute;a enemigos, solo queda una cortina de ceniza y enga&ntilde;o. En la Llama Furiosa, la niebla no oculta, caza.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Confusion is the sharpest blade.<\/p>",
+                "es": "<p>La confusi&oacute;n es el filo m&aacute;s afilado.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Silent Edge",
+                "es": "Filo Callado"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Subterfuge",
+                "es": "Subterfugio"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Slashing",
+                "es": "Cortante"
+            },
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If this is this hero&rsquo;s first action in the Clash, place 1 bane counter: Exhausted on that hero.<\/p>",
+                "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si es la primera acci&oacute;n de este h&eacute;roe en el Choque, coloca 1 contador de perjuicio: Exhausto sobre ese h&eacute;roe.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>There is no sound, only the promise of an imminent end. The cut is so precise that even the air takes a moment to understand it. The orcs who master the whisper need no strength, only the certainty of where life ends.<\/p>",
+                "es": "<p data-start=\"1467\" data-end=\"1694\">No hay sonido, solo la promesa de un final inminente. El corte es tan preciso que el aire tarda en comprenderlo. Los orcos que dominan el susurro no necesitan fuerza, solo la certeza de d&oacute;nde termina la vida.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>When silence speaks, you&rsquo;ve already lost.<\/p>",
+                "es": "<p>Cuando el silencio habla, ya has perdido.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Loot and Plunder",
+                "es": "Robo y Pillaje"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>The rival player reveals their Hand and you choose 1 Card that is not Support from among the revealed Cards. The rival player discards that Card.<\/p>",
+                "es": "<p>El jugador rival muestra su Mano y t&uacute; eliges 1 Carta que no sea Apoyo de entre las cartas mostradas. El jugador rival descarta esa Carta.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>They do not seek riches, only to break the will. Each raid takes more than objects, it steals the enemy&rsquo;s faith in victory. In the ash deserts, despair is the greatest plunder.<\/p>",
+                "es": "<p data-start=\"442\" data-end=\"660\">No buscan riquezas, solo quebrar la voluntad. Cada saqueo arranca algo m&aacute;s que objetos, arranca la fe del enemigo en su propia victoria. En los desiertos de ceniza, la desesperanza es el mayor bot&iacute;n.<\/p>\r\n<p data-start=\"662\" data-end=\"857\">&nbsp;<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Nothing weighs more than lost hope.<\/p>",
+                "es": "<p>Nada pesa m&aacute;s que la esperanza perdida.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Despoil",
+                "es": "Despojo"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "B",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Choose between the rival player or yourself. The chosen player discards 2 Cards from their Hand, then draws 1 Card.<\/p>\r\n<p><strong>Resonate<\/strong>:&nbsp; Draw 1 Card.<\/p>",
+                "es": "<p data-start=\"198\" data-end=\"404\">Elige entre el jugador rival o t&uacute;. El jugador elegido descarta 2 Cartas de su Mano y luego roba 1 Carta.<\/p>\r\n<p data-start=\"198\" data-end=\"404\"><strong>Resonar<\/strong>: Roba 1 Carta.<\/p>\r\n<p data-start=\"406\" data-end=\"633\" data-is-last-node=\"\" data-is-only-node=\"\">&nbsp;<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The exchange is simple: the enemy gives up control in a desperate attempt to endure. But the Raging Flame gives no quarter, and what it leaves in the rival&rsquo;s hands is already burning.<\/p>",
+                "es": "<p data-start=\"1221\" data-end=\"1432\">El intercambio es simple: el enemigo entrega su control a cambio de un &uacute;ltimo intento de resistir. Pero la Llama Furiosa nunca da tregua, y lo que deja en las manos del rival ya est&aacute; ardiendo.<\/p>\r\n<p data-start=\"1434\" data-end=\"1636\">&nbsp;<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Let them keep something, so they burn slower.<\/p>",
+                "es": "<p>Deja que conserve algo, as&iacute; arder&aacute; m&aacute;s despacio.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "From the Darkness",
+                "es": "Desde la Oscuridad"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "R",
+            "restriction": {
+                "en": "<p><strong>Reaction<\/strong>: When the rival player draws 1 Card.<\/p>",
+                "es": "<p><strong>Reacci&oacute;n<\/strong>: Cuando el jugador rival robe 1 Carta.<\/p>"
+            },
+            "effect": {
+                "en": "<p>That player discards 1 Card at random from their Hand.<\/p>",
+                "es": "<p>Ese jugador descarta 1 Carta al azar de su Mano.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In the shadows, the orc&rsquo;s laughter echoes, knowing how it ends. Every attempt the enemy makes to rise just opens another wound. Darkness does not answer with fear, it answers with mockery.<\/p>",
+                "es": "<p>Entre las sombras se oye la risa del orco que ya conoce el final. Cada intento del enemigo por alzarse solo abre una nueva herida. La oscuridad no responde con miedo, responde con burla.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Laugh with me, for you&rsquo;re already dead.<\/p>",
+                "es": "<p>R&iacute;e conmigo, que ya est&aacute;s muerto.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Arrow of Despoil",
+                "es": "Flecha del Despojo"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Pressure",
+                "es": "Presión"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Ranged",
+                "es": "A Distancia"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Piercing",
+                "es": "Perforante"
+            },
+            "area": false,
+            "cost": "BB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>The rival player discards 1 Card from their Hand.<\/p>",
+                "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>El jugador rival descarta 1 Carta de su Mano.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The arrow does not seek a heart, it seeks to break courage. As the string tightens, the enemy feels more than air leaving their lungs. There is no defense against a loss you never see coming.<\/p>",
+                "es": "<p data-start=\"326\" data-end=\"550\">La flecha no busca un coraz&oacute;n, busca quebrar el valor. Cuando la cuerda se tensa, el enemigo siente c&oacute;mo se vac&iacute;a algo m&aacute;s que el aire de sus pulmones. No hay defensa contra una p&eacute;rdida que no se ve venir.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>What I steal cannot be held in hands.<\/p>",
+                "es": "<p>Lo que robo no se guarda en las manos.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Pay Tribute",
+                "es": "Pagar Tributo"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "GB",
+            "restriction": {
+                "en": "<p><strong>Reaction<\/strong>: When the rival player is about to draw 1 or more Cards.<\/p>",
+                "es": "<p><strong>Reacci&oacute;n<\/strong>: Cuando el jugador rival vaya a robar 1 o m&aacute;s Cartas.<\/p>"
+            },
+            "effect": {
+                "en": "<p>That player draws 1 fewer Card from that effect.<\/p>\r\n<p>Draw 1 Card.<\/p>",
+                "es": "<p>El jugador rival roba 1 Carta menos por ese efecto.<\/p>\r\n<p>Roba 1 Carta.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In the canyons of Karath, fire is not quenched by water but by blood. Those who seek peace offer what they have before the Flame comes to claim it. Every coin given is a breath spared from a scream. Every tribute, a prayer to keep breathing when dawn arrives.<\/p>",
+                "es": "<p>En los ca&ntilde;ones de Karath, el fuego no se extingue con agua, sino con sangre. Los que desean paz ofrecen lo que tienen antes de que la Llama venga a tomarlo. Cada moneda entregada es un suspiro que evita un grito. Cada tributo, una plegaria para seguir respirando cuando amanezca.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Pay with gold if you can, or pay with your life.<\/p>",
+                "es": "<p>Paga con oro si puedes, o paga con tu vida.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Hungry Fire",
+                "es": "Fuego Hambriento"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": null,
+            "restriction": {
+                "en": "<p>Play this Support at the beginning of the Counter Cleanup phase.<\/p>",
+                "es": "<p>Juega este Apoyo al inicio de la fase de Limpieza de Contadores.<\/p>"
+            },
+            "effect": {
+                "en": "<p>The paired enemy hero takes 1 Direct Damage for each different type of bane counter they have.<\/p>",
+                "es": "<p>El h&eacute;roe rival emparejado recibe 1 Da&ntilde;o Directo por cada tipo diferente de contador de perjuicio que tenga.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p data-start=\"885\" data-end=\"1244\">There are fires that seek neither warmth nor light, only sustenance. This one was born from the wrath of the first warriors who burned in their own rage. Since then it feeds on fear, on pain, and on every mark of weakness war leaves upon the flesh. When an enemy bears too many scars, the fire knows them as a promise and claims them one by one.<\/p>\r\n<p data-start=\"1246\" data-end=\"1324\" data-is-last-node=\"\" data-is-only-node=\"\">&nbsp;<\/p>",
+                "es": "<p>Hay fuegos que no buscan calor ni luz, solo alimento. Este naci&oacute; del rencor de los primeros guerreros que ardieron en su propia furia. Desde entonces se alimenta del miedo, del dolor y de toda marca de debilidad que deja la guerra en los cuerpos. Cuando un enemigo lleva demasiadas cicatrices, el fuego las reconoce como promesa y las cobra una a una.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>All that pain leaves behind will be devoured by the flame.<\/p>",
+                "es": "<p>Todo lo que el dolor deja atr&aacute;s ser&aacute; devorado por la llama.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Shadow Dance",
+                "es": "Danza de Sombras"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Tactic",
+                "es": "Táctica"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Darkness",
+                "es": "Oscuridad"
+            },
+            "area": false,
+            "cost": null,
+            "restriction": {
+                "en": "<p>Play this Technique at the beginning of the Action Resolution phase.<\/p>\r\n<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p>Juega esta T&eacute;cnica al inicio de la fase de Resoluci&oacute;n de Acciones.<\/p>\r\n<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>The active allied hero&rsquo;s Physical Attacks deal Magic Darkness damage instead of their damage types.<\/p>",
+                "es": "<p>Los Ataques F&iacute;sicos del h&eacute;roe aliado activo hacen da&ntilde;o M&aacute;gico Oscuridad en vez de sus tipos de da&ntilde;o.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The eldest warriors learned to move their blades to the rhythm of the crackling fires. In that dance, shadow and steel become one, and the foe never sees the strike, only feels the light leaving them. It is a forbidden art even among their kin, for every step steals a piece of the dancer&rsquo;s soul.<\/p>",
+                "es": "<p>Los guerreros m&aacute;s antiguos aprendieron a mover la hoja al ritmo del crepitar de las hogueras. En esa danza, la sombra se funde con el acero y el enemigo no ve venir el golpe, solo siente c&oacute;mo la luz lo abandona. Es un arte prohibido incluso entre los suyos, porque cada paso roba algo del alma del que lo ejecuta.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The shadow does not fear the flame, it leads it to its end.<\/p>",
+                "es": "<p>La sombra no teme al fuego, lo gu&iacute;a hacia su final.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Hungry Shadow",
+                "es": "Sombra Hambrienta"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Tactic",
+                "es": "Táctica"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Darkness",
+                "es": "Oscuridad"
+            },
+            "area": false,
+            "cost": "B",
+            "restriction": {
+                "en": "<p><strong>Persistent<\/strong>: until the end of the Clash.<\/p>",
+                "es": "<p><strong>Persistente<\/strong>: hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Whenever this hero deals Melee Single Target Physical damage, heal 2 health to this hero.<\/p>",
+                "es": "<p data-start=\"287\" data-end=\"430\">Cada vez que haga da&ntilde;o Melee F&iacute;sico de 1 Objetivo, cura 2 de vida a este h&eacute;roe<\/p>"
+            },
+            "lore_text": [],
+            "epic_quote": []
+        },
+        {
+            "name": {
+                "en": "Terrifying Shadow",
+                "es": "Sombra Aterradora"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Tactic",
+                "es": "Táctica"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Darkness",
+                "es": "Oscuridad"
+            },
+            "area": false,
+            "cost": "G",
+            "restriction": {
+                "en": "<p>You may play this Technique as a&nbsp;<strong>Reaction<\/strong>: When the paired enemy hero would reduce the damage of an Attack from the active allied hero.<\/p>\r\n<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p>Puedes jugar esta T&eacute;cnica como <strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe rival emparejado fuera a reducir el da&ntilde;o de un Ataque del h&eacute;roe aliado activo.<\/p>\r\n<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>The damage from the active allied hero&rsquo;s Attacks cannot be reduced.<\/p>\r\n<p>If you play it as a&nbsp;<strong>Reaction<\/strong>, apply this effect only to that Attack and this Card loses <strong>Persistent<\/strong>.<\/p>",
+                "es": "<p>El da&ntilde;o de los Ataques del h&eacute;roe aliado activo no puede ser reducido.<\/p>\r\n<p>Si la juegas como&nbsp;<strong>Reacci&oacute;n<\/strong>, aplica este efecto solo a ese Ataque y esta Carta pierde <strong>Persistente<\/strong>.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p data-start=\"934\" data-end=\"1271\">When a warrior summons the Terrifying Shadow, he does not fight alone. Behind him rises a figure that does not belong to this world, a living memory of the fear the ancients carved into stone and flame. No shield or prayer can halt its advance, for what wounds is not the blade, but the certainty that you are already lost.<\/p>\r\n<p data-start=\"1322\" data-end=\"1382\" data-is-last-node=\"\" data-is-only-node=\"\">&nbsp;<\/p>",
+                "es": "<p>Cuando un guerrero invoca la Sombra Aterradora, no lucha solo. A su espalda se alza una silueta que no pertenece a este mundo, una memoria viva del miedo que los antiguos dejaron grabado en la piedra y el fuego. Ning&uacute;n escudo ni plegaria puede frenar su paso, porque lo que hiere no es el acero, sino la certeza de que ya est&aacute;s perdido.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Fear needs no edge to cut.<\/p>",
+                "es": "<p>El miedo no necesita filo para cortar.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Cut Supply Lines",
+                "es": "Corte de Suministros"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "R",
+            "restriction": {
+                "en": "<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>The paired enemy hero cannot play Support Cards.<\/p>",
+                "es": "<p>El h&eacute;roe rival emparejado no puede jugar Cartas Apoyo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Wars are not won by steel alone. The Burning Rage learned that hunger burns hotter than fire and breaks faster than the blade. When the roads fill with smoke and the wells run dry, enemies do not die fighting&mdash;they die waiting for what never comes.<\/p>",
+                "es": "<p>Las guerras no se ganan solo con acero. La Llama Furiosa aprendi&oacute; que el hambre arde m&aacute;s que el fuego y doblega antes que la espada. Cuando los caminos se llenan de humo y los pozos se secan, los enemigos no mueren combatiendo, sino esperando lo que nunca llega.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Let them wait for bread. We will feast on their fear.<\/p>",
+                "es": "<p>Deja que esperen el pan. Nosotros comeremos su miedo.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Intimidating Presence",
+                "es": "Presencia Intimidante"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": {
+                "en": "<p><strong>Persistent<\/strong>: Until the end of the Battle Round.<\/p>",
+                "es": "<p><strong>Persistente<\/strong>: Hasta el final de la Ronda de Batalla.<\/p>"
+            },
+            "effect": {
+                "en": "<p>The rival player reveals their Hand, and you choose one of their Cards. That player cannot play that Card.<\/p>",
+                "es": "<p>El jugador rival muestra su Mano y eliges una de sus Cartas. El jugador rival no puede jugar esa Carta.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Some warriors need not raise their weapons to win a fight. Their gaze alone bends the will, and the air around them grows heavier. Even the brave feel their bodies betray them, each muscle surrendering too soon. Strength does not always roar: sometimes, it simply breathes.<\/p>",
+                "es": "<p>Algunos guerreros no necesitan blandir el arma para ganar un combate. Su sola mirada quiebra la voluntad, y el aire se vuelve m&aacute;s pesado a su alrededor. Frente a ellos, hasta los valientes sienten que el cuerpo les traiciona, que cada m&uacute;sculo se rinde antes de tiempo. La fuerza no siempre grita: a veces, solo respira.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>There is no need to speak when silence already bows.<\/p>",
+                "es": "<p>No hace falta alzar la voz cuando el silencio ya se inclina.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Macabre Amulet",
+                "es": "Amuleto Macabro"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Amulet",
+                "es": "Amuleto"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>When you attach this Equipment, draw 1 Card.<\/p>\r\n<p>At the beginning of the Action Resolution Phase, choose 1:<\/p>\r\n<ul>\r\n<li data-start=\"245\" data-end=\"328\">Place 1 bane counter: Dimmed on the paired enemy hero.<\/li>\r\n<li data-start=\"245\" data-end=\"328\">Place 1 bane counter: Weakened on the paired enemy hero.<\/li>\r\n<li data-start=\"245\" data-end=\"328\">The rival player rerolls 1 of their Prepared Dice at random.<\/li>\r\n<\/ul>",
+                "es": "<p>Cuando anexes este Equipo, roba 1 Carta.<\/p>\r\n<p>Al inicio de la fase de Resoluci&oacute;n de Acciones, elige 1:<\/p>\r\n<ul>\r\n<li>Coloca 1 contador de perjuicio: Ofuscado sobre el h&eacute;roe rival emparejado.<\/li>\r\n<li>Coloca 1 contador de perjuicio: Debilitado sobre el h&eacute;roe rival emparejado.<\/li>\r\n<li>El jugador rival relanza 1 de sus dados preparados aleatorio.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p data-start=\"902\" data-end=\"1220\">The amulet beats to the rhythm of the screams that feed it. No warrior knows whether it protects or damns, but all feel its pulse when blood touches the ground. It is said that every fallen foe gives its bearer one more breath, and one more promise to the dark.<\/p>",
+                "es": "<p>El amuleto late al ritmo de los gritos que lo alimentan. Ning&uacute;n guerrero sabe si protege o condena, pero todos sienten su pulso cuando la sangre toca la tierra. Se dice que cada nuevo enemigo ca&iacute;do le devuelve un suspiro a su portador, y un juramento a la oscuridad.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Every death upon my neck makes me a little lighter.<\/p>",
+                "es": "<p>Cada muerte que pesa sobre mi cuello me hace un poco m&aacute;s ligero.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Bow of the Sand Predator",
+                "es": "Arco del Predador de Arena"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Bow",
+                "es": "Arco"
+            },
+            "equipment_category": "weapon",
+            "hands": 2,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RR",
+            "restriction": [],
+            "effect": {
+                "en": "<p>The attached hero&rsquo;s Ranged Piercing Attacks cannot be reduced by effects from Equipment attached to the target hero of those Attacks.<\/p>",
+                "es": "<p data-start=\"0\" data-end=\"196\">Los Ataques A Distancia Perforantes del h&eacute;roe anexado no pueden ser reducidos por efectos de Equipos anexados al h&eacute;roe objetivo de esos Ataques.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p data-start=\"1143\" data-end=\"1448\">No one sees the hunter until the sand is already red. This bow, carved from the spine of a desert beast and strung with human sinew, does not seek the heart, it finds it. The arrow stops for neither steel nor spell, for its strength comes not from the arm, but from the hunger that guides it.<\/p>",
+                "es": "<p>Nadie ve al cazador hasta que la arena ya se ha te&ntilde;ido de rojo. Este arco, tallado con las v&eacute;rtebras de una bestia del desierto y tensado con tendones humanos, no busca el coraz&oacute;n: lo encuentra. La flecha no se detiene en el metal ni en la magia, porque su fuerza no viene del brazo, sino del hambre que la gu&iacute;a.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The prey never fears the shot it cannot hear.<\/p>",
+                "es": "<p>La presa no teme al disparo que nunca oye.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Bow of the Cracked Sun",
+                "es": "Arco del Sol Agrietado"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Bow",
+                "es": "Arco"
+            },
+            "equipment_category": "weapon",
+            "hands": 2,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>The first time in each Clash the attached hero performs a Single Target Ranged Physical Piercing Attack, choose 1:<\/p>\r\n<ul>\r\n<li>In addition to its effects, that Attack removes 1 boon counter at random from the hero it targets.<\/li>\r\n<li>That Attack deals +1 Damage.<\/li>\r\n<\/ul>",
+                "es": "<p>La primera vez en cada Choque que el h&eacute;roe anexado realice un Ataque A DIstancia F&iacute;sico Perforante de 1 Objetivo, elige 1:<\/p>\r\n<ul>\r\n<li>Adem&aacute;s de sus efectos, ese Ataque remueve 1 contador de beneficio al azar del h&eacute;roe al que haga objetivo.<\/li>\r\n<li>Ese Ataque hace +1 de Da&ntilde;o.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p>Forged upon an altar of sand and dried blood, this bow burns with the fury of noon. They say that every time its string sings, the sun splits a crack in the horizon to watch the hunt. Those who wield it do not shoot arrows&mdash;they release the desert&rsquo;s thirst, which can never be quenched.<\/p>",
+                "es": "<p>Forjado en un altar cubierto de arena y sangre seca, este arco se calienta con la furia del mediod&iacute;a. Dicen que cada vez que su cuerda vibra, el sol se abre una grieta en el horizonte para mirar la caza. Los cazadores que lo empu&ntilde;an no disparan flechas: disparan la sed del desierto, que nunca se sacia.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The sun does not forgive, it merely looks again.<\/p>",
+                "es": "<p>El sol no perdona, solo vuelve a mirar.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Spiked Armor",
+                "es": "Armadura con Púas"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Chestplate",
+                "es": "Peto"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Whenever the attached hero takes damage from a Melee Attack, the attacking hero takes 1 direct damage.<\/p>",
+                "es": "<p>Cada vez que el h&eacute;roe anexado reciba da&ntilde;o de un Ataque Melee, el h&eacute;roe atacante recibe 1 de da&ntilde;o directo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Among the warriors of the Burning Flame, pain is not feared&mdash;it is returned. The spikes of this armor are not forged but torn from the bones of the fallen and driven in with oaths of blood. Every blow leaves a mark on the foe and a grin on the wearer. Suffering is just another way to strike back.<\/p>",
+                "es": "<p>Entre los guerreros de la Llama Furiosa, no se teme al dolor, se lo devuelve. Las p&uacute;as de esta armadura no se forjan: se arrancan de los huesos de los ca&iacute;dos y se clavan con juramentos de sangre. Cada impacto deja una marca en el enemigo y una sonrisa en quien la porta. El sufrimiento es solo otra forma de atacar.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Let them hit if they dare. My flesh bites back.<\/p>",
+                "es": "<p>Que golpee si se atreve. Mi carne tambi&eacute;n muerde.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Obsidian Armor",
+                "es": "Armadura de Obsidiana"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Chestplate",
+                "es": "Peto"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RR",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Each time the attached hero becomes the target of a Melee Attack, choose one option you haven&rsquo;t chosen in this Clash:<\/p>\r\n<ul>\r\n<li>Place 1 bane counter: Weakened on the attacking hero.<\/li>\r\n<li>Place 1 bane counter: Pained on the attacking hero.<\/li>\r\n<li>Place 1 bane counter: Exhausted on the attacking hero.<\/li>\r\n<\/ul>",
+                "es": "<p>Cada vez que el h&eacute;roe anexado sea objetivo de un Ataque Melee, elige una opci&oacute;n que no hayas elegido en este Choque:<\/p>\r\n<ul>\r\n<li>Coloca 1 contador de perjuicio: Debilitado sobre el h&eacute;roe atacante.<\/li>\r\n<li>Coloca 1 contador de perjuicio: Dolorido sobre el h&eacute;roe atacante.<\/li>\r\n<li>Coloca 1 contador de perjuicio: Exhausto sobre el h&eacute;roe atacante.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p data-start=\"1085\" data-end=\"1407\">Born from the heart of a mountain that never stopped burning, this armor mirrors the fire that birthed it. Its black surface absorbs the light and returns pain with a deadly gleam. The warriors who wear it feel its weight as a promise: to endure is not to survive, but to make the one who strikes you suffer.<\/p>\r\n<p data-start=\"1409\" data-end=\"1470\" data-is-last-node=\"\" data-is-only-node=\"\">&nbsp;<\/p>",
+                "es": "<p data-start=\"1085\" data-end=\"1407\">Nacida del coraz&oacute;n de una monta&ntilde;a que nunca dej&oacute; de arder, esta armadura refleja el fuego que la engendr&oacute;. Su superficie negra absorbe la luz y devuelve el dolor con un brillo mortal. Los guerreros que la visten sienten su peso como una promesa: resistir no es sobrevivir, es hacer sufrir al que intenta romperte.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Fire forged me, pain made me unbreakable.<\/p>",
+                "es": "<p>El fuego me forj&oacute;, y el dolor me endureci&oacute;.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Biting Blade",
+                "es": "Espada Mordedora"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Sword",
+                "es": "Espada"
+            },
+            "equipment_category": "weapon",
+            "hands": 1,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p data-start=\"401\" data-end=\"574\">If the target hero has more health than the attached hero, the attached hero deals +1 Damage with Single Target Melee Physical Slashing Attacks.<\/p>\r\n<p data-start=\"576\" data-end=\"752\" data-is-last-node=\"\" data-is-only-node=\"\">The first Single Target Melee Physical Slashing Attack the attached hero performs in each Clash, in addition to its effects, removes 1 random boon counter from the target hero.<\/p>",
+                "es": "<p>Si el h&eacute;roe objetivo tiene m&aacute;s vida que el h&eacute;roe anexado, el h&eacute;roe anexado hace +1 de da&ntilde;o con los Ataques Melee F&iacute;sicos Cortantes de 1 Objetivo.<\/p>\r\n<p>El primer Ataque Melee F&iacute;sico Cortante de 1 Objetivo que realice el h&eacute;roe anexado en cada Choque, adem&aacute;s de su efecto, remueve 1 contador de beneficio aleatorio del h&eacute;roe objetivo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>They say this blade was born from a sacrifice: a blacksmith offered his own tongue to give steel a voice. Since then, the sword bites, drinks, and stays silent. Its edges are lined with runes that pulse like veins, and those who wield it swear they can hear it breathing between their enemies&rsquo; screams.<\/p>",
+                "es": "<p>Dicen que esta hoja naci&oacute; en un sacrificio: un herrero ofreci&oacute; su propia lengua para darle voz al acero. Desde entonces, la espada muerde, bebe y calla. Sus bordes est&aacute;n cubiertos de runas que laten como venas, y quienes la empu&ntilde;an aseguran o&iacute;rla respirar entre los gritos de sus enemigos.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>It does not cut, it devours.<\/p>",
+                "es": "<p>No corta, devora.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Shadows of the Night",
+                "es": "Sombras de la Noche"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": null,
+            "restriction": {
+                "en": "<p><strong>Persistent<\/strong>: Until this hero performs an Atack.<\/p>",
+                "es": "<p><strong>Persistente<\/strong>: Hasta que este h&eacute;roe realice un Ataque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>This hero takes -1 Damage from Single Target Attacks.<\/p>\r\n<p>The next Attack performed by this hero deals +1 Damage.<\/p>",
+                "es": "<p>Este H&eacute;roe recibe -1 de da&ntilde;o de ataques de 1 Objetivo.<br><br>El siguiente Ataque que haga este h&eacute;roe hace +1 de da&ntilde;o.<\/p>"
+            },
+            "lore_text": [],
+            "epic_quote": []
+        },
+        {
+            "name": {
+                "en": "Quick Ash Dagger",
+                "es": "Daga de Ceniza Rápida"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Dagger",
+                "es": "Daga"
+            },
+            "equipment_category": "weapon",
+            "hands": 1,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "R",
+            "restriction": [],
+            "effect": {
+                "en": "<p>The attached hero gains:<\/p>",
+                "es": "<p>El h&eacute;roe anexado gana:<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Forged from the black dust of the canyons and tempered in warm blood, this dagger was never meant to kill, only to deceive. Every motion is a feint, every wound, a trap.<\/p>",
+                "es": "<p data-start=\"302\" data-end=\"489\">Forjada con el polvo negro de los ca&ntilde;ones y templada en sangre caliente, esta daga no busca matar, sino distraer. Cada movimiento es un enga&ntilde;o, cada herida, una trampa.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Where you look, you&rsquo;ve already bled.<\/p>",
+                "es": "<p>Donde miras, ya sangraste.<\/p>"
+            },
+            "linked_ability": {
+                "name": {
+                    "en": "Distraction Strike",
+                    "es": "Golpe de Distracción"
+                },
+                "cost": "G",
+                "attack_range": {
+                    "en": "Melee",
+                    "es": "Melee"
+                },
+                "attack_type": "physical",
+                "attack_subtype": {
+                    "en": "Piercing",
+                    "es": "Perforante"
+                },
+                "area": false,
+                "effect": {
+                    "en": "<p>Deal 1 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If they have at least 1 bane counter: Dimmed, it deals +1 damage.<\/p>\r\n<p>If they have no bane counter: Dimmed, place 1 on them.<\/p>",
+                    "es": "<p>Hace 1 + Fuerza de Da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si tiene al menos 1 contador de perjuicio: Ofuscado, hace +1 de da&ntilde;o.<\/p>\r\n<p>Si no tiene ningun contador de perjuicio: Ofuscado, col&oacute;cale 1.<\/p>"
+                }
+            }
+        },
+        {
+            "name": {
+                "en": "Ancient Bloodblade",
+                "es": "Espada de Sangre Antigua"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Sword",
+                "es": "Espada"
+            },
+            "equipment_category": "weapon",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>The first time in each Clash the attached hero performs a Single Target Melee Physical Slashing Attack, choose 1:<\/p>\r\n<ul>\r\n<li>The target hero cannot heal until the end of the Clash.<\/li>\r\n<li>That Attack deals +1 Damage.<\/li>\r\n<\/ul>",
+                "es": "<p>La primera vez en cada Choque que el h&eacute;roe anexado realice un Ataque Melee F&iacute;sico Cortante de 1 Objetivo, elige 1:<\/p>\r\n<ul>\r\n<li>El h&eacute;roeobjetivo no puede curarse hasta el final del Choque.<\/li>\r\n<li>Ese Ataque hace +1 de Da&ntilde;o.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p>They say it was tempered in the fires of Karath and cooled in the blood of a traitor. Every blade forged in that flame bears the names of the chieftains who died wielding it, their voices still roaring through the metal.&nbsp;It is no weapon, but a covenant: whoever wields it swears to trade fury for power, and the sword alone decides when that oath is fulfilled&hellip; or collected.<\/p>",
+                "es": "<p>Dicen que fue templada en las brasas de Karath y enfriada en la sangre de un traidor. Cada hoja forjada en ese fuego lleva grabados los nombres de los jefes que murieron empu&ntilde;&aacute;ndola, y con cada golpe sus voces rugen desde el metal.&nbsp;No es un arma, sino un pacto: quien la blande jura ofrecer su furia a cambio de poder, y la espada decide cu&aacute;ndo ese juramento se cumple... o se cobra.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>When the blade decides, even the gods dare not watch.<\/p>",
+                "es": "<p>Cuando la espada decide, ni los dioses se atreven a mirar.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Ash Cut",
+                "es": "Corte de Ceniza"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Assault",
+                "es": "Asalto"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Slashing",
+                "es": "Cortante"
+            },
+            "area": false,
+            "cost": "GB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 4 + Strength damage to the paired enemy hero.<\/p>\r\n<p>The target hero cannot heal until the end of the Clash.<\/p>",
+                "es": "<p>Hace 4 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>El h&eacute;roe objetivo no puede curarse hasta el final del choque.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>They say that when the blade pierces flesh, fire awakens in the wound and turns it into living ash.&nbsp;Neither magic nor prayer can seal it; the body tries to heal, but the heat forbids it, burning again and again from within.&nbsp;The air fills with dust and the scent of iron, and the silence that follows is feared more than the strike itself.<\/p>",
+                "es": "<p>Dicen que cuando la hoja atraviesa la carne, el fuego despierta en la herida y la convierte en ceniza viva. Ni la magia ni los rezos pueden cerrarla; el cuerpo intenta sanar, pero el calor lo impide, quemando una y otra vez desde dentro. El aire se llena entonces de polvo y olor a hierro, y el silencio posterior es m&aacute;s temido que el tajo mismo.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>&ldquo;Some blows cut flesh. This one cuts hope.<\/p>",
+                "es": "<p>Algunos golpes cortan la carne. Este corta la esperanza.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Rain of Arrows",
+                "es": "Lluvia de Flechas"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Assault",
+                "es": "Asalto"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Ranged",
+                "es": "A Distancia"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Piercing",
+                "es": "Perforante"
+            },
+            "area": true,
+            "cost": "GGB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Strength damage to the paired enemy hero and each adjacent enemy hero.<\/p>",
+                "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y a cada h&eacute;roe rival adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>When the drums of Karath thunder across the horizon, they do not herald a march&mdash;they summon a storm.&nbsp;Thousands of arrows pierce the blackened sky, dragging with them the desert&rsquo;s dust and the roar of the orcs.&nbsp;Each shaft is a prayer, a curse, a vow of fire hurled by hands hardened by war.&nbsp;Their foes do not die from precision, but from the weight of dread, knowing that when the sky turns dark, even heaven itself wants them dead.<\/p>",
+                "es": "<p data-start=\"570\" data-end=\"1060\">Cuando los tambores de Karath retumban en el horizonte, no anuncian una marcha, sino una tormenta.&nbsp;Miles de flechas cruzan el cielo ennegrecido, arrastrando consigo el polvo del desierto y el rugido de los orcos.&nbsp;Cada proyectil es una plegaria, una maldici&oacute;n, un juramento de fuego lanzado desde manos curtidas por la guerra.&nbsp;Los enemigos no caen por la punter&iacute;a, sino por el peso del miedo: saben que incluso si cubren sus cabezas, el cielo entero quiere matarlos.<\/p>\r\n<p data-start=\"1062\" data-end=\"1140\">&nbsp;<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>When the rain falls, the desert sings in screams.<\/p>",
+                "es": "<p>Cuando la lluvia cae, el desierto canta con gritos.<\/p>"
+            }
+        }
+    ]
+}

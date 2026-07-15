@@ -1,0 +1,2049 @@
+{
+    "name": {
+        "en": "Forest Wardens of Thenân",
+        "es": "Guardabosques de Thenân"
+    },
+    "lore_text": {
+        "en": "The Forest of Thenân is a place of beauty and danger, where Forest Wardens reign as silent protectors. Dressed in white linen and gleaming armor, they master the sword, stealth, and electric magic. No one crosses their boundaries without their consent. They are the guardians of a magical world, where nature and elves live in harmony, far from prying eyes.",
+        "es": "El Bosque de Thenân es un lugar de belleza y peligro, donde los Guardabosques reinan como protectores silenciosos. Vestidos de lino blanco y armaduras relucientes, dominan la espada, el sigilo y la magia eléctrica. Nadie cruza sus límites sin su consentimiento. Son los guardianes de un mundo mágico, donde la naturaleza y los elfos viven en armonía, lejos de miradas indiscretas."
+    },
+    "epic_quote": {
+        "en": "Lightning speaks through our blades when words fail.",
+        "es": "El relámpago habla a través de nuestras hojas cuando las palabras fallan."
+    },
+    "heroes": [
+        {
+            "name": {
+                "en": "Aélenar, Lightning Blade",
+                "es": "Aélenar, Cuchilla Relámpago"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Spellblade",
+                "es": "Spellblade"
+            },
+            "superclass": {
+                "en": "Caster",
+                "es": "Conjurador"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 2,
+                "mental": 3,
+                "will": 3,
+                "strength": 3,
+                "armor": 3,
+                "health": 20
+            },
+            "passive_name": {
+                "en": "Overcharged Shield",
+                "es": "Escudo Sobrecargado"
+            },
+            "passive_description": {
+                "en": "<p>When this hero is targeted by a Melee Attack, if the attacking hero has at least 1 bane counter: Weakened, it takes 2 Direct damage.<\/p>",
+                "es": "<p>Cuando este h&eacute;roe sea objetivo de un Ataque Melee, si el h&eacute;roe atacante tiene al menos 1 contador de perjuicio: Debilitado, recibe 2 da&ntilde;os Directos.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>A&eacute;lenar, Lightning Blade, is the fury of the forest made flesh. His sword, charged with electrical energy, cuts like lightning in the night. Raised among the trees of Then&acirc;n, his connection to storms makes him an unstoppable warrior. Where he steps, the ground trembles and enemies flee. He is the guardian who illuminates darkness with his wrath.<\/p>",
+                "es": "<p>A&eacute;lenar, Cuchilla Rel&aacute;mpago, es la furia del bosque hecha carne. Su espada, cargada de energ&iacute;a el&eacute;ctrica, corta como un rayo en la noche. Criado entre los &aacute;rboles de Then&acirc;n, su conexi&oacute;n con las tormentas lo convierte en un guerrero imparable. Donde pisa, el suelo tiembla y los enemigos huyen. Es el guardi&aacute;n que ilumina la oscuridad con su ira.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Thunder bows to no storm but mine.<\/p>",
+                "es": "<p>El trueno no se inclina ante tormenta alguna sino la m&iacute;a.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Fleeting Cut",
+                        "es": "Corte Fugaz"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Overcharged Blade",
+                        "es": "Hoja Sobrecargada"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Lightning",
+                        "es": "Electricidad"
+                    },
+                    "attack_type": "magical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Mental damage to the paired enemy hero and places 1 bane counter: Weakened on that hero.<\/p>\r\n<p>If this hero has kept at least 2 <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\">&nbsp;Dice, deals +2 damage.<\/p>",
+                        "es": "<p>Hace 2 + Mente de da&ntilde;o al h&eacute;roe rival emparejado y le coloca 1 contador de perjuicio: Debilitado.<\/p>\r\n<p>Si este h&eacute;roe ha guardado al menos 2 Dados <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\">,&nbsp;hace +2 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Aenthar, Fallen Star",
+                "es": "Aenthar, Estrella Caída"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Spellblade",
+                "es": "Spellblade"
+            },
+            "superclass": {
+                "en": "Caster",
+                "es": "Conjurador"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 3,
+                "mental": 3,
+                "will": 3,
+                "strength": 3,
+                "armor": 2,
+                "health": 19
+            },
+            "passive_name": {
+                "en": "Stellar Spark",
+                "es": "Chispa Estelar"
+            },
+            "passive_description": {
+                "en": "<p>At the end of the Clash, if the paired enemy hero has at least 1 bane counter: Weakened, draw 1 Card.&nbsp;If it doesn&rsquo;t, place 1 bane counter: Weakened on that hero.<\/p>",
+                "es": "<p>Al final del Choque, si el h&eacute;roe rival emparejado tiene al menos 1 contador de perjuicio: Debilitado, roba 1 Carta.&nbsp;Si no lo tiene, col&oacute;cale 1 contador de perjuicio: Debilitado.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Aenthar, Fallen Star, is a prodigy of electrical magic. With his spear, he channels the wrath of the skies, summoning lightning that illuminates the forest. Blessed by an ancestral spirit, his power is as unpredictable as a storm. In Then&acirc;n, his name evokes respect and fear. No one challenges the one who controls thunder.<\/p>",
+                "es": "<p>Aenthar, Estrella Ca&iacute;da, es un prodigio de la magia el&eacute;ctrica. Con su lanza, canaliza la ira de los cielos, convocando rel&aacute;mpagos que iluminan el bosque. Bendecido por un esp&iacute;ritu ancestral, su poder es tan impredecible como una tormenta. En Then&acirc;n, su nombre evoca respeto y temor. Nadie desaf&iacute;a a quien controla el trueno.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>From heaven's heights, lightning obeys my call.<\/p>",
+                "es": "<p>Desde las alturas celestiales, el rayo obedece mi llamado.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Blazing Star",
+                        "es": "Estrella Fulminante"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Lightning",
+                        "es": "Electricidad"
+                    },
+                    "attack_type": "magical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Mental damage to the paired enemy hero.<\/p>\r\n<p>Deals +1 damage for each <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Die you have as Prepared Die.<\/p>",
+                        "es": "<p>Hace 2 + Mente de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Hace +1 de da&ntilde;o por cada Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> que tengas como Dado Preparado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Piercing Thrust",
+                        "es": "Lanzazo Perforante"
+                    },
+                    "cost": "GG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 4 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 4 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Ayranel, Crow's Cloak",
+                "es": "Ayranel, Capa de Cuervo"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Stalker",
+                "es": "Acechador"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 4,
+                "mental": 2,
+                "will": 2,
+                "strength": 4,
+                "armor": 2,
+                "health": 18
+            },
+            "passive_name": {
+                "en": "Cloak of Darkness",
+                "es": "Manto de Oscuridad"
+            },
+            "passive_description": {
+                "en": "<p>At the beginning of the Clash, look at the top 2 Cards of your Library. You may place each of them on the top or bottom of your Library in any order.<\/p>",
+                "es": "<p>Al inicio del Choque, mira las 2 primeras Cartas de tu Biblioteca. Puedes colocar cada una en la parte superior o inferior de tu Biblioteca, en cualquier orden.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Ayranel, Crow's Cloak, is the shadow watching over Then&acirc;n. With his network of crows, nothing escapes his gaze. He moves silently, like a breeze through trees, striking with deadly precision. To intruders, he is the harbinger of their end. Where crows gather, he is near, ready to act.<\/p>",
+                "es": "<p>Ayranel, Capa de Cuervo, es la sombra que vigila Then&acirc;n. Con su red de cuervos, nada escapa a su mirada. Se mueve en silencio, como una brisa entre los &aacute;rboles, y ataca con precisi&oacute;n mortal. Para los intrusos, es el presagio de su fin. Donde hay cuervos, el est&aacute; cerca, listo para actuar.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>A thousand eyes watch; one blade strikes.<\/p>",
+                "es": "<p>Mil ojos vigilan; una hoja golpea.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Rupture",
+                        "es": "Ruptura"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the target hero has at least 1 bane counter: Pained, it deals +1 damage and places 1 bane counter: Exhausted on them.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el h&eacute;roe objetivo tiene al menos 1 contador de perjuicio: Dolorido, hace +1 de da&ntilde;o y le coloca 1 contador de perjuicio: Exhausto.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Ambush",
+                        "es": "Emboscada"
+                    },
+                    "cost": "RB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If this is this hero&rsquo;s first Action in the Clash, this Attack ignores half of the target&rsquo;s Armor (rounded down).<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si es la primera Acci&oacute;n de este h&eacute;roe en el Choque, ignora la mitad de la Armadura del objetivo (redondeando hacia abajo).<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Eldéin, Sharpened Cyclone",
+                "es": "Eldéin, Ciclón Afilado"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Vanguard",
+                "es": "Vanguardia"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 4,
+                "mental": 2,
+                "will": 3,
+                "strength": 3,
+                "armor": 2,
+                "health": 19
+            },
+            "passive_name": {
+                "en": "Death Dance",
+                "es": "Danza de Muerte"
+            },
+            "passive_description": {
+                "en": "<p>If you won Initiative on this Clash, all Attacks from this hero deal +1 damage until it takes damage.<\/p>",
+                "es": "<p>Si ganaste la Iniciativa en este Choque, todos los Ataques de este h&eacute;roe hacen +1 de da&ntilde;o hasta que reciba da&ntilde;o.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Eld&eacute;in, Sharpened Cyclone, is the dance of death. With her elven blades, she spins and cuts like a windstorm, leaving enemies breathless. Unencumbered by armor, her agility is legendary. In Then&acirc;n, her name is synonymous with lethal grace and flawless combat. Where she advances, only silence remains.<\/p>",
+                "es": "<p>Eld&eacute;in, Cicl&oacute;n Afilado, es la danza de la muerte. Con sus espadas &eacute;lficas, gira y corta como un vendaval, dejando a sus enemigos sin aliento. Sin armadura que la restrinja, su agilidad es legendaria. En Then&acirc;n, su nombre es sin&oacute;nimo de gracia letal y combate impecable. Donde ella avanza, solo queda silencio.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Death dances on elven steel.<\/p>",
+                "es": "<p>La muerte danza sobre acero &eacute;lfico.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Steel Caress",
+                        "es": "Caricia de Acero"
+                    },
+                    "cost": "RB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If this hero has at least 1 boon counter: Swiftness, perform another Melee Physical Slashing Attack that deals 2 + Agility damage.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si este h&eacute;roe tiene al menos 1 contador de beneficio: Presteza, realiza otro Ataque Melee F&iacute;sico Cortante de 2 + Agilidad de da&ntilde;o.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Death Dance",
+                        "es": "Danza Mortal"
+                    },
+                    "cost": "GG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If you have no Prepared <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Dice, prepare 1 of your Spent Dice as a <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Die.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si no tienes ning&uacute;n Dado&nbsp;<img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> preparado, prepara 1 de tus Dados Gastados como Dado&nbsp;<img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\">.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Elendire, Sharpened Fist",
+                "es": "Elendire, Puño Afilado"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Paragon",
+                "es": "Paragon"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 2,
+                "strength": 4,
+                "armor": 3,
+                "health": 19
+            },
+            "passive_name": {
+                "en": "Awakening of the Forest",
+                "es": "Despertar del Bosque"
+            },
+            "passive_description": {
+                "en": "<p>Each time you play a Technique, place 1 boon counter: Swiftness on this hero or on an adjacent allied hero.<\/p>",
+                "es": "<p>Cada vez que juegues una T&eacute;cnica, coloca 1 contador de beneficio: Presteza sobre este h&eacute;roe o sobre un h&eacute;roe aliado adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Elendire, Sharpened Fist, is the unbreakable strength of Then&acirc;n. With fists that strike like hammers and unwavering loyalty, he leads the Rangers into epic battles. His presence on the battlefield commands respect and fear. To enemies of the forest, he is the wall that never falls.<\/p>",
+                "es": "<p>Elendire, Pu&ntilde;o Afilado, es la fuerza inquebrantable de Then&acirc;n. Con pu&ntilde;os que golpean como martillos y una lealtad inquebrantable, lidera a los Guardabosques en batallas &eacute;picas. Su presencia en el campo de batalla impone respeto y temor. Para los enemigos del bosque, es el muro que nunca cae.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The forest's strength flows through these fists.<\/p>",
+                "es": "<p>La fuerza del bosque fluye por estos pu&ntilde;os.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Fleeting Cut",
+                        "es": "Corte Fugaz"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Quick Slice",
+                        "es": "Tajo Presto"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>It deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If this hero has at least 1 boon counter: Swiftness, deals +2 damage.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si este h&eacute;roe tiene al menos 1 contador de beneficio: Presteza, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Elíara, Winged Lightning",
+                "es": "Elíara, Rayo Alado"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Spellblade",
+                "es": "Spellblade"
+            },
+            "superclass": {
+                "en": "Caster",
+                "es": "Conjurador"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 3,
+                "mental": 3,
+                "will": 2,
+                "strength": 3,
+                "armor": 2,
+                "health": 20
+            },
+            "passive_name": {
+                "en": "Piercing Lightning",
+                "es": "Rayo Punzante"
+            },
+            "passive_description": {
+                "en": "<p>Each time this hero performs a Single-Target Magical Attack, it deals 1 Direct damage to 1 random enemy hero for each <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Die this hero has prepared.<\/p>",
+                "es": "<p>Cada vez que este h&eacute;roe realice un Ataque M&aacute;gico de 1 Objetivo, hace 1 da&ntilde;o Directo a 1 h&eacute;roe rival aleatorio por cada Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> que este h&eacute;roe tenga preparado.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>El&iacute;ara, Winged Lightning, is the storm that never ceases. With her magical bow, she shoots lightning-enchanted arrows, illuminating the forest of Then&acirc;n. Her courage and skill are legendary, and her connection to electric magic makes her a tireless protector. To intruders, she is the lightning that shows no mercy.<\/p>",
+                "es": "<p>El&iacute;ara, Rayo Alado, es la tormenta que nunca cesa. Con su arco m&aacute;gico, dispara flechas encantadas con rel&aacute;mpagos, iluminando el bosque de Then&acirc;n. Su valent&iacute;a y destreza son legendarias, y su conexi&oacute;n con la magia el&eacute;ctrica la convierte en una protectora incansable. Para los intrusos, es el rayo que no perdona.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>My arrows carry the storm's fury.<\/p>",
+                "es": "<p>Mis flechas portan la furia de la tormenta.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Arrow Shot",
+                        "es": "Flechazo"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Winged Shot",
+                        "es": "Flecha Alada"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Lightning",
+                        "es": "Electricidad"
+                    },
+                    "attack_type": "magical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Mental damage to the paired enemy hero.<\/p>\r\n<p>If this hero has kept at least 2 <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Dice, deals 2 + Mental damage to 1 random enemy hero from subsequent pairings and this Attack gains the Area attribute.<\/p>",
+                        "es": "<p>Hace 3 + Mente de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si este h&eacute;roe ha guardado al menos 2 Dados <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\">, hace 2 + Mente de da&ntilde;o a 1 h&eacute;roe rival aleatorio de los emparejamientos posteriores y este Ataque gana el atributo &Aacute;rea.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Ilnare, Hidden Blade",
+                "es": "Ilnare, Hoja Oculta"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Stalker",
+                "es": "Acechador"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 3,
+                "strength": 4,
+                "armor": 2,
+                "health": 19
+            },
+            "passive_name": {
+                "en": "Fleeting Shadow",
+                "es": "Sombra Fugaz"
+            },
+            "passive_description": {
+                "en": "<p data-start=\"301\" data-end=\"410\">If this hero is not the active allied hero, it ignores the non-damaging effects of the rival&rsquo;s Actions that target it.<\/p>",
+                "es": "<p>Si este h&eacute;roe no es el h&eacute;roe aliado activo, ignora los efectos no da&ntilde;inos de las Acciones del rival que le hagan objetivo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Ilnare, known as Hidden Blade, was born in the deep forests of Then&acirc;n. Expert at moving unseen and tracking creatures, her agility and cunning make her lethal in ambushes. Though ethereal and delicate, her determination in combat is feared. She values nature's harmony and fights tirelessly for the balance of her beloved forest.<\/p>",
+                "es": "<p>Ilnare, conocida como Hoja Oculta, naci&oacute; en los profundos bosques de Then&acirc;n. Experta en moverse sin ser vista y rastrear criaturas, su agilidad y astucia la hacen letal en emboscadas. Aunque et&eacute;rea y delicada, su determinaci&oacute;n en combate es temida. Valora la armon&iacute;a de la naturaleza y lucha incansablemente por el equilibrio de su bosque amado.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Harmony whispers through silent strikes.<\/p>",
+                "es": "<p>La armon&iacute;a susurra a trav&eacute;s de golpes silenciosos.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Stiffen",
+                        "es": "Agarrotar"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Crushing",
+                        "es": "Contundente"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If this is this hero&rsquo;s first Action in the Clash, place 1 bane counter: Pained on the target hero, and the rival player rerolls 1 of their Prepared Dice at random.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si es la primera Acci&oacute;n de este h&eacute;roe en el Choque, coloca 1 contador de perjuicio: Dolorido sobre el h&eacute;roe objetivo y el jugador rival relanza 1 de sus Dados Preparados al azar.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Backstab",
+                        "es": "Apuñalar"
+                    },
+                    "cost": "RB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If this hero has at least 1 boon counter: Swiftness, deals +2 additional damage.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si este h&eacute;roe tiene al menos 1 contador de beneficio: Presteza, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Irianel, Deadly Wind",
+                "es": "Irianel, Viento Mortal"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Vanguard",
+                "es": "Vanguardia"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 2,
+                "strength": 3,
+                "armor": 3,
+                "health": 21
+            },
+            "passive_name": {
+                "en": "Mental Peace",
+                "es": "Paz Mental"
+            },
+            "passive_description": {
+                "en": "<p>When you play your first Technique in each Clash, you may prepare 1 of your Spent Dice as a <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red-green.svg\" alt=\"Dado Rojo-Verde\"> Die.<\/p>",
+                "es": "<p>Cuando juegues tu primera T&eacute;cnica en cada Choque, puedes preparar 1 de tus Dados Gastados como Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red-green.svg\" alt=\"Dado Rojo-Verde\">.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Irianel, Deadly Wind, is the gust that devastates her enemies. With speed that defies sight and combat prowess that leaves one breathless, she protects Then&acirc;n with ferocity. To intruders, she is the wind that cuts like a sword, announcing their end before they can react.<\/p>",
+                "es": "<p>Irianel, Viento Mortal, es la r&aacute;faga que arrasa a sus enemigos. Con una velocidad que desaf&iacute;a la vista y una destreza en combate que deja sin aliento, protege Then&acirc;n con ferocidad. Para los intrusos, es el viento que corta como una espada, anunciando su fin antes de que puedan reaccionar.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>I am the gust that heralds the end.<\/p>",
+                "es": "<p>Soy la r&aacute;faga que anuncia el final.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Precise Slash",
+                        "es": "Cuchillada Precisa"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Gale Blade",
+                        "es": "Hoja Vendaval"
+                    },
+                    "cost": "RGG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": true,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero and to 1 random adjacent enemy hero.<\/p>\r\n<p>If this hero has at least 1 boon counter: Swiftness, they each take +1 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y a 1 h&eacute;roe rival adyacente aleatorio.<\/p>\r\n<p>Si este h&eacute;roe tiene al menos 1 contador de beneficio: Presteza, les hace +1 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Alenne, Swift Breeze",
+                "es": "Alenne, Brisa Fugaz"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Harrier",
+                "es": "Hostigador"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 4,
+                "mental": 2,
+                "will": 2,
+                "strength": 3,
+                "armor": 2,
+                "health": 20
+            },
+            "passive_name": {
+                "en": "Gale",
+                "es": "Vendaval"
+            },
+            "passive_description": {
+                "en": "<p>Once per Clash, when this hero performs a Ranged Attack, you may change that Attack&rsquo;s types to Magical Air.<\/p>",
+                "es": "<p>Una vez por Choque, cuando este h&eacute;roe realice un Ataque a Distancia, puedes cambiar los tipos de ese Ataque a M&aacute;gico Aire.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Alenne, Fleeting Wind, is speed incarnate. Her presence is barely felt before the strike lands. She darts among the trees like a flash of light, dodging danger with an elegance that borders on the impossible. Her arrows slice through the air with the precision of the wind, and when the battle ends, only the whisper of leaves remains. In Then&acirc;n, they say that trying to catch her is like trying to catch the breeze.<\/p>",
+                "es": "<p>Alenne, Viento Fugaz, es la velocidad encarnada. Su presencia apenas se percibe antes de que el golpe llegue. Corre entre los &aacute;rboles como un destello, esquivando el peligro con una elegancia que roza lo imposible. Sus flechas cortan el aire con la precisi&oacute;n del viento, y cuando la batalla termina, solo queda el murmullo de las hojas. En Then&acirc;n, dicen que intentar atraparla es como intentar atrapar la brisa.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>You can&rsquo;t strike the wind&hellip; only feel its passing before the silence.<\/p>",
+                "es": "<p>No puedes golpear al viento&hellip; solo sentir su paso antes del silencio.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Breeze Arrow",
+                        "es": "Flecha de Brisa"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>For each Prepared Die this hero has, the rival player rerolls 1 of their Prepared Dice at random.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Por cada Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Preparado que tenga este h&eacute;roe, el jugador rival relanza 1 de sus Dados Preparados al azar.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Celeric Shot",
+                        "es": "Tiro Celérico"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>You may remove 1 boon counter: Swiftness from this hero: Deals 2 + Strength damage to a random adjacent enemy hero and this Ability gains the Area attribute.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Puedes remover un contador de beneficio: Presteza de este h&eacute;roe: Hace 2 + Fuerza de da&ntilde;o a un heroe rival adyacente aleatorio y esta Habilidad gana el atributo &Aacute;rea.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Iraie, Serene Spark",
+                "es": "Iraie, Chispa Serena"
+            },
+            "race": {
+                "en": "Elf",
+                "es": "Elfo"
+            },
+            "class": {
+                "en": "Spellblade",
+                "es": "Spellblade"
+            },
+            "superclass": {
+                "en": "Caster",
+                "es": "Conjurador"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 3,
+                "mental": 4,
+                "will": 2,
+                "strength": 3,
+                "armor": 2,
+                "health": 18
+            },
+            "passive_name": {
+                "en": "Serene Spark",
+                "es": "Chispa Serena"
+            },
+            "passive_description": {
+                "en": "<p>If all your Prepared Dice are of different colors, the damage from this hero&rsquo;s Magical Attacks cannot be reduced or prevented.<\/p>",
+                "es": "<p>Si todos tus Dados Preparados son de distinto color, el da&ntilde;o de los Ataques M&aacute;gicos de este h&eacute;roe no puede ser reducido ni prevenido.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Iraie, Serene Spark is the breath between thunder and lightning. Her spear channels currents of air and electricity, tracing arcs of bluish light that swirl around her in a storm of grace and power. She does not fight with fury, but with precision&mdash;each movement a note in the symphony of the wind. In the stillness of the storm, Sylwen finds her strength. In Then&acirc;n, they say her passing leaves the scent of ozone and the silence of the inevitable.<\/p>",
+                "es": "<p>Iraie, Centella Serena, es el respiro entre el trueno y el rel&aacute;mpago. Su lanza canaliza corrientes de aire y electricidad, trazando arcos de luz azulada que giran a su alrededor como un remolino de poder. No lucha con furia, sino con precisi&oacute;n: cada movimiento es una nota en la sinfon&iacute;a del viento. En la calma de la tormenta, Sylwen encuentra su fuerza. En Then&acirc;n, dicen que su paso deja el aroma del ozono y el silencio de lo inevitable.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Where thunder falls silent, my spear speaks.<\/p>",
+                "es": "<p>Donde el trueno calla, mi lanza habla.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Piercing Spear",
+                        "es": "Lanza Punzante"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If the target hero has at least 1 bane counter: Pained, this Attack ignores half of their Armor (rounded down).<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si el objetivo tiene al menos 1 contador de perjuicio: Dolorido, este Ataque ignora la mitad de su Armadura (redondeando hacia abajo).<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Electric Lance",
+                        "es": "Lanza Eléctrica"
+                    },
+                    "cost": "RB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Lightning",
+                        "es": "Electricidad"
+                    },
+                    "attack_type": "magical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Mental damage to the paired enemy hero.<\/p>\r\n<p>If this hero has kept at least 2 <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Dice, it deals +2 damage.<\/p>",
+                        "es": "<p>Hace 3 + Mente de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si este h&eacute;roe ha guardado al menos 2 Dados <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\">, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        }
+    ],
+    "cards": [
+        {
+            "name": {
+                "en": "Death Spread",
+                "es": "Abanico de Muerte"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Subterfuge",
+                "es": "Subterfugio"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Ranged",
+                "es": "A Distancia"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Piercing",
+                "es": "Perforante"
+            },
+            "area": true,
+            "cost": "GGB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Strength damage to the paired enemy hero and to 1 random adjacent enemy hero.<\/p>\r\n<p>Place 1 bane counter: Pained on each hero damaged by this effect.<\/p>",
+                "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y a 1 h&eacute;roe rival adyacente aleatorio.<\/p>\r\n<p>Coloca 1 contador de perjuicio: Dolorido sobre cada uno de los h&eacute;roes da&ntilde;ados por este efecto.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>With a fluid motion, the knives shoot out in a perfect arc, tracing silver lines through the air. Each one finds its mark, numbing limbs and destabilizing armor. Not a lethal attack, but a masterful technique: it paralyzes, confuses, and buys time. In Then&acirc;n, it is the prelude to victory.<\/p>",
+                "es": "<p>Con un movimiento fluido, los cuchillos salen disparados en un arco perfecto, trazando l&iacute;neas plateadas en el aire. Cada uno encuentra su marca, entumeciendo extremidades y desestabilizando armaduras. No es un ataque letal, pero es una t&eacute;cnica maestra: paraliza, confunde y gana tiempo. En Then&acirc;n, es el preludio de la victoria.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Silver arcs trace destiny; paralysis precedes defeat.<\/p>",
+                "es": "<p>Arcos plateados trazan el destino; la par&aacute;lisis precede a la derrota.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Superhuman Agility",
+                "es": "Agilidad Sobrehumana"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "B",
+            "restriction": {
+                "en": "<p>You may play this Technique as a <strong>Reaction<\/strong>: When the paired enemy hero plays a Ranged Attack.<\/p>\r\n<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p>Puedes jugar esta T&eacute;cnica como <strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe rival emparejado juegue un Ataque a Distancia.<\/p>\r\n<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Each time the active allied hero is targeted by a Ranged Attack, make an opposed Initiative roll against the attacking hero. If you win that roll, that Attack deals -2 damage (minimum 1).<\/p>\r\n<p>If you play it as a <strong>Reaction<\/strong>, apply this effect only to that Attack and this Card loses <strong>Persistent<\/strong>.<\/p>",
+                "es": "<p>Cada vez que el h&eacute;roe aliado activo sea objetivo de un Ataque a Distancia, haz una tirada de Iniciativa enfrentada con el h&eacute;roe atacante. Si ganas dicha tirada, ese Ataque hace -2 de da&ntilde;o (m&iacute;nimo 1).<\/p>\r\n<p>Si la juegas como <strong>Reacci&oacute;n<\/strong>, aplica este efecto solo a ese Ataque y esta Carta pierde <strong>Persistente<\/strong>.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The ranger moves like lightning, dodging blows and cutting through the air with their weapons. Their agility defies logic, each movement fluid and precise. In Then&acirc;n, speed is not just an advantage, it is an art form, and intruders rarely see it coming.<\/p>",
+                "es": "<p>El guardabosque se mueve como un rel&aacute;mpago, esquivando golpes y cortando el aire con sus armas. Su agilidad desaf&iacute;a la l&oacute;gica, cada movimiento es fluido y preciso. En Then&acirc;n, la velocidad no es solo una ventaja, es una forma de arte, y los intrusos rara vez la ven venir.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Lightning envies the speed of Then&acirc;n's children.<\/p>",
+                "es": "<p>El rayo envidia la velocidad de los hijos de Then&acirc;n.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Alert",
+                "es": "Alerta"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Place 1 boon counter: Swiftness on the active allied hero and 1 on each adjacent allied hero.<\/p>",
+                "es": "<p>Coloca 1 contador de beneficio: Presteza sobre el h&eacute;roe aliado activo y 1 sobre cada h&eacute;roe aliado adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In the silence of the forest, the eyes of the Rangers never rest. Each creaking branch, each moving shadow, is registered. Alertness is their mantra, and the forest, their ally. When danger lurks, they already know. In Then&acirc;n, vigilance is the first line of defense.<\/p>",
+                "es": "<p>En el silencio del bosque, los ojos de los Guardabosques nunca descansan. Cada crujido de rama, cada sombra que se mueve, es registrado. La alerta es su mantra, y el bosque, su aliado. Cuando el peligro acecha, ellos ya lo saben. En Then&acirc;n, la vigilancia es la primera l&iacute;nea de defensa.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The forest whispers warnings to those who truly listen.<\/p>",
+                "es": "<p>El bosque susurra advertencias a quienes verdaderamente escuchan.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Serenity Amulet",
+                "es": "Amuleto de Serenidad"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Amulet",
+                "es": "Amuleto"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>When you attach this Equipment, draw 1 Card.<\/p>\r\n<p>At the beginning of the Action Resolution Phase, choose 1:<\/p>\r\n<ul>\r\n<li>Look at the top 2 Cards of your Library. Place them on the top or bottom of your Library in any order.<\/li>\r\n<li>The next Single Target Attack you perform in this Clash deals +1 damage.<\/li>\r\n<li>Reroll 1 of your Prepared Dice.<\/li>\r\n<\/ul>",
+                "es": "<p>Cuando anexes este Equipo, roba 1 Carta.<\/p>\r\n<p>Al inicio de la fase de Resoluci&oacute;n de Acciones, elige 1:<\/p>\r\n<ul>\r\n<li>Mira las 2 primeras Cartas de tu Biblioteca. Ponlas en la parte superior o inferior de tu Biblioteca en cualquier orden.<\/li>\r\n<li>El siguiente Ataque de 1 Objetivo que realices en este Choque hace +1 de da&ntilde;o.<\/li>\r\n<li>Relanza 1 de tus Dados Preparados.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p>Those who wear the amulet sense the flow of events before they unfold: the faint tremor of an enemy&rsquo;s hand, the shift in their breath. Its magic does not bend fate; it merely clears the noise that hides it.&nbsp;In the hands of a true devotee of Then&acirc;n, even time itself seems to pause to let them think.<\/p>",
+                "es": "<p>Quien porta el amuleto percibe el fluir de los acontecimientos antes de que ocurran: el leve temblor de una mano enemiga, el cambio de tono en una respiraci&oacute;n. Su magia no altera el destino, solo despeja el ruido que lo oculta. En manos de un verdadero devoto de Then&acirc;n, el tiempo mismo parece detenerse para dejarle pensar.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Time does not reward the swift, but the one who has already seen the end.<\/p>",
+                "es": "<p>El tiempo no premia al m&aacute;s r&aacute;pido, sino al que ya vio el final.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Electric Aura",
+                "es": "Aura Eléctrica"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Spell",
+                "es": "Hechizo"
+            },
+            "card_subtype": {
+                "en": "Elemental",
+                "es": "Elemental"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Aura",
+                "es": "Aura"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Lightning",
+                "es": "Electricidad"
+            },
+            "area": false,
+            "cost": "R",
+            "restriction": {
+                "en": "<p>You may play this Spell as a <strong>Reaction<\/strong>: When the active allied hero is targeted by a Physical Attack.<\/p>\r\n<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p>Puedes jugar este Hechizo como&nbsp;<strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe aliado sea objetivo de un Ataque F&iacute;sico.<\/p>\r\n<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Each time the active allied hero is targeted by a Physical Attack, place 1 bane counter: Weakened on the attacking hero.<\/p>\r\n<p>If the attacking hero already had at least 1 bane counter: Weakened, instead it takes 2 Direct damage.<\/p>\r\n<p>If you play it as a <strong>Reaction<\/strong>, apply this effect only to that Attack.<\/p>",
+                "es": "<p>Cada vez que el h&eacute;roe aliado activo sea objetivo de un Ataque F&iacute;sico, coloca 1 contador de perjuicio: Debilitado sobre el h&eacute;roe atacante.<\/p>\r\n<p>Si el h&eacute;roe atacante ya ten&iacute;a al menos 1 contador de perjuicio: Debilitado, en lugar de eso sufre 2 da&ntilde;os Directos.<\/p>\r\n<p>Si lo juegas como <strong>Reacci&oacute;n<\/strong>, aplica este efecto solo a ese Ataque.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The air crackles when the ranger caster deploys their electric aura. A bluish glow envelops their body, empowering every movement with the fury of a storm. Enemies who approach receive lightning strikes, while their speed and precision multiply. It is nature itself fighting at their side.<\/p>",
+                "es": "<p>El aire crepita cuando el hechicero guardabosques despliega su aura el&eacute;ctrica. Un resplandor azulado envuelve su cuerpo, potenciando cada movimiento con la furia de una tormenta. Los enemigos que se acercan reciben descargas fulminantes, mientras su velocidad y precisi&oacute;n se multiplican. Es la naturaleza misma luchando a su lado.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Storm-touched flesh becomes nature's vengeance.<\/p>",
+                "es": "<p>Carne tocada por tormentas se vuelve venganza de la naturaleza.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Raven Cloak",
+                "es": "Capa de Cuervo"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Cloak",
+                "es": "Capa"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "B",
+            "restriction": [],
+            "effect": {
+                "en": "<p>At the beginning of the Clash, place 1 boon counter: Elusive on the attached hero.<\/p>\r\n<p><strong>Resonate<\/strong>: Draw 1 Card.<\/p>",
+                "es": "<p>Al inicio del Choque, coloca 1 contador de beneficio: Escurridizo sobre el h&eacute;roe anexado.<\/p>\r\n<p><strong>Resonar<\/strong>: Roba 1 Carta.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Raven Cloak is a masterpiece of stealth, woven with dark threads that absorb light. Under its mantle, the ranger vanishes into the shadows, invisible beyond two meters. It is an essential tool for protecting Then&acirc;n, a reminder that true strength lies in subtlety.<\/p>",
+                "es": "<p>La Capa de Cuervo es una obra maestra de sigilo, tejida con hilos oscuros que absorben la luz. Bajo su manto, el guardabosques se desvanece en las sombras, invisible a m&aacute;s de dos metros. Es una herramienta esencial para proteger Then&acirc;n, un recordatorio de que la verdadera fuerza reside en la sutileza.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Shadows weave protection darker than midnight.<\/p>",
+                "es": "<p>Las sombras tejen protecci&oacute;n m&aacute;s oscura que la medianoche.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Lightning Clash",
+                "es": "Choque de Relámpagos"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Spell",
+                "es": "Hechizo"
+            },
+            "card_subtype": {
+                "en": "Elemental",
+                "es": "Elemental"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "magical",
+            "attack_subtype": {
+                "en": "Lightning",
+                "es": "Electricidad"
+            },
+            "area": false,
+            "cost": "BB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 3 + Mental damage to the paired enemy hero.<\/p>\r\n<p>Choose 1:<\/p>\r\n<ul>\r\n<li>Deals +1 damage for each <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\">&nbsp;Dice you have as Prepared Dice.<\/li>\r\n<li>Prepare 1 of your spent <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Dice.<\/li>\r\n<\/ul>",
+                "es": "<p>Hace 3 + Mente de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Elige 1:<\/p>\r\n<ul>\r\n<li>Hace +1 de da&ntilde;o por cada dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> que tengas como Dado Preparado.<\/li>\r\n<li>Prepara 1 de tus dados&nbsp;<img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> gastados.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p>The caster raises their hands, and a sphere of lightning grows between their fingers. With a gesture, they hurl it at the enemy. The impact is brutal: a blinding flash, a deafening thunder. The adversary falls, stunned and vulnerable. In Then&acirc;n, lightning not only illuminates, it also purges.<\/p>",
+                "es": "<p>El hechicero alza sus manos, y una esfera de rel&aacute;mpagos crece entre sus dedos. Con un gesto, la lanza hacia el enemigo. El impacto es brutal: un destello cegador, un trueno ensordecedor. El adversario cae, aturdido y vulnerable. En Then&acirc;n, el rayo no solo ilumina, tambi&eacute;n purga.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Thunder announces judgment; lightning delivers it.<\/p>",
+                "es": "<p>El trueno anuncia el juicio; el rayo lo ejecuta.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Energetic Concentration",
+                "es": "Concentración Enérgica"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": null,
+            "restriction": {
+                "en": "<p>Play this Support at the start of the Action Dice Preparation Phase.<\/p>",
+                "es": "<p>Juega este Apoyo al inicio de la fase de Preparaci&oacute;n de Dados de Acci&oacute;n.<\/p>"
+            },
+            "effect": {
+                "en": "<p>You may keep 1 <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Die before making any roll.<\/p>\r\n<p>You may keep 1 additional <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red-green-blue.svg\" alt=\"Dado Rojo-Verde-Azul\"> Die. If you keep this second Die, you cannot make rerolls during this Action Dice preparation phase.<\/p>",
+                "es": "<p>Puedes guardar 1 Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> antes de realizar cualquier tirada.<\/p>\r\n<p>Puedes guardar 1 Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red-green-blue.svg\" alt=\"Dado Rojo-Verde-Azul\"> adicional. Si guardas este segundo Dado, no puedes hacer repeticiones durante esta fase de preparaci&oacute;n de Dados de Acci&oacute;n.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The warrior focuses their energy, and an electric glow runs through their weapon. Each strike is now faster, more precise, more lethal. Enemy defenses vanish under the power of lightning. On the battlefield, this technique is synonymous with victory: a single cut can change the course of the fight.<\/p>",
+                "es": "<p>El guerrero enfoca su energ&iacute;a, y un brillo el&eacute;ctrico recorre su arma. Cada golpe ahora es m&aacute;s r&aacute;pido, m&aacute;s preciso, m&aacute;s letal. Las defensas enemigas se desvanecen bajo el poder del rayo. En el campo de batalla, esta t&eacute;cnica es sin&oacute;nimo de victoria: un solo corte puede cambiar el rumbo de la lucha.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Focus transforms raw power into lethal precision.<\/p>",
+                "es": "<p>El enfoque transforma poder crudo en precisi&oacute;n letal.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Relentless Charge",
+                "es": "Arremetida Contínua"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Assault",
+                "es": "Asalto"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Slashing",
+                "es": "Cortante"
+            },
+            "area": false,
+            "cost": "GG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>Place 1 boon counter: Swiftness on the active allied hero.<\/p>",
+                "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Coloca 1 contador de beneficio: Presteza sobre el h&eacute;roe aliado activo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The ranger dodges the attack with feline grace and, in an instant, returns the blow. Their weapon finds its mark with relentless precision. Every movement is calculated, every counterattack, a lesson in mastery. In Then&acirc;n, defense is not just dodging, it's turning the enemy's mistake into their defeat.<\/p>",
+                "es": "<p>El guardabosque esquiva el ataque con la gracia de un felino y, en un instante, devuelve el golpe. Su arma encuentra su marca con precisi&oacute;n implacable. Cada movimiento es calculado, cada contraataque, una lecci&oacute;n de maestr&iacute;a. En Then&acirc;n, la defensa no es solo esquivar, es convertir el error del enemigo en su derrota.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Every attack contains the seed of its own defeat.<\/p>",
+                "es": "<p>Cada ataque contiene la semilla de su propia derrota.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Surgical Strike",
+                "es": "Golpe Quirúrgico"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Assault",
+                "es": "Asalto"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Piercing",
+                "es": "Perforante"
+            },
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>Place 1 bane counter: Pained on that hero.<\/p>",
+                "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Coloca 1 contador de perjuicio: Dolorido sobre ese h&eacute;roe.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In the twilight of the forest, the ranger's blade moves like lightning. A single cut, precise and lethal, leaves the enemy immobilized and vulnerable. The air fills with tension, but the heroes do not hesitate. Each step forward is a promise: Then&acirc;n will not fall.<\/p>",
+                "es": "<p>En la penumbra del bosque, la hoja del guardabosque se mueve como un rel&aacute;mpago. Un solo corte, preciso y letal, deja al enemigo inmovilizado y vulnerable. El aire se llena de tensi&oacute;n, pero los h&eacute;roes no dudan. Cada paso adelante es una promesa: Then&acirc;n no caer&aacute;.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>One perfect cut silences a thousand threats.<\/p>",
+                "es": "<p>Un corte perfecto silencia mil amenazas.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Lightning Blade",
+                "es": "Cuchilla Relámpago"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Spell",
+                "es": "Hechizo"
+            },
+            "card_subtype": {
+                "en": "Elemental",
+                "es": "Elemental"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "magical",
+            "attack_subtype": {
+                "en": "Lightning",
+                "es": "Electricidad"
+            },
+            "area": false,
+            "cost": "B",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Mental damage to the paired enemy hero.<\/p>\r\n<p>Place 1 bane counter: Weakened on that hero.<\/p>",
+                "es": "<p>Hace 2 + Mente de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Coloca 1 contador de perjuicio: Debilitado sobre ese h&eacute;roe.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The caster's sword illuminates with a bluish glow, charged with electrical energy. With a quick movement, the blade pierces through the enemy, leaving them convulsing under the power of lightning. It's not just a strike, it's the fury of the storm channeled into a sharp edge.<\/p>",
+                "es": "<p>La espada del hechicero se ilumina con un brillo azulado, cargada de energ&iacute;a el&eacute;ctrica. Con un movimiento r&aacute;pido, la cuchilla atraviesa al enemigo, dej&aacute;ndolo convulsionando bajo el poder del rayo. No es solo un golpe, es la furia de la tormenta canalizada en una hoja afilada.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Steel channels storms when wielded by the worthy.<\/p>",
+                "es": "<p>El acero canaliza tormentas cuando lo empu&ntilde;an los dignos.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Dagger of Irnael",
+                "es": "Daga de Irnael"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Dagger",
+                "es": "Daga"
+            },
+            "equipment_category": "weapon",
+            "hands": 1,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RR",
+            "restriction": [],
+            "effect": {
+                "en": "<p>If the target hero has at least 1 bane counter: Pained, the attached hero deals +1 damage with Single Target Melee Physical Piercing Attacks.<\/p>\r\n<p>The first Melee Physical Piercing Attack the attached hero performs in each Clash, in addition to its effect, places 1 bane counter: Pained on each hero it damaged.<\/p>",
+                "es": "<p>Si el h&eacute;roe objetivo tiene al menos 1 contador de perjuicio: Dolorido, el h&eacute;roe anexado hace +1 de da&ntilde;o con los Ataques Melee F&iacute;sicos Perforantes de 1 Objetivo.<\/p>\r\n<p>El primer Ataque Melee F&iacute;sico Perforante que realice el h&eacute;roe anexado en cada Choque, adem&aacute;s de su efecto, coloca 1 contador de perjuicio: Dolorido sobre cada h&eacute;roe al que haga da&ntilde;o.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Dagger of Irnael gleams with an edge that seems to cut through time itself. Swift as the wind, its legendary owner left a wake of fear and respect in the forests of Then&acirc;n. Today, it is a symbol of strength and courage, a legacy that inspires rangers to protect their home with the same ferocity.<\/p>",
+                "es": "<p>La Daga de Irnael brilla con un filo que parece cortar el tiempo. Veloz como el viento, su due&ntilde;o legendario dej&oacute; una estela de temor y respeto en los bosques de Then&acirc;n. Hoy, es un s&iacute;mbolo de fuerza y valent&iacute;a, un legado que inspira a los guardabosques a proteger su hogar con la misma ferocidad.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Irnael's legacy: time itself yields to the blade.<\/p>",
+                "es": "<p>El legado de Irnael: el tiempo mismo cede ante la hoja.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Thenân's Edge",
+                "es": "Daga de Thenân"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Dagger",
+                "es": "Daga"
+            },
+            "equipment_category": "weapon",
+            "hands": 1,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "R",
+            "restriction": [],
+            "effect": {
+                "en": "<p>If the attached hero won the Initiative of this Clash, for each Single Target Piercing Physical Melee Attack they perform, you may choose for the target hero to defend using their Agility instead of their Armor.<\/p>",
+                "es": "<p>Si el h&eacute;roe anexado gan&oacute; la Iniciativa de este Choque, para cada Ataque Melee F&iacute;sico Perforante de 1 Objetivo que realice, puedes elegir que el h&eacute;roe objetivo del Ataque defienda con su Agilidad en lugar de su Armadura.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Dagger of Then&acirc;n is a masterpiece of elven precision. Its sharp blade and lightweight design allow for quick and deadly movements. In the hands of a ranger, it becomes an extension of their will, cutting with grace and lethality. It is the perfect weapon for those who rely on speed and subtlety.<\/p>",
+                "es": "<p>La Daga de Then&acirc;n es una obra maestra de precisi&oacute;n &eacute;lfica. Su hoja afilada y dise&ntilde;o ligero permiten movimientos r&aacute;pidos y mortales. En manos de un guardabosques, se convierte en una extensi&oacute;n de su voluntad, cortando con gracia y letalidad. Es el arma perfecta para quien conf&iacute;a en la velocidad y la sutileza.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Elven precision forged into deadly simplicity.<\/p>",
+                "es": "<p>Precisi&oacute;n &eacute;lfica forjada en simplicidad mortal.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Bladedance",
+                "es": "Danza de Cuchillas"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Tactic",
+                "es": "Táctica"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": null,
+            "restriction": {
+                "en": "<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Each time the active allied hero performs a Single-Target Physical Attack, it performs another Physical Attack of the same range and subtype that deals 2 + Agility damage to the same target.<\/p>\r\n<p>This effect may occur only once per Action.<\/p>",
+                "es": "<p>Cada vez que el h&eacute;roe aliado activo realice 1 Ataque F&iacute;sico de 1 Objetivo, realiza otro Ataque F&iacute;sico del mismo rango y subtipo que hace 2 + Agilidad de da&ntilde;o contra el mismo objetivo.<\/p>\r\n<p>Este efecto solo puede ocurrir 1 vez por Acci&oacute;n.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The ranger spins with lethal elegance, their blades flashing like lightning in the darkness. Each movement is calculated, each cut, a work of art. The Bladedance is not just a technique, it's a choreography of death that leaves enemies breathless and defenseless.<\/p>",
+                "es": "<p>El guardabosques gira con elegancia letal, sus cuchillas brillando como rel&aacute;mpagos en la oscuridad. Cada movimiento es calculado, cada corte, una obra de arte. La Danza de Cuchillas no es solo una t&eacute;cnica, es una coreograf&iacute;a de muerte que deja a los enemigos sin aliento y sin defensa.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Death performs its most elegant choreography.<\/p>",
+                "es": "<p>La muerte ejecuta su coreograf&iacute;a m&aacute;s elegante.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Vanish",
+                "es": "Esfumarse"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Subterfuge",
+                "es": "Subterfugio"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RGB",
+            "restriction": {
+                "en": "<p>This Technique can only be played by a Stalker hero.<\/p>\r\n<p>Play this Technique at any time during the Clash.<\/p>",
+                "es": "<p>Esta T&eacute;cnica solo puede jugarla un h&eacute;roe Acechador.<\/p>\r\n<p>Juega esta T&eacute;cnica en cualquier momento del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Discard from the Action Stack all Actions that remain unresolved after this Technique resolves.<\/p>\r\n<p>Restart the Clash from the Action Dice Preparation Phase.<\/p>\r\n<p>Draw 1 Card.<\/p>\r\n<p><strong>Resonate<\/strong>: Draw 1 Card.<\/p>",
+                "es": "<p>Descarta de la Pila de Acciones todas las Acciones que falten por resolverse una vez resuelta esta T&eacute;cnica.<\/p>\r\n<p>Reinicia el Choque desde la Fase de Preparar Dados de Acci&oacute;n.<\/p>\r\n<p>Roba 1 Carta.<\/p>\r\n<p><strong>Resonar<\/strong>: Roba 1 Carta.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In the blink of an eye, the ranger dissolves into the shadows, as if the forest itself absorbed them. Not even the most attentive eye can detect them. From the darkness, they observe, wait, and strike. Knowing how to vanish is not just a skill, it's the art of being invisible in a world full of threats.<\/p>",
+                "es": "<p>En un abrir y cerrar de ojos, el guardabosques se desvanece entre las sombras, como si el bosque mismo lo absorbiera. Ni el ojo m&aacute;s atento puede detectarlo. Desde la oscuridad, observa, espera y ataca. Saber esfumarse no es solo una habilidad, es el arte de ser invisible en un mundo lleno de amenazas.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Between one heartbeat and the next, only shadows remain.<\/p>",
+                "es": "<p>Entre un latido y el siguiente, solo quedan sombras.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Narlaret's Blade",
+                "es": "Espada de Narlaret"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Sword",
+                "es": "Espada"
+            },
+            "equipment_category": "weapon",
+            "hands": 1,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "BB",
+            "restriction": [],
+            "effect": {
+                "en": "<p data-start=\"497\" data-end=\"807\">Once per Clash, when the attached hero plays an Assault or Pressure Technique with Dice Cost 2 or less, you may discard 1 Card from your Hand with the same Dice Cost as that Technique: Duplicate that Technique and place it on the stack twice. Then, remove this Card from the game.<\/p>\r\n<p data-start=\"809\" data-end=\"983\" data-is-last-node=\"\" data-is-only-node=\"\">At the end of the Clash, if this hero did not activate this effect, you may return 1 Assault or Pressure Technique with Dice Cost 2 or less from your Graveyard to your Hand.<\/p>",
+                "es": "<p data-start=\"0\" data-end=\"333\">Una vez por Choque, cuando el h&eacute;roe anexado juegue una T&eacute;cnica Asalto o Presi&oacute;n de Coste en Dados 2&nbsp;o menor, puedes descartar 1 Carta de tu Mano que tenga el mismo Coste en Dados que esa T&eacute;cnica: Duplica esa T&eacute;cnica y ponla en la pila dos veces. Despu&eacute;s, retira la Carta del juego.<\/p>\r\n<p data-start=\"335\" data-end=\"490\">Al final del Choque, si este h&eacute;roe no activ&oacute; este efecto, puedes devolver 1 T&eacute;cnica Asalto o Presi&oacute;n de Coste en Dados 2 o menor de tu Cementerio a tu Mano.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Sword of Narlaret shines with an ancestral glow, its blade impeccably sharpened. Forged for a legend, it is an extension of its owner's grace and lethality. Today, it rests in Sherilom as a symbol of courage, remembering one who fought with the heart of the forest in every strike.<\/p>",
+                "es": "<p>La Espada de Narlaret brilla con un fulgor ancestral, su hoja impecablemente afilada. Forjada para una leyenda, es una extensi&oacute;n de la gracia y letalidad de su due&ntilde;a. Hoy, reposa en Sherilom como un s&iacute;mbolo de valent&iacute;a, recordando a quien luch&oacute; con el coraz&oacute;n del bosque en cada golpe.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Grace and lethality married in ancestral steel.<\/p>",
+                "es": "<p>Gracia y letalidad unidas en acero ancestral.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Back-to-Back",
+                "es": "Espalda con Espalda"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RB",
+            "restriction": {
+                "en": "<p><strong>Reaction<\/strong>: When the paired enemy hero plays an Area Attack.<\/p>",
+                "es": "<p><strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe rival emparejado juegue un Ataque de &Aacute;rea.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Adjacent allied heroes cannot take damage or be affected by that Attack.<\/p>\r\n<p><strong>Resonate<\/strong>: Draw 1 Card.<\/p>",
+                "es": "<p>Los h&eacute;roes aliados adyacentes no pueden sufrir da&ntilde;o ni ser afectados por dicho Ataque.<\/p>\r\n<p><strong>Resonar<\/strong>: Roba 1 Carta.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In the heart of Then&acirc;n, the rangers fight as one. Back to back, they form an unbreakable circle. Every movement is synchronized, every strike, supported. No matter the threat, their loyalty and unity make them unstoppable. Together, they are the wall that protects the forest.<\/p>",
+                "es": "<p>En el coraz&oacute;n de Then&acirc;n, los guardabosques luchan como uno solo. Espalda con espalda, forman un c&iacute;rculo inquebrantable. Cada movimiento est&aacute; sincronizado, cada golpe, respaldado. No importa la amenaza, su lealtad y unidad los hacen imparables. Juntos, son el muro que protege el bosque.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Unity forges walls no enemy can breach.<\/p>",
+                "es": "<p>La unidad forja muros que ning&uacute;n enemigo puede romper.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Precision Thrust",
+                "es": "Estocada"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Assault",
+                "es": "Asalto"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Piercing",
+                "es": "Perforante"
+            },
+            "area": false,
+            "cost": "RB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>Choose 1:<\/p>\r\n<ul>\r\n<li>You may roll 1 Spent Die and keep it as a Prepared Die.<\/li>\r\n<li>Place 1 boon counter: Swiftness on the active allied hero.<\/li>\r\n<\/ul>",
+                "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Elige 1:<\/p>\r\n<ul>\r\n<li>Puedes lanzar 1 Dado Gastado y guardarlo como Dado Preparado.<\/li>\r\n<li>Coloca 1 contador de beneficio: Presteza sobre el h&eacute;roe aliado activo.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p>In the twilight of Then&acirc;n, the ranger's blade moves like a whisper. A single movement, quick and precise, and the thrust finds its mark. The enemy falls in silence, and the forest reclaims its peace. It is the art of precision, where a single strike decides everything.<\/p>",
+                "es": "<p>En la penumbra de Then&acirc;n, la hoja del guardabosque se mueve como un susurro. Un solo movimiento, r&aacute;pido y preciso, y la estocada encuentra su marca. El enemigo cae en silencio, y el bosque recupera su paz. Es el arte de la precisi&oacute;n, donde un solo golpe lo decide todo.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Silence speaks loudest through a perfect strike.<\/p>",
+                "es": "<p>El silencio habla m&aacute;s alto a trav&eacute;s de un golpe perfecto.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Feint",
+                "es": "Finta"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RR",
+            "restriction": {
+                "en": "<p><strong>Reaction<\/strong>: When the active allied hero is targeted by a Melee Attack.<\/p>",
+                "es": "<p><strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe aliado activo sea objetivo de un Ataque Melee.<\/p>"
+            },
+            "effect": {
+                "en": "<p>If the active allied hero has equal or higher Agility than the hero performing that Attack, ignore that Attack.<\/p>",
+                "es": "<p>Si el h&eacute;roe aliado activo tiene igual o m&aacute;s Agilidad que el h&eacute;roe que realiza dicho Ataque, ignora ese Ataque.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The ranger moves like a shadow, their body dodging blows with impossible grace. Each feint is a perfect deception, each movement, an illusion. Enemy attacks find only air, while they prepare their counterattack. In Then&acirc;n, agility is as lethal as the sharpest blade.<\/p>",
+                "es": "<p>El guardabosque se mueve como una sombra, su cuerpo esquivando golpes con una gracia imposible. Cada finta es un enga&ntilde;o perfecto, cada movimiento, una ilusi&oacute;n. Los ataques enemigos solo encuentran aire, mientras &eacute;l prepara su contraataque. En Then&acirc;n, la agilidad es tan letal como la hoja m&aacute;s afilada.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Illusion and reality dance on the edge of a blade.<\/p>",
+                "es": "<p>Ilusi&oacute;n y realidad danzan en el filo de una hoja.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Rain of Steel",
+                "es": "Lluvia de Acero"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Assault",
+                "es": "Asalto"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Slashing",
+                "es": "Cortante"
+            },
+            "area": false,
+            "cost": "GG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Strength damage twice to the paired enemy hero.<\/p>\r\n<p>They are considered 2 independent Attacks for all effects.<\/p>",
+                "es": "<p>Hace 2 + Fuerza de da&ntilde;o dos veces al h&eacute;roe rival emparejado.<\/p>\r\n<p>Se consideran 2 Ataques independientes a todos los efectos.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The movements of Forest Wardens of Then&acirc;n are as swift and countless as the leaves falling in autumn. Their blades weave silver and green flashes that bewilder their foes, until they realize that every leaf is, in truth, an unrelenting edge.<\/p>",
+                "es": "<p>Los movimientos de los Guardabosques de Then&acirc;n son tan r&aacute;pidos y numerosos como las hojas que caen en oto&ntilde;o. Sus espadas trazan destellos verdes y plateados que desorientan al enemigo, hasta que este comprende que cada hoja es, en realidad, un filo implacable.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>When the forest falls upon you, every leaf cuts.<\/p>",
+                "es": "<p>Cuando el bosque cae sobre ti, cada hoja corta.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Shadow Strike",
+                "es": "Golpe desde las Sombras"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Subterfuge",
+                "es": "Subterfugio"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Piercing",
+                "es": "Perforante"
+            },
+            "area": false,
+            "cost": "B",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>Place 1 bane counter: Pained on that hero.<\/p>\r\n<p>If it is the first Action you play in this Clash, the target hero uses their Agility instead of their Armor to defend.<\/p>",
+                "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Coloca 1 contador de perjuicio: Dolorido sobre ese h&eacute;roe.<\/p>\r\n<p>Si es la primera Acci&oacute;n que juegas en este Choque, el h&eacute;roe objetivo usa su Agilidad en lugar de su Armadura para defender.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>From the shadows, the ranger attacks. Their strike is quick, silent, and deadly. Intruders have no time to react before falling. In Then&acirc;n, darkness is not a refuge for enemies, but the elves' most lethal weapon. Where there are shadows, there is danger.<\/p>",
+                "es": "<p>Desde las sombras, el guardabosque ataca. Su golpe es r&aacute;pido, silencioso y mortal. Los intrusos no tienen tiempo de reaccionar antes de caer. En Then&acirc;n, la oscuridad no es un refugio para los enemigos, sino el arma m&aacute;s letal de los elfos. Donde hay sombras, hay peligro.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>From darkness comes the forest's justice.<\/p>",
+                "es": "<p>De la oscuridad viene la justicia del bosque.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Vital Intelligence",
+                "es": "Información Vital"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RR",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Draw 1 Card.<\/p>\r\n<p>If the hero playing this Support has at least 1 boon counter: Swiftness on them, or if the paired enemy hero has at least 1 bane counter: Weakened or Pained on them, you may remove 1 of those counters to draw 1 Card.<\/p>",
+                "es": "<p>Roba 1 Carta.<\/p>\r\n<p>Si el h&eacute;roe que juega este Apoyo tiene al menos 1 contador de beneficio: Presteza sobre &eacute;l, o si el h&eacute;roe rival emparejado tiene al menos 1 contador de perjuicio: Debilitado o Dolorido sobre &eacute;l, puedes remover 1 de esos contadores para robar 1 Carta.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The ravens of Then&acirc;n are the eyes of the forest. From the treetops, they observe and listen, carrying crucial messages to the rangers. With their help, the elves anticipate threats and prepare ambushes. In Then&acirc;n, information is as vital as the sword, and ravens, their silent guardians.<\/p>",
+                "es": "<p>Los cuervos de Then&acirc;n son los ojos del bosque. Desde las copas de los &aacute;rboles, observan y escuchan, llevando mensajes cruciales a los guardabosques. Con su ayuda, los elfos anticipan amenazas y preparan emboscadas. En Then&acirc;n, la informaci&oacute;n es tan vital como la espada, y los cuervos, sus guardianes silenciosos.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Ravens carry secrets worth more than gold.<\/p>",
+                "es": "<p>Los cuervos portan secretos que valen m&aacute;s que el oro.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Sherilom's Chestplate",
+                "es": "Peto de Sherilom"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Chestplate",
+                "es": "Peto"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>When you attach this Equipment, place 1 boon counter: Swiftness on the attached hero.<\/p>\r\n<p>If the attached hero has won the Initiative of this Clash, they take -1 Physical Damage.<\/p>",
+                "es": "<p>Cuando anexes este Equipo, coloca 1 contador de beneficio: Presteza sobre el h&eacute;roe anexado.<\/p>\r\n<p>Si el h&eacute;roe anexado ha ganado la Iniciativa de este Choque, recibe -1 de Da&ntilde;o F&iacute;sico.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Sherilom's Chestplate is a masterpiece of balance: light as a feather, resilient as oak. Forged from hardened leather, it allows rangers to move with feline grace, protecting them without restricting their agility. In Then&acirc;n, it is the second skin of those who defend the forest.<\/p>",
+                "es": "<p>El Peto de Sherilom es una obra maestra de equilibrio: ligero como una pluma, resistente como el roble. Forjado en cuero endurecido, permite a los guardabosques moverse con la gracia de un felino, protegi&eacute;ndolos sin restringir su agilidad. En Then&acirc;n, es la segunda piel de quienes defienden el bosque.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Feather-light protection, oak-strong resolve.<\/p>",
+                "es": "<p>Protecci&oacute;n ligera como pluma, voluntad fuerte como roble.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Acrobatics",
+                "es": "Pirueta"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Until the end of the Clash, the active allied hero may use their Agility instead of their Armor or Will to defend.<\/p>",
+                "es": "<p>Hasta el final del Choque, el h&eacute;roe aliado activo puede usar su Agilidad en lugar de su Armadura o Voluntad para defender.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The ranger spins in the air, their body tracing a perfect arc. The pirouette not only evades the enemy attack, but also returns the blow with lethal precision. As they land, they're already in an advantageous position, ready to continue the dance of battle.<\/p>",
+                "es": "<p>El guardabosque gira en el aire, su cuerpo trazando un arco perfecto. La pirueta no solo evade el ataque enemigo, sino que tambi&eacute;n devuelve el golpe con precisi&oacute;n letal. Al caer, ya est&aacute; en una posici&oacute;n ventajosa, listo para continuar la danza de la batalla.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Grace transforms defense into deadly art.<\/p>",
+                "es": "<p>La gracia transforma la defensa en arte mortal.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Combat Readiness",
+                "es": "Preparado para el Combate"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Tactic",
+                "es": "Táctica"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": {
+                "en": "<p><strong>Persistent<\/strong>: Until you play an Attack.<\/p>",
+                "es": "<p><strong>Persistente<\/strong>: Hasta que juegues un Ataque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>The next Physical Attack performed by the active allied hero, in addition to its effect, places 1 bane counter: Weakened on each hero it damages.<\/p>\r\n<p>Place 1 boon counter: Swiftness on the active allied hero.<\/p>",
+                "es": "<p>El siguiente Ataque F&iacute;sico que realice el h&eacute;roe aliado activo, adem&aacute;s de su efecto, coloca 1 contador de perjuicio: Debilitado sobre cada h&eacute;roe al que haga da&ntilde;o.<\/p>\r\n<p>Coloca 1 contador de beneficio: Presteza sobre el h&eacute;roe aliado activo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In Then&acirc;n, each dawn brings with it the sound of sharpened swords and taut bows. The elves train with relentless discipline, perfecting every movement, every strategy. Their preparation is meticulous, their focus, unbreakable. When the threat arrives, they are ready: the forest will never be defenseless.<\/p>",
+                "es": "<p>En Then&acirc;n, cada amanecer trae consigo el sonido de espadas afiladas y arcos tensados. Los elfos entrenan con disciplina implacable, perfeccionando cada movimiento, cada estrategia. Su preparaci&oacute;n es meticulosa, su enfoque, inquebrantable. Cuando la amenaza llega, est&aacute;n listos: el bosque nunca estar&aacute; indefenso.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Dawn brings discipline; twilight brings victory.<\/p>",
+                "es": "<p>El alba trae disciplina; el crep&uacute;sculo trae victoria.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Thunderbolt",
+                "es": "Relámpago"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Spell",
+                "es": "Hechizo"
+            },
+            "card_subtype": {
+                "en": "Elemental",
+                "es": "Elemental"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Ranged",
+                "es": "A Distancia"
+            },
+            "attack_type": "magical",
+            "attack_subtype": {
+                "en": "Lightning",
+                "es": "Electricidad"
+            },
+            "area": false,
+            "cost": "R",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 1 + Mental damage to the paired enemy hero.<\/p>\r\n<p>You may modify 1 of your Prepared <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red-green.svg\" alt=\"Dado Rojo-Verde\"> Dice and keep it as <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\">&nbsp;Dice.<\/p>",
+                "es": "<p>Hace 1 + Mente de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Puedes modificar uno de tus Dados <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red-green.svg\" alt=\"Dado Rojo-Verde\"> Preparados y guardarlo como Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\">.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The caster raises their hand, and the sky responds. A lightning bolt descends, illuminating the forest with a blinding flash. The enemy falls, stunned and burned. In Then&acirc;n, the storm is not just a natural phenomenon, it is a weapon in the hands of those who protect the forest.<\/p>",
+                "es": "<p>El hechicero alza su mano, y el cielo responde. Un rel&aacute;mpago desciende, iluminando el bosque con un destello cegador. El enemigo cae, aturdido y quemado. En Then&acirc;n, la tormenta no es solo un fen&oacute;meno natural, es un arma en manos de quienes protegen el bosque.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Sky answers when the forest calls for justice.<\/p>",
+                "es": "<p>El cielo responde cuando el bosque clama justicia.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Chain Lightning",
+                "es": "Relámpago Encadenado"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Spell",
+                "es": "Hechizo"
+            },
+            "card_subtype": {
+                "en": "Elemental",
+                "es": "Elemental"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Ranged",
+                "es": "A Distancia"
+            },
+            "attack_type": "magical",
+            "attack_subtype": {
+                "en": "Lightning",
+                "es": "Electricidad"
+            },
+            "area": true,
+            "cost": "GBB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Mental damage to the paired enemy hero and to each adjacent enemy hero.<\/p>",
+                "es": "<p>Hace 2 + Mente de da&ntilde;o al h&eacute;roe rival emparejado y a cada h&eacute;roe rival adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The caster extends their arms, and the air charges with electricity. A lightning bolt jumps from one enemy to another, chaining pain and paralysis. The storm is their ally, and the forest, their battlefield. In Then&acirc;n, lightning doesn't just strike, it also chains.<\/p>",
+                "es": "<p>El hechicero extiende sus brazos, y el aire se carga de electricidad. Un rel&aacute;mpago salta de un enemigo a otro, encadenando dolor y par&aacute;lisis. La tormenta es su aliada, y el bosque, su campo de batalla. En Then&acirc;n, el rayo no solo golpea, tambi&eacute;n encadena.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>One spark ignites a cascade of retribution.<\/p>",
+                "es": "<p>Una chispa enciende una cascada de retribuci&oacute;n.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Shatter",
+                "es": "Romper"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p data-start=\"1253\" data-end=\"1384\">Detach 1 Equipment attached to the paired enemy hero. That Equipment is placed in its owner&rsquo;s Graveyard.<\/p>",
+                "es": "<p>Desanexa 1 Equipo anexado al h&eacute;roe rival emparejado. Ese Equipo se coloca en el Cementerio de su propietario.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Within the domains of Then&acirc;n, the forest itself rejects intrusion. The leaves exude a secret power that slowly corrodes steel and splinters wood. No foe keeps their gear intact when they tread the forbidden paths.<\/p>",
+                "es": "<p>En los dominios de Then&acirc;n, el bosque mismo rechaza la intrusi&oacute;n. Las hojas rezuman un poder secreto que corroe lentamente el metal y agrieta la madera. Ning&uacute;n enemigo mantiene su armamento intacto cuando se aventura en las sendas prohibidas.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>In Then&acirc;n, war rusts before it begins.<\/p>",
+                "es": "<p>En Then&acirc;n, la guerra se oxida antes de empezar.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Supernatural Speed",
+                "es": "Velocidad Sobrenatural"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": null,
+            "restriction": {
+                "en": "<p>Play this Support at the beginning of the Action Resolution Phase.<\/p>",
+                "es": "<p>Juega este Apoyo al inicio de la Fase de Resoluci&oacute;n de Acciones.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Choose an adjacent allied hero and swap it with the active allied hero.<\/p>\r\n<p>Place 1 boon counter: Swiftness on both swapped heroes.<\/p>\r\n<p>The Clash continues normally, considering that the swapped hero is now the active allied hero.<\/p>",
+                "es": "<p>Elige un h&eacute;roe aliado adyacente e intercambialo con el h&eacute;roe aliado activo.<\/p>\r\n<p>Coloca 1 contador de beneficio: Presteza sobre ambos h&eacute;roes intercambiados.<\/p>\r\n<p>El Choque contin&uacute;a normalmente, teniendo en cuenta que el h&eacute;roe intercambiado pasa a ser el h&eacute;roe aliado activo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The supernatural speed of the Then&acirc;n elves is a formidable weapon that surprises their rivals. This agility allows them to move quickly, disorienting their enemies and executing precise attacks before retreating. Their rapidity is both a combat tool and a defensive tactic, protecting the forest and its inhabitants.<\/p>",
+                "es": "<p>La velocidad sobrenatural de los elfos de Then&acirc;n es un arma formidable que sorprende a sus rivales. Esta agilidad les permite moverse r&aacute;pidamente, desorientando a sus enemigos y ejecutando ataques precisos antes de retirarse. Su rapidez es tanto una herramienta de combate como una t&aacute;ctica defensiva, protegiendo el bosque y sus habitantes.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Blink, and the battle has already changed.<\/p>",
+                "es": "<p>Parpadea, y la batalla ya ha cambiado.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Overcharge",
+                "es": "Sobrecarga"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Spell",
+                "es": "Hechizo"
+            },
+            "card_subtype": {
+                "en": "Elemental",
+                "es": "Elemental"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Ranged",
+                "es": "A Distancia"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Lightning",
+                "es": "Electricidad"
+            },
+            "area": false,
+            "cost": "G",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Place 1 bane counter: Weakened on the paired enemy hero or on a adjacent enemy hero.<\/p>\r\n<p>You may change 1 of your Prepared <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red-green.svg\" alt=\"Dado Rojo-Verde\"> Dice and keep it as <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Dice.<\/p>",
+                "es": "<p>Coloca 1 contador de perjuicio: Debilitado sobre el h&eacute;roe rival emparejado o sobre un h&eacute;roe rival adyacente.<\/p>\r\n<p>Puedes modificar uno de tus Dados <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red-green.svg\" alt=\"Dado Rojo-Verde\"> Preparados y guardarlo como Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\">.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The intruder falls to the ground, their body shaken by a brutal electrical discharge. The overload leaves them trembling, unable to move or defend themselves. The rangers watch, relentless. In Then&acirc;n, electrical energy not only attacks, it also neutralizes, making it clear that the forest does not forgive intruders.<\/p>",
+                "es": "<p>El intruso cae al suelo, su cuerpo sacudido por una descarga el&eacute;ctrica brutal. La sobrecarga lo deja temblando, incapaz de moverse o defenderse. Los guardabosques observan, implacables. En Then&acirc;n, la energ&iacute;a el&eacute;ctrica no solo ataca, tambi&eacute;n neutraliza, dejando claro que el bosque no perdona a los intrusos.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The forest's mercy before the kill.<\/p>",
+                "es": "<p>La misericordia del bosque antes de la muerte.<\/p>"
+            }
+        }
+    ]
+}

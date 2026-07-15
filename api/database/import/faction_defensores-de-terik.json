@@ -1,0 +1,2186 @@
+{
+    "name": {
+        "en": "Defenders of Terik",
+        "es": "Defensores de Terik"
+    },
+    "lore_text": {
+        "en": "Terik, the jewel of Ulkhimarel, rises behind its imposing walls. The Defenders, united in appearance, wage a silent war. Each noble house conspires for control, but Terik's gates remain closed to its enemies. Here, loyalty is a weapon as sharp as the sword.",
+        "es": "Terik, la joya del Ulkhimarel, se alza tras sus murallas imponentes. Los Defensores, unidos en apariencia, libran una guerra silenciosa. Cada casa noble conspira por el control, pero las puertas de Terik permanecen cerradas a sus enemigos. Aquí, la lealtad es un arma tan afilada como la espada."
+    },
+    "epic_quote": {
+        "en": "Behind closed gates, a thousand daggers dance in shadows.",
+        "es": "Tras puertas cerradas, mil dagas danzan entre sombras."
+    },
+    "heroes": [
+        {
+            "name": {
+                "en": "Annithare Arain",
+                "es": "Annithare Arain"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Harbinger",
+                "es": "Adalid"
+            },
+            "superclass": {
+                "en": "Devotee",
+                "es": "Devoto"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 3,
+                "mental": 3,
+                "will": 2,
+                "strength": 3,
+                "armor": 2,
+                "health": 20
+            },
+            "passive_name": {
+                "en": "Light of Terik",
+                "es": "Luz de Terik"
+            },
+            "passive_description": {
+                "en": "<p>At the end of the Clash, heal 1 health to this hero and to each adjacent allied hero.<\/p>",
+                "es": "<p>Al final del Choque, cura 1 de vida a este h&eacute;roe y a cada h&eacute;roe aliado adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Annithare Arain, Paladin of Terik, rides with the grace of legend. Her armor shines like a beacon, and her sword and magic inspire allies and terrify enemies. Embodying the honor of the Arain family, her courage is unwavering. Where she goes, victory follows.<\/p>",
+                "es": "<p>Annithare Arain, Paladina de Terik, cabalga con la gracia de una leyenda. Su armadura brilla como un faro, y su espada y magia inspiran aliados y aterran enemigos. Encarnando el honor de los Arain, su valent&iacute;a es inquebrantable. Donde ella va, la victoria la sigue.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>\"Where light falters, I shall be the dawn.\"<\/p>",
+                "es": "<p>\"Donde la luz vacila, yo ser&eacute; el amanecer.\"<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Fleeting Cut",
+                        "es": "Corte Fugaz"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Light Beam",
+                        "es": "Rayo de Luz"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Light",
+                        "es": "Luz"
+                    },
+                    "attack_type": "magical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 4 + Mental damage to the paired enemy hero.<\/p>\r\n<p data-start=\"0\" data-end=\"126\" data-is-last-node=\"\" data-is-only-node=\"\">If you have already played a Prayer or Bulwark Action in this&nbsp;Clash, instead you may heal 4 health to 1 adjacent allied hero.<\/p>",
+                        "es": "<p>Hace 4 + Mente de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si ya jugaste una Acci&oacute;n Oraci&oacute;n o Baluarte en este Choque, en vez de eso puedes curar 4 de vida a 1 h&eacute;roe aliado adyacente.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Astheriel Estei",
+                "es": "Astheriel Estei"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Harrier",
+                "es": "Hostigador"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 4,
+                "mental": 2,
+                "will": 3,
+                "strength": 3,
+                "armor": 2,
+                "health": 19
+            },
+            "passive_name": {
+                "en": "Unerring Instinct",
+                "es": "Instinto Certero"
+            },
+            "passive_description": {
+                "en": "<p>When determining Initiative, this hero gets +1 to the Die roll for each pairing subsequent to this one.<\/p>",
+                "es": "<p>A la hora de determinar la Iniciativa, este h&eacute;roe tiene +1 en la Tirada de Dado por cada emparejamiento que haya posterior a este.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Astheriel Estei, with bow in hand, is the shadow stalking the enemies of Terik. Inspired by her cousin Bronthar and guided by the honor her father instilled in her, she dreams of becoming a knight. Each arrow she fires is another step toward the glory of House Estei.<\/p>",
+                "es": "<p>Astheriel Estei, con su arco en mano, es la sombra que acecha a los enemigos de Terik. Inspirada por su primo Bronthar y guiada por el honor que su padre le inculc&oacute;, sue&ntilde;a con ser caballera. Cada flecha que dispara es un paso m&aacute;s hacia la gloria de los Estei.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Each arrow finds its mark; honor demands nothing less.<\/p>",
+                "es": "<p>Cada flecha encuentra su destino; el honor no exige menos.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Long Shot",
+                        "es": "Tiro Lejano"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If you won the initiative it deals +2 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si ganaste la iniciativa hace +2 de da&ntilde;o.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Precise Shot",
+                        "es": "Disparo Preciso"
+                    },
+                    "cost": "RB",
+                    "attack_range": {
+                        "en": "Ranged",
+                        "es": "A Distancia"
+                    },
+                    "attack_subtype": {
+                        "en": "Piercing",
+                        "es": "Perforante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero or to an adjacent enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado o a un h&eacute;roe rival adyacente.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Belain Thalier",
+                "es": "Belain Thalier"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Paragon",
+                "es": "Paragon"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 2,
+                "strength": 3,
+                "armor": 3,
+                "health": 21
+            },
+            "passive_name": {
+                "en": "Closed Formation",
+                "es": "Formación Cerrada"
+            },
+            "passive_description": {
+                "en": "<p>While this hero is the active allied hero, adjacent allied heroes take -1 damage from Area Attacks.<\/p>",
+                "es": "<p>Mientras este h&eacute;roe sea el h&eacute;roe aliado activo, los h&eacute;roes aliados adyacentes reciben -1 de da&ntilde;o de los Ataques de &Aacute;rea.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Belain Thalier, youngest son of the Thalier family, grew up in anonymity. Skilled in strategy and combat, he excelled in knightly tournaments, earning the respect of his peers. Now, as a Defender of Terik, he protects the city with determination, carrying his family's honor into every battle.<\/p>",
+                "es": "<p>Belain Thalier, hijo menor de los Thalier, creci&oacute; en el anonimato. Con habilidad en estrategia y combate, destac&oacute; en torneos de caballer&iacute;a, gan&aacute;ndose el respeto de sus pares. Ahora, como Defensor de Terik, protege la ciudad con determinaci&oacute;n, llevando el honor de su familia a cada batalla.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>From anonymity rises the fiercest loyalty.<\/p>",
+                "es": "<p>Del anonimato surge la lealtad m&aacute;s feroz.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Combined Strike",
+                        "es": "Golpe Combinado"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>Deals +1 damage for each adjacent allied hero with at least 1 Weapon attached.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Hace +1 de da&ntilde;o por cada h&eacute;roe aliado adyacente con al menos 1 Arma anexada.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Inspiring Strike",
+                        "es": "Embate Inspirador"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Crushing",
+                        "es": "Contundente"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>Place 1 boon counter: Inspired on this hero or on a random adjacent allied hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Coloca 1 contador de beneficio: Inspirado sobre este h&eacute;roe o sobre un h&eacute;roe aliado adyacente aleatorio.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Bostar Asfareth",
+                "es": "Bostar Asfareth"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Harbinger",
+                "es": "Adalid"
+            },
+            "superclass": {
+                "en": "Devotee",
+                "es": "Devoto"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 2,
+                "mental": 2,
+                "will": 3,
+                "strength": 3,
+                "armor": 3,
+                "health": 22
+            },
+            "passive_name": {
+                "en": "Warden of the Wall",
+                "es": "Guardián de la Muralla"
+            },
+            "passive_description": {
+                "en": "<p>Each time you play a Light Litany, remove 1 random bane counter from this hero or from 1 adjacent allied hero.<\/p>",
+                "es": "<p>Cada vez que juegues una Letan&iacute;a Luz, remueve 1 contador de perjuicio aleatorio de este h&eacute;roe o de 1 h&eacute;roe aliado adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Bostar Asfareth, commander of the Defenders of Terik, is a natural leader. His talent for justice and command earned him prestige, but also enemies. On the battlefield or in the halls of power, his unwavering integrity makes him a symbol of order and strength. Admired and feared, he protects Terik with a firm hand.<\/p>",
+                "es": "<p>Bostar Asfareth, comandante de los Defensores de Terik, es un l&iacute;der nato. Su talento para la justicia y el mando le otorg&oacute; prestigio, pero tambi&eacute;n enemigos. En el campo de batalla o en los salones de poder, su integridad inquebrantable lo convierte en un s&iacute;mbolo de orden y fuerza. Admirado y temido, protege Terik con mano firme.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Justice wields no blade sharper than integrity.<\/p>",
+                "es": "<p>La justicia no empu&ntilde;a hoja m&aacute;s afilada que la integridad.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Liturgical Strike",
+                        "es": "Golpe Litúrgico"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Light",
+                        "es": "Luz"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<article class=\"text-token-text-primary w-full focus:outline-none [--shadow-height:45px] has-data-writing-block:pointer-events-none has-data-writing-block:-mt-(--shadow-height) has-data-writing-block:pt-(--shadow-height) [&amp;:has([data-writing-block])&gt;*]:pointer-events-auto scroll-mt-[calc(var(--header-height)+min(200px,max(70px,20svh)))]\" dir=\"auto\" tabindex=\"-1\" data-turn-id=\"request-68fa997f-c020-8329-8508-57ef258f2c1f-1\" data-testid=\"conversation-turn-28\" data-scroll-anchor=\"true\" data-turn=\"assistant\">\r\n<div class=\"text-base my-auto mx-auto pb-10 [--thread-content-margin:--spacing(4)] thread-sm:[--thread-content-margin:--spacing(6)] thread-lg:[--thread-content-margin:--spacing(16)] px-(--thread-content-margin)\">\r\n<div class=\"[--thread-content-max-width:40rem] thread-lg:[--thread-content-max-width:48rem] mx-auto max-w-(--thread-content-max-width) flex-1 group\/turn-messages focus-visible:outline-hidden relative flex w-full min-w-0 flex-col agent-turn\" tabindex=\"-1\">\r\n<div class=\"flex max-w-full flex-col grow\">\r\n<div class=\"min-h-8 text-message relative flex w-full flex-col items-end gap-2 text-start break-words whitespace-normal [.text-message+&amp;]:mt-1\" dir=\"auto\" data-message-author-role=\"assistant\" data-message-id=\"6a61b178-7cd0-4719-b034-cc9c84269494\" data-message-model-slug=\"gpt-5\">\r\n<div class=\"flex w-full flex-col gap-1 empty:hidden first:pt-[1px]\">\r\n<div class=\"markdown prose dark:prose-invert w-full break-words dark markdown-new-styling\">\r\n<p data-start=\"105\" data-end=\"227\" data-is-last-node=\"\" data-is-only-node=\"\">You may reveal or discard a Prayer or Bulwark from your hand: it deals +1 damage, or +2 if you discarded it.<\/p>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<div class=\"z-0 flex min-h-[46px] justify-start\">&nbsp;<\/div>\r\n<div class=\"mt-3 w-full empty:hidden\">\r\n<div class=\"text-center\">&nbsp;<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/div>\r\n<\/article>\r\n<div class=\"pointer-events-none h-px w-px\" aria-hidden=\"true\" data-edge=\"true\">&nbsp;<\/div>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Puedes mostrar o descartar una Oraci&oacute;n o Baluarte de tu mano: hace +1 de da&ntilde;o o +2 si la descartaste.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Concussive Smash",
+                        "es": "Mazazo Conmocionante"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Crushing",
+                        "es": "Contundente"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero and places 1 bane counter: Numbed on them.<\/p>\r\n<p>If you have at least 1 Mace attached and active, it deals +2 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y le coloca 1 contador de perjuicio: Entumecido.<\/p>\r\n<p>Si tienes al menos 1 Maza anexada y activa, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Bronthar Estei",
+                "es": "Bronthar Estei"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Harbinger",
+                "es": "Adalid"
+            },
+            "superclass": {
+                "en": "Devotee",
+                "es": "Devoto"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 2,
+                "mental": 2,
+                "will": 2,
+                "strength": 4,
+                "armor": 4,
+                "health": 20
+            },
+            "passive_name": {
+                "en": "Fury of the Estei",
+                "es": "Furia de los Estei"
+            },
+            "passive_description": {
+                "en": "<p>If this hero has dealt Light damage in this Clash, deals +1 damage with Physical Attacks.<\/p>",
+                "es": "<p>Si este h&eacute;roe ha hecho da&ntilde;o Luz en este Choque, hace +1 de da&ntilde;o con los Ataques F&iacute;sicos.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Bronthar Estei, paladin of Terik, is the indomitable force of the Estei. With hammer in hand and courage in heart, he has won countless battles. Though lacking in cunning, his ferocity in combat and unwavering loyalty make him a feared defender and a symbol of his house's strength.<\/p>",
+                "es": "<p>Bronthar Estei, palad&iacute;n de Terik, es la fuerza indomable de los Estei. Con el martillo en mano y coraje en el coraz&oacute;n, ha ganado innumerables batallas. Aunque carece de astucia, su ferocidad en combate y lealtad inquebrantable lo convierten en un defensor temido y un s&iacute;mbolo de la fuerza de su casa.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The hammer speaks truths that cunning cannot.<\/p>",
+                "es": "<p>El martillo habla verdades que la astucia no puede.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Crushing Impact",
+                        "es": "Impacto Demoledor"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Crushing",
+                        "es": "Contundente"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Hammer of Light",
+                        "es": "Martillazo Luminoso"
+                    },
+                    "cost": "BB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Light",
+                        "es": "Luz"
+                    },
+                    "attack_type": "magical",
+                    "area": true,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero and 1 + Mental damage to 1 random adjacent enemy hero.<\/p>\r\n<p>If you have already played a Prayer or Bulwark Action in this Clash, place 1 bane counter: Stunned on them.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y 1 + Mente de da&ntilde;o a 1 h&eacute;roe rival adyacente aleatorio.<\/p>\r\n<p>Si ya jugaste una Acci&oacute;n Oraci&oacute;n o Baluarte en este Choque, les coloca 1 contador de perjuicio: Aturdido.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Esthalia Bannai",
+                "es": "Esthalia Bannai"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Vanguard",
+                "es": "Vanguardia"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 2,
+                "mental": 2,
+                "will": 2,
+                "strength": 4,
+                "armor": 3,
+                "health": 21
+            },
+            "passive_name": {
+                "en": "Forged Courage",
+                "es": "Coraje Forjado"
+            },
+            "passive_description": {
+                "en": "<p>The first time this hero takes damage in each Clash, place 1 boon counter: Resolute on them.<\/p>",
+                "es": "<p>La primera vez que este h&eacute;roe reciba da&ntilde;o en cada Choque, col&oacute;cale 1 contador de beneficio: Determinado.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Esthalia Bannai, born in the humble quarters of Terik, carved her path with courage and effort. Her combat skills and indomitable spirit led her to the Defenders. Now, she fights to prove that honor is not only for the nobles. Her dream: to become a knight and achieve greatness through her own merit.<\/p>",
+                "es": "<p>Esthalia Bannai, nacida en los barrios humildes de Terik, se abri&oacute; paso con valent&iacute;a y esfuerzo. Sus habilidades en combate y esp&iacute;ritu indomable la llevaron a los Defensores. Ahora, lucha por demostrar que el honor no es solo para los nobles. Su sue&ntilde;o: convertirse en caballera y alcanzar la grandeza por m&eacute;rito propio.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Noble blood flows not in veins, but in deeds.<\/p>",
+                "es": "<p>La sangre noble no fluye en las venas, sino en los actos.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Hammer Blow",
+                        "es": "Martillazo"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Crushing",
+                        "es": "Contundente"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Concussive Smash",
+                        "es": "Mazazo Conmocionante"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Crushing",
+                        "es": "Contundente"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero and places 1 bane counter: Numbed on them.<\/p>\r\n<p>If you have at least 1 Mace attached and active, it deals +2 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y le coloca 1 contador de perjuicio: Entumecido.<\/p>\r\n<p>Si tienes al menos 1 Maza anexada y activa, hace +2 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Golder Thorun",
+                "es": "Golder Thorun"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Vanguard",
+                "es": "Vanguardia"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 4,
+                "mental": 2,
+                "will": 2,
+                "strength": 4,
+                "armor": 2,
+                "health": 18
+            },
+            "passive_name": {
+                "en": "Warrior’s Oath",
+                "es": "Juramento Marcial"
+            },
+            "passive_description": {
+                "en": "<p>If this hero has played at least 1 Assault or Tactic in this Clash, deals +1 damage with Single-Target Attacks.<\/p>",
+                "es": "<p>Si este h&eacute;roe ha jugado al menos 1 Asalto o T&aacute;ctica en este Choque, hace +1 de da&ntilde;o con los Ataques de 1 Objetivo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Golden Thorun, of humble origin, forged his path with wooden swords and dreams of greatness. Master of dual-sword combat, his morality and skill brought him to the guard of Terik. Now, he protects the city, proving that courage is not measured by lineage, but by actions.<\/p>",
+                "es": "<p>Golden Thorun, de origen humilde, forj&oacute; su camino con espadas de madera y sue&ntilde;os de grandeza. Maestro del combate con dos espadas, su moralidad y destreza lo llevaron a la guardia de Terik. Ahora, protege la ciudad, demostrando que el valor no se mide por el linaje, sino por las acciones.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Two blades, one purpose: honor beyond birthright.<\/p>",
+                "es": "<p>Dos hojas, un prop&oacute;sito: honor m&aacute;s all&aacute; del linaje.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Precise Slash",
+                        "es": "Cuchillada Precisa"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Chained Cuts",
+                        "es": "Cortes Encadenados"
+                    },
+                    "cost": "RRB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": true,
+                    "effect": {
+                        "en": "<p data-start=\"55\" data-end=\"108\">Deals 2 + Strength damage to the paired enemy hero and 1 adjacent enemy hero.<\/p>\r\n<p data-start=\"55\" data-end=\"108\">If this hero has at least 1 attached and active Sword, they each take +1 damage.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y a 1 h&eacute;roe rival adyacente.<\/p>\r\n<p>Si este h&eacute;roe tiene al menos 1 Espada anexada y activa, les hace +1 de da&ntilde;o.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Jonthar Arain",
+                "es": "Jonthar Arain"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Vanguard",
+                "es": "Vanguardia"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 2,
+                "strength": 3,
+                "armor": 2,
+                "health": 22
+            },
+            "passive_name": {
+                "en": "Diligent Squire",
+                "es": "Escudero Diligente"
+            },
+            "passive_description": {
+                "en": "<p>This hero may attach Equipments it plays to adjacent allied heroes.<\/p>",
+                "es": "<p>Este h&eacute;roe puede anexar los Equipos que juegue sobre h&eacute;roes aliados adyacentes.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Jonthar Arain, the youngest son of the Arain family, admires his sister Annithare and dreams of matching her bravery. As her squire, he studies tactics and history and trains with dedication. With each step, Jonthar comes closer to his dream: becoming a hero worthy of his lineage.<\/p>",
+                "es": "<p>Jonthar Arain, el hijo menor de los Arain, admira a su hermana Annithare y sue&ntilde;a con igualar su valent&iacute;a. Como su escudero, estudia t&aacute;cticas e historia y entrena con dedicaci&oacute;n. Con cada paso, Jonthar se acerca a su sue&ntilde;o: convertirse en un h&eacute;roe digno de su linaje.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>In her shadow, I forge my own legend.<\/p>",
+                "es": "<p>En su sombra, forjo mi propia leyenda.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Combined Strike",
+                        "es": "Golpe Combinado"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>Deals +1 damage for each adjacent allied hero with at least 1 Weapon attached.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Hace +1 de da&ntilde;o por cada h&eacute;roe aliado adyacente con al menos 1 Arma anexada.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Swift Squire",
+                        "es": "Escudero Veloz"
+                    },
+                    "cost": "RB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>You may reveal the top Card of your Deck: if it's an Equipment, put it on your hand.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Puedes revelar la primera Carta de tu Mazo: si es un Equipo, col&oacute;calo en tu mano.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "es": "Serenya Valenne"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Harbinger",
+                "es": "Adalid"
+            },
+            "superclass": {
+                "en": "Devotee",
+                "es": "Devoto"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 2,
+                "mental": 2,
+                "will": 4,
+                "strength": 3,
+                "armor": 3,
+                "health": 21
+            },
+            "passive_name": {
+                "en": "Exemplary Light",
+                "es": "Luz Ejemplar"
+            },
+            "passive_description": {
+                "en": "<p>When you play your first Light Litany in each Clash, place 1 boon counter: Exalted on 1 adjacent allied hero.<\/p>",
+                "es": "<p>Cuando juegues tu primera Letan&iacute;a Luz en cada Choque, coloca 1 contador de beneficio: Exaltado sobre 1 h&eacute;roe aliado adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Serenya Valenne was raised within the courtyards of the Golden Bastion, where Terik&rsquo;s paladins train under oaths of eternal loyalty. From an early age, her faith was unyielding and her resolve unbreakable: while others sought rank and prestige, Serenya vowed to be the shield that never falters. Her light is not born of glory, but of sacrifice; and when the walls tremble, she stands firm&mdash;rekindling hope in those who had lost it.<\/p>",
+                "es": "<p>Serenya Valenne creci&oacute; entre los patios de armas del Basti&oacute;n Dorado, donde los paladines de Terik entrenan bajo juramentos de lealtad eterna. Desde joven mostr&oacute; una fe inquebrantable y una voluntad f&eacute;rrea: mientras otros buscaban ascender en la jerarqu&iacute;a por prestigio, Serenya jur&oacute; ser el escudo que nunca cede. Su luz no nace de la gloria, sino del sacrificio; y cuando los muros tiemblan, ella permanece firme, iluminando incluso a los que han perdido la esperanza.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>If faith wavers, let my blade remind the world why dawn still rises.<\/p>",
+                "es": "<p>Si la fe vacila, que mi acero recuerde al mundo por qu&eacute; a&uacute;n brilla el amanecer.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Precise Slash",
+                        "es": "Cuchillada Precisa"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Redeeming Hammer",
+                        "es": "Martillo Redentor"
+                    },
+                    "cost": "RB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Light",
+                        "es": "Luz"
+                    },
+                    "attack_type": "magical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Mental damage to the paired enemy hero.<\/p>\r\n<p>If you have already played a Prayer or Bulwark Action in this Clash, heals 2 health to an adjacent allied hero.<\/p>",
+                        "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si ya jugaste una Acci&oacute;n Oraci&oacute;n o Baluarte en este Choque, cura 2 de vida a un h&eacute;roe aliado adyacente.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Thalen Ardess",
+                "es": "Thalen Ardess"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Paragon",
+                "es": "Paragon"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "male",
+            "attributes": {
+                "agility": 3,
+                "mental": 2,
+                "will": 3,
+                "strength": 3,
+                "armor": 3,
+                "health": 20
+            },
+            "passive_name": {
+                "en": "Inspiring Hero",
+                "es": "Héroe Inspirador"
+            },
+            "passive_description": {
+                "en": "<p>At the start of the Clash, choose this hero and each adjacent allied hero. Place on each 1 different boon counter among Inspired, Resolute, or Invigorated.<\/p>",
+                "es": "<p data-start=\"0\" data-end=\"166\">Al inicio del Choque, elige este h&eacute;roe y cada h&eacute;roe aliado adyacente. Coloca en cada uno 1 contador de beneficio distinto entre Inspirado, Determinado o Vigorizado.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Thalen Ardess is the first to break the enemy line and the last to fall back. His strength does not come from divine light but from example: the way he raises his blade, and others raise theirs with him. In every fight his resolve spreads faster than flame; where Thalen advances, hope advances with him.<\/p>",
+                "es": "<p>Thalen Ardess es el primero en romper la l&iacute;nea enemiga y el &uacute;ltimo en retirarse. Su fuerza no proviene de la luz divina, sino del ejemplo: de la forma en que levanta su espada y otros la levantan con &eacute;l. En cada combate, su determinaci&oacute;n se propaga m&aacute;s r&aacute;pido que el fuego; all&iacute; donde Thalen avanza, la esperanza marcha con &eacute;l.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>I do not teach them to believe in me, but in what they can become when they stand together.<\/p>",
+                "es": "<p>No les ense&ntilde;o a creer en m&iacute;, sino a creer en lo que pueden ser cuando luchan juntos.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Luminous Strike",
+                        "es": "Corte Luminoso"
+                    },
+                    "cost": "RG",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If this hero has at least 1 boon counter: Inspired, it deals +1 damage and heals 1 adjacent allied hero 1 health.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Si este h&eacute;roe tiene al menos 1 contador de beneficio: Inspirado, hace +1 de da&ntilde;o y cura 1 de vida a un h&eacute;roe aliado adyacente.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Lethal Slash",
+                        "es": "Tajo Letal"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 4 + Strength damage to the paired enemy hero.<\/p>",
+                        "es": "<p>Hace 4 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                    }
+                }
+            ]
+        },
+        {
+            "name": {
+                "en": "Elyra Danneth",
+                "es": "Elyra Danneth"
+            },
+            "race": {
+                "en": "Human",
+                "es": "Humano"
+            },
+            "class": {
+                "en": "Paragon",
+                "es": "Paragon"
+            },
+            "superclass": {
+                "en": "Fighter",
+                "es": "Combatiente"
+            },
+            "gender": "female",
+            "attributes": {
+                "agility": 3,
+                "mental": 3,
+                "will": 2,
+                "strength": 2,
+                "armor": 3,
+                "health": 21
+            },
+            "passive_name": {
+                "en": "Echo of Command",
+                "es": "Eco de Mando"
+            },
+            "passive_description": {
+                "en": "<p>At the start of the Action Resolution Phase, if you won Initiative, return 1 Tactic Card from your Graveyard to your hand.<\/p>",
+                "es": "<p data-start=\"832\" data-end=\"1023\">Al inicio de la Fase de Resoluci&oacute;n de Acciones, si ganaste la Iniciativa, devuelve 1 Carta T&aacute;ctica de tu Cementerio a tu mano.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Elyra Danneth leads by example, not by words.&nbsp;Her voice sets the pace of the advance, and her shield defines how far they fall back.&nbsp;In her ranks, discipline is the only allowed faith: every order a promise, every strike a lesson.&nbsp;Where Elyra stands, Terik&rsquo;s lines do not break.<\/p>",
+                "es": "<p>Elyra Danneth lidera con el peso del ejemplo, no con el brillo de las palabras.&nbsp;Su voz marca el ritmo del avance y su escudo el l&iacute;mite del retroceso.&nbsp;En su compa&ntilde;&iacute;a, la disciplina es la &uacute;nica fe permitida: cada orden, una promesa; cada golpe, una lecci&oacute;n.&nbsp;Donde Elyra est&aacute; presente, las l&iacute;neas de Terik no se quiebran.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Command is not earned through faith, but through precision.<\/p>",
+                "es": "<p>El mando no se gana con fe, sino con precisi&oacute;n.<\/p>"
+            },
+            "abilities": [
+                {
+                    "name": {
+                        "en": "Protective Blow",
+                        "es": "Golpe Protector"
+                    },
+                    "cost": "RR",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Crushing",
+                        "es": "Contundente"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>If this hero has at least 1 boon counter: Inspired, they take -1 damage from Attacks until their next activation.<\/p>",
+                        "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p data-start=\"1816\" data-end=\"2047\">Si este h&eacute;roe tiene al menos 1 contador de beneficio: Inspirado, recibe -1 de da&ntilde;o de Ataques hasta su pr&oacute;xima activaci&oacute;n.<\/p>"
+                    }
+                },
+                {
+                    "name": {
+                        "en": "Sword of Conviction",
+                        "es": "Espada de Convicción"
+                    },
+                    "cost": "GB",
+                    "attack_range": {
+                        "en": "Melee",
+                        "es": "Melee"
+                    },
+                    "attack_subtype": {
+                        "en": "Slashing",
+                        "es": "Cortante"
+                    },
+                    "attack_type": "physical",
+                    "area": false,
+                    "effect": {
+                        "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>\r\n<p>You may remove up to 3 Chant or Bulwark Cards from your Graveyard; it deals +1 additional damage for each one removed.<\/p>",
+                        "es": "<p data-start=\"3058\" data-end=\"3291\">Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p data-start=\"3058\" data-end=\"3291\">Puedes remover hasta 3 Cartas Oraci&oacute;n o Baluarte de tu Cementerio:&nbsp; hace +1 de da&ntilde;o adicional por cada una removida.<\/p>"
+                    }
+                }
+            ]
+        }
+    ],
+    "cards": [
+        {
+            "name": {
+                "en": "On Guard",
+                "es": "En Guardia"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "B",
+            "restriction": {
+                "en": "<p>You may play this Support as a&nbsp;<strong>Reaction<\/strong>: When you play an Attack.<\/p>\r\n<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p>Puedes jugar este Apoyo como <strong>Reacci&oacute;n<\/strong>: Cuando juegues un Ataque.<\/p>\r\n<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Weapon Cards attached by the active allied hero activate immediately.<\/p>\r\n<p>If you play it as a Reaction, immediately activate 1 Weapon already attached to the active allied hero and this Card loses <strong>Persistent<\/strong>.<\/p>",
+                "es": "<p>Las Cartas de Arma que anexe el h&eacute;roe aliado activo se activan de forma inmediata.<\/p>\r\n<p>Si la juegas como Reacci&oacute;n, activa de forma inmediata 1 Arma ya anexada al h&eacute;roe aliado activo y esta Carta pierde <strong>Persistente<\/strong>.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The cry echoes through the marketplace: 'Thief! Thief!' A child, with a piece of bread in trembling hands, is dragged toward the square. The crowd murmurs, but no one intervenes. In Terik, justice makes no distinction between ages or motives. The punishment will be public, a cruel reminder that the walls protect, but also demand obedience.<\/p>",
+                "es": "<p>El grito resuena en el mercado: '&iexcl;Al ladr&oacute;n!'. Un ni&ntilde;o, con un trozo de pan en manos temblorosas, es arrastrado hacia la plaza. La multitud murmura, pero nadie interviene. En Terik, la justicia no distingue edades ni motivos. El castigo ser&aacute; p&uacute;blico, un recordatorio cruel de que las murallas protegen, pero tambi&eacute;n exigen obediencia.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Even the smallest crime echoes through Terik's walls.<\/p>",
+                "es": "<p>Hasta el crimen m&aacute;s peque&ntilde;o resuena entre las murallas de Terik.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Raise the Guard",
+                "es": "Alzar la Guardia"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Bulwark",
+                "es": "Baluarte"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": {
+                "en": "<p><strong>Reaction<\/strong>: When the active allied hero is targeted by a Single-Target Ranged Attack.<\/p>",
+                "es": "<p><strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe aliado activo sea objetivo de un Ataque a Distancia de 1 Objetivo.<\/p>"
+            },
+            "effect": {
+                "en": "<p>That attack deals -2 damage.<\/p>",
+                "es": "<p>Dicho Ataque hace -2 de da&ntilde;o.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The cry 'Raise the Guard!' echoes across the walls of Terik. Shields clash, armor gleams under the sun, and the defenders unite as an unbreakable wall. Inspired by heroes of the past, they stand with renewed strength. Together, they protect their home and honor, ready to face any threat.<\/p>",
+                "es": "<p>El grito '&iexcl;Alzar la Guardia!' retumba en las murallas de Terik. Escudos chocan, corazas brillan bajo el sol y los defensores se unen como un muro inquebrantable. Inspirados por los h&eacute;roes del pasado, resisten con fuerza renovada. Juntos, protegen su hogar y honor, listos para enfrentar cualquier amenaza.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>United shields form an unbreakable wall of honor.<\/p>",
+                "es": "<p>Escudos unidos forman un muro inquebrantable de honor.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Celestial Aegis Amulet",
+                "es": "Amuleto de Aegis Celeste"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Amulet",
+                "es": "Amuleto"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RB",
+            "restriction": [],
+            "effect": {
+                "en": "<p data-start=\"488\" data-end=\"617\">When you attach this Equipment, draw 1 Card.<\/p>\r\n<p data-start=\"619\" data-end=\"824\" data-is-last-node=\"\" data-is-only-node=\"\">At the beginning of the Action Resolution Phase, choose 1:<\/p>\r\n<ul>\r\n<li data-start=\"619\" data-end=\"824\">Place 1 boon counter: Invigorated on this hero.<\/li>\r\n<li data-start=\"619\" data-end=\"824\">Place 1 boon counter: Resolute on this hero.<\/li>\r\n<li data-start=\"619\" data-end=\"824\">Heal 1 health to this hero.<\/li>\r\n<\/ul>",
+                "es": "<p>Cuando anexes este Equipo, roba 1 Carta.<\/p>\r\n<p>Al inicio de la fase de Resoluci&oacute;n de Acciones, elige 1:<\/p>\r\n<ul>\r\n<li>Coloca 1 contador de beneficio: Vigorizado sobre este h&eacute;roe.<\/li>\r\n<li>Coloca 1 contador de beneficio:&nbsp;Determinado sobre este h&eacute;roe.<\/li>\r\n<li>Cura 1 de vida a este h&eacute;roe.<\/li>\r\n<\/ul>\r\n<p>&nbsp;<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Celestial Aegis Amulet, a masterpiece crafted by Elthan and Aranithus, shines with a blue tourmaline that seems to contain the sky itself. Its light protects the bearer with an invisible shield, deflecting both swords and spells alike. More than a talisman, it is a symbol of power and status for the Asther family.<\/p>",
+                "es": "<p>El Amuleto de Aegis Celeste, obra maestra de Elthan y Aranithus, brilla con una turmalina azul que parece contener el cielo. Su luz protege al portador con un escudo invisible, desviando espadas y hechizos por igual. M&aacute;s que un talism&aacute;n, es un s&iacute;mbolo de poder y estatus para la familia Asther.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Sky's blessing worn as protection against all darkness.<\/p>",
+                "es": "<p>La bendici&oacute;n del cielo portada como protecci&oacute;n contra toda oscuridad.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Refit",
+                "es": "Reequiparse"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Tactic",
+                "es": "Táctica"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "GG",
+            "restriction": [],
+            "effect": {
+                "en": "<p data-start=\"1306\" data-end=\"1320\">Draw 1 card.<\/p>\r\n<p data-start=\"1327\" data-end=\"1464\">You may discard up to 2 <strong data-start=\"1357\" data-end=\"1370\">Equipment<\/strong> cards from your hand. For each Equipment card discarded this way, draw 1 additional card.<\/p>",
+                "es": "<p data-start=\"667\" data-end=\"682\">Roba 1 carta.<\/p>\r\n<p data-start=\"689\" data-end=\"831\">Puedes descartar hasta 2 cartas de Equipo de tu mano.&nbsp;Por cada carta de Equipo descartada de este modo, roba 1 carta adicional.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In the armories of Terik, the clang of hammers never ceases. Knights gather between battles to polish their blades, mend their shields, and exchange dented steel for fresh resolve. Each replacement carries more than metal &mdash; it carries the renewed trust that the next strike will hold.<\/p>",
+                "es": "<p>En los cuarteles de Terik, los armeros trabajan sin descanso. Entre el eco de los martillos y el olor del aceite, los caballeros revisan sus armas, pulen los escudos y cambian el acero mellado por uno nuevo. En cada reemplazo hay algo m&aacute;s que metal: hay confianza renovada antes del siguiente asalto.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>He who tends to his steel tends to his life.<\/p>",
+                "es": "<p>El que cuida su acero, cuida su vida.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Luminis Armor",
+                "es": "Armadura de Luminis"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Chestplate",
+                "es": "Peto"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>When you attach this Equipment, draw 1 Card.<\/p>\r\n<p>If the attached hero has at least 1 boon counter, they take -1 Magical damage.<\/p>",
+                "es": "<p>Cuando anexes este Equipo, roba 1 Carta.<\/p>\r\n<p>Si el h&eacute;roe anexado tiene al menos 1 contador de beneficio, recibe -1 de da&ntilde;o M&aacute;gico.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Luminis Armor, forged with luminous metal, shines like a star in the night. Created for Althein Estei, it deflects spells and protects with ancestral power. Passed down through generations, it is more than armor: it is the eternal symbol of the honor and courage of the Estei.<\/p>",
+                "es": "<p>La Armadura de Luminis, forjada con metal luminoso, brilla como una estrella en la noche. Creada para Althein Estei, desv&iacute;a hechizos y protege con poder ancestral. Pasada de generaci&oacute;n en generaci&oacute;n, es m&aacute;s que una armadura: es el s&iacute;mbolo eterno del honor y la valent&iacute;a de los Estei.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Starlight forged into steel guards the Estei bloodline.<\/p>",
+                "es": "<p>Luz estelar forjada en acero guarda el linaje Estei.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Elaborate Armor",
+                "es": "Armadura Elaborada"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Chestplate",
+                "es": "Peto"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "R",
+            "restriction": [],
+            "effect": {
+                "en": "<p>If the attached hero has all their Prepared Dice of the same color, they take -1 Physical Damage.<\/p>",
+                "es": "<p>Si el h&eacute;roe anexado tiene todos sus Dados Preparados del mismo color, recibe -1 de da&ntilde;o F&iacute;sico.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Each link of the armor was forged with precision, each plate polished to shine like a mirror. It's not just metal, but a second skin protecting the Defenders of Terik. In the heat of battle, this armor is the wall separating life from death, the symbol that the city never falls.<\/p>",
+                "es": "<p>Cada anilla de la armadura fue forjada con precisi&oacute;n, cada placa pulida hasta brillar como un espejo. No es solo metal, es una segunda piel que protege a los Defensores de Terik. En el fragor de la batalla, esta armadura es el muro que separa la vida de la muerte, el s&iacute;mbolo de que la ciudad nunca cae.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Each polished link carries the weight of duty.<\/p>",
+                "es": "<p>Cada anilla pulida carga el peso del deber.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Fine Craftsmanship",
+                "es": "Artesanía Fina"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": {
+                "en": "<p><strong>Reaction<\/strong>: When the active allied hero is targeted by a Single-Target Melee Attack.<\/p>",
+                "es": "<p><strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe aliado activo sea objetivo de un Ataque Melee de 1 Objetivo.<\/p>"
+            },
+            "effect": {
+                "en": "<p>That Attack deals -2 damage.<\/p>",
+                "es": "<p>Dicho Ataque hace -2 de da&ntilde;o.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In the workshops of Terik, hammers strike metal with perfect rhythm. Each armor, adorned with ancestral runes and rare metals, is a masterpiece. It doesn't just protect, but inspires. The Defenders, wrapped in this second skin, advance without fear, knowing that the expertise of their blacksmiths supports them in every battle.<\/p>",
+                "es": "<p>En los talleres de Terik, los martillos golpean el metal con ritmo perfecto. Cada armadura, adornada con runas ancestrales y metales raros, es una obra maestra. No solo protege, sino que inspira. Los Defensores, envueltos en esta segunda piel, avanzan sin miedo, sabiendo que la pericia de sus herreros los respalda en cada batalla.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Master smiths forge victory before battles begin.<\/p>",
+                "es": "<p>Maestros herreros forjan la victoria antes que comiencen las batallas.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Blessing of Knowledge",
+                "es": "Bendición de Conocimiento"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Litany",
+                "es": "Letanía"
+            },
+            "card_subtype": {
+                "en": "Prayer",
+                "es": "Rezo"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Draw 2 Cards.<\/p>",
+                "es": "<p>Roba 2 Cartas.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>A sacred whisper travels through the air as the paladin extends their hands. The light of blessing illuminates the warriors' eyes, revealing hidden tactics and invisible dangers. With each movement, the battle becomes clear, precise. In Terik, knowledge is as sharp as a sword, and as vital as a shield.<\/p>",
+                "es": "<p>Un susurro sagrado recorre el aire mientras el palad&iacute;n extiende sus manos. La luz de la bendici&oacute;n ilumina los ojos de los guerreros, desvelando t&aacute;cticas ocultas y peligros invisibles. Con cada movimiento, la batalla se vuelve clara, precisa. En Terik, el conocimiento es tan afilado como una espada, y tan vital como un escudo.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Divine wisdom reveals paths hidden to mortal eyes.<\/p>",
+                "es": "<p>La sabidur&iacute;a divina revela senderos ocultos a ojos mortales.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Blessing of Protection",
+                "es": "Bendición de Protección"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Litany",
+                "es": "Letanía"
+            },
+            "card_subtype": {
+                "en": "Chant",
+                "es": "Oración"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Aura",
+                "es": "Aura"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Light",
+                "es": "Luz"
+            },
+            "area": true,
+            "cost": "R",
+            "restriction": {
+                "en": "<p>You may play this Litanny as a <strong>Reaction<\/strong>: When the paired enemy hero plays a Physical Attack.<\/p>\r\n<p><strong>Persistent<\/strong>: Until the end of the Battle Round.<\/p>",
+                "es": "<p>Puedes jugar esta Letan&iacute;a como <strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe rival emparejado juegue un Ataque F&iacute;sico.<\/p>\r\n<p><strong>Persistente<\/strong>: Hasta el final de la Ronda de Batalla.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Each allied hero in subsequent pairings takes -1 Physical damage.<\/p>\r\n<p>If you play it as a <strong>Reaction<\/strong>, this Card loses <strong>Persistent<\/strong> at the end of the Clash.<\/p>",
+                "es": "<p>Cada h&eacute;roe aliado de los emparejamientos posteriores recibe &minus;1 de da&ntilde;o F&iacute;sico.<\/p>\r\n<p>Si la juegas como <strong>Reacci&oacute;n<\/strong>, esta Carta pierde&nbsp;<strong>Persistente<\/strong> al final del Choque.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The paladin raises their hands, and a golden light descends like a celestial mantle. Warriors feel the warmth of divine protection enveloping them, an invisible shield that defies swords and spells. With each heartbeat, their hearts grow stronger, ready to fight with unbreakable courage. In Terik, faith is as strong as steel.<\/p>",
+                "es": "<p>El palad&iacute;n alza sus manos, y una luz dorada desciende como un manto celestial. Los guerreros sienten el calor de la protecci&oacute;n divina envolvi&eacute;ndolos, un escudo invisible que desaf&iacute;a espadas y hechizos. Con cada latido, sus corazones se fortalecen, listos para luchar con coraje inquebrantable. En Terik, la fe es tan fuerte como el acero.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Golden light descends where faith stands firm.<\/p>",
+                "es": "<p>Luz dorada desciende donde la fe permanece firme.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Search the Armory",
+                "es": "Buscar en la Armería"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Reveal the top 4 Cards of your Library. Put any number of Equipment Cards from among them into your Hand, and place the rest on the bottom of your Library in any order.<\/p>",
+                "es": "<p>Revela las 4 primeras Cartas de tu Biblioteca. Pon en tu Mano cualquier n&uacute;mero de Cartas de Equipo entre las Cartas reveladas y coloca el resto en el fondo de la Biblioteca en cualquier orden.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Through smoke and battle clamor, Ersthan burst into the armory. Among dusty weapons, his eyes found an ancient spear, its edge still gleaming. As he grasped it, he felt the echo of past heroes. With the spear in hand, he returned to battle, ready to write his own legend.<\/p>",
+                "es": "<p>Entre el humo y el clamor de la batalla, Ersthan irrumpi&oacute; en la armer&iacute;a. Entre armas polvorientas, sus ojos encontraron una lanza antigua, su filo a&uacute;n brillante. Al empu&ntilde;arla, sinti&oacute; el eco de h&eacute;roes pasados. Con la lanza en mano, regres&oacute; al combate, listo para escribir su propia leyenda.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Ancient weapons await those brave enough to claim them.<\/p>",
+                "es": "<p>Armas ancestrales esperan a quienes sean valientes para reclamarlas.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Luminar Champion",
+                "es": "Campeón Luminar"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Litany",
+                "es": "Letanía"
+            },
+            "card_subtype": {
+                "en": "Chant",
+                "es": "Oración"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Light",
+                "es": "Luz"
+            },
+            "area": false,
+            "cost": "RR",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Heal 2 health to the active allied hero.<\/p>\r\n<p>Place 1 boon counter: Exalted on the active allied hero.<\/p>",
+                "es": "<p>Cura 2 de vida al h&eacute;roe aliado activo.<\/p>\r\n<p>Coloca 1 contador de beneficio: Exaltado sobre el h&eacute;roe aliado activo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Luminar Champion advances, his armor shining like the dawn. Each step radiates divine power, each strike resonates with the strength of the sun. His allies are strengthened, his enemies retreat. With a touch, he heals wounds; with his presence, he inspires courage. In darkness, he is the light guiding Terik to victory.<\/p>",
+                "es": "<p>El Campe&oacute;n Luminar avanza, su armadura brillando como el amanecer. Cada paso irradia poder divino, cada golpe resuena con la fuerza del sol. Sus aliados se fortalecen, sus enemigos retroceden. Con un toque, cura heridas; con su presencia, inspira valor. En la oscuridad, &eacute;l es la luz que gu&iacute;a a Terik hacia la victoria.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Where champions tread, darkness cannot follow.<\/p>",
+                "es": "<p>Donde pisan los campeones, la oscuridad no puede seguir.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Disarm",
+                "es": "Desarme"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "B",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Detach 1 Weapon attached to the paired enemy hero. That Weapon is placed in its owner&rsquo;s Graveyard.<\/p>\r\n<p>You may pay the cost of that Weapon: instead of placing it in the Graveyard, attach it to the active allied hero. The active allied hero must meet all requirements to attach the Weapon, except for Faction.<\/p>",
+                "es": "<p>Desanexa 1 Arma anexada al h&eacute;roe rival emparejado. Ese Arma se coloca en el Cementerio de su propietario.<\/p>\r\n<p>Puedes pagar el coste de ese Arma: en vez de colocarla en el Cementerio, an&eacute;xala al h&eacute;roe aliado activo. El h&eacute;roe aliado activo tiene que cumplir todos los requisitos para poder anexar el Arma, a excepci&oacute;n de la Facci&oacute;n.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>In an instant, the Defender of Terik moves like lightning. His hand grabs the attacker's wrist, twisting it with precision. The weapon falls to the ground, and the threat vanishes. There is no unnecessary violence, only control. In Terik, true strength lies not in striking, but in protecting.<\/p>",
+                "es": "<p>En un instante, el Defensor de Terik se mueve como un rel&aacute;mpago. Su mano agarra la mu&ntilde;eca del atacante, torci&eacute;ndola con precisi&oacute;n. El arma cae al suelo, y la amenaza se desvanece. No hay violencia innecesaria, solo control. En Terik, la verdadera fuerza no est&aacute; en golpear, sino en proteger.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>True strength lies in ending fights before they begin.<\/p>",
+                "es": "<p>La verdadera fuerza yace en terminar las luchas antes de empezar.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Inspiring Speech",
+                "es": "Discurso Inspirador"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Place 1 boon counter: Inspired on each adjacent allied hero.<\/p>",
+                "es": "<p>Coloca 1 contador de beneficio: Inspirado sobre cada h&eacute;roe aliado adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Annithare Arain stands before the Defenders, her voice resonating like thunder. 'Today we fight not as separate houses, but as one,' she declares. Her words ignite a flame in every heart, transforming fear into courage. Under her leadership, Terik becomes a single fist, ready to strike.<\/p>",
+                "es": "<p>Annithare Arain se yergue ante los Defensores, su voz resonando como un trueno. 'Hoy no luchamos como casas separadas, sino como uno solo', declara. Sus palabras encienden una llama en cada coraz&oacute;n, transformando el miedo en coraje. Bajo su liderazgo, Terik se convierte en un solo pu&ntilde;o, listo para golpear.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Words of courage forge armies from scattered souls.<\/p>",
+                "es": "<p>Palabras de valor forjan ej&eacute;rcitos de almas dispersas.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Chosen by the Light",
+                "es": "Elegidos por la Luz"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Litany",
+                "es": "Letanía"
+            },
+            "card_subtype": {
+                "en": "Chant",
+                "es": "Oración"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Aura",
+                "es": "Aura"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Light",
+                "es": "Luz"
+            },
+            "area": false,
+            "cost": "B",
+            "restriction": [],
+            "effect": {
+                "en": "<p>For the active allied hero and each adjacent allied hero, choose 1:<\/p>\r\n<ul>\r\n<li>Place 1 boon counter: Inspired and 1 boon counter: Invigorated on that hero.<\/li>\r\n<li>Place 1 boon counter: Exalted and 1 boon counter: Resolute on that hero.<\/li>\r\n<li>Heal 2 health to that hero.<\/li>\r\n<\/ul>",
+                "es": "<p data-start=\"542\" data-end=\"625\">Para el h&eacute;roe aliado activo y cada h&eacute;roe aliado adyacente, elige 1 distinto:<\/p>\r\n<ul>\r\n<li>Coloca 1 contador de beneficio: Inspirado y otro de Vigorizado sobre ese h&eacute;roe.<\/li>\r\n<li data-start=\"542\" data-end=\"625\">Coloca 1 contador de beneficio: Exaltado y otro de Determinado sobre ese h&eacute;roe.<\/li>\r\n<li>Cura 2 puntos de vida a ese h&eacute;roe.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p>Those Chosen by the Light are not mere warriors; they are beacons in the darkness. With every movement, they channel divine light, healing wounds and defeating shadows. Their mere presence inspires the people of Terik, reminding them that, even in the darkest times, justice shines with unstoppable force.<\/p>",
+                "es": "<p>Los Elegidos por la Luz no son simples guerreros; son faros en la oscuridad. Con cada movimiento, canalizan la luz divina, sanando heridas y derrotando a las sombras. Su mera presencia inspira a los habitantes de Terik, record&aacute;ndoles que, incluso en los tiempos m&aacute;s oscuros, la justicia brilla con fuerza imparable.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Destiny calls, and the chosen answer with radiance.<\/p>",
+                "es": "<p>El destino llama, y los elegidos responden con resplandor.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Guard Shield",
+                "es": "Escudo de la Guardia"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Shield",
+                "es": "Escudo"
+            },
+            "equipment_category": "weapon",
+            "hands": 1,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "R",
+            "restriction": [],
+            "effect": {
+                "en": "<p>The attached hero gains:<\/p>",
+                "es": "<p>El h&eacute;roe anexado gana:<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Guard Shield is not just a barrier, it is an extension of the warrior. Forged in wood and metal, it withstands strikes and arrows without yielding. Light yet unbreakable, it allows for agile movements, turning defense into art. In the hands of a Defender of Terik, it is the wall that never falls.<\/p>",
+                "es": "<p>El Escudo de la Guardia no es solo una barrera, es una extensi&oacute;n del guerrero. Forjado en madera y metal, resiste embates y flechas sin ceder. Ligero pero inquebrantable, permite movimientos &aacute;giles, convirtiendo la defensa en arte. En manos de un Defensor de Terik, es el muro que nunca cae.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Wood and metal become extensions of the warrior's will.<\/p>",
+                "es": "<p>Madera y metal se vuelven extensiones de la voluntad del guerrero.<\/p>"
+            },
+            "linked_ability": {
+                "name": {
+                    "en": "Shield Bash",
+                    "es": "Golpe de Escudo"
+                },
+                "cost": "R",
+                "attack_range": {
+                    "en": "Melee",
+                    "es": "Melee"
+                },
+                "attack_type": "physical",
+                "attack_subtype": {
+                    "en": "Crushing",
+                    "es": "Contundente"
+                },
+                "area": false,
+                "effect": {
+                    "en": "<p>Place 1 bane counter: Stunned on the paired rival hero.<\/p>",
+                    "es": "<p>Coloca 1 contador de perjuicio: Aturdido sobre el h&eacute;roe rival emparejado.<\/p>"
+                }
+            }
+        },
+        {
+            "name": {
+                "en": "Veil of Steel",
+                "es": "Velo de Acero"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Bulwark",
+                "es": "Baluarte"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": {
+                "en": "<p><strong>Reaction<\/strong>: When the active allied hero becomes the target of a Single-Target Magic Attack.<\/p>",
+                "es": "<p><strong>Reacci&oacute;n<\/strong>: Cuando el h&eacute;roe aliado activo sea objetivo de un Ataque M&aacute;gico de 1 Objetivo.<\/p>"
+            },
+            "effect": {
+                "en": "<p>That attack deals -2 damage.<\/p>",
+                "es": "<p>Dicho ataque hace -2 de da&ntilde;o.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The knights of Terik learned that not every defense is forged in steel. Within the halls of the Bastion they train to place their will between themselves and arcane fire, raising their shields like mirrors of discipline. Where others burn, they endure.<\/p>",
+                "es": "<p>Los caballeros de Terik aprendieron que no toda defensa se forja con hierro. En los salones del Basti&oacute;n, entrenan para interponer su voluntad ante el fuego arcano, alzando sus escudos como espejos que reflejan la fe en disciplina. All&iacute; donde otros se consumen, ellos resisten.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>No spell pierces a steadfast heart.<\/p>",
+                "es": "<p>Ning&uacute;n hechizo atraviesa un coraz&oacute;n firme.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Regulation Sword",
+                "es": "Espada Reglamentaria"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Sword",
+                "es": "Espada"
+            },
+            "equipment_category": "weapon",
+            "hands": 1,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>The first time in each Clash the attached hero performs a Single Target Melee Physical Slashing Attack, choose 1:<\/p>\r\n<ul>\r\n<li>Reveal the top Card of your Library. If it&rsquo;s a Technique, put it into your Hand; otherwise, put it into your Graveyard.<\/li>\r\n<li>That Attack deals +1 Damage.<\/li>\r\n<\/ul>",
+                "es": "<p>La primera vez en cada Choque que el h&eacute;roe anexado realice un Ataque Melee F&iacute;sico Cortante de 1 Objetivo, elige 1:<\/p>\r\n<ul>\r\n<li>Muestra la primera Carta de tu Biblioteca. Si es una T&eacute;cnica, col&oacute;cala en tu Mano; si no, en tu Cementerio.<\/li>\r\n<li>Ese Ataque hace +1 de Da&ntilde;o.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p>The Regulation Sword is not just a weapon, it is an oath. Each Defender of Terik wields it with precision, its blade shining as a reflection of their discipline. Only the most dedicated master it, proving that true strength lies not in steel, but in the heart of the wielder. With it, they protect the city and their honor.<\/p>",
+                "es": "<p>La Espada Reglamentaria no es solo un arma, es un juramento. Cada Defensor de Terik la empu&ntilde;a con precisi&oacute;n, su hoja brillando como un reflejo de su disciplina. Solo los m&aacute;s dedicados la dominan, demostrando que la verdadera fuerza no est&aacute; en el acero, sino en el coraz&oacute;n de quien la blande. Con ella, protegen la ciudad y su honor.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>An oath of steel carried by every defender.<\/p>",
+                "es": "<p>Un juramento de acero portado por cada defensor.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Brilliant Burst",
+                "es": "Estallido Brillante"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Litany",
+                "es": "Letanía"
+            },
+            "card_subtype": {
+                "en": "Smite",
+                "es": "Punición"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Ranged",
+                "es": "A Distancia"
+            },
+            "attack_type": "magical",
+            "attack_subtype": {
+                "en": "Light",
+                "es": "Luz"
+            },
+            "area": true,
+            "cost": "RRR",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deal 2 + Mental damage to the paired enemy hero.<\/p>\r\n<p>Deal 1 + Mental damage to 1 random adjacent enemy hero.<\/p>\r\n<p>Place 1 bane counter: Stunned on each hero damaged this way.<\/p>",
+                "es": "<p>Hace 2 + Mente de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Hace 1 + Mente de da&ntilde;o a 1 h&eacute;roe rival adyacente aleatorio.<\/p>\r\n<p>Coloca 1 contador de perjuicio: Aturdido sobre cada h&eacute;roe da&ntilde;ado de esta forma.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The paladin raises their hands, and an orb of pure light forms, shining like a miniature sun. With a precise gesture, they hurl it toward the enemies. The burst is blinding, an explosion of divine energy that burns and disorients. In Terik, light doesn't just illuminate, it also purges and protects with celestial fury.<\/p>",
+                "es": "<p>El palad&iacute;n alza sus manos, y un orbe de luz pura se forma, brillando como un sol en miniatura. Con un gesto preciso, lo lanza hacia los enemigos. El estallido es cegador, una explosi&oacute;n de energ&iacute;a divina que quema y desorienta. En Terik, la luz no solo ilumina, tambi&eacute;n purga y protege con furia celestial.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Miniature suns burn away the shadows of evil.<\/p>",
+                "es": "<p>Soles en miniatura queman las sombras del mal.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Raise the Banner",
+                "es": "Hondear el Estandarte"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Support",
+                "es": "Apoyo"
+            },
+            "card_subtype": null,
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Place 1 boon counter: Exalted on each adjacent allied hero.<\/p>\r\n<p>Remove 1 random bane counter from each adjacent allied hero.<\/p>",
+                "es": "<p>Coloca 1 contador de beneficio: Exaltado sobre cada h&eacute;roe aliado adyacente.<\/p>\r\n<p>Remueve 1 contador de perjuicio aleatorio de cada h&eacute;roe aliado adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>When Terik&rsquo;s banner waves above the city, weariness and doubt scatter to the wind. Warriors recall their oaths, mages whisper the city&rsquo;s old names, and healers raise their eyes to the ramparts. In that instant, Terik is not stone nor steel: it is the faith of its people burning as one flame<\/p>",
+                "es": "<p>Cuando el estandarte de Terik ondea en lo alto, el cansancio y la duda se disuelven. Los guerreros recuerdan su juramento, los magos recitan los viejos nombres de la ciudad, y los sanadores levantan la mirada hacia las murallas. En ese instante, Terik no es piedra ni acero: es la fe de su gente encendida como una sola llama.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The wind carries our fear away, and leaves only courage.<\/p>",
+                "es": "<p>El viento lleva nuestro miedo, y nos deja s&oacute;lo valor.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Dexterous Thrust",
+                "es": "Estocada Diestra"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Assault",
+                "es": "Asalto"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Piercing",
+                "es": "Perforante"
+            },
+            "area": false,
+            "cost": "RR",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Strength damage to the paired enemy hero.<\/p>\r\n<p>Place 1 boon counter: Inspired on the active allied hero.<\/p>",
+                "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>\r\n<p>Coloca 1 contador de beneficio: Inspirado sobre el h&eacute;roe aliado activo.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Your dagger strikes like lightning, piercing the enemy's flank. A cry of pain, a moment of hesitation. Before they can react, the dagger falls and your main sword is already in motion. The battle shifts in an instant, and victory tilts in your favor.<\/p>",
+                "es": "<p>Tu daga sale como un rayo, clav&aacute;ndose en el flanco del enemigo. Un grito de dolor, un momento de vacilaci&oacute;n. Antes de que reaccione, la daga cae y tu espada principal ya est&aacute; en movimiento. La batalla cambia en un instante, y la victoria se inclina a tu favor.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Lightning strikes twice when skill guides the blade.<\/p>",
+                "es": "<p>El rayo golpea dos veces cuando la habilidad gu&iacute;a la hoja.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Iron Star",
+                "es": "Estrella de Hierro"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Sword",
+                "es": "Espada"
+            },
+            "equipment_category": "weapon",
+            "hands": 2,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": [],
+            "effect": {
+                "en": "<p>The attached hero gains:<\/p>",
+                "es": "<p>El h&eacute;roe anexado gana:<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The 'Iron Star' shines with the light of a thousand suns. Forged with celestial metals, its blade cuts through the air like lightning, leaving enemies defenseless. To wield it is to brandish the power of the stars, a reminder that even in darkness, the light of Terik prevails.<\/p>",
+                "es": "<p>La 'Estrella de Hierro' brilla con la luz de mil soles. Forjada con metales celestiales, su hoja corta el aire como un rayo, dejando a los enemigos sin defensa. Empu&ntilde;arla es blandir el poder de los astros, un recordatorio de que incluso en la oscuridad, la luz de Terik prevalece.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Celestial metal sings the song of victory.<\/p>",
+                "es": "<p>Metal celestial canta la canci&oacute;n de la victoria.<\/p>"
+            },
+            "linked_ability": {
+                "name": {
+                    "en": "Sweep",
+                    "es": "Barrido"
+                },
+                "cost": "GGB",
+                "attack_range": {
+                    "en": "Melee",
+                    "es": "Melee"
+                },
+                "attack_type": "physical",
+                "attack_subtype": {
+                    "en": "Slashing",
+                    "es": "Cortante"
+                },
+                "area": true,
+                "effect": {
+                    "en": "<p>Deals 2 + Strength damage to the paired enemy hero and to each enemy hero from previous pairings.<\/p>",
+                    "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y a cada h&eacute;roe rival de los emparejamientos anteriores.<\/p>"
+                }
+            }
+        },
+        {
+            "name": {
+                "en": "Luminous Force",
+                "es": "Fuerza Luminosa"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Litany",
+                "es": "Letanía"
+            },
+            "card_subtype": {
+                "en": "Chant",
+                "es": "Oración"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Light",
+                "es": "Luz"
+            },
+            "area": false,
+            "cost": "R",
+            "restriction": {
+                "en": "<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>Each Light Action played by the active allied hero deals +1 damage or heals +1.<\/p>",
+                "es": "<p>Cada Acci&oacute;n Luz que juegue el h&eacute;roe aliado activo hace +1 de da&ntilde;o o +1 de curaci&oacute;n.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Divine light descends, enveloping the paladin in a golden radiance. Each movement becomes faster, each strike more lethal. Celestial energy flows through their weapon, striking down enemies with relentless precision. In that moment, the paladin is not just a warrior, but the embodiment of Terik's justice.<\/p>",
+                "es": "<p>La luz divina desciende, envolviendo al palad&iacute;n en un resplandor dorado. Cada movimiento se vuelve m&aacute;s r&aacute;pido, cada golpe m&aacute;s letal. La energ&iacute;a celestial fluye a trav&eacute;s de su arma, derribando enemigos con precisi&oacute;n implacable. En ese momento, el palad&iacute;n no es solo un guerrero, es la encarnaci&oacute;n de la justicia de Terik.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Divine energy transforms warriors into instruments of justice.<\/p>",
+                "es": "<p>Energ&iacute;a divina transforma guerreros en instrumentos de justicia.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Silver Justice",
+                "es": "Justicia Plateada"
+            },
+            "is_unique": true,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Sword",
+                "es": "Espada"
+            },
+            "equipment_category": "weapon",
+            "hands": 1,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RR",
+            "restriction": [],
+            "effect": {
+                "en": "<p>If the attached hero has at least 1 boon counter: Inspired, they deal +1 damage with Single Target Melee Physical Slashing Attacks.<\/p>\r\n<p>The first Melee Physical Slashing Attack the attached hero performs in each Clash, in addition to its effect, places 1 boon counter: Inspired on the attached hero or on a random adjacent allied hero.<\/p>",
+                "es": "<p>Si el h&eacute;roe anexado tiene al menos 1 contador de beneficio: Inspirado, hace +1 de da&ntilde;o con los Ataques Melee F&iacute;sicos Cortantes de 1 Objetivo.<\/p>\r\n<p>El primer Ataque Melee F&iacute;sico Cortante que realice el h&eacute;roe anexado en cada Choque, adem&aacute;s de su efecto, coloca 1 contador de beneficio: Inspirado sobre el h&eacute;roe anexado o sobre un h&eacute;roe aliado adyacente aleatorio.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Silver Justice shines like the moon in the night. Forged for Joner Esthei, its blade is a tribute to his bravery in the War of Houses. Each strike is an echo of his loyalty, and each victory, a reminder that the honor of the Esthei never fades.<\/p>",
+                "es": "<p>La Justicia Plateada brilla como la luna en la noche. Forjada para Joner Esthei, su hoja es un tributo a su valent&iacute;a en la Guerra de las Casas. Cada golpe es un eco de su lealtad, y cada victoria, un recordatorio de que el honor de los Esthei nunca se desvanece.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Joner's legacy: loyalty sharper than any blade.<\/p>",
+                "es": "<p>El legado de Joner: lealtad m&aacute;s afilada que cualquier hoja.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Eternal Light",
+                "es": "Luz Eterna"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Mace",
+                "es": "Maza"
+            },
+            "equipment_category": "weapon",
+            "hands": 2,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RRG",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Once per Clash, when the attached hero performs a Single Target Melee Attack, you may choose 1:<\/p>\r\n<ul>\r\n<li>If that Attack is Magic Light, change it to Physical: Crushing. In addition to its effects, place 1 bane counter: Numbed on the target hero.<\/li>\r\n<li>If that Attack is Physical Crushing, change it to Magic: Light. In addition to its effects, heal 1 health to this hero or to 1 adjacent allied hero.<\/li>\r\n<\/ul>",
+                "es": "<p>Una vez por Choque, cuando el h&eacute;roe anexado realice un Ataque Melee de 1 Objetivo, puedes elegir 1:<\/p>\r\n<ul>\r\n<li>Si ese Ataque es&nbsp;M&aacute;gico Luz, c&aacute;mbialo a F&iacute;sico Contundente. Adem&aacute;s de sus efectos, coloca 1 contador de perjuicio: Entumecido sobre el h&eacute;roe objetivo.<\/li>\r\n<li>Si ese Ataque es F&iacute;sico Contundente, c&aacute;mbialo a M&aacute;gico Luz. Adem&aacute;s de sus efectos, cura 1 de vida a este h&eacute;roe o a 1 h&eacute;roe aliado adyacente.<\/li>\r\n<\/ul>"
+            },
+            "lore_text": {
+                "en": "<p>The hammer Eternal Light shines with the fire of a fallen star. In the hands of Joner Esthei, its light purged enemies and strengthened allies. Each strike was a roar of justice, changing the fate of battles. Today, it is a sacred symbol, a reminder of the heroism that protected Terik.<\/p>",
+                "es": "<p>El martillo Luz Eterna resplandece con el fuego de una estrella ca&iacute;da. En manos de Joner Esthei, su luz purg&oacute; a los enemigos y fortaleci&oacute; a los aliados. Cada golpe era un rugido de justicia, cambiando el destino de las batallas. Hoy, es un s&iacute;mbolo sagrado, un recordatorio del hero&iacute;smo que protegi&oacute; Terik.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Fallen stars forge hammers that shape destiny.<\/p>",
+                "es": "<p>Estrellas ca&iacute;das forjan martillos que moldean el destino.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Healing Light",
+                "es": "Luz Sanadora"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Litany",
+                "es": "Letanía"
+            },
+            "card_subtype": {
+                "en": "Prayer",
+                "es": "Rezo"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Ranged",
+                "es": "A Distancia"
+            },
+            "attack_type": null,
+            "attack_subtype": {
+                "en": "Light",
+                "es": "Luz"
+            },
+            "area": false,
+            "cost": "B",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Heal 3 health to 1 adjacent allied hero.<\/p>",
+                "es": "<p>Cura 3 de vida a 1 h&eacute;roe aliado adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The paladin extends their hands, and a golden radiance envelops the wounded. Wounds close, pain fades away. The Healing Light not only cures bodies, but also souls, restoring strength and courage to warriors. In Terik, this light is a reminder: hope never dies.<\/p>",
+                "es": "<p>El palad&iacute;n extiende sus manos, y un resplandor dorado envuelve a los heridos. Las heridas se cierran, el dolor se desvanece. La Luz Sanadora no solo cura cuerpos, sino tambi&eacute;n almas, devolviendo la fuerza y el coraje a los guerreros. En Terik, esta luz es un recordatorio: la esperanza nunca muere.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Hope made manifest mends both flesh and spirit.<\/p>",
+                "es": "<p>Esperanza hecha manifiesta repara tanto carne como esp&iacute;ritu.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Oathbound Mace",
+                "es": "Maza del Juramento"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Mace",
+                "es": "Maza"
+            },
+            "equipment_category": "weapon",
+            "hands": 1,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "G",
+            "restriction": [],
+            "effect": {
+                "en": "<p>The attached hero gains:<\/p>",
+                "es": "<p>El h&eacute;roe anexado gana:<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>Forged in the deepest forges of Terik&rsquo;s City, the Oathbound Mace was crafted to remind every warrior of the weight of their vow. Its grip vibrates with each strike as if echoing their solemn oaths. It shines with no magic nor faith, but with the unyielding resolve of those who defend the walls when all else has fallen.<\/p>",
+                "es": "<p>Forjada en las profundidades de la Ciudad de Terik, la Maza del Juramento fue concebida para recordar a cada guerrero el peso de su promesa. Su empu&ntilde;adura vibra con cada golpe como si repitiera sus votos. No brilla con magia ni con fe, sino con la determinaci&oacute;n inquebrantable de quienes protegen la muralla cuando todo lo dem&aacute;s ha cedido.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>The vow weighs heavier than steel.<\/p>",
+                "es": "<p>El juramento pesa m&aacute;s que el acero.<\/p>"
+            },
+            "linked_ability": {
+                "name": {
+                    "en": "Dazzling Strike",
+                    "es": "Golpe Deslumbrante"
+                },
+                "cost": "RG",
+                "attack_range": {
+                    "en": "Melee",
+                    "es": "Melee"
+                },
+                "attack_type": "magical",
+                "attack_subtype": {
+                    "en": "Light",
+                    "es": "Luz"
+                },
+                "area": false,
+                "effect": {
+                    "en": "<p>Deals 3 + Strength damage to the paired enemy hero.<\/p>",
+                    "es": "<p>Hace 3 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado.<\/p>"
+                }
+            }
+        },
+        {
+            "name": {
+                "en": "Aggressive Stance",
+                "es": "Postura Agresiva"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Tactic",
+                "es": "Táctica"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": null,
+            "restriction": {
+                "en": "<p>Play this Technique at the start of the Action Dice Preparation Phase.<\/p>\r\n<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p>Juega esta T&eacute;cnica al inicio de la fase de Preparaci&oacute;n de Dados de Acci&oacute;n.<\/p>\r\n<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>The active allied hero deals +1 Physical damage and +1 Magical damage.<\/p>\r\n<p>The active allied hero takes +1 Physical damage and +1 Magical damage.<\/p>",
+                "es": "<p>El h&eacute;roe aliado activo hace +1 de da&ntilde;o F&iacute;sico y +1 de da&ntilde;o M&aacute;gico.<\/p>\r\n<p>El h&eacute;roe aliado activo recibe +1 de da&ntilde;o F&iacute;sico y +1 de da&ntilde;o M&aacute;gico.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The warrior leans forward, muscles tense like springs. With a shout, they launch into attack, ignoring defense. Each strike is a hurricane of fury, breaking ranks and sowing chaos. In Terik, this stance is feared: there is no shield that holds when the offensive is relentless.<\/p>",
+                "es": "<p>El guerrero se inclina hacia adelante, sus m&uacute;sculos tensos como resortes. Con un grito, se lanza al ataque, ignorando la defensa. Cada golpe es un hurac&aacute;n de furia, rompiendo filas y sembrando el caos. En Terik, esta postura es temida: no hay escudo que aguante cuando la ofensiva es implacable.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Fortune favors those who strike without hesitation.<\/p>",
+                "es": "<p>La fortuna favorece a quienes golpean sin dudar.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Defensive Stance",
+                "es": "Postura Defensiva"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Tactic",
+                "es": "Táctica"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Self",
+                "es": "Propio"
+            },
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": null,
+            "restriction": {
+                "en": "<p>Play this Technique at the start of the Action Dice Preparation Phase.<\/p>\r\n<p><strong>Persistent<\/strong>: Until the end of the Clash.<\/p>",
+                "es": "<p>Juega esta T&eacute;cnica al inicio de la fase de Preparaci&oacute;n de Dados de Acci&oacute;n.<\/p>\r\n<p><strong>Persistente<\/strong>: Hasta el final del Choque.<\/p>"
+            },
+            "effect": {
+                "en": "<p>The active allied hero deals -1 Physical damage and -1 Magical damage.<\/p>\r\n<p>The active allied hero takes -1 Physical damage and -1 Magical damage.<\/p>",
+                "es": "<p>El h&eacute;roe aliado activo hace -1 de da&ntilde;o F&iacute;sico y -1 de da&ntilde;o M&aacute;gico.<\/p>\r\n<p>El h&eacute;roe aliado activo recibe -1 de da&ntilde;o F&iacute;sico y -1 de da&ntilde;o M&aacute;gico.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The warrior lowers their center of gravity, moving with caution. Their arms protect vital points, and each dodge is calculated. Although not attacking with force, their resistance is unbreakable. In Terik, this stance is a strategy: survive today to fight tomorrow.<\/p>",
+                "es": "<p>El guerrero baja su centro de gravedad, movi&eacute;ndose con cautela. Sus brazos protegen puntos vitales, y cada esquive es calculado. Aunque no ataca con fuerza, su resistencia es inquebrantable. En Terik, esta postura es una estrategia: sobrevivir hoy para luchar ma&ntilde;ana.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Patience and steel: tomorrow's victory born today.<\/p>",
+                "es": "<p>Paciencia y acero: la victoria del ma&ntilde;ana nacida hoy.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Spinning Slash",
+                "es": "Tajo Giratorio"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Technique",
+                "es": "Técnica"
+            },
+            "card_subtype": {
+                "en": "Assault",
+                "es": "Asalto"
+            },
+            "equipment_type": null,
+            "equipment_category": null,
+            "hands": null,
+            "attack_range": {
+                "en": "Melee",
+                "es": "Melee"
+            },
+            "attack_type": "physical",
+            "attack_subtype": {
+                "en": "Slashing",
+                "es": "Cortante"
+            },
+            "area": true,
+            "cost": "GGB",
+            "restriction": [],
+            "effect": {
+                "en": "<p>Deals 2 + Strength damage to the paired enemy hero and to each adjacent enemy hero.<\/p>",
+                "es": "<p>Hace 2 + Fuerza de da&ntilde;o al h&eacute;roe rival emparejado y a cada&nbsp;h&eacute;roe rival adyacente.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Defender spins around, their sword tracing a lethal arc. The spinning slash cuts through the air, reaching all who dare to surround them. Each movement is pure precision, each turn a demonstration of mastery. In Terik, mastering this technique is the mark of a true warrior.<\/p>",
+                "es": "<p>El Defensor gira sobre s&iacute; mismo, su espada trazando un arco letal. El tajo giratorio corta el aire, alcanzando a todos los que se atreven a rodearlo. Cada movimiento es precisi&oacute;n pura, cada giro una demostraci&oacute;n de maestr&iacute;a. En Terik, dominar esta t&eacute;cnica es la marca de un verdadero guerrero.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Death dances in circles of sharpened steel.<\/p>",
+                "es": "<p>La muerte danza en c&iacute;rculos de acero afilado.<\/p>"
+            }
+        },
+        {
+            "name": {
+                "en": "Helm of Enduring Light",
+                "es": "Yelmo de Luz Perdurable"
+            },
+            "is_unique": false,
+            "card_type": {
+                "en": "Equipment",
+                "es": "Equipo"
+            },
+            "card_subtype": null,
+            "equipment_type": {
+                "en": "Helm",
+                "es": "Yelmo"
+            },
+            "equipment_category": "armor",
+            "hands": null,
+            "attack_range": null,
+            "attack_type": null,
+            "attack_subtype": null,
+            "area": false,
+            "cost": "RG",
+            "restriction": {
+                "en": "<p>This Equipment can only be attached to a Paragon or Harbinger hero.<\/p>",
+                "es": "<p>Este Equipo solo puede anexarlo un h&eacute;roe Parag&oacute;n o Adalid.<\/p>"
+            },
+            "effect": {
+                "en": "<p>The first time you spend 1 <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> Die in each Clash, you may keep it as a Prepared <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red.svg\" alt=\"Dado Rojo\"> Die.<\/p>",
+                "es": "<p>La primera vez que gastes 1 Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-blue.svg\" alt=\"Dado Azul\"> en cada Choque, puedes guardarlo como Dado <img src=\"..\/..\/..\/storage\/images\/dices\/dice-red.svg\" alt=\"Dado Rojo\"> Preparado.<\/p>"
+            },
+            "lore_text": {
+                "en": "<p>The Helm of Enduring Light shone on the head of Elara Alain, a paladin who healed and protected her allies in the darkest days. With its light, she purged evils and united the noble houses. Her legacy is not just a helm, but a symbol of peace and unity in Terik.<\/p>",
+                "es": "<p>El Yelmo de Luz Perdurable brill&oacute; en la cabeza de Elara Alain, una paladina que san&oacute; y protegi&oacute; a sus aliados en los d&iacute;as m&aacute;s oscuros. Con su luz, purg&oacute; males y uni&oacute; a las casas nobles. Su legado no es solo un yelmo, sino un s&iacute;mbolo de paz y unidad en Terik.<\/p>"
+            },
+            "epic_quote": {
+                "en": "<p>Elara's wisdom illuminates paths through darkest hours.<\/p>",
+                "es": "<p>La sabidur&iacute;a de Elara ilumina senderos en las horas m&aacute;s oscuras.<\/p>"
+            }
+        }
+    ]
+}
