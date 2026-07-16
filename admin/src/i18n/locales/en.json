@@ -655,6 +655,12 @@
       "abilities": "Active abilities",
       "lore": "Lore"
     },
+    "filters": {
+      "allFactions": "All factions",
+      "allSuperclasses": "All superclasses",
+      "allClasses": "All classes",
+      "allRaces": "All races"
+    },
     "fields": {
       "name": "Name",
       "faction": "Faction",
@@ -664,6 +670,7 @@
       "selectRace": "Select a race",
       "class": "Class",
       "selectClass": "Select a class",
+      "superclass": "Superclass",
       "gender": "Gender",
       "published": "Published",
       "image": "Image",

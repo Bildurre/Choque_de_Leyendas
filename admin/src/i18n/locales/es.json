@@ -586,6 +586,12 @@
       "abilities": "Habilidades activas",
       "lore": "Trasfondo"
     },
+    "filters": {
+      "allFactions": "Todas las facciones",
+      "allSuperclasses": "Todas las superclases",
+      "allClasses": "Todas las clases",
+      "allRaces": "Todas las razas"
+    },
     "fields": {
       "name": "Nombre",
       "faction": "Facción",
@@ -595,6 +601,7 @@
       "selectRace": "Seleccionar raza",
       "class": "Clase",
       "selectClass": "Seleccionar clase",
+      "superclass": "Superclase",
       "gender": "Género",
       "published": "Publicado",
       "image": "Imagen",

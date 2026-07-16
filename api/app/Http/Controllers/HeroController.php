@@ -21,6 +21,27 @@ class HeroController extends Controller
         $heroes = Hero::query()
             ->with(['faction', 'heroRace', 'heroClass'])
             ->filter($request->only('search', 'status'))
+            // Filtros del listado (selects junto a la búsqueda).
+            ->when(
+                $request->filled('faction_id'),
+                fn ($q) => $q->where('faction_id', $request->integer('faction_id'))
+            )
+            ->when(
+                $request->filled('hero_class_id'),
+                fn ($q) => $q->where('hero_class_id', $request->integer('hero_class_id'))
+            )
+            ->when(
+                $request->filled('hero_race_id'),
+                fn ($q) => $q->where('hero_race_id', $request->integer('hero_race_id'))
+            )
+            // La superclase llega a través de la clase (el héroe no la guarda).
+            ->when(
+                $request->filled('hero_superclass_id'),
+                fn ($q) => $q->whereHas(
+                    'heroClass',
+                    fn ($cq) => $cq->where('hero_superclass_id', $request->integer('hero_superclass_id'))
+                )
+            )
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 

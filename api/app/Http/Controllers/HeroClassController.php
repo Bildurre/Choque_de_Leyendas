@@ -26,13 +26,17 @@ class HeroClassController extends Controller
         return HeroClassResource::collection($classes);
     }
 
-    /** Lista ligera (id + nombre traducible) para selectores. */
+    /**
+     * Lista ligera (id + nombre traducible) para selectores. Incluye la
+     * superclase (id): la acota el filtro en cascada del listado de héroes.
+     */
     public function options()
     {
         return response()->json([
             'data' => HeroClass::orderByDesc('id')->get()->map(fn (HeroClass $c) => [
                 'id' => $c->id,
                 'name' => $c->getTranslations('name'),
+                'hero_superclass_id' => $c->hero_superclass_id,
             ]),
         ]);
     }

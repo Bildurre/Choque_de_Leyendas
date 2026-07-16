@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { ArrowRight, Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BasePagination, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
-import type { Hero } from '@juego/shared'
+import { api } from '@/lib/api'
+import type { Hero, HeroClassOption, Translations } from '@juego/shared'
 import HeroFormModal from '@/components/heroes/HeroFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
 
 // Héroes: entidad completa con slug, single, publicación y previews PNG.
+// El listado filtra por facción, superclase, clase y raza con selects en
+// el panel derecho (slot `filters` del EntityPanel), como en Cartas.
 const {
   t,
   items,
@@ -19,6 +22,7 @@ const {
   status,
   search,
   sort,
+  filters,
   tabs,
   tr,
   init,
@@ -45,7 +49,70 @@ const {
   previewKey: 'hero',
 })
 
-onMounted(init)
+// Opciones de los selects de filtro del panel (endpoints options, nombres
+// traducibles). La clase incluye su superclase, para acotar en cascada.
+interface FilterOption {
+  id: number
+  name: Translations
+}
+const factions = ref<FilterOption[]>([])
+const superclasses = ref<FilterOption[]>([])
+const classes = ref<HeroClassOption[]>([])
+const races = ref<FilterOption[]>([])
+
+const factionOptions = computed(() => [
+  { value: '', label: t('heroes.filters.allFactions') },
+  ...factions.value.map((f) => ({ value: String(f.id), label: tr(f.name) })),
+])
+const superclassOptions = computed(() => [
+  { value: '', label: t('heroes.filters.allSuperclasses') },
+  ...superclasses.value.map((s) => ({ value: String(s.id), label: tr(s.name) })),
+])
+// Acotada por la superclase elegida (si hay una): solo sus clases.
+const classOptions = computed(() => {
+  const bySuperclass = filters.hero_superclass_id
+    ? classes.value.filter((c) => String(c.hero_superclass_id) === filters.hero_superclass_id)
+    : classes.value
+  return [
+    { value: '', label: t('heroes.filters.allClasses') },
+    ...bySuperclass.map((c) => ({ value: String(c.id), label: tr(c.name) })),
+  ]
+})
+const raceOptions = computed(() => [
+  { value: '', label: t('heroes.filters.allRaces') },
+  ...races.value.map((r) => ({ value: String(r.id), label: tr(r.name) })),
+])
+
+// Si la clase elegida deja de pertenecer a la superclase elegida, se limpia.
+watch(
+  () => filters.hero_superclass_id,
+  () => {
+    if (!filters.hero_class_id) return
+    const stillValid = classOptions.value.some((o) => o.value === filters.hero_class_id)
+    if (!stillValid) filters.hero_class_id = ''
+  },
+)
+
+async function loadFilterOptions() {
+  try {
+    const [factionsRes, superclassesRes, classesRes, racesRes] = await Promise.all([
+      api.get('/admin/factions/options'),
+      api.get('/admin/hero-superclasses/options'),
+      api.get('/admin/hero-classes/options'),
+      api.get('/admin/hero-races/options'),
+    ])
+    factions.value = factionsRes.data.data
+    superclasses.value = superclassesRes.data.data
+    classes.value = classesRes.data.data
+    races.value = racesRes.data.data
+  } catch {
+    // Sin opciones no hay filtro, pero el listado sigue funcionando.
+  }
+}
+
+onMounted(async () => {
+  await Promise.all([init(), loadFilterOptions()])
+})
 </script>
 
 <template>
@@ -129,6 +196,7 @@ onMounted(init)
       :kicker="t('heroes.panelTitle')"
       :empty="t('heroes.panelEmpty')"
       has-preview
+      @deselect="selectedId = null"
       @open="selected && goSingle(selected)"
       @edit="selected && edit(selected)"
       @toggle-publish="selected && togglePublish(selected)"
@@ -137,6 +205,30 @@ onMounted(init)
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
+      <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+      <template #filters>
+        <BaseSelect
+          v-model="filters.faction_id"
+          :label="t('heroes.fields.faction')"
+          :options="factionOptions"
+        />
+        <BaseSelect
+          v-model="filters.hero_superclass_id"
+          :label="t('heroes.fields.superclass')"
+          :options="superclassOptions"
+        />
+        <BaseSelect
+          v-model="filters.hero_class_id"
+          :label="t('heroes.fields.class')"
+          :options="classOptions"
+        />
+        <BaseSelect
+          v-model="filters.hero_race_id"
+          :label="t('heroes.fields.race')"
+          :options="raceOptions"
+        />
+      </template>
+
       <template #meta>
         <p v-if="selected" class="manager-detail__meta">
           <!-- Raza y clase con el género del héroe (·_display) -->

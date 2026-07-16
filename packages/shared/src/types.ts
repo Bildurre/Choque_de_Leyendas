@@ -59,6 +59,11 @@ export interface TaxonomyOption {
   name: Translations
 }
 
+/** Opción del selector de clases de héroe (con su superclase, para acotar). */
+export interface HeroClassOption extends TaxonomyOption {
+  hero_superclass_id: number | null
+}
+
 // --- Taxonomías de cartas y modos de juego (cluster taxonomies-b) ---
 
 export type CardSubtype = TaxonomyBase

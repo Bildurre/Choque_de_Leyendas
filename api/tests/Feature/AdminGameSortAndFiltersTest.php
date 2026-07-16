@@ -108,6 +108,49 @@ it('filtra las cartas de admin por faction_id y card_type_id', function () {
     expect($response->json('data'))->toBeEmpty();
 });
 
+it('filtra los héroes de admin por faction_id, hero_superclass_id, hero_class_id y hero_race_id', function () {
+    $admin = motorUser('admin');
+
+    $faction = publicFaction();
+    $race = publicHeroRace(['name' => ['es' => 'Elfo', 'en' => 'Elf']]);
+    $warriorClass = publicHeroClass([
+        'name' => ['es' => 'Guerrero', 'en' => 'Warrior'],
+        'superclass_name' => ['es' => 'Luchador', 'en' => 'Fighter'],
+    ]);
+
+    $deFaccion = publicHero(['name' => ['es' => 'De la Alianza', 'en' => 'Alliance one'], 'faction_id' => $faction->id]);
+    $deRaza = publicHero(['name' => ['es' => 'Elfo veloz', 'en' => 'Swift elf'], 'hero_race_id' => $race->id]);
+    $deClase = publicHero(['name' => ['es' => 'Guerrero bravo', 'en' => 'Brave warrior'], 'hero_class_id' => $warriorClass->id]);
+    publicHero(['name' => ['es' => 'Neutral', 'en' => 'Neutral']]);
+
+    $response = $this->actingAs($admin)
+        ->getJson("/api/admin/heroes?faction_id={$faction->id}")
+        ->assertOk();
+    expect(array_column($response->json('data'), 'id'))->toBe([$deFaccion->id]);
+
+    $response = $this->actingAs($admin)
+        ->getJson("/api/admin/heroes?hero_race_id={$race->id}")
+        ->assertOk();
+    expect(array_column($response->json('data'), 'id'))->toBe([$deRaza->id]);
+
+    $response = $this->actingAs($admin)
+        ->getJson("/api/admin/heroes?hero_class_id={$warriorClass->id}")
+        ->assertOk();
+    expect(array_column($response->json('data'), 'id'))->toBe([$deClase->id]);
+
+    // La superclase llega a través de la clase (el héroe no la guarda).
+    $response = $this->actingAs($admin)
+        ->getJson("/api/admin/heroes?hero_superclass_id={$warriorClass->hero_superclass_id}")
+        ->assertOk();
+    expect(array_column($response->json('data'), 'id'))->toBe([$deClase->id]);
+
+    // Combinados: ningún héroe cumple facción y clase a la vez
+    $response = $this->actingAs($admin)
+        ->getJson("/api/admin/heroes?faction_id={$faction->id}&hero_class_id={$warriorClass->id}")
+        ->assertOk();
+    expect($response->json('data'))->toBeEmpty();
+});
+
 it('ordena un index de admin por id asc con sort=oldest', function () {
     $admin = motorUser('admin');
     [$bola, $aullido, $zarpazo] = threeAbilities();

@@ -655,6 +655,12 @@
       "abilities": "Gaitasun aktiboak",
       "lore": "Kondaira"
     },
+    "filters": {
+      "allFactions": "Fakzio guztiak",
+      "allSuperclasses": "Superklase guztiak",
+      "allClasses": "Klase guztiak",
+      "allRaces": "Arraza guztiak"
+    },
     "fields": {
       "name": "Izena",
       "faction": "Fakzioa",
@@ -664,6 +670,7 @@
       "selectRace": "Aukeratu arraza",
       "class": "Klasea",
       "selectClass": "Aukeratu klasea",
+      "superclass": "Superklasea",
       "gender": "Generoa",
       "published": "Argitaratua",
       "image": "Irudia",
