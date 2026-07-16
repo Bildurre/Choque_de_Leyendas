@@ -31,9 +31,10 @@ h6 {
 
 // El cuerpo ocupa el alto sobrante: el pie sigue pegado abajo. La barra
 // derecha contextual (AppRightSidebar) vive aquí pero es FIJA (fuera del
-// flujo): desplegada en ancho, contenido, cabecera y pie le hacen hueco
-// (padding-right abajo y en _app-header.scss); en estrecho se superpone
-// (drawer del propio componente, con telón).
+// flujo), bajo la cabecera fija: desplegada en ancho, contenido y pie le
+// hacen hueco (padding-right, abajo; la cabecera no lo necesita: la barra
+// no la tapa); en estrecho se superpone (drawer del propio componente, con
+// telón bajo la cabecera).
 .site-main {
   flex: 1 0 auto;
   display: flex;

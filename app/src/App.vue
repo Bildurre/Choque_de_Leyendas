@@ -27,12 +27,13 @@ onMounted(async () => {
 
 <template>
   <AppHeader v-if="!bare" />
-  <!-- La cabecera es fija (CDL): el contenido le deja hueco arriba. La
-       barra derecha contextual es FIJA (fuera del flujo): cada vista
-       registra sus filtros con useAppRightSidebar() y Teleport a
-       #app-right-sidebar-target; se abre/cierra con el asa anclada a la
-       propia barra, y desplegada en ancho el contenido le hace hueco
-       (padding-right sobre .app-right-sidebar--docked, ver scss). -->
+  <!-- La cabecera es fija y siempre visible: el contenido le deja hueco
+       arriba. La barra derecha contextual es FIJA (fuera del flujo), de
+       justo bajo la cabecera hasta abajo: cada vista registra sus filtros
+       con useAppRightSidebar() y Teleport a #app-right-sidebar-target; se
+       abre/cierra con el asa anclada a la propia barra, y desplegada en
+       ancho contenido y pie le hacen hueco (padding-right sobre
+       .app-right-sidebar--docked, ver scss). -->
   <div v-if="!bare" class="site-main">
     <div class="site-content">
       <RouterView />

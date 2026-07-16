@@ -17,14 +17,14 @@ $header-row2: 46px;
 
   --header-row1: calc(var(--logo-h) + 22px);
 
-  // Asa de la barra derecha contextual (AppRightSidebar de @edc-motor/ui):
-  // la barra es fija a toda altura y por encima de la cabecera; el asa se
-  // ancla justo bajo ella (con la fila de navegación en ancho) para no
-  // pisar sus acciones mientras la cabecera está a la vista.
-  --app-right-sidebar-handle-top: calc(var(--header-row1) + #{$space-4});
+  // Techo de la barra derecha contextual (AppRightSidebar de @edc-motor/ui):
+  // arranca justo bajo la cabecera fija (con la fila de navegación en
+  // ancho) y su asa asoma ahí mismo (el default del componente ya la deja
+  // justo bajo el techo de la barra).
+  --app-right-sidebar-top: var(--header-row1);
 
   @media (min-width: 900px) {
-    --app-right-sidebar-handle-top: calc(var(--header-row1) + #{$header-row2} + #{$space-4});
+    --app-right-sidebar-top: calc(var(--header-row1) + #{$header-row2});
   }
 }
 
@@ -34,11 +34,6 @@ $header-row2: 46px;
   left: 0;
   width: 100%;
   z-index: 50;
-  transition: transform 0.25s ease-in-out, padding-right 0.25s ease;
-
-  &.is-hidden {
-    transform: translateY(-100%);
-  }
 
   // --- Línea 1: marca + acciones ---
   &__bar {
@@ -444,11 +439,4 @@ $header-row2: 46px;
   @media (min-width: 900px) {
     padding-top: calc(var(--header-row1) + #{$header-row2});
   }
-}
-
-// Con la barra derecha contextual desplegada en ANCHO (fija, por encima de
-// la cabecera), la cabecera le hace hueco igual que el contenido: sus
-// acciones nunca quedan debajo de la barra. Sin telón: solo se re-centra.
-body:has(.app-right-sidebar--docked) .site-header {
-  padding-right: var(--app-right-sidebar-width, 320px);
 }

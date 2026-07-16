@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ChevronDown, FileDown, LayoutDashboard, LogIn, LogOut, Menu, X } from '@lucide/vue'
@@ -17,7 +17,7 @@ import { useSiteStore } from '@/stores/site'
 // debajo, la barra de navegación CENTRADA. Las páginas con hijas publicadas
 // despliegan submenú al hover (chevron, patrón CDL); en móvil TODO lo del
 // header (salvo el logo) pasa a la barra lateral off-canvas, con las hijas
-// indentadas. Se oculta al bajar y asoma al subir.
+// indentadas. Fija arriba, siempre visible.
 const auth = useAuthStore()
 const route = useRoute()
 const router = useRouter()
@@ -26,9 +26,9 @@ const locales = useLocalesStore()
 const site = useSiteStore()
 const collection = useCollectionStore()
 
-// La barra derecha contextual (filtros de la vista) ya no se abre desde
-// aquí: AppRightSidebar (@edc-motor/ui) trae su propia asa anclada a la
-// barra, fija y por encima de esta cabecera.
+// La barra derecha contextual (filtros de la vista) no se abre desde aquí:
+// AppRightSidebar (@edc-motor/ui) trae su propia asa anclada a la barra,
+// fija desde el borde inferior de esta cabecera hasta abajo.
 
 interface NavPage {
   id: number
@@ -40,7 +40,6 @@ interface NavPage {
 
 const pages = ref<NavPage[]>([])
 const navOpen = ref(false)
-const hidden = ref(false)
 
 // El submenú vive del :hover: al hacer clic en una hija seguiría abierto
 // (el ratón no se ha movido). Se SUPRIME al navegar y se libera cuando el
@@ -127,16 +126,6 @@ async function logout() {
   router.push({ name: 'home', params: { locale: locales.current } })
 }
 
-// Ocultar al bajar, enseñar al subir (nunca con el drawer de navegación
-// abierto: ancla su techo a la cabecera). El drawer de filtros va aparte
-// (fijo, por encima de la cabecera): no necesita retenerla.
-let lastY = 0
-function onScroll() {
-  const y = window.scrollY
-  hidden.value = y > 80 && y > lastY && !navOpen.value
-  lastY = y
-}
-
 // El panel móvil se cierra al navegar.
 watch(
   () => route.fullPath,
@@ -146,7 +135,6 @@ watch(
 )
 
 onMounted(async () => {
-  window.addEventListener('scroll', onScroll, { passive: true })
   collection.load()
   await locales.load()
   try {
@@ -156,12 +144,10 @@ onMounted(async () => {
     // sin menú de páginas: la nav base sigue funcionando
   }
 })
-
-onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 </script>
 
 <template>
-  <header class="site-header" :class="{ 'is-hidden': hidden }">
+  <header class="site-header">
     <!-- Línea 1: marca + acciones (solo escritorio; en móvil, burger + logo) -->
     <div class="site-header__bar">
       <div class="site-header__bar-inner">
