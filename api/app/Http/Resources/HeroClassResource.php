@@ -13,6 +13,7 @@ class HeroClassResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
+            'name_female' => $this->getTranslations('name_female'),
             'passive' => $this->getTranslations('passive'),
             'hero_superclass_id' => $this->hero_superclass_id,
             'hero_superclass' => new HeroSuperclassResource($this->whenLoaded('heroSuperclass')),

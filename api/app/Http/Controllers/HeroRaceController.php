@@ -84,6 +84,8 @@ class HeroRaceController extends Controller
         $rules = [];
         foreach (array_keys(config('motor.locales', [])) as $locale) {
             $rules["name.$locale"] = [$locale === $default ? 'required' : 'nullable', 'string', 'max:255'];
+            // Femenino opcional en todos los locales (en/eu no lo rellenan)
+            $rules["name_female.$locale"] = ['nullable', 'string', 'max:255'];
         }
 
         return Validator::make($request->all(), $rules)->validate();
@@ -92,5 +94,6 @@ class HeroRaceController extends Controller
     protected function fill(HeroRace $race, array $data): void
     {
         $race->replaceTranslations('name', array_filter($data['name'] ?? [], fn ($v) => $v !== null && $v !== ''));
+        $race->replaceTranslations('name_female', array_filter($data['name_female'] ?? [], fn ($v) => $v !== null && $v !== ''));
     }
 }

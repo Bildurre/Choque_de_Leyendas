@@ -32,11 +32,15 @@ function clearErrors() {
 // Traduce cualquier error del backend con clave name.<locale> al campo 'name'.
 function mapServerErrors(e: unknown) {
   for (const [k, v] of Object.entries(fieldErrors(e))) {
-    if (k === 'name' || k.startsWith('name.')) errors.name = v
+    if (k === 'name_female' || k.startsWith('name_female.')) errors.name_female = v
+    else if (k === 'name' || k.startsWith('name.')) errors.name = v
   }
 }
 
-const form = reactive<{ name: Record<string, string> }>({ name: {} })
+const form = reactive<{ name: Record<string, string>; name_female: Record<string, string> }>({
+  name: {},
+  name_female: {},
+})
 
 const title = computed(() => (props.mode === 'create' ? t('heroRaces.new') : t('heroRaces.edit')))
 
@@ -45,6 +49,7 @@ const hasName = () => Object.values(form.name).some((v) => v && v.trim() !== '')
 
 function reset() {
   form.name = {}
+  form.name_female = {}
   clearErrors()
 }
 
@@ -61,6 +66,7 @@ watch(
     }
     if (props.mode === 'edit' && props.target) {
       form.name = { ...(props.target.name ?? {}) }
+      form.name_female = { ...(props.target.name_female ?? {}) }
     }
   },
 )
@@ -74,10 +80,10 @@ async function submit() {
   saving.value = true
   try {
     if (props.mode === 'edit' && props.target) {
-      await update(props.target.id, { name: form.name })
+      await update(props.target.id, { name: form.name, name_female: form.name_female })
       toast.success(t('heroRaces.toast.updated'))
     } else {
-      await create({ name: form.name })
+      await create({ name: form.name, name_female: form.name_female })
       toast.success(t('heroRaces.toast.created'))
     }
     emit('saved')
@@ -107,6 +113,13 @@ async function submit() {
       :label="t('heroRaces.fields.name')"
       required
       :error="errors.name"
+    />
+    <!-- Femenino opcional: se muestra solo junto a heroínas (HasGenderedName) -->
+    <TranslatableInput
+      v-model="form.name_female"
+      :locales="locales.locales"
+      :label="t('heroRaces.fields.nameFemale')"
+      :error="errors.name_female"
     />
   </EditModal>
 </template>

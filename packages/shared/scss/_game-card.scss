@@ -153,6 +153,8 @@
 
   // --- Atributos del héroe (fila sobre la caja de texto) ---
 
+  // Como el viejo: fila pegada a la caja de texto (el margin-top auto está
+  // SOLO aquí; la caja del héroe va sin él para no repartir el hueco).
   &__attrs {
     position: relative;
     z-index: 2;
@@ -161,7 +163,6 @@
     justify-content: flex-end;
     align-items: baseline;
     gap: 2%;
-    padding-right: 1%;
   }
 
   &__attr {
@@ -192,17 +193,13 @@
       transform: translateY(-50%);
       text-align: center;
       font-weight: 900;
-      font-size: 3.8cqw;
+      font-size: 4.8cqw; // 1rem del viejo (mismo cuerpo también en la vida)
       text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff;
     }
 
-    // La vida: círculo grande al final de la fila.
+    // La vida: círculo grande al final de la fila (mismo cuerpo de texto).
     &--health {
       width: 15%;
-
-      .game-card__attr-value {
-        font-size: 5.2cqw;
-      }
     }
   }
 
@@ -258,16 +255,23 @@
     }
   }
 
-  // El héroe remata la caja con una diagonal del color de facción.
-  &--hero &__box::before {
-    content: '';
-    position: absolute;
-    bottom: 100%;
-    left: -1px;
-    width: calc(100% + 2px);
-    height: 4.8cqw;
-    background-color: color-mix(in srgb, var(--fc) 80%, transparent);
-    clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
+  // El héroe pega la caja a la fila de atributos (en el viejo el margin-top
+  // auto vivía solo en los atributos: con dos autos el hueco se repartía y
+  // la fila quedaba flotando a media carta) y la remata con una diagonal
+  // del color de facción.
+  &--hero &__box {
+    margin-top: 0;
+
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: 100%;
+      left: -1px;
+      width: calc(100% + 2px);
+      height: 4.8cqw;
+      background-color: color-mix(in srgb, var(--fc) 80%, transparent);
+      clip-path: polygon(0 50%, 100% 0, 100% 100%, 0 100%);
+    }
   }
 
   // La carta centra sus efectos en una caja de altura mínima.
@@ -323,6 +327,13 @@
     &-name { font-weight: 700; }
 
     p { display: inline; }
+  }
+
+  // Con dos pasivas (la de clase + la propia), juntas como en el viejo.
+  &__passives &__passive {
+    &:first-child { padding-bottom: .6cqw; }
+
+    &:nth-child(2) { padding-top: 0; }
   }
 
   &__active {

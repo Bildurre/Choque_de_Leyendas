@@ -1036,7 +1036,8 @@
       "trashed": "Trash"
     },
     "fields": {
-      "name": "Name"
+      "name": "Name",
+      "nameFemale": "Female name"
     },
     "confirmDelete": {
       "title": "Send to trash",
@@ -1070,7 +1071,8 @@
       "trashed": "Trash"
     },
     "fields": {
-      "name": "Name"
+      "name": "Name",
+      "nameFemale": "Female name"
     },
     "confirmDelete": {
       "title": "Send to trash",
@@ -1105,6 +1107,7 @@
     },
     "fields": {
       "name": "Name",
+      "nameFemale": "Female name",
       "superclass": "Superclass",
       "selectSuperclass": "Select a superclass",
       "passive": "Passive ability"

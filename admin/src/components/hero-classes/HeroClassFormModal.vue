@@ -38,7 +38,8 @@ function clearErrors() {
 }
 function mapServerErrors(e: unknown) {
   for (const [k, v] of Object.entries(fieldErrors(e))) {
-    if (k === 'name' || k.startsWith('name.')) errors.name = v
+    if (k === 'name_female' || k.startsWith('name_female.')) errors.name_female = v
+    else if (k === 'name' || k.startsWith('name.')) errors.name = v
     if (k === 'passive' || k.startsWith('passive.')) errors.passive = v
     if (k === 'hero_superclass_id') errors.hero_superclass_id = v
   }
@@ -46,9 +47,10 @@ function mapServerErrors(e: unknown) {
 
 const form = reactive<{
   name: Record<string, string>
+  name_female: Record<string, string>
   passive: Record<string, string>
   hero_superclass_id: string
-}>({ name: {}, passive: {}, hero_superclass_id: '' })
+}>({ name: {}, name_female: {}, passive: {}, hero_superclass_id: '' })
 
 const title = computed(() =>
   props.mode === 'create' ? t('heroClasses.new') : t('heroClasses.edit'),
@@ -69,6 +71,7 @@ const hasName = () => Object.values(form.name).some((v) => v && v.trim() !== '')
 
 function reset() {
   form.name = {}
+  form.name_female = {}
   form.passive = {}
   form.hero_superclass_id = ''
   clearErrors()
@@ -87,6 +90,7 @@ watch(
     }
     if (props.mode === 'edit' && props.target) {
       form.name = { ...(props.target.name ?? {}) }
+      form.name_female = { ...(props.target.name_female ?? {}) }
       form.passive = { ...(props.target.passive ?? {}) }
       form.hero_superclass_id = props.target.hero_superclass_id
         ? String(props.target.hero_superclass_id)
@@ -98,6 +102,7 @@ watch(
 function payload() {
   return {
     name: form.name,
+    name_female: form.name_female,
     passive: form.passive,
     hero_superclass_id: form.hero_superclass_id ? Number(form.hero_superclass_id) : null,
   }
@@ -150,6 +155,13 @@ async function submit() {
       :label="t('heroClasses.fields.name')"
       required
       :error="errors.name"
+    />
+    <!-- Femenino opcional: se muestra solo junto a heroínas (HasGenderedName) -->
+    <TranslatableInput
+      v-model="form.name_female"
+      :locales="locales.locales"
+      :label="t('heroClasses.fields.nameFemale')"
+      :error="errors.name_female"
     />
     <BaseSelect
       v-model="form.hero_superclass_id"

@@ -32,6 +32,10 @@ class HeroResource extends JsonResource
             ]),
             'hero_race' => new HeroRaceResource($this->whenLoaded('heroRace')),
             'hero_class' => new HeroClassResource($this->whenLoaded('heroClass')),
+            // Nombres YA resueltos con el género del héroe, por locale (para
+            // pintarlos junto al héroe; los mapas de arriba son para editar).
+            'race_display' => $this->whenLoaded('heroRace', fn () => $this->heroRace->namesForGender($this->gender)),
+            'class_display' => $this->whenLoaded('heroClass', fn () => $this->heroClass->namesForGender($this->gender)),
             'gender' => $this->gender,
             'agility' => $this->agility,
             'mental' => $this->mental,

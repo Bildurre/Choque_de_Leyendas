@@ -34,12 +34,20 @@ export interface TaxonomyBase extends EntityListItem {
 
 // --- Taxonomías de héroes y ataques (cluster taxonomies-a) ---
 
-export type HeroSuperclass = TaxonomyBase
-export type HeroRace = TaxonomyBase
+/**
+ * Taxonomía con nombre femenino OPCIONAL: se muestra solo junto a un héroe
+ * de género femenino (y si el locale lo tiene); los listados usan `name`.
+ */
+export interface GenderedTaxonomy extends TaxonomyBase {
+  name_female?: Translations
+}
+
+export type HeroSuperclass = GenderedTaxonomy
+export type HeroRace = GenderedTaxonomy
 export type AttackRange = TaxonomyBase
 export type AttackSubtype = TaxonomyBase
 
-export interface HeroClass extends TaxonomyBase {
+export interface HeroClass extends GenderedTaxonomy {
   passive: Translations
   hero_superclass_id: number | null
   hero_superclass?: HeroSuperclass | null
@@ -152,6 +160,9 @@ export interface Hero extends EntityBase {
   faction?: FactionOption | null
   hero_race?: TaxonomyOption | null
   hero_class?: HeroClass | null
+  /** Nombres de raza/clase YA resueltos con el género del héroe, por locale. */
+  race_display?: Translations
+  class_display?: Translations
   gender: 'male' | 'female'
   agility: number
   mental: number
@@ -363,9 +374,12 @@ export interface HeroRenderData {
   }
   health: number
   gender: 'male' | 'female'
+  /** Nombres YA localizados y con el género del héroe aplicado. */
   race: string | null
   class: string | null
   superclass: string | null
+  /** Pasiva de la clase (nombre = clase con género), antes que la propia. */
+  class_passive: { name: string | null; description: string | null } | null
   passive: { name: string | null; description: string | null } | null
   abilities: HeroAbilityRenderData[]
   faction: RenderFaction | null

@@ -10,6 +10,8 @@ const props = defineProps<{ item: HeroRenderData; locale: string }>()
 
 // Textos fijos de la propia carta (el resto del payload llega localizado).
 const STRINGS: Record<string, Record<string, string>> = {
+  physical: { es: 'Físico', eu: 'Fisikoa', en: 'Physical' },
+  magical: { es: 'Mágico', eu: 'Magikoa', en: 'Magical' },
   area: { es: 'Área', eu: 'Eremua', en: 'Area' },
   gameTitle: { es: 'Espadas de Ceniza', eu: 'Espadas de Ceniza', en: 'Blades of Ash' },
   gameSubtitle: { es: 'Choque de Leyendas', eu: 'Choque de Leyendas', en: 'Clash of Legends' },
@@ -32,9 +34,27 @@ const classLine = computed(() =>
 // Atributos en el orden del viejo (health aparte: círculo grande).
 const ATTRIBUTE_KEYS = ['agility', 'mental', 'will', 'strength', 'armor'] as const
 
+// Pasivas a pintar, en el orden del viejo: la de la clase y después la propia.
+const passives = computed(() =>
+  [props.item.class_passive, props.item.passive].filter(
+    (passive): passive is NonNullable<typeof passive> =>
+      Boolean(passive && (passive.name || passive.description)),
+  ),
+)
+
+// La clave physical|magical llega cruda del server: se localiza aquí.
+function attackTypeLabel(type: string | null | undefined): string | null {
+  if (!type) return null
+  return STRINGS[type]?.[props.locale] ?? STRINGS[type]?.es ?? type
+}
+
 // Línea de tipos de una habilidad: rango • tipo • subtipo • área.
 function abilityTypes(ability: HeroRenderData['abilities'][number]): string {
-  const parts = [ability.attack?.range, ability.attack?.type, ability.attack?.subtype]
+  const parts = [
+    ability.attack?.range,
+    attackTypeLabel(ability.attack?.type),
+    ability.attack?.subtype,
+  ]
   if (ability.area) parts.push(t('area'))
   return parts.filter(Boolean).join(' • ')
 }
@@ -71,16 +91,15 @@ function abilityTypes(ability: HeroRenderData['abilities'][number]): string {
     </section>
 
     <section class="game-card__box">
-      <div v-if="item.passive?.name || item.passive?.description" class="game-card__passives">
-        <div class="game-card__passive">
-          <span v-if="item.passive.name" class="game-card__passive-name"
-            >{{ item.passive.name }}:</span
-          >
-          <span v-if="item.passive.description" v-html="item.passive.description" />
+      <div v-if="passives.length" class="game-card__passives">
+        <div v-for="(passive, i) in passives" :key="i" class="game-card__passive">
+          <!-- Espacio final DENTRO del span: Vue condensa el de entre nodos -->
+          <span v-if="passive.name" class="game-card__passive-name">{{ passive.name }}:&nbsp;</span>
+          <span v-if="passive.description" v-html="passive.description" />
         </div>
       </div>
 
-      <hr v-if="(item.passive?.name || item.passive?.description) && item.abilities?.length" />
+      <hr v-if="passives.length && item.abilities?.length" />
 
       <div v-if="item.abilities?.length" class="game-card__actives">
         <template v-for="(ability, i) in item.abilities" :key="i">

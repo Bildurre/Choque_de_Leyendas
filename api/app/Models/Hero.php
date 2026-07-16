@@ -178,6 +178,8 @@ class Hero extends Model implements HasMedia, PreviewableContract
             'heroAbilities.attackSubtype',
         ]);
 
+        $classPassive = $this->heroClass?->getTranslation('passive', $locale);
+
         return [
             'id' => $this->id,
             'name' => $this->getTranslation('name', $locale),
@@ -197,9 +199,15 @@ class Hero extends Model implements HasMedia, PreviewableContract
             ],
             'health' => $this->health,
             'gender' => $this->gender,
-            'race' => $this->heroRace?->getTranslation('name', $locale),
-            'class' => $this->heroClass?->getTranslation('name', $locale),
-            'superclass' => $this->heroClass?->heroSuperclass?->getTranslation('name', $locale),
+            // Nombres de taxonomía con el género del héroe (HasGenderedName)
+            'race' => $this->heroRace?->nameForGender($this->gender, $locale),
+            'class' => $this->heroClass?->nameForGender($this->gender, $locale),
+            'superclass' => $this->heroClass?->heroSuperclass?->nameForGender($this->gender, $locale),
+            // Pasiva de la clase (el viejo la pintaba antes que la propia)
+            'class_passive' => $classPassive ? [
+                'name' => $this->heroClass->nameForGender($this->gender, $locale),
+                'description' => $classPassive,
+            ] : null,
             'passive' => [
                 'name' => $this->getTranslation('passive_name', $locale),
                 'description' => $this->getTranslation('passive_description', $locale),

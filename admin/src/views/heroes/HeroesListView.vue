@@ -106,7 +106,8 @@ onMounted(init)
 
         <template #meta>
           <span>{{ item.faction ? tr(item.faction.name) : t('heroes.fields.noFaction') }}</span>
-          <span v-if="item.hero_class">· {{ tr(item.hero_class.name) }}</span>
+          <!-- Nombre de clase con el género del héroe (class_display) -->
+          <span v-if="item.hero_class">· {{ tr(item.class_display ?? item.hero_class.name) }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -138,8 +139,16 @@ onMounted(init)
     >
       <template #meta>
         <p v-if="selected" class="manager-detail__meta">
-          <span>{{ selected.hero_race ? tr(selected.hero_race.name) : '—' }}</span>
-          <span>· {{ selected.hero_class ? tr(selected.hero_class.name) : '—' }}</span>
+          <!-- Raza y clase con el género del héroe (·_display) -->
+          <span>{{
+            selected.hero_race ? tr(selected.race_display ?? selected.hero_race.name) : '—'
+          }}</span>
+          <span
+            >·
+            {{
+              selected.hero_class ? tr(selected.class_display ?? selected.hero_class.name) : '—'
+            }}</span
+          >
         </p>
         <ul v-if="selected" class="heroes__stats">
           <li>

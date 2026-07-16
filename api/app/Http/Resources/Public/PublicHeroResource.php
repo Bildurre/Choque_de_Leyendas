@@ -29,11 +29,12 @@ class PublicHeroResource extends JsonResource
             'image' => $this->imageUrl(),
             'preview' => $this->previewUrl($locale, 'hero'),
             'faction' => PublicFactionItemResource::ref($this->faction, $locale),
-            'race' => $this->heroRace?->getTranslation('name', $locale),
+            // Nombres de taxonomía con el género del héroe (HasGenderedName)
+            'race' => $this->heroRace?->nameForGender($this->gender, $locale),
             // La clave (male|female) se localiza en el front
             'gender' => $this->gender,
-            'class' => $this->heroClass?->getTranslation('name', $locale),
-            'superclass' => $this->heroClass?->heroSuperclass?->getTranslation('name', $locale),
+            'class' => $this->heroClass?->nameForGender($this->gender, $locale),
+            'superclass' => $this->heroClass?->heroSuperclass?->nameForGender($this->gender, $locale),
             'attributes' => [
                 'agility' => (int) $this->agility,
                 'mental' => (int) $this->mental,
@@ -44,10 +45,12 @@ class PublicHeroResource extends JsonResource
             'health' => $this->health,
             // Pasiva de la clase (si la clase la tiene) + pasiva propia
             'class_passive' => $classPassive ? [
-                'name' => $this->heroClass->getTranslation('name', $locale),
+                'name' => $this->heroClass->nameForGender($this->gender, $locale),
                 'description' => $classPassive,
             ] : null,
-            'passive' => ($passiveName !== '' || $passiveDescription !== '') ? [
+            // Truthy (no !== ''): sin traducción getTranslation devuelve null
+            // y colaba un bloque de pasiva vacío en la ficha
+            'passive' => ($passiveName || $passiveDescription) ? [
                 'name' => $passiveName,
                 'description' => $passiveDescription,
             ] : null,

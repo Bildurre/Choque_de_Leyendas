@@ -89,6 +89,8 @@ class HeroClassController extends Controller
         ];
         foreach (array_keys(config('motor.locales', [])) as $locale) {
             $rules["name.$locale"] = [$locale === $default ? 'required' : 'nullable', 'string', 'max:255'];
+            // Femenino opcional en todos los locales (en/eu no lo rellenan)
+            $rules["name_female.$locale"] = ['nullable', 'string', 'max:255'];
             $rules["passive.$locale"] = ['nullable', 'string'];
         }
 
@@ -98,6 +100,7 @@ class HeroClassController extends Controller
     protected function fill(HeroClass $class, array $data): void
     {
         $class->replaceTranslations('name', array_filter($data['name'] ?? [], fn ($v) => $v !== null && $v !== ''));
+        $class->replaceTranslations('name_female', array_filter($data['name_female'] ?? [], fn ($v) => $v !== null && $v !== ''));
         $class->replaceTranslations('passive', $this->cleanRich(array_filter($data['passive'] ?? [], fn ($v) => $v !== null && $v !== '')));
         $class->hero_superclass_id = $data['hero_superclass_id'];
     }

@@ -1036,7 +1036,8 @@
       "trashed": "Zakarrontzia"
     },
     "fields": {
-      "name": "Izena"
+      "name": "Izena",
+      "nameFemale": "Izen femeninoa"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
@@ -1070,7 +1071,8 @@
       "trashed": "Zakarrontzia"
     },
     "fields": {
-      "name": "Izena"
+      "name": "Izena",
+      "nameFemale": "Izen femeninoa"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
@@ -1105,6 +1107,7 @@
     },
     "fields": {
       "name": "Izena",
+      "nameFemale": "Izen femeninoa",
       "superclass": "Superklasea",
       "selectSuperclass": "Aukeratu superklasea",
       "passive": "Gaitasun pasiboa"

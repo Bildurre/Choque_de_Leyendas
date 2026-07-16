@@ -113,8 +113,13 @@ onBeforeUnmount(() => {
           <span class="chip">{{
             item.faction ? tr(item.faction.name) : t('heroes.fields.noFaction')
           }}</span>
-          <span v-if="item.hero_race" class="chip">{{ tr(item.hero_race.name) }}</span>
-          <span v-if="item.hero_class" class="chip">{{ tr(item.hero_class.name) }}</span>
+          <!-- Raza y clase con el género del héroe (·_display) -->
+          <span v-if="item.hero_race" class="chip">{{
+            tr(item.race_display ?? item.hero_race.name)
+          }}</span>
+          <span v-if="item.hero_class" class="chip">{{
+            tr(item.class_display ?? item.hero_class.name)
+          }}</span>
           <span class="chip">{{ t(`heroes.genders.${item.gender}`) }}</span>
         </p>
 
