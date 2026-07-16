@@ -189,6 +189,9 @@ class Hero extends Model implements HasMedia, PreviewableContract
                 'agility', 'mental', 'will', 'strength', 'armor', 'health',
                 'physical', 'magical', 'area',
                 'dice-red', 'dice-green', 'dice-blue',
+                // Logo del pie (el viejo pintaba ahí su hada); si no está
+                // subido el pie se queda como estaba, sin hueco.
+                'faerie',
             ]),
             'attributes' => [
                 'agility' => (int) $this->agility,

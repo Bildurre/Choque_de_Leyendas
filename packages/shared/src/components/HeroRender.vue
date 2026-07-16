@@ -26,9 +26,11 @@ const vars = computed(() => ({
   '--ftx': props.item.faction?.text_is_dark ? '#000000' : '#ffffff',
 }))
 
-// Línea de clase bajo el nombre: raza • clase • superclase.
+// Línea de clase bajo el nombre: raza · clase · superclase. Separador fino
+// (el viejo usaba • pero en Roboto real; aquí, sin esa fuente garantizada,
+// el bullet se veía grueso — el punto medio es fino en cualquier fuente).
 const classLine = computed(() =>
-  [props.item.race, props.item.class, props.item.superclass].filter(Boolean).join(' • '),
+  [props.item.race, props.item.class, props.item.superclass].filter(Boolean).join(' · '),
 )
 
 // Atributos en el orden del viejo (health aparte: círculo grande).
@@ -48,7 +50,7 @@ function attackTypeLabel(type: string | null | undefined): string | null {
   return STRINGS[type]?.[props.locale] ?? STRINGS[type]?.es ?? type
 }
 
-// Línea de tipos de una habilidad: rango • tipo • subtipo • área.
+// Línea de tipos de una habilidad: rango · tipo · subtipo · área.
 function abilityTypes(ability: HeroRenderData['abilities'][number]): string {
   const parts = [
     ability.attack?.range,
@@ -56,7 +58,7 @@ function abilityTypes(ability: HeroRenderData['abilities'][number]): string {
     ability.attack?.subtype,
   ]
   if (ability.area) parts.push(t('area'))
-  return parts.filter(Boolean).join(' • ')
+  return parts.filter(Boolean).join(' · ')
 }
 </script>
 
@@ -139,6 +141,9 @@ function abilityTypes(ability: HeroRenderData['abilities'][number]): string {
     </section>
 
     <footer class="game-card__footer">
+      <!-- Logo del gestor de iconos (slug "faerie", como el hada del viejo):
+           si no está subido no se pinta nada, sin hueco. -->
+      <img v-if="item.icons.faerie" class="game-card__footer-logo" :src="item.icons.faerie" alt="" />
       <span class="game-card__footer-title">{{ t('gameTitle') }}:</span>
       <span class="game-card__footer-subtitle">{{ t('gameSubtitle') }}</span>
     </footer>

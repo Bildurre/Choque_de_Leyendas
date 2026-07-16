@@ -31,8 +31,11 @@ const vars = computed(() => ({
   '--ftx': props.item.faction?.text_is_dark ? '#000000' : '#ffffff',
 }))
 
-// Línea de clase bajo el nombre. Equipo: tipo de carta • tipo de equipo •
-// subtipo de equipo • manos (solo armas). Resto: tipo • subtipo.
+// Línea de clase bajo el nombre. Equipo: tipo de carta · tipo de equipo ·
+// subtipo de equipo · manos (solo armas). Resto: tipo · subtipo. Separador
+// fino (el viejo usaba • pero en Roboto real; aquí, sin esa fuente
+// garantizada, el bullet se veía grueso — el punto medio es fino en
+// cualquier fuente de reserva).
 const classLine = computed(() => {
   const parts = [
     props.item.type,
@@ -41,7 +44,7 @@ const classLine = computed(() => {
     props.item.equipment_subtype,
   ]
   if (props.item.hands) parts.push(t(props.item.hands > 1 ? 'hands2' : 'hands1'))
-  return parts.filter(Boolean).join(' • ')
+  return parts.filter(Boolean).join(' · ')
 })
 
 // La clave physical|magical llega cruda del server: se localiza aquí.
@@ -50,15 +53,15 @@ function attackTypeLabel(type: string | null | undefined): string | null {
   return STRINGS[type]?.[props.locale] ?? STRINGS[type]?.es ?? type
 }
 
-// Línea de tipos de ataque: rango • tipo • subtipo • área.
+// Línea de tipos de ataque: rango · tipo · subtipo · área.
 const typesLine = computed(() => {
   const a = props.item.attack
   const parts = [a?.range, attackTypeLabel(a?.type), a?.subtype]
   if (props.item.area) parts.push(t('area'))
-  return parts.filter(Boolean).join(' • ')
+  return parts.filter(Boolean).join(' · ')
 })
 
-// Tipado de la habilidad otorgada: rango • tipo • subtipo • área.
+// Tipado de la habilidad otorgada: rango · tipo · subtipo · área.
 const abilityTypesLine = computed(() => {
   const ability = props.item.hero_ability
   if (!ability) return ''
@@ -68,7 +71,7 @@ const abilityTypesLine = computed(() => {
     ability.attack?.subtype,
   ]
   if (ability.area) parts.push(t('area'))
-  return parts.filter(Boolean).join(' • ')
+  return parts.filter(Boolean).join(' · ')
 })
 </script>
 
