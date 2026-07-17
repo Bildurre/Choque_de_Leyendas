@@ -56,6 +56,12 @@ onMounted(async () => {
   width: 750px;
 }
 
+/* Tamaño héroe REAL (el del PNG, 750x1050 del RENDER-SPEC): sin esto el
+   componente suelto pinta a su ancho por defecto (375px, media carta). */
+.test-render__slot :deep(.game-card) {
+  width: 750px;
+}
+
 .test-render__label {
   margin: 0 0 8px;
   font-family: monospace;
