@@ -38,10 +38,15 @@
     background-color: var(--fc);
 
     // Remate inferior en diagonal de la banda (solapada 1px con la banda:
-    // en el render aparecía un hueco de 1px entre ambas).
+    // en el render aparecía un hueco de 1px entre ambas). Al ser absolute
+    // con z-index:auto pinta DESPUÉS del contenido normal del header (los
+    // descendientes posicionados con z-index:auto se pintan tras los no
+    // posicionados, aunque vayan antes en el DOM): sin más, tapaba/recortaba
+    // el tipado. z-index explícito y por debajo de __titles (ver más abajo).
     &::after {
       content: '';
       position: absolute;
+      z-index: 0;
       left: -1px;
       top: calc(100% - 1px);
       width: calc(100% + 2px);
@@ -49,6 +54,12 @@
       background-color: var(--fc);
       clip-path: polygon(0 0, 100% 0, 100% 100%, 0 50%);
     }
+  }
+
+  // Nombre + tipado por encima de la diagonal del header (ver &::after).
+  &__titles {
+    position: relative;
+    z-index: 1;
   }
 
   &__name {
@@ -65,7 +76,7 @@
     font-size: 3.4cqw;
     line-height: 1;
     font-style: italic;
-    font-weight: 500;
+    font-weight: 700; // antes 500: más peso para que destaque sobre la diagonal
     color: var(--ftx);
   }
 
@@ -190,16 +201,39 @@
       transform: translateY(25%);
     }
 
+    // Mismo box y mismo translateY(25%) que el icono/círculo (arriba): al
+    // centrar con flex sobre ESA caja el número queda centrado en el icono
+    // sea real o fallback (ambos comparten la caja). El truco anterior
+    // (top:75% + translateY(-50%) del propio span) centraba la LÍNEA de
+    // texto, no el dígito: con line-height normal el hueco de descendente
+    // (que un número no usa) lo dejaba visiblemente bajo — comprobado
+    // recortando el render y midiendo el centro real del dígito en píxeles.
     &-value {
       position: absolute;
-      top: 75%; // 50% + el 25% que baja el icono: sigue centrado en él
-      left: 0;
-      right: 0;
-      transform: translateY(-50%);
+      inset: 0;
+      transform: translateY(25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
       text-align: center;
-      font-weight: 900;
-      font-size: 4.8cqw; // 1rem del viejo (mismo cuerpo también en la vida)
-      text-shadow: 1px 1px 0 #fff, -1px 1px 0 #fff, -1px -1px 0 #fff, 1px -1px 0 #fff;
+      font-weight: 900; // ya es el tope de la escala (100-900)
+      font-size: 5.6cqw; // antes 4.8cqw: un poco más grandes
+      // Weight 900 en una fuente de sistema sin ese corte real se queda en
+      // el 700 disponible: un stroke fino del mismo color de relleno
+      // engorda el trazo un poco más ("un poco más bold").
+      -webkit-text-stroke: .12cqw currentColor;
+      // Halo blanco más grueso (antes 1px fijo, casi invisible al escalar):
+      // 8 direcciones en cqw para un contorno uniforme a cualquier tamaño.
+      text-shadow:
+        .3cqw .3cqw 0 #fff,
+        -.3cqw .3cqw 0 #fff,
+        -.3cqw -.3cqw 0 #fff,
+        .3cqw -.3cqw 0 #fff,
+        .3cqw 0 0 #fff,
+        -.3cqw 0 0 #fff,
+        0 .3cqw 0 #fff,
+        0 -.3cqw 0 #fff;
     }
 
     // La vida: círculo grande al final de la fila (mismo cuerpo de texto).
@@ -378,6 +412,21 @@
 
         i { font-size: 3cqw; }
       }
+    }
+  }
+
+  // Dados de coste de las habilidades del héroe: sin gap (los SVG ya llevan
+  // su propio borde transparente; con gap se veía como un hueco doble entre
+  // ellos) y un escalón más grandes. Solo en la preview de héroe: la carta
+  // reutiliza __active-cost para la habilidad otorgada y ahí no se toca.
+  &--hero &__active-cost {
+    gap: 0;
+
+    .game-card__die {
+      width: 6cqw; // antes 5.3cqw (+13%, "un poco" más grandes)
+      height: 6cqw;
+
+      i { font-size: 3.4cqw; } // antes 3cqw, a juego con el dado
     }
   }
 
