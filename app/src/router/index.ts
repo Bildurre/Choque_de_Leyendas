@@ -32,6 +32,14 @@ const router = createRouter({
       component: () => import('@/views/RenderView.vue'),
       meta: { bare: true },
     },
+    // TEMPORAL: banco de pruebas de los componentes de render (BORRAR junto
+    // con TestRenderView.vue y el endpoint /api/test-render).
+    {
+      path: '/test',
+      name: 'test-render',
+      component: () => import('@/views/TestRenderView.vue'),
+      meta: { bare: true },
+    },
     {
       path: `/:locale(${LOCALE_PATTERN})`,
       children: [

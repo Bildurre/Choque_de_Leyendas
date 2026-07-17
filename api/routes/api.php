@@ -24,6 +24,9 @@ use App\Http\Controllers\Public\PublicCardController;
 use App\Http\Controllers\Public\PublicFactionController;
 use App\Http\Controllers\Public\PublicFactionDeckController;
 use App\Http\Controllers\Public\PublicHeroController;
+use App\Models\Card;
+use App\Models\Hero;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -249,3 +252,51 @@ Route::middleware(['auth:sanctum', 'motor.admin', 'can:manage-game'])
         Route::delete('heroes/{id}/force', [HeroController::class, 'forceDestroy']);
         Route::post('heroes/{slug}/toggle-published', [HeroController::class, 'togglePublished']);
     });
+
+/*
+| TEMPORAL — banco de pruebas /test de la app: datos de render SIN token para
+| inspeccionar los componentes en local (ids fijos: héroes 1 y 2, cartas 15 y
+| 24). BORRAR junto con app/src/views/TestRenderView.vue y la ruta /test del
+| router de la app.
+*/
+Route::get('test-render', function (Request $request) {
+    $locale = (string) $request->query('locale', config('app.locale'));
+    $fixed = [
+        ['hero', Hero::class, [1, 2]],
+        ['card', Card::class, [15, 24]],
+    ];
+    $items = [];
+    foreach ($fixed as [$entity, $model, $ids]) {
+        foreach ($ids as $id) {
+            if ($m = $model::find($id)) {
+                $items[] = ['entity' => $entity, 'id' => $id, 'item' => $m->renderData($locale)];
+            }
+        }
+    }
+
+    return response()->json(['data' => $items]);
+});
+
+/*
+| TEMPORAL — banco de pruebas /test de la app: datos de render SIN token para
+| inspeccionar los componentes en local (ids fijos: héroes 1 y 2, cartas 15 y
+| 89). BORRAR junto con app/src/views/TestRenderView.vue y la ruta /test del
+| router de la app.
+*/
+Route::get('test-render', function (Request $request) {
+    $locale = (string) $request->query('locale', config('app.locale'));
+    $fixed = [
+        ['hero', Hero::class, [1, 2]],
+        ['card', Card::class, [15, 89]],
+    ];
+    $items = [];
+    foreach ($fixed as [$entity, $model, $ids]) {
+        foreach ($ids as $id) {
+            if ($m = $model::find($id)) {
+                $items[] = ['entity' => $entity, 'id' => $id, 'item' => $m->renderData($locale)];
+            }
+        }
+    }
+
+    return response()->json(['data' => $items]);
+});
