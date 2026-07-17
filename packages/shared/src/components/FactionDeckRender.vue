@@ -86,61 +86,63 @@ const cards = computed(() => (props.item?.cards ?? []).filter((c) => !!c?.name))
 </script>
 
 <template>
-  <article class="game-deck" :class="{ 'game-deck--multi': isMulti }" :style="vars">
-    <!-- Cabecera con el color (o gradiente) de las facciones del mazo -->
-    <header class="game-deck__header">
-      <div class="game-deck__titles">
-        <h2 v-if="item?.name" class="game-deck__name">{{ item.name }}</h2>
-        <h3 v-if="mode" class="game-deck__mode">{{ mode }}</h3>
-      </div>
-      <div v-if="item?.icon" class="game-deck__icon">
-        <img :src="item.icon" alt="" />
-      </div>
-    </header>
+  <div class="game-deck-frame">
+    <article class="game-deck" :class="{ 'game-deck--multi': isMulti }" :style="vars">
+      <!-- Cabecera con el color (o gradiente) de las facciones del mazo -->
+      <header class="game-deck__header">
+        <div class="game-deck__titles">
+          <h2 v-if="item?.name" class="game-deck__name">{{ item.name }}</h2>
+          <h3 v-if="mode" class="game-deck__mode">{{ mode }}</h3>
+        </div>
+        <div v-if="item?.icon" class="game-deck__icon">
+          <img :src="item.icon" alt="" />
+        </div>
+      </header>
 
-    <!-- Chips de facciones, cada una con su color -->
-    <div v-if="factions.length" class="game-deck__factions">
-      <span
-        v-for="(faction, i) in factions"
-        :key="i"
-        class="game-deck__faction"
-        :style="{ background: faction.color || '#6b7280', color: textOn(faction) }"
-      >
-        {{ faction.name }}
-      </span>
-    </div>
-
-    <!-- Totales del mazo -->
-    <div v-if="totals.length" class="game-deck__totals">
-      <span v-for="entry in totals" :key="entry.key" class="game-deck__total">
-        <strong>{{ entry.value }}</strong> {{ t(entry.key).toLowerCase() }}
-      </span>
-    </div>
-
-    <!-- Resumen: héroes y cartas (con copias) -->
-    <section class="game-deck__lists">
-      <div v-if="heroes.length" class="game-deck__list">
-        <h4 class="game-deck__list-title">{{ t('heroes') }}</h4>
-        <ul>
-          <li v-for="(hero, i) in heroes" :key="i">{{ hero }}</li>
-        </ul>
+      <!-- Chips de facciones, cada una con su color -->
+      <div v-if="factions.length" class="game-deck__factions">
+        <span
+          v-for="(faction, i) in factions"
+          :key="i"
+          class="game-deck__faction"
+          :style="{ background: faction.color || '#6b7280', color: textOn(faction) }"
+        >
+          {{ faction.name }}
+        </span>
       </div>
-      <div v-if="cards.length" class="game-deck__list game-deck__list--cards">
-        <h4 class="game-deck__list-title">{{ t('cards') }}</h4>
-        <ul>
-          <li v-for="(card, i) in cards" :key="i">
-            {{ card.name }}
-            <b v-if="card.copies && card.copies > 1" class="game-deck__copies"
-              >x{{ card.copies }}</b
-            >
-          </li>
-        </ul>
-      </div>
-    </section>
 
-    <footer class="game-deck__footer">
-      <span class="game-deck__footer-title">{{ t('gameTitle') }}:</span>
-      <span class="game-deck__footer-subtitle">{{ t('gameSubtitle') }}</span>
-    </footer>
-  </article>
+      <!-- Totales del mazo -->
+      <div v-if="totals.length" class="game-deck__totals">
+        <span v-for="entry in totals" :key="entry.key" class="game-deck__total">
+          <strong>{{ entry.value }}</strong> {{ t(entry.key).toLowerCase() }}
+        </span>
+      </div>
+
+      <!-- Resumen: héroes y cartas (con copias) -->
+      <section class="game-deck__lists">
+        <div v-if="heroes.length" class="game-deck__list">
+          <h4 class="game-deck__list-title">{{ t('heroes') }}</h4>
+          <ul>
+            <li v-for="(hero, i) in heroes" :key="i">{{ hero }}</li>
+          </ul>
+        </div>
+        <div v-if="cards.length" class="game-deck__list game-deck__list--cards">
+          <h4 class="game-deck__list-title">{{ t('cards') }}</h4>
+          <ul>
+            <li v-for="(card, i) in cards" :key="i">
+              {{ card.name }}
+              <b v-if="card.copies && card.copies > 1" class="game-deck__copies"
+                >x{{ card.copies }}</b
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <footer class="game-deck__footer">
+        <span class="game-deck__footer-title">{{ t('gameTitle') }}:</span>
+        <span class="game-deck__footer-subtitle">{{ t('gameSubtitle') }}</span>
+      </footer>
+    </article>
+  </div>
 </template>

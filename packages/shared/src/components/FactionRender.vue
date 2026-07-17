@@ -46,20 +46,22 @@ const totals = computed(() => {
 
 <!-- eslint-disable vue/no-v-html -- HTML del WYSIWYG propio (sanitizado en servidor) -->
 <template>
-  <article class="game-faction" :style="vars">
-    <div v-if="item?.icon" class="game-faction__icon">
-      <img :src="item.icon" alt="" />
-    </div>
+  <div class="game-faction-frame">
+    <article class="game-faction" :style="vars">
+      <div v-if="item?.icon" class="game-faction__icon">
+        <img :src="item.icon" alt="" />
+      </div>
 
-    <div class="game-faction__content">
-      <h2 v-if="item?.name" class="game-faction__name">{{ item.name }}</h2>
-      <div v-if="item?.epic_quote" class="game-faction__quote" v-html="item.epic_quote" />
-    </div>
+      <div class="game-faction__content">
+        <h2 v-if="item?.name" class="game-faction__name">{{ item.name }}</h2>
+        <div v-if="item?.epic_quote" class="game-faction__quote" v-html="item.epic_quote" />
+      </div>
 
-    <footer v-if="totals.length" class="game-faction__totals">
-      <span v-for="entry in totals" :key="entry.key" class="game-faction__total">
-        <strong>{{ entry.value }}</strong> {{ t(entry.key) }}
-      </span>
-    </footer>
-  </article>
+      <footer v-if="totals.length" class="game-faction__totals">
+        <span v-for="entry in totals" :key="entry.key" class="game-faction__total">
+          <strong>{{ entry.value }}</strong> {{ t(entry.key) }}
+        </span>
+      </footer>
+    </article>
+  </div>
 </template>

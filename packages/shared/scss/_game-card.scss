@@ -5,6 +5,20 @@
 // cqw (container queries) para que la carta escale a cualquier tamaño: en
 // /_render ocupa el viewport entero (previewSize 750x1050 del RENDER-SPEC).
 // Equivalencia con el viejo: carta de 88 mm ≈ 332.6 px → 1rem ≈ 4.8cqw.
+//
+// Patrón marco + carta: el contenedor cqw (container-type) vive en un MARCO
+// exterior, no en la carta. Si la carta fuera su propio contenedor, los cqw
+// de su propia raíz (font-size, border-radius, padding...) resolverían
+// contra el ancestro (o el viewport, sin ancestro) en vez de contra su
+// propio tamaño: fuera de /_render (donde carta=viewport y colaba) las
+// cartas salían mal escaladas. Con el marco como único contenedor, TODOS los
+// cqw de la carta (raíz incluida) resuelven contra el ancho del marco.
+.game-card-frame {
+  container-type: inline-size;
+  width: 375px;
+  aspect-ratio: 5 / 7;
+}
+
 .game-card {
   // Color de facción y su texto: inline desde el componente (con fallback).
   --fc: #6b7280;
@@ -14,10 +28,9 @@
   --dice-green: #29ab5f;
   --dice-blue: #408cfd;
 
-  container-type: size;
   position: relative;
-  width: 375px;
-  aspect-ratio: 5 / 7;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   border-radius: 2.4cqw;
   border: 1px solid var(--fc);
@@ -456,9 +469,9 @@
   }
 }
 
-// Escenario de captura (/_render): la carta ocupa exactamente el viewport,
+// Escenario de captura (/_render): el marco ocupa exactamente el viewport,
 // para que el PNG salga a medida (750x1050 del RENDER-SPEC).
-.render-stage .game-card {
+.render-stage .game-card-frame {
   width: 100vw;
   height: 100vh;
   aspect-ratio: auto;

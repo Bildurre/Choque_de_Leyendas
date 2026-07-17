@@ -57,8 +57,12 @@ onMounted(async () => {
 }
 
 /* Tamaño héroe REAL (el del PNG, 750x1050 del RENDER-SPEC): sin esto el
-   componente suelto pinta a su ancho por defecto (375px, media carta). */
-.test-render__slot :deep(.game-card) {
+   componente suelto pinta a su ancho por defecto (375px, media carta). El
+   ancho fijo va en el MARCO (.game-card-frame, el contenedor cqw real): la
+   carta interior es 100%/100% de él. Prueba de fuego: cambiar el ancho de
+   la VENTANA del navegador no debe alterar el tamaño de la carta (antes sí:
+   los cqw de su propia raíz iban por viewport). */
+.test-render__slot :deep(.game-card-frame) {
   width: 750px;
 }
 

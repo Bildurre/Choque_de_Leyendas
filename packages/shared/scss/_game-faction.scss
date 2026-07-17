@@ -2,15 +2,24 @@
 // (_faction-preview.scss) con la banda de totales nueva. Misma proporción
 // 5/7 que las cartas y todo en cqw (container queries) para que escale a
 // cualquier tamaño; en /_render ocupa el viewport entero.
+//
+// Patrón marco + carta (ver _game-card.scss): el contenedor cqw vive en el
+// marco exterior, no en el emblema, para que los cqw de la propia raíz
+// también resuelvan contra su tamaño real.
+.game-faction-frame {
+  container-type: inline-size;
+  width: 375px;
+  aspect-ratio: 5 / 7;
+}
+
 .game-faction {
   // Color de la facción y su texto: inline desde el componente (con fallback).
   --fc: #6b7280;
   --ftx: #ffffff;
 
-  container-type: size;
   position: relative;
-  width: 375px;
-  aspect-ratio: 5 / 7;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   border-radius: 2.4cqw;
   display: flex;
@@ -92,8 +101,8 @@
   }
 }
 
-// Escenario de captura (/_render): la tarjeta ocupa exactamente el viewport.
-.render-stage .game-faction {
+// Escenario de captura (/_render): el marco ocupa exactamente el viewport.
+.render-stage .game-faction-frame {
   width: 100vw;
   height: 100vh;
   aspect-ratio: auto;

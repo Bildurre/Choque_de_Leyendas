@@ -4,13 +4,22 @@
 // (cut-out-counters.blade.php): ficha redonda, imagen contenida y nombre en
 // mayúsculas sobre pastilla con anillo azul (boon) o rojo (bane). El recorte
 // es circular: el anillo del nombre marca el tipo, el borde la línea de corte.
+//
+// Patrón marco + carta (ver _game-card.scss): el contenedor cqw vive en el
+// marco exterior, no en el contador, para que los cqw de la propia raíz
+// también resuelvan contra su tamaño real.
+.game-counter-frame {
+  container-type: inline-size;
+  width: 200px;
+  aspect-ratio: 1;
+}
+
 .game-counter {
   --ring: #2196f3; // boon (azul del viejo)
 
-  container-type: size;
   position: relative;
-  width: 200px;
-  aspect-ratio: 1;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   overflow: hidden;
   display: flex;
@@ -60,7 +69,7 @@
 // En el escenario de captura ocupa el viewport entero (PNG 300x300). Las
 // esquinas fuera del círculo quedan transparentes (alfa real en el PNG): el
 // RenderView del motor ya no pinta fondo en /_render y aquí tampoco.
-.render-stage .game-counter {
+.render-stage .game-counter-frame {
   width: 100vw;
   height: 100vh;
   aspect-ratio: auto;

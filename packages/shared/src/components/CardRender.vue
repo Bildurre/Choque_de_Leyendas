@@ -77,88 +77,90 @@ const abilityTypesLine = computed(() => {
 
 <!-- eslint-disable vue/no-v-html -- HTML del WYSIWYG propio (sanitizado en servidor) -->
 <template>
-  <article class="game-card game-card--card" :style="vars">
-    <header class="game-card__header">
-      <div class="game-card__titles">
-        <h2 class="game-card__name">{{ item.name }}</h2>
-        <h3 v-if="classLine" class="game-card__class">{{ classLine }}</h3>
-      </div>
-      <div v-if="item.faction?.icon_url" class="game-card__faction-logo">
-        <img :src="item.faction.icon_url" alt="" />
-      </div>
-    </header>
-
-    <div class="game-card__art">
-      <img v-if="item.image" :src="item.image" alt="" />
-    </div>
-
-    <div v-if="item.cost_parsed?.length" class="game-card__cost">
-      <span
-        v-for="(die, i) in item.cost_parsed"
-        :key="i"
-        class="game-card__die"
-        :class="`game-card__die--${die.color}`"
-      >
-        <img
-          v-if="item.icons[`dice-${die.color}`]"
-          :src="item.icons[`dice-${die.color}`]!"
-          alt=""
-        />
-        <i v-else>{{ die.letter }}</i>
-      </span>
-    </div>
-
-    <section class="game-card__box">
-      <div v-if="item.is_unique || typesLine" class="game-card__info">
-        <span v-if="item.is_unique" class="game-card__unique">{{ t('unique') }}</span>
-        <span v-if="typesLine" class="game-card__types">{{ typesLine }}</span>
-      </div>
-      <div class="game-card__effects">
-        <div v-if="item.restriction" class="game-card__restriction" v-html="item.restriction" />
-        <hr v-if="item.restriction && item.effect" />
-        <div v-if="item.effect" class="game-card__effect" v-html="item.effect" />
-      </div>
-
-      <!-- Habilidad de héroe otorgada, como en el preview del viejo:
-           nombre + tipado + coste en dados + descripción -->
-      <template v-if="item.hero_ability">
-        <hr />
-        <div class="game-card__active">
-          <div class="game-card__active-header">
-            <div class="game-card__active-info">
-              <span class="game-card__active-name">{{ item.hero_ability.name }}</span>
-              <span v-if="abilityTypesLine" class="game-card__active-types">
-                {{ abilityTypesLine }}
-              </span>
-            </div>
-            <div v-if="item.hero_ability.cost_parsed?.length" class="game-card__active-cost">
-              <span
-                v-for="(die, i) in item.hero_ability.cost_parsed"
-                :key="i"
-                class="game-card__die"
-                :class="`game-card__die--${die.color}`"
-              >
-                <img
-                  v-if="item.icons[`dice-${die.color}`]"
-                  :src="item.icons[`dice-${die.color}`]!"
-                  alt=""
-                />
-                <i v-else>{{ die.letter }}</i>
-              </span>
-            </div>
-          </div>
-          <div
-            v-if="item.hero_ability.description"
-            class="game-card__active-description"
-            v-html="item.hero_ability.description"
-          />
+  <div class="game-card-frame">
+    <article class="game-card game-card--card" :style="vars">
+      <header class="game-card__header">
+        <div class="game-card__titles">
+          <h2 class="game-card__name">{{ item.name }}</h2>
+          <h3 v-if="classLine" class="game-card__class">{{ classLine }}</h3>
         </div>
-      </template>
-    </section>
+        <div v-if="item.faction?.icon_url" class="game-card__faction-logo">
+          <img :src="item.faction.icon_url" alt="" />
+        </div>
+      </header>
 
-    <footer class="game-card__footer">
-      <span class="game-card__footer-title">{{ t('gameTitle') }}:</span>
-      <span class="game-card__footer-subtitle">{{ t('gameSubtitle') }}</span>
-    </footer>
-  </article>
+      <div class="game-card__art">
+        <img v-if="item.image" :src="item.image" alt="" />
+      </div>
+
+      <div v-if="item.cost_parsed?.length" class="game-card__cost">
+        <span
+          v-for="(die, i) in item.cost_parsed"
+          :key="i"
+          class="game-card__die"
+          :class="`game-card__die--${die.color}`"
+        >
+          <img
+            v-if="item.icons[`dice-${die.color}`]"
+            :src="item.icons[`dice-${die.color}`]!"
+            alt=""
+          />
+          <i v-else>{{ die.letter }}</i>
+        </span>
+      </div>
+
+      <section class="game-card__box">
+        <div class="game-card__info">
+          <span v-if="item.is_unique" class="game-card__unique">{{ t('unique') }}</span>
+          <span v-if="typesLine" class="game-card__types">{{ typesLine }}</span>
+        </div>
+        <div class="game-card__effects">
+          <div v-if="item.restriction" class="game-card__restriction" v-html="item.restriction" />
+          <hr v-if="item.restriction && item.effect" />
+          <div v-if="item.effect" class="game-card__effect" v-html="item.effect" />
+        </div>
+
+        <!-- Habilidad de héroe otorgada, como en el preview del viejo:
+             nombre + tipado + coste en dados + descripción -->
+        <template v-if="item.hero_ability">
+          <hr />
+          <div class="game-card__active">
+            <div class="game-card__active-header">
+              <div class="game-card__active-info">
+                <span class="game-card__active-name">{{ item.hero_ability.name }}</span>
+                <span v-if="abilityTypesLine" class="game-card__active-types">
+                  {{ abilityTypesLine }}
+                </span>
+              </div>
+              <div v-if="item.hero_ability.cost_parsed?.length" class="game-card__active-cost">
+                <span
+                  v-for="(die, i) in item.hero_ability.cost_parsed"
+                  :key="i"
+                  class="game-card__die"
+                  :class="`game-card__die--${die.color}`"
+                >
+                  <img
+                    v-if="item.icons[`dice-${die.color}`]"
+                    :src="item.icons[`dice-${die.color}`]!"
+                    alt=""
+                  />
+                  <i v-else>{{ die.letter }}</i>
+                </span>
+              </div>
+            </div>
+            <div
+              v-if="item.hero_ability.description"
+              class="game-card__active-description"
+              v-html="item.hero_ability.description"
+            />
+          </div>
+        </template>
+      </section>
+
+      <footer class="game-card__footer">
+        <span class="game-card__footer-title">{{ t('gameTitle') }}:</span>
+        <span class="game-card__footer-subtitle">{{ t('gameSubtitle') }}</span>
+      </footer>
+    </article>
+  </div>
 </template>

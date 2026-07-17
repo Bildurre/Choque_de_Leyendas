@@ -3,16 +3,25 @@
 // gradiente multifacción), chips de facciones, totales y resumen de héroes y
 // cartas. Misma proporción 5/7 que las cartas y todo en cqw; en /_render
 // ocupa el viewport entero.
+//
+// Patrón marco + carta (ver _game-card.scss): el contenedor cqw vive en el
+// marco exterior, no en la ficha, para que los cqw de la propia raíz también
+// resuelvan contra su tamaño real.
+.game-deck-frame {
+  container-type: inline-size;
+  width: 375px;
+  aspect-ratio: 5 / 7;
+}
+
 .game-deck {
   // Color primario, su texto y el gradiente: inline desde el componente.
   --fc: #6b7280;
   --ftx: #ffffff;
   --dg: var(--fc);
 
-  container-type: size;
   position: relative;
-  width: 375px;
-  aspect-ratio: 5 / 7;
+  width: 100%;
+  height: 100%;
   overflow: hidden;
   border-radius: 2.4cqw;
   border: 1px solid var(--fc);
@@ -175,8 +184,8 @@
   }
 }
 
-// Escenario de captura (/_render): la ficha ocupa exactamente el viewport.
-.render-stage .game-deck {
+// Escenario de captura (/_render): el marco ocupa exactamente el viewport.
+.render-stage .game-deck-frame {
   width: 100vw;
   height: 100vh;
   aspect-ratio: auto;

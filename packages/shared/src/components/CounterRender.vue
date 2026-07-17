@@ -11,14 +11,16 @@ defineProps<{ item: CounterRenderData; locale: string }>()
 </script>
 
 <template>
-  <div class="game-counter" :class="`game-counter--${item.type}`">
-    <img v-if="item.image" class="game-counter__art" :src="item.image" alt="" />
-    <img
-      v-if="item.icons[item.type]"
-      class="game-counter__badge"
-      :src="item.icons[item.type]!"
-      alt=""
-    />
-    <span class="game-counter__name">{{ item.name }}</span>
+  <div class="game-counter-frame">
+    <div class="game-counter" :class="`game-counter--${item.type}`">
+      <img v-if="item.image" class="game-counter__art" :src="item.image" alt="" />
+      <img
+        v-if="item.icons[item.type]"
+        class="game-counter__badge"
+        :src="item.icons[item.type]!"
+        alt=""
+      />
+      <span class="game-counter__name">{{ item.name }}</span>
+    </div>
   </div>
 </template>
