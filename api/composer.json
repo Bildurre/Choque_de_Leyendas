@@ -7,7 +7,7 @@
     "license": "proprietary",
     "require": {
         "php": "^8.3",
-        "edc-motor/core": "^0.4.14",
+        "edc-motor/core": "^0.4.15",
         "laravel/framework": "^13.8",
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^3.0",
