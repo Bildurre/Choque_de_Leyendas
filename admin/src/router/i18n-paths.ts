@@ -322,20 +322,6 @@ export function createLocalizedRoutes(locale: string): RouteRecordRaw[] {
       },
     },
     {
-      path: `/${p.deckAttributesConfigs}`,
-      name: 'deck-attributes-configurations',
-      component: () =>
-        import('@/views/deck-attributes-configurations/DeckAttributesConfigurationsListView.vue'),
-      alias: buildAliases((t) => `/${t.deckAttributesConfigs}`, locale),
-      meta: {
-        admin: true,
-        nav: 'deckAttributesConfigs',
-        permission: 'manage-game',
-        titleKey: 'deckAttributesConfigs.title',
-        breadcrumbs: [{ key: 'deckAttributesConfigs' }],
-      },
-    },
-    {
       path: `/${p.icons}`,
       name: 'icons',
       component: () => import('@/views/icons/IconsListView.vue'),

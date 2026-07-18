@@ -18,8 +18,9 @@ use Spatie\Sluggable\SlugOptions;
 use Spatie\Translatable\HasTranslations;
 
 /**
- * Mazo prediseñado de facción: cartas con copias y héroes, ligado a un modo
- * de juego cuyos límites (DeckAttributesConfiguration) se exigen al publicar.
+ * Mazo prediseñado de facción: cartas y héroes con copias, ligado a un modo
+ * de juego cuyos límites (columnas de configuración de GameMode) se exigen
+ * al publicar.
  * El icono vive en MediaLibrary (colección 'image'). Renderizable a tarjeta
  * PNG (750x1050).
  */
@@ -65,10 +66,10 @@ class FactionDeck extends Model implements HasMedia, PreviewableContract
         return $this->belongsToMany(Faction::class, 'faction_deck_faction');
     }
 
-    /** Héroes del mazo. */
+    /** Héroes del mazo, con el nº de copias en el pivot. */
     public function heroes(): BelongsToMany
     {
-        return $this->belongsToMany(Hero::class, 'faction_deck_hero');
+        return $this->belongsToMany(Hero::class, 'faction_deck_hero')->withPivot('copies');
     }
 
     /** Cartas del mazo, con el nº de copias en el pivot. */
@@ -87,14 +88,14 @@ class FactionDeck extends Model implements HasMedia, PreviewableContract
         return (int) $this->cards->sum('pivot.copies');
     }
 
-    /** Nº total de héroes. Prefiere el agregado del index. */
+    /** Nº total de héroes (suma de copias). Prefiere el agregado del index. */
     public function getTotalHeroesAttribute(): int
     {
         if (array_key_exists('total_heroes', $this->attributes)) {
             return (int) $this->attributes['total_heroes'];
         }
 
-        return $this->heroes->count();
+        return (int) $this->heroes->sum('pivot.copies');
     }
 
     // --- Render a PNG (tarjeta de mazo) ---
@@ -146,7 +147,7 @@ class FactionDeck extends Model implements HasMedia, PreviewableContract
                 'text_is_dark' => (bool) $faction->text_is_dark,
             ])->values()->all(),
             'total_cards' => (int) $cards->sum('pivot.copies'),
-            'total_heroes' => $heroes->count(),
+            'total_heroes' => (int) $heroes->sum('pivot.copies'),
             // Listas compactas (nombre + copias) para el reverso de la tarjeta
             'cards' => $cards->map(fn (Card $card) => [
                 'name' => $card->getTranslation('name', $locale),
@@ -154,6 +155,7 @@ class FactionDeck extends Model implements HasMedia, PreviewableContract
             ])->values()->all(),
             'heroes' => $heroes->map(fn (Hero $hero) => [
                 'name' => $hero->getTranslation('name', $locale),
+                'copies' => (int) $hero->pivot->copies,
             ])->values()->all(),
         ];
     }

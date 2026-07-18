@@ -324,7 +324,7 @@ class DashboardStatsController extends Controller
             ->whereNull('faction_decks.deleted_at')
             ->whereNull('heroes.deleted_at')
             ->groupBy('faction_deck_hero.faction_deck_id')
-            ->selectRaw('count(*) as total')
+            ->selectRaw('sum(faction_deck_hero.copies) as total')
             ->pluck('total');
 
         return [

@@ -15,7 +15,6 @@
     "heroAttributesConfig": "atributuen-konfigurazioa",
     "cards": "kartak",
     "factionDecks": "fakzio-sortak",
-    "deckAttributesConfigs": "sorta-konfigurazioak",
     "heroSuperclasses": "superklaseak",
     "heroRaces": "arrazak",
     "heroClasses": "klaseak",
@@ -43,7 +42,6 @@
     "heroAttributesConfig": "Atributuen konfigurazioa",
     "cards": "Kartak",
     "factionDecks": "Fakzio-sortak",
-    "deckAttributesConfigs": "Sorta-konfigurazioak",
     "heroSuperclasses": "Superklaseak",
     "heroRaces": "Arrazak",
     "heroClasses": "Klaseak",
@@ -72,7 +70,6 @@
     "heroAttributesConfig": "Atributuen konfig.",
     "cards": "Kartak",
     "factionDecks": "Fakzio-sortak",
-    "deckAttributesConfigs": "Sorta-konfig.",
     "heroSuperclasses": "Superklaseak",
     "heroRaces": "Arrazak",
     "heroClasses": "Klaseak",
@@ -86,7 +83,6 @@
     "heroSystem": "Heroien sistema",
     "cardSystem": "Karten sistema",
     "attackSystem": "Erasoen sistema",
-    "gameSystem": "Joko-sistema",
     "files": "Fitxategiak"
   },
   "icons": {
@@ -958,7 +954,7 @@
       "limitsLine": "{min}–{max} karta · gehienez {copies} kopia · {heroes} heroi",
       "cardsCount": "Kartak (kopiak)",
       "uniqueCards": "{count} bakar",
-      "heroesCount": "Heroiak",
+      "heroesCount": "Heroiak (kopiak)",
       "cardsTitle": "Sortako kartak",
       "heroesTitle": "Sortako heroiak",
       "noCards": "Sorta honetan ez dago kartarik.",
@@ -973,7 +969,11 @@
       "moreCopies": "Kopia bat gehiago",
       "fewerCopies": "Kopia bat gutxiago",
       "prev": "Aurrekoa",
-      "next": "Hurrengoa"
+      "next": "Hurrengoa",
+      "notInFactions": "Ez dago sortaren fakzioetan",
+      "factionMismatch": "Sortan jada ez dauden fakzioetako {count} elementu daude esleituta.",
+      "uniqueHeroes": "{count} bakar",
+      "copies": "Kopiak"
     },
     "validation": {
       "minCards": "Sortak gutxienez {min} karta izan behar ditu ({total} ditu).",
@@ -1000,53 +1000,6 @@
       "saveError": "Ezin izan da gorde.",
       "deckSaved": "Sortako kartak eta heroiak gorde dira.",
       "publishInvalid": "Sortak ez ditu joko moduaren mugak betetzen."
-    }
-  },
-  "deckAttributesConfigs": {
-    "title": "Sorta-konfigurazioak",
-    "new": "Konfigurazio berria",
-    "edit": "Editatu konfigurazioa",
-    "newButton": "Konfigurazio berria",
-    "panelTitle": "Sorta-konfigurazioa",
-    "panelEmpty": "Aukeratu konfigurazio bat bere ekintzak ikusteko.",
-    "tabs": {
-      "all": "Guztiak"
-    },
-    "state": {},
-    "fields": {
-      "gameMode": "Joko modua",
-      "noGameMode": "Joko modurik gabe (orokorra)",
-      "minCards": "Gutxieneko kartak",
-      "maxCards": "Gehienezko kartak",
-      "maxCopiesPerCard": "Gehienezko kopiak kartako",
-      "requiredHeroes": "Beharrezko heroiak"
-    },
-    "hints": {
-      "requiredHeroes": "Sortako heroien kopuru zehatza (0 = betekizunik ez)."
-    },
-    "errors": {
-      "maxBelowMin": "Karten gehienezkoa ezin da gutxienekoa baino txikiagoa izan."
-    },
-    "summary": {
-      "cards": "{min}–{max} karta",
-      "copies": "gehienez {max} kopia",
-      "heroes": "{count} heroi"
-    },
-    "confirmDelete": {
-      "title": "Ezabatu konfigurazioa",
-      "message": "\"{name}\" konfigurazioa ezabatu? Ekintza hau ezin da desegin."
-    },
-    "confirmForceDelete": {
-      "title": "Ezabatu konfigurazioa",
-      "message": "\"{name}\" konfigurazioa ezabatu? Ekintza hau ezin da desegin."
-    },
-    "toast": {
-      "created": "Konfigurazioa ondo sortu da.",
-      "updated": "Konfigurazioa ondo eguneratu da.",
-      "deleted": "Konfigurazioa ezabatu da",
-      "restored": "Konfigurazioa berreskuratu da",
-      "forceDeleted": "Konfigurazioa betiko ezabatu da",
-      "saveError": "Ezin izan da gorde."
     }
   },
   "heroSuperclasses": {
@@ -1394,7 +1347,12 @@
     },
     "fields": {
       "name": "Izena",
-      "description": "Deskribapena"
+      "description": "Deskribapena",
+      "minCards": "Gutxieneko kartak",
+      "maxCards": "Gehienezko kartak",
+      "maxCopiesPerCard": "Gehienezko kopiak kartako",
+      "requiredHeroes": "Beharrezko heroiak",
+      "isDefault": "Modu lehenetsia"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
@@ -1411,6 +1369,24 @@
       "restored": "Joko modua berreskuratu da",
       "forceDeleted": "Joko modua betiko ezabatu da",
       "saveError": "Ezin izan da gorde."
+    },
+    "hints": {
+      "requiredHeroes": "Sortako heroien kopuru zehatza (0 = betekizunik ez).",
+      "isDefault": "Modurik aukeratu ez denean erabiltzen da. Aldatzeko, markatu beste modu bat (beti dago bakarra)."
+    },
+    "sections": {
+      "config": "Sorten konfigurazioa"
+    },
+    "badge": {
+      "default": "Lehenetsia"
+    },
+    "summary": {
+      "cards": "{min}–{max} karta",
+      "copies": "geh. {max} kopia",
+      "heroes": "{count} heroi"
+    },
+    "errors": {
+      "maxBelowMin": "Gehienezko karta kopurua ezin da gutxienekoa baino txikiagoa izan."
     }
   }
 }

@@ -15,7 +15,6 @@
     "heroAttributesConfig": "configuracion-de-atributos",
     "cards": "cartas",
     "factionDecks": "mazos-de-faccion",
-    "deckAttributesConfigs": "configuraciones-de-mazo",
     "heroSuperclasses": "superclases",
     "heroRaces": "razas",
     "heroClasses": "clases",
@@ -43,7 +42,6 @@
     "heroAttributesConfig": "Configuración de atributos",
     "cards": "Cartas",
     "factionDecks": "Mazos de facción",
-    "deckAttributesConfigs": "Configuraciones de mazo",
     "heroSuperclasses": "Superclases",
     "heroRaces": "Razas",
     "heroClasses": "Clases",
@@ -72,7 +70,6 @@
     "heroAttributesConfig": "Config. de atributos",
     "cards": "Cartas",
     "factionDecks": "Mazos de facción",
-    "deckAttributesConfigs": "Config. de mazos",
     "heroSuperclasses": "Superclases",
     "heroRaces": "Razas",
     "heroClasses": "Clases",
@@ -86,7 +83,6 @@
     "heroSystem": "Sistema de héroes",
     "cardSystem": "Sistema de cartas",
     "attackSystem": "Sistema de ataques",
-    "gameSystem": "Sistema de juego",
     "files": "Archivos"
   },
   "icons": {
@@ -889,7 +885,7 @@
       "limitsLine": "{min}–{max} cartas · máx. {copies} copias · {heroes} héroes",
       "cardsCount": "Cartas (copias)",
       "uniqueCards": "{count} únicas",
-      "heroesCount": "Héroes",
+      "heroesCount": "Héroes (copias)",
       "cardsTitle": "Cartas del mazo",
       "heroesTitle": "Héroes del mazo",
       "noCards": "No hay cartas en este mazo.",
@@ -904,7 +900,11 @@
       "moreCopies": "Una copia más",
       "fewerCopies": "Una copia menos",
       "prev": "Anterior",
-      "next": "Siguiente"
+      "next": "Siguiente",
+      "notInFactions": "No pertenece a las facciones del mazo",
+      "factionMismatch": "Hay {count} elementos asignados de facciones que ya no están en el mazo.",
+      "uniqueHeroes": "{count} únicos",
+      "copies": "Copias"
     },
     "validation": {
       "minCards": "El mazo debe tener al menos {min} cartas (tiene {total}).",
@@ -931,53 +931,6 @@
       "saveError": "No se pudo guardar.",
       "deckSaved": "Cartas y héroes del mazo guardados.",
       "publishInvalid": "El mazo no cumple los límites del modo de juego."
-    }
-  },
-  "deckAttributesConfigs": {
-    "title": "Configuraciones de mazo",
-    "new": "Nueva configuración",
-    "edit": "Editar configuración",
-    "newButton": "Nueva configuración",
-    "panelTitle": "Configuración de mazo",
-    "panelEmpty": "Selecciona una configuración para ver sus acciones.",
-    "tabs": {
-      "all": "Todas"
-    },
-    "state": {},
-    "fields": {
-      "gameMode": "Modo de juego",
-      "noGameMode": "Sin modo de juego (genérica)",
-      "minCards": "Cartas mínimas",
-      "maxCards": "Cartas máximas",
-      "maxCopiesPerCard": "Copias máximas por carta",
-      "requiredHeroes": "Héroes requeridos"
-    },
-    "hints": {
-      "requiredHeroes": "Número exacto de héroes del mazo (0 = sin exigencia)."
-    },
-    "errors": {
-      "maxBelowMin": "El máximo de cartas no puede ser menor que el mínimo."
-    },
-    "summary": {
-      "cards": "{min}–{max} cartas",
-      "copies": "máx. {max} copias",
-      "heroes": "{count} héroes"
-    },
-    "confirmDelete": {
-      "title": "Eliminar configuración",
-      "message": "¿Eliminar la configuración \"{name}\"? Esta acción no se puede deshacer."
-    },
-    "confirmForceDelete": {
-      "title": "Eliminar configuración",
-      "message": "¿Eliminar la configuración \"{name}\"? Esta acción no se puede deshacer."
-    },
-    "toast": {
-      "created": "Configuración creada correctamente.",
-      "updated": "Configuración actualizada correctamente.",
-      "deleted": "Configuración eliminada",
-      "restored": "Configuración restaurada",
-      "forceDeleted": "Configuración eliminada definitivamente",
-      "saveError": "No se pudo guardar."
     }
   },
   "heroSuperclasses": {
@@ -1325,7 +1278,12 @@
     },
     "fields": {
       "name": "Nombre",
-      "description": "Descripción"
+      "description": "Descripción",
+      "minCards": "Cartas mínimas",
+      "maxCards": "Cartas máximas",
+      "maxCopiesPerCard": "Copias máximas por carta",
+      "requiredHeroes": "Héroes requeridos",
+      "isDefault": "Modo por defecto"
     },
     "confirmDelete": {
       "title": "Enviar a la papelera",
@@ -1342,6 +1300,24 @@
       "restored": "Modo de juego restaurado",
       "forceDeleted": "Modo de juego borrado definitivamente",
       "saveError": "No se pudo guardar."
+    },
+    "hints": {
+      "requiredHeroes": "Número exacto de héroes del mazo (0 = sin exigencia).",
+      "isDefault": "Es el modo que se usa cuando no hay uno elegido. Para cambiarlo, marca otro modo (siempre hay exactamente uno)."
+    },
+    "sections": {
+      "config": "Configuración de mazos"
+    },
+    "badge": {
+      "default": "Por defecto"
+    },
+    "summary": {
+      "cards": "{min}–{max} cartas",
+      "copies": "máx. {max} copias",
+      "heroes": "{count} héroes"
+    },
+    "errors": {
+      "maxBelowMin": "El máximo de cartas no puede ser menor que el mínimo."
     }
   },
   "blockTypes": {

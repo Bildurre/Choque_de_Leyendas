@@ -1,7 +1,8 @@
 @use "tokens" as *;
 
 // Listado de modos de juego: la descripción se recorta a dos líneas en la
-// tarjeta para que la rejilla no baile.
+// tarjeta para que la rejilla no baile. Cada modo lleva su configuración de
+// mazos (rejilla de enteros en el modal, ficha de datos en el panel).
 .game-modes {
   &__description {
     display: -webkit-box;
@@ -10,5 +11,45 @@
     overflow: hidden;
     color: $text-3;
     font-size: $fs-13;
+  }
+
+  &__form-section {
+    margin: $space-4 0 $space-2;
+    font-size: $fs-14;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+
+  &__config-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: $space-3;
+  }
+
+  &__default-hint {
+    margin: $space-1 0 0;
+    color: $text-3;
+    font-size: $fs-13;
+  }
+
+  &__default-error {
+    margin: $space-1 0 0;
+    color: $danger;
+    font-size: $fs-13;
+  }
+
+  &__facts {
+    margin: $space-3 0 0;
+    display: grid;
+    gap: $space-2;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+      gap: $space-3;
+    }
+
+    dt { color: $text-3; font-size: $fs-13; }
+    dd { margin: 0; font-weight: $k-fw-bold; }
   }
 }

@@ -96,8 +96,18 @@ export interface EquipmentSubtype extends TaxonomyBase {
   equipment_type?: EquipmentTypeOption | null
 }
 
-export interface GameMode extends TaxonomyBase {
+/** Límites de construcción de mazos (configuración integrada en el modo). */
+export interface DeckLimits {
+  min_cards: number
+  max_cards: number
+  max_copies_per_card: number
+  required_heroes: number
+}
+
+export interface GameMode extends TaxonomyBase, DeckLimits {
   description: Translations
+  /** Exactamente un modo es el por defecto (fallback de los consumidores). */
+  is_default: boolean
 }
 
 // --- Facciones y contadores (cluster faction-counter) ---
@@ -277,16 +287,11 @@ export interface CardHeroAbilityRef {
   attack_subtype?: TaxonomyOption | null
 }
 
-// --- Mazos de facción y su configuración (cluster deck-cluster) ---
+// --- Mazos de facción (cluster deck-cluster) ---
 
-/** Configuración de mazo por modo (sin soft delete: deleted_at siempre null). */
-export interface DeckAttributesConfig extends EntityListItem {
-  game_mode_id: number | null
-  game_mode?: TaxonomyOption | null
-  min_cards: number
-  max_cards: number
-  max_copies_per_card: number
-  required_heroes: number
+/** Modo embebido en el mazo: id + nombre + sus límites de construcción. */
+export interface DeckGameModeRef extends TaxonomyOption, DeckLimits {
+  is_default?: boolean
 }
 
 /** Carta dentro de un mazo (mínimo del Resource + copias del pivot). */
@@ -295,14 +300,17 @@ export interface DeckCardItem {
   name: Translations
   cost: string | null
   image: string | null
+  faction_id: number | null
   copies: number
 }
 
-/** Héroe dentro de un mazo (mínimo del Resource). */
+/** Héroe dentro de un mazo (mínimo del Resource + copias del pivot). */
 export interface DeckHeroItem {
   id: number
   name: Translations
   image: string | null
+  faction_id: number | null
+  copies: number
 }
 
 export interface FactionDeck extends EntityBase {
@@ -310,7 +318,7 @@ export interface FactionDeck extends EntityBase {
   description: Translations
   epic_quote: Translations
   game_mode_id: number | null
-  game_mode?: TaxonomyOption | null
+  game_mode?: DeckGameModeRef | null
   factions?: FactionOption[]
   heroes?: DeckHeroItem[]
   cards?: DeckCardItem[]
@@ -460,8 +468,8 @@ export interface FactionDeckRenderData {
   total_heroes?: number | null
   total_cards?: number | null
   cards?: DeckRenderCard[] | null
-  /** Héroes del mazo (solo el nombre localizado). */
-  heroes?: Array<{ name?: string | null }> | null
+  /** Héroes del mazo (nombre localizado + copias). */
+  heroes?: Array<{ name?: string | null; copies?: number | null }> | null
 }
 
 export interface PaginationMeta {

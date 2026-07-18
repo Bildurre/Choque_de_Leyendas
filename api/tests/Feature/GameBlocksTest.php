@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Counter;
-use App\Models\DeckAttributesConfiguration;
 use App\Models\GameMode;
 use Edc\Core\Content\BlockTypeRegistry;
 use Edc\Core\Content\Models\Block;
@@ -71,19 +70,15 @@ it('counters-list cae a boon si el tipo guardado no es válido', function () {
 });
 
 it('game-modes lista los modos con su configuración y mazos publicados', function () {
-    // El seeder estructural ya crea el modo Estándar con su configuración.
+    // La configuración vive en el propio modo (fusión de deck_attributes).
     $mode = new GameMode;
     $mode->setTranslations('name', ['es' => 'Arena']);
     $mode->setTranslations('description', ['es' => '<p>Rápido</p>']);
+    $mode->min_cards = 20;
+    $mode->max_cards = 30;
+    $mode->max_copies_per_card = 3;
+    $mode->required_heroes = 1;
     $mode->save();
-
-    DeckAttributesConfiguration::create([
-        'game_mode_id' => $mode->id,
-        'min_cards' => 20,
-        'max_cards' => 30,
-        'max_copies_per_card' => 3,
-        'required_heroes' => 1,
-    ]);
 
     $block = makeGameBlock('game-modes');
     $data = app(BlockTypeRegistry::class)->get('game-modes')->resolveData($block, 'es');

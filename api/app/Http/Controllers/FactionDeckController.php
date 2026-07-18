@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Concerns\SanitizesRichText;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\FactionDeckResource;
-use App\Models\DeckAttributesConfiguration;
 use App\Models\FactionDeck;
+use App\Models\GameMode;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 /**
  * CRUD de admin para los mazos de facción, más los endpoints del editor
- * (cartas con copias y héroes). Guardar borradores es libre; al publicar
+ * (cartas y héroes con copias). Guardar borradores es libre; al publicar
  * se exige la configuración del modo (422 con errores localizables).
  */
 class FactionDeckController extends Controller
@@ -25,7 +25,7 @@ class FactionDeckController extends Controller
         $decks = FactionDeck::query()
             ->with(['gameMode', 'factions'])
             ->withSum('cards as total_cards', 'card_faction_deck.copies')
-            ->withCount('heroes as total_heroes')
+            ->withSum('heroes as total_heroes', 'faction_deck_hero.copies')
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
@@ -108,16 +108,19 @@ class FactionDeckController extends Controller
         return new FactionDeckResource($deck->load(['gameMode', 'factions', 'heroes', 'cards']));
     }
 
-    /** Reemplaza los héroes del mazo (borrador libre: no valida límites). */
+    /** Reemplaza los héroes del mazo con sus copias (borrador libre). */
     public function updateHeroes(Request $request, string $slug)
     {
         $deck = FactionDeck::whereSlug($slug)->firstOrFail();
         $data = Validator::make($request->all(), [
-            'hero_ids' => ['present', 'array'],
-            'hero_ids.*' => ['integer', 'distinct', 'exists:heroes,id'],
+            'items' => ['present', 'array'],
+            'items.*.hero_id' => ['required', 'integer', 'distinct', 'exists:heroes,id'],
+            'items.*.copies' => ['required', 'integer', 'between:1,99'],
         ])->validate();
 
-        $deck->heroes()->sync($data['hero_ids']);
+        $deck->heroes()->sync(collect($data['items'])->mapWithKeys(
+            fn (array $item) => [$item['hero_id'] => ['copies' => $item['copies']]],
+        ));
         // Los héroes (pivot) salen en la preview y no son columnas: a mano.
         $deck->regeneratePreviews();
 
@@ -165,19 +168,19 @@ class FactionDeckController extends Controller
     }
 
     /**
-     * Errores de publicación según la configuración del modo del mazo
-     * (claves i18n del admin + parámetros). Sin configuración no hay límites.
+     * Errores de publicación según la configuración del modo del mazo (con
+     * fallback al modo por defecto), como claves i18n del admin + parámetros.
      */
     protected function publishErrors(FactionDeck $deck): array
     {
-        $config = DeckAttributesConfiguration::forMode($deck->game_mode_id);
-        if (! $config) {
+        $mode = GameMode::forMode($deck->game_mode_id);
+        if (! $mode) {
             return [];
         }
 
         $deck->loadMissing(['cards', 'heroes']);
 
-        return $config->validateDeck($deck);
+        return $mode->validateDeck($deck);
     }
 
     /** 422 con la lista de errores localizables bajo `errors.deck`. */

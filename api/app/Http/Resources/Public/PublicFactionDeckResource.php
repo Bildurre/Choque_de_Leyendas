@@ -43,14 +43,15 @@ class PublicFactionDeckResource extends JsonResource
             'factions' => $this->factions
                 ->map(fn ($faction) => PublicFactionItemResource::ref($faction, $locale))
                 ->values(),
-            'heroes' => $this->heroes
-                ->map(fn ($hero) => PublicCatalogItem::fromModel($hero, 'hero', $locale))
-                ->values(),
+            'heroes' => $this->heroes->map(fn ($hero) => [
+                ...PublicCatalogItem::fromModel($hero, 'hero', $locale),
+                'copies' => (int) $hero->pivot->copies,
+            ])->values(),
             'cards' => $cards->map(fn (Card $card) => [
                 ...PublicCatalogItem::fromModel($card, 'card', $locale),
                 'copies' => (int) $card->pivot->copies,
             ])->values(),
-            'total_heroes' => $this->heroes->count(),
+            'total_heroes' => (int) $this->heroes->sum('pivot.copies'),
             'total_cards' => (int) $cards->sum('pivot.copies'),
             'stats' => $this->stats($cards, $locale),
         ];
@@ -88,10 +89,11 @@ class PublicFactionDeckResource extends JsonResource
         $bySuperclass = [];
         foreach ($this->heroes as $hero) {
             /** @var Hero $hero */
+            $copies = (int) $hero->pivot->copies;
             $className = $hero->heroClass?->getTranslation('name', $locale) ?? '';
             $superclassName = $hero->heroClass?->heroSuperclass?->getTranslation('name', $locale) ?? '';
-            $byClass[$className] = ($byClass[$className] ?? 0) + 1;
-            $bySuperclass[$superclassName] = ($bySuperclass[$superclassName] ?? 0) + 1;
+            $byClass[$className] = ($byClass[$className] ?? 0) + $copies;
+            $bySuperclass[$superclassName] = ($bySuperclass[$superclassName] ?? 0) + $copies;
         }
 
         // Listas {name|dice, ...} en vez de mapas por nombre localizado:
@@ -109,7 +111,7 @@ class PublicFactionDeckResource extends JsonResource
                 ->map(fn (int $copies, string $name) => ['name' => $name, 'copies' => $copies])
                 ->values()
                 ->all(),
-            'total_heroes' => $this->heroes->count(),
+            'total_heroes' => (int) $this->heroes->sum('pivot.copies'),
             'unique_heroes' => $this->heroes->count(),
             'heroes_by_class' => collect($byClass)
                 ->map(fn (int $count, string $name) => ['name' => $name, 'count' => $count])

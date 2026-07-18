@@ -45,12 +45,11 @@ class DatabaseSeeder extends Seeder
         $this->call([PagesSeeder::class, SiteSettingsSeeder::class]);
 
         // Solo lo estructural (idempotente): el contenido del juego lo mete
-        // el usuario desde el admin. GameModeSeeder ANTES que la configuración
-        // de mazos (busca el modo estándar por nombre).
+        // el usuario desde el admin. El modo Estándar nace con su
+        // configuración de mazos integrada y como por defecto.
         $this->call([
             GameModeSeeder::class,
             HeroAttributesConfigurationSeeder::class,
-            DeckAttributesConfigurationSeeder::class,
         ]);
     }
 }

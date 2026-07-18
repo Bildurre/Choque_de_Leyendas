@@ -15,7 +15,6 @@
     "heroAttributesConfig": "attributes-configuration",
     "cards": "cards",
     "factionDecks": "faction-decks",
-    "deckAttributesConfigs": "deck-configurations",
     "heroSuperclasses": "superclasses",
     "heroRaces": "races",
     "heroClasses": "classes",
@@ -43,7 +42,6 @@
     "heroAttributesConfig": "Attributes configuration",
     "cards": "Cards",
     "factionDecks": "Faction decks",
-    "deckAttributesConfigs": "Deck configurations",
     "heroSuperclasses": "Superclasses",
     "heroRaces": "Races",
     "heroClasses": "Classes",
@@ -72,7 +70,6 @@
     "heroAttributesConfig": "Attributes config",
     "cards": "Cards",
     "factionDecks": "Faction decks",
-    "deckAttributesConfigs": "Deck configs",
     "heroSuperclasses": "Superclasses",
     "heroRaces": "Races",
     "heroClasses": "Classes",
@@ -86,7 +83,6 @@
     "heroSystem": "Hero system",
     "cardSystem": "Card system",
     "attackSystem": "Attack system",
-    "gameSystem": "Game system",
     "files": "Files"
   },
   "icons": {
@@ -958,7 +954,7 @@
       "limitsLine": "{min}–{max} cards · max {copies} copies · {heroes} heroes",
       "cardsCount": "Cards (copies)",
       "uniqueCards": "{count} unique",
-      "heroesCount": "Heroes",
+      "heroesCount": "Heroes (copies)",
       "cardsTitle": "Deck cards",
       "heroesTitle": "Deck heroes",
       "noCards": "There are no cards in this deck.",
@@ -973,7 +969,11 @@
       "moreCopies": "One more copy",
       "fewerCopies": "One less copy",
       "prev": "Previous",
-      "next": "Next"
+      "next": "Next",
+      "notInFactions": "Not in the deck factions",
+      "factionMismatch": "There are {count} assigned items from factions no longer in the deck.",
+      "uniqueHeroes": "{count} unique",
+      "copies": "Copies"
     },
     "validation": {
       "minCards": "The deck must have at least {min} cards (it has {total}).",
@@ -1000,53 +1000,6 @@
       "saveError": "Could not save.",
       "deckSaved": "Deck cards and heroes saved.",
       "publishInvalid": "The deck does not meet the game mode limits."
-    }
-  },
-  "deckAttributesConfigs": {
-    "title": "Deck configurations",
-    "new": "New configuration",
-    "edit": "Edit configuration",
-    "newButton": "New configuration",
-    "panelTitle": "Deck configuration",
-    "panelEmpty": "Pick a configuration to see its actions.",
-    "tabs": {
-      "all": "All"
-    },
-    "state": {},
-    "fields": {
-      "gameMode": "Game mode",
-      "noGameMode": "No game mode (generic)",
-      "minCards": "Minimum cards",
-      "maxCards": "Maximum cards",
-      "maxCopiesPerCard": "Max copies per card",
-      "requiredHeroes": "Required heroes"
-    },
-    "hints": {
-      "requiredHeroes": "Exact number of heroes in the deck (0 = no requirement)."
-    },
-    "errors": {
-      "maxBelowMin": "The card maximum cannot be lower than the minimum."
-    },
-    "summary": {
-      "cards": "{min}–{max} cards",
-      "copies": "max {max} copies",
-      "heroes": "{count} heroes"
-    },
-    "confirmDelete": {
-      "title": "Delete configuration",
-      "message": "Delete the \"{name}\" configuration? This cannot be undone."
-    },
-    "confirmForceDelete": {
-      "title": "Delete configuration",
-      "message": "Delete the \"{name}\" configuration? This cannot be undone."
-    },
-    "toast": {
-      "created": "Configuration created successfully.",
-      "updated": "Configuration updated successfully.",
-      "deleted": "Configuration deleted",
-      "restored": "Configuration restored",
-      "forceDeleted": "Configuration permanently deleted",
-      "saveError": "Could not save."
     }
   },
   "heroSuperclasses": {
@@ -1394,7 +1347,12 @@
     },
     "fields": {
       "name": "Name",
-      "description": "Description"
+      "description": "Description",
+      "minCards": "Minimum cards",
+      "maxCards": "Maximum cards",
+      "maxCopiesPerCard": "Max copies per card",
+      "requiredHeroes": "Required heroes",
+      "isDefault": "Default mode"
     },
     "confirmDelete": {
       "title": "Send to trash",
@@ -1411,6 +1369,24 @@
       "restored": "Game mode restored",
       "forceDeleted": "Game mode permanently deleted",
       "saveError": "Could not save."
+    },
+    "hints": {
+      "requiredHeroes": "Exact number of heroes in the deck (0 = no requirement).",
+      "isDefault": "Used when no mode is chosen. To change it, mark another mode (there is always exactly one)."
+    },
+    "sections": {
+      "config": "Deck configuration"
+    },
+    "badge": {
+      "default": "Default"
+    },
+    "summary": {
+      "cards": "{min}–{max} cards",
+      "copies": "max. {max} copies",
+      "heroes": "{count} heroes"
+    },
+    "errors": {
+      "maxBelowMin": "The maximum number of cards cannot be lower than the minimum."
     }
   }
 }

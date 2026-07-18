@@ -10,8 +10,8 @@ import { api } from '@/lib/api'
 import { useLocalesStore } from '@/stores/locales'
 import { usePageCrumb } from '@/composables/usePageCrumb'
 import type {
-  DeckAttributesConfig,
   DeckCardItem,
+  DeckGameModeRef,
   DeckHeroItem,
   DeckPublishError,
   FactionDeck,
@@ -21,9 +21,11 @@ import FactionDeckFormModal from '@/components/faction-decks/FactionDeckFormModa
 import CostDice from '@/components/game/CostDice.vue'
 
 // Single editora del mazo (patrón página+bloques): cabecera con límites del
-// modo y contadores en vivo + panel de cartas (copias) + panel de héroes.
-// Guardar borradores es libre; los límites solo avisan (el servidor decide
-// al publicar).
+// modo (la configuración vive en el propio modo de juego) y contadores en
+// vivo + panel de cartas y panel de héroes, ambos con copias. Los listados
+// de disponibles se acotan a las facciones del mazo; lo ya asignado de una
+// facción quitada se marca y se avisa. Guardar borradores es libre; los
+// límites solo avisan (el servidor decide al publicar).
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -32,7 +34,6 @@ const locales = useLocalesStore()
 const { find } = useResource<FactionDeck>(api, '/admin/faction-decks')
 
 const deck = ref<FactionDeck | null>(null)
-const config = ref<DeckAttributesConfig | null>(null)
 const loading = ref(true)
 const saving = ref(false)
 const dirty = ref(false)
@@ -50,6 +51,12 @@ function tr(obj: Translations | null | undefined): string {
 }
 const slug = computed(() => route.params.slug as string)
 
+// Límites del modo del mazo: vienen embebidos en el show (game_mode).
+const config = computed<DeckGameModeRef | null>(() => deck.value?.game_mode ?? null)
+
+// Facciones del mazo: acotan los disponibles y marcan lo que sobra.
+const deckFactionIds = computed(() => new Set((deck.value?.factions ?? []).map((f) => f.id)))
+
 async function load() {
   loading.value = true
   try {
@@ -59,7 +66,9 @@ async function load() {
     dirty.value = false
     publishErrors.value = []
     setActiveSlugMap(deck.value?.slug ?? null) // DC-11: slug localizado al cambiar idioma
-    await loadConfig()
+    // Disponibles acotados a las facciones del mazo, desde el principio.
+    void cardSearch.run(1)
+    void heroSearch.run(1)
   } catch {
     deck.value = null
   } finally {
@@ -67,24 +76,19 @@ async function load() {
   }
 }
 
-/** Límites del modo del mazo (data puede ser null: sin límites). */
-async function loadConfig() {
-  config.value = null
-  if (deck.value?.game_mode_id == null) return
-  try {
-    const { data } = await api.get(
-      `/admin/deck-attributes-configurations/for-mode/${deck.value.game_mode_id}`,
-    )
-    config.value = data.data
-  } catch {
-    config.value = null
-  }
-}
-
-// --- Contadores en vivo ---
+// --- Contadores en vivo (héroes y cartas suman copias) ---
 const totalCopies = computed(() => cards.value.reduce((sum, c) => sum + c.copies, 0))
 const uniqueCards = computed(() => cards.value.length)
-const totalHeroes = computed(() => heroes.value.length)
+const totalHeroes = computed(() => heroes.value.reduce((sum, h) => sum + h.copies, 0))
+const uniqueHeroes = computed(() => heroes.value.length)
+
+/** ¿El elemento pertenece a una facción que ya no está en el mazo? */
+function isForeign(item: { faction_id: number | null }): boolean {
+  return item.faction_id != null && !deckFactionIds.value.has(item.faction_id)
+}
+const foreignCount = computed(
+  () => cards.value.filter(isForeign).length + heroes.value.filter(isForeign).length,
+)
 
 // Avisos de límite en cliente (mismas claves que valida el servidor al publicar)
 const warnings = computed<DeckPublishError[]>(() => {
@@ -120,12 +124,7 @@ const warnings = computed<DeckPublishError[]>(() => {
 })
 
 // --- Edición de cartas del mazo ---
-function addCard(item: {
-  id: number
-  name: Translations
-  cost?: string | null
-  image?: string | null
-}) {
+function addCard(item: SearchResult) {
   const existing = cards.value.find((c) => c.id === item.id)
   if (existing) {
     existing.copies += 1
@@ -135,13 +134,10 @@ function addCard(item: {
       name: item.name,
       cost: item.cost ?? null,
       image: item.image ?? null,
+      faction_id: item.faction_id ?? null,
       copies: 1,
     })
   }
-  dirty.value = true
-}
-function stepCopies(card: DeckCardItem, delta: number) {
-  card.copies = Math.max(1, card.copies + delta)
   dirty.value = true
 }
 function removeCard(card: DeckCardItem) {
@@ -149,10 +145,20 @@ function removeCard(card: DeckCardItem) {
   dirty.value = true
 }
 
-// --- Edición de héroes del mazo ---
-function addHero(item: { id: number; name: Translations; image?: string | null }) {
-  if (heroes.value.some((h) => h.id === item.id)) return
-  heroes.value.push({ id: item.id, name: item.name, image: item.image ?? null })
+// --- Edición de héroes del mazo (también con copias) ---
+function addHero(item: SearchResult) {
+  const existing = heroes.value.find((h) => h.id === item.id)
+  if (existing) {
+    existing.copies += 1
+  } else {
+    heroes.value.push({
+      id: item.id,
+      name: item.name,
+      image: item.image ?? null,
+      faction_id: item.faction_id ?? null,
+      copies: 1,
+    })
+  }
   dirty.value = true
 }
 function removeHero(hero: DeckHeroItem) {
@@ -160,12 +166,26 @@ function removeHero(hero: DeckHeroItem) {
   dirty.value = true
 }
 
-// --- Buscadores para añadir (cartas y héroes, paginados en servidor) ---
+// Copias: steppers +/- y también input numérico directo (mínimo 1).
+function stepCopies(item: { copies: number }, delta: number) {
+  item.copies = Math.max(1, item.copies + delta)
+  dirty.value = true
+}
+function setCopies(item: { copies: number }, event: Event) {
+  const raw = Number((event.target as HTMLInputElement).value)
+  item.copies = Number.isFinite(raw) ? Math.max(1, Math.round(raw)) : 1
+  ;(event.target as HTMLInputElement).value = String(item.copies)
+  dirty.value = true
+}
+
+// --- Buscadores para añadir (cartas y héroes, paginados en servidor y
+// acotados SIEMPRE a las facciones del mazo) ---
 interface SearchResult {
   id: number
   name: Translations
   cost?: string | null
   image?: string | null
+  faction_id?: number | null
 }
 
 function useSearch(resource: string) {
@@ -179,7 +199,11 @@ function useSearch(resource: string) {
     searching.value = true
     try {
       const { data } = await api.get(resource, {
-        params: { search: query.value, page: toPage },
+        params: {
+          search: query.value,
+          page: toPage,
+          faction_ids: [...deckFactionIds.value],
+        },
       })
       results.value = data.data
       page.value = data.meta?.current_page ?? 1
@@ -215,7 +239,7 @@ async function save() {
       items: cards.value.map((c) => ({ card_id: c.id, copies: c.copies })),
     })
     const { data } = await api.put(`/admin/faction-decks/${slug.value}/heroes`, {
-      hero_ids: heroes.value.map((h) => h.id),
+      items: heroes.value.map((h) => ({ hero_id: h.id, copies: h.copies })),
     })
     deck.value = data.data
     cards.value = (deck.value?.cards ?? []).map((c) => ({ ...c }))
@@ -352,7 +376,10 @@ onBeforeUnmount(() => {
         </div>
         <div>
           <dt>{{ t('factionDecks.single.heroesCount') }}</dt>
-          <dd>{{ totalHeroes }}</dd>
+          <dd>
+            {{ totalHeroes }}
+            <small>({{ t('factionDecks.single.uniqueHeroes', { count: uniqueHeroes }) }})</small>
+          </dd>
         </div>
       </dl>
     </header>
@@ -363,8 +390,12 @@ onBeforeUnmount(() => {
     </ul>
 
     <!-- Avisos de límite en vivo (no bloquean: el servidor decide al publicar) -->
-    <ul v-if="warnings.length" class="deck-editor__warnings">
+    <ul v-if="warnings.length || foreignCount > 0" class="deck-editor__warnings">
       <li v-for="(w, i) in warnings" :key="i">{{ t(w.key, w.params ?? {}) }}</li>
+      <!-- Asignados de facciones que ya no están en el mazo -->
+      <li v-if="foreignCount > 0">
+        {{ t('factionDecks.single.factionMismatch', { count: foreignCount }) }}
+      </li>
     </ul>
 
     <div class="deck-editor__panels">
@@ -374,11 +405,21 @@ onBeforeUnmount(() => {
 
         <EmptyState v-if="!cards.length" :title="t('factionDecks.single.noCards')" />
         <ul v-else class="deck-editor__rows">
-          <li v-for="card in cards" :key="card.id" class="deck-editor__row">
+          <li
+            v-for="card in cards"
+            :key="card.id"
+            class="deck-editor__row"
+            :class="{ 'is-foreign': isForeign(card) }"
+          >
             <span class="deck-editor__row-media">
               <img v-if="card.image" :src="card.image" alt="" />
             </span>
-            <span class="deck-editor__row-name">{{ tr(card.name) }}</span>
+            <span class="deck-editor__row-name">
+              {{ tr(card.name) }}
+              <small v-if="isForeign(card)" class="deck-editor__foreign-note">{{
+                t('factionDecks.single.notInFactions')
+              }}</small>
+            </span>
             <span class="deck-editor__row-cost">
               <CostDice v-if="card.cost" :cost="card.cost" />
               <template v-else>—</template>
@@ -396,7 +437,15 @@ onBeforeUnmount(() => {
               >
                 <Minus :size="14" />
               </button>
-              <span class="deck-editor__copies-value">{{ card.copies }}</span>
+              <input
+                class="deck-editor__copies-input"
+                type="number"
+                min="1"
+                :max="config?.max_copies_per_card"
+                :value="card.copies"
+                :aria-label="t('gameModes.fields.maxCopiesPerCard')"
+                @change="setCopies(card, $event)"
+              />
               <button
                 type="button"
                 class="deck-editor__step"
@@ -417,7 +466,7 @@ onBeforeUnmount(() => {
           </li>
         </ul>
 
-        <!-- Buscador para añadir cartas (paginado en servidor) -->
+        <!-- Buscador para añadir cartas (paginado, solo facciones del mazo) -->
         <div class="deck-editor__search">
           <BaseInput
             v-model="cardSearch.query.value"
@@ -437,10 +486,7 @@ onBeforeUnmount(() => {
               </BaseButton>
             </li>
           </ul>
-          <p
-            v-else-if="cardSearch.query.value && !cardSearch.searching.value"
-            class="deck-editor__no-results"
-          >
+          <p v-else-if="!cardSearch.searching.value" class="deck-editor__no-results">
             {{ t('common.empty') }}
           </p>
           <div v-if="cardSearch.lastPage.value > 1" class="deck-editor__pager">
@@ -469,11 +515,48 @@ onBeforeUnmount(() => {
 
         <EmptyState v-if="!heroes.length" :title="t('factionDecks.single.noHeroes')" />
         <ul v-else class="deck-editor__rows">
-          <li v-for="hero in heroes" :key="hero.id" class="deck-editor__row">
+          <li
+            v-for="hero in heroes"
+            :key="hero.id"
+            class="deck-editor__row"
+            :class="{ 'is-foreign': isForeign(hero) }"
+          >
             <span class="deck-editor__row-media">
               <img v-if="hero.image" :src="hero.image" alt="" />
             </span>
-            <span class="deck-editor__row-name">{{ tr(hero.name) }}</span>
+            <span class="deck-editor__row-name">
+              {{ tr(hero.name) }}
+              <small v-if="isForeign(hero)" class="deck-editor__foreign-note">{{
+                t('factionDecks.single.notInFactions')
+              }}</small>
+            </span>
+            <span class="deck-editor__copies">
+              <button
+                type="button"
+                class="deck-editor__step"
+                :disabled="hero.copies <= 1"
+                :aria-label="t('factionDecks.single.fewerCopies')"
+                @click="stepCopies(hero, -1)"
+              >
+                <Minus :size="14" />
+              </button>
+              <input
+                class="deck-editor__copies-input"
+                type="number"
+                min="1"
+                :value="hero.copies"
+                :aria-label="t('factionDecks.single.moreCopies')"
+                @change="setCopies(hero, $event)"
+              />
+              <button
+                type="button"
+                class="deck-editor__step"
+                :aria-label="t('factionDecks.single.moreCopies')"
+                @click="stepCopies(hero, 1)"
+              >
+                <Plus :size="14" />
+              </button>
+            </span>
             <button
               type="button"
               class="deck-editor__remove"
@@ -485,7 +568,7 @@ onBeforeUnmount(() => {
           </li>
         </ul>
 
-        <!-- Buscador para añadir héroes (paginado en servidor) -->
+        <!-- Buscador para añadir héroes (paginado, solo facciones del mazo) -->
         <div class="deck-editor__search">
           <BaseInput
             v-model="heroSearch.query.value"
@@ -495,20 +578,13 @@ onBeforeUnmount(() => {
           <ul v-if="heroSearch.results.value.length" class="deck-editor__results">
             <li v-for="item in heroSearch.results.value" :key="item.id">
               <span class="deck-editor__row-name">{{ tr(item.name) }}</span>
-              <BaseButton
-                variant="text"
-                :disabled="heroes.some((h) => h.id === item.id)"
-                @click="addHero(item)"
-              >
+              <BaseButton variant="text" @click="addHero(item)">
                 <template #icon><Plus :size="14" /></template>
                 {{ t('factionDecks.single.add') }}
               </BaseButton>
             </li>
           </ul>
-          <p
-            v-else-if="heroSearch.query.value && !heroSearch.searching.value"
-            class="deck-editor__no-results"
-          >
+          <p v-else-if="!heroSearch.searching.value" class="deck-editor__no-results">
             {{ t('common.empty') }}
           </p>
           <div v-if="heroSearch.lastPage.value > 1" class="deck-editor__pager">

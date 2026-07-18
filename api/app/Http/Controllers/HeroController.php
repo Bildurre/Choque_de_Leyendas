@@ -27,6 +27,12 @@ class HeroController extends Controller
                 $request->filled('faction_id'),
                 fn ($q) => $q->where('faction_id', $request->integer('faction_id'))
             )
+            // Varias facciones a la vez (el editor de mazos acota los
+            // disponibles a las facciones del mazo).
+            ->when(
+                is_array($request->input('faction_ids')),
+                fn ($q) => $q->whereIn('faction_id', array_map('intval', $request->input('faction_ids', [])))
+            )
             ->when(
                 $request->filled('hero_class_id'),
                 fn ($q) => $q->where('hero_class_id', $request->integer('hero_class_id'))

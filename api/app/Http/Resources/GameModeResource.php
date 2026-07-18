@@ -14,6 +14,12 @@ class GameModeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
             'description' => $this->getTranslations('description'),
+            // Configuración de mazos del modo (fusionada; antes tabla aparte)
+            'min_cards' => $this->min_cards,
+            'max_cards' => $this->max_cards,
+            'max_copies_per_card' => $this->max_copies_per_card,
+            'required_heroes' => $this->required_heroes,
+            'is_default' => $this->is_default,
             'deleted_at' => $this->deleted_at,
         ];
     }

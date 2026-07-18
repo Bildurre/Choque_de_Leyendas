@@ -70,7 +70,8 @@ interface TeamSetup {
   slots: string[] // id del héroe elegido por hueco ('' = vacío)
 }
 
-// El habitual del juego: la configuración de mazo estándar exige 5 héroes.
+// El habitual del juego: los héroes requeridos del modo por defecto (se
+// leen de la API al montar; 5 como fallback sin red).
 const DEFAULT_HEROES = 5
 const MAX_HEROES = 6
 const STORAGE_KEY = 'cdl_life_counter_match'
@@ -125,6 +126,22 @@ watch(
 // --- Preparación: nº de héroes, facciones y héroes por equipo ---
 
 const heroCount = ref(DEFAULT_HEROES)
+// Héroes requeridos del modo de juego por defecto (la configuración vive en
+// el propio modo). Se aplica al setup si el usuario aún no lo ha tocado.
+const defaultHeroes = ref(DEFAULT_HEROES)
+async function loadDefaultHeroes() {
+  try {
+    const { data } = await api.get('/game-modes/default')
+    const required = Number(data?.data?.required_heroes ?? 0)
+    if (required >= 1) {
+      const untouched = heroCount.value === defaultHeroes.value
+      defaultHeroes.value = Math.min(required, MAX_HEROES)
+      if (phase.value === 'setup' && untouched) heroCount.value = defaultHeroes.value
+    }
+  } catch {
+    // Sin red o sin modo por defecto: se queda el fallback (5).
+  }
+}
 const setupTeams = reactive<TeamSetup[]>([
   { factionIds: [], slots: Array(DEFAULT_HEROES).fill('') },
   { factionIds: [], slots: Array(DEFAULT_HEROES).fill('') },
@@ -240,10 +257,10 @@ function slotOptions(team: TeamSetup, index: number) {
 const canStart = computed(() => setupTeams.every((team) => team.slots.every((value) => value)))
 
 function resetSetup() {
-  heroCount.value = DEFAULT_HEROES
+  heroCount.value = defaultHeroes.value
   for (const team of setupTeams) {
     team.factionIds = []
-    team.slots = Array(DEFAULT_HEROES).fill('')
+    team.slots = Array(defaultHeroes.value).fill('')
   }
 }
 
@@ -502,6 +519,8 @@ onMounted(() => {
   document.addEventListener('visibilitychange', onVisibilityChange)
   // Con partida activa guardada, directo al modo partida (recarga incluida).
   if (restore()) void acquireWakeLock()
+  // El nº de héroes habitual sale del modo de juego por defecto.
+  void loadDefaultHeroes()
 })
 
 onUnmounted(() => {

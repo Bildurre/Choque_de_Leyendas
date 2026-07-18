@@ -35,7 +35,6 @@ class GameModesBlock extends BlockType
     {
         return [
             'modes' => GameMode::query()
-                ->with('deckConfiguration')
                 ->withCount(['factionDecks' => fn ($q) => $q->published()])
                 ->orderBy("name->{$locale}")
                 ->get()
@@ -43,12 +42,14 @@ class GameModesBlock extends BlockType
                     'id' => $mode->id,
                     'name' => $mode->getTranslation('name', $locale),
                     'description' => $mode->getTranslation('description', $locale),
-                    'config' => $mode->deckConfiguration ? [
-                        'min_cards' => $mode->deckConfiguration->min_cards,
-                        'max_cards' => $mode->deckConfiguration->max_cards,
-                        'max_copies_per_card' => $mode->deckConfiguration->max_copies_per_card,
-                        'required_heroes' => $mode->deckConfiguration->required_heroes,
-                    ] : null,
+                    // La configuración vive en el propio modo (fusionada)
+                    'config' => [
+                        'min_cards' => $mode->min_cards,
+                        'max_cards' => $mode->max_cards,
+                        'max_copies_per_card' => $mode->max_copies_per_card,
+                        'required_heroes' => $mode->required_heroes,
+                    ],
+                    'is_default' => $mode->is_default,
                     'decks_count' => $mode->faction_decks_count,
                 ])
                 ->all(),

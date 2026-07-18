@@ -36,6 +36,10 @@ interface DeckCard extends CatalogItem {
   copies: number
 }
 
+interface DeckHero extends CatalogItem {
+  copies: number
+}
+
 interface DeckStats {
   total_cards: number
   unique_cards: number
@@ -59,7 +63,7 @@ interface DeckPayload {
   epic_quote: string
   game_mode: { id: number; name: string } | null
   factions: FactionRef[]
-  heroes: CatalogItem[]
+  heroes: DeckHero[]
   cards: DeckCard[]
   total_heroes: number
   total_cards: number
@@ -120,7 +124,7 @@ function factionRoute(faction: FactionRef) {
   return sectionDetailRoute('factions', faction.slug, props.locale)
 }
 
-const heroItems = computed<PreviewGridItem[]>(() =>
+const heroItems = computed<Array<PreviewGridItem & { copies: number }>>(() =>
   props.item.heroes.map((row) => ({
     ...row,
     to: sectionDetailRoute('heroes', row.slug, props.locale),
@@ -286,13 +290,26 @@ watch(
       </InfoBlock>
     </div>
 
-    <!-- Héroes del mazo -->
+    <!-- Héroes del mazo, con el badge de copias si llevan más de una -->
     <PreviewGrid
       v-else-if="tab === 'heroes'"
       :items="heroItems"
       :empty-text="t('singles.deck.noHeroes')"
       class="single-grid"
     >
+      <template #item="{ item: hero }">
+        <img
+          v-if="hero.preview"
+          class="preview-grid__image"
+          :src="hero.preview"
+          :alt="hero.name"
+          loading="lazy"
+        />
+        <span v-else class="preview-grid__fallback">{{ hero.name }}</span>
+        <span v-if="(hero as DeckHero).copies > 1" class="deck-single__copies">
+          {{ t('singles.deck.copies', { count: (hero as DeckHero).copies }) }}
+        </span>
+      </template>
       <template #actions="{ item: hero }">
         <AddToCollection :id="hero.id" class="single-grid__add" entity="hero" />
       </template>

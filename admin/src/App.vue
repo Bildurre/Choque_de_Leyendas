@@ -4,7 +4,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import {
   Axe,
-  Cog,
   Coins,
   Crosshair,
   DatabaseBackup,
@@ -116,12 +115,10 @@ const HERO_SYSTEM_SECTIONS = [
 ]
 const CARD_SYSTEM_SECTIONS = ['cardTypes', 'cardSubtypes', 'equipmentTypes', 'equipmentSubtypes']
 const ATTACK_SYSTEM_SECTIONS = ['heroAbilities', 'attackRanges', 'attackSubtypes']
-const GAME_SYSTEM_SECTIONS = ['gameModes', 'deckAttributesConfigs']
 const FILES_SECTIONS = ['icons', 'previews', 'pdfs']
 const heroSystemActive = computed(() => HERO_SYSTEM_SECTIONS.includes(route.meta.nav as string))
 const cardSystemActive = computed(() => CARD_SYSTEM_SECTIONS.includes(route.meta.nav as string))
 const attackSystemActive = computed(() => ATTACK_SYSTEM_SECTIONS.includes(route.meta.nav as string))
-const gameSystemActive = computed(() => GAME_SYSTEM_SECTIONS.includes(route.meta.nav as string))
 const filesActive = computed(() => FILES_SECTIONS.includes(route.meta.nav as string))
 </script>
 
@@ -309,28 +306,16 @@ const filesActive = computed(() => FILES_SECTIONS.includes(route.meta.nav as str
           }}</span>
         </RouterLink>
       </NavGroup>
-      <NavGroup
+      <!-- Modos de juego con su configuración de mazos integrada: ítem
+           suelto (el antiguo grupo "Sistema de juego" quedaba con uno solo) -->
+      <RouterLink
         v-if="auth.can('manage-game')"
-        :label="t('nav.gameSystem')"
-        storage-key="game-system"
-        :active="gameSystemActive"
+        class="nav-item"
+        :class="navActive('gameModes')"
+        :to="{ name: 'game-modes' }"
       >
-        <template #icon><Cog class="nav-icon" :size="20" /></template>
-        <RouterLink class="nav-item" :class="navActive('gameModes')" :to="{ name: 'game-modes' }">
-          <Dices class="nav-icon" :size="20" /><span class="nav-label">{{
-            t('nav.gameModes')
-          }}</span>
-        </RouterLink>
-        <RouterLink
-          class="nav-item"
-          :class="navActive('deckAttributesConfigs')"
-          :to="{ name: 'deck-attributes-configurations' }"
-        >
-          <SlidersHorizontal class="nav-icon" :size="20" /><span class="nav-label">{{
-            t('nav.deckAttributesConfigs')
-          }}</span>
-        </RouterLink>
-      </NavGroup>
+        <Dices class="nav-icon" :size="20" /><span class="nav-label">{{ t('nav.gameModes') }}</span>
+      </RouterLink>
       <NavGroup
         v-if="auth.can('manage-game')"
         :label="t('nav.files')"

@@ -7,7 +7,6 @@ use App\Http\Controllers\CardSubtypeController;
 use App\Http\Controllers\CardTypeController;
 use App\Http\Controllers\CounterController;
 use App\Http\Controllers\DashboardStatsController;
-use App\Http\Controllers\DeckAttributesConfigurationController;
 use App\Http\Controllers\EquipmentSubtypeController;
 use App\Http\Controllers\EquipmentTypeController;
 use App\Http\Controllers\FactionController;
@@ -23,6 +22,7 @@ use App\Http\Controllers\LifeCounterMatchController;
 use App\Http\Controllers\Public\PublicCardController;
 use App\Http\Controllers\Public\PublicFactionController;
 use App\Http\Controllers\Public\PublicFactionDeckController;
+use App\Http\Controllers\Public\PublicGameModeController;
 use App\Http\Controllers\Public\PublicHeroController;
 use App\Models\Card;
 use App\Models\Hero;
@@ -58,6 +58,8 @@ Route::get('cards/{slug}', [PublicCardController::class, 'show']);
 Route::get('heroes', [PublicHeroController::class, 'index']);
 Route::get('heroes/filters', [PublicHeroController::class, 'filters']); // antes de {slug}
 Route::get('heroes/{slug}', [PublicHeroController::class, 'show']);
+// Modo por defecto con su configuración (contador de vidas: nº de héroes)
+Route::get('game-modes/default', [PublicGameModeController::class, 'default']);
 
 /*
 | Contador de vidas (herramienta de la web pública): histórico de partidas
@@ -138,14 +140,6 @@ Route::middleware(['auth:sanctum', 'motor.admin', 'can:manage-game'])
 
         // Dashboard (estadísticas del panel)
         Route::get('dashboard/stats', DashboardStatsController::class);
-
-        // Deck attributes configurations (por id, sin publicación ni papelera)
-        Route::get('deck-attributes-configurations/for-mode/{gameMode}', [DeckAttributesConfigurationController::class, 'forMode']); // antes de {id}
-        Route::get('deck-attributes-configurations', [DeckAttributesConfigurationController::class, 'index']);
-        Route::post('deck-attributes-configurations', [DeckAttributesConfigurationController::class, 'store']);
-        Route::get('deck-attributes-configurations/{id}', [DeckAttributesConfigurationController::class, 'show']);
-        Route::put('deck-attributes-configurations/{id}', [DeckAttributesConfigurationController::class, 'update']);
-        Route::delete('deck-attributes-configurations/{id}', [DeckAttributesConfigurationController::class, 'destroy']);
 
         // Equipment types
         Route::get('equipment-types/options', [EquipmentTypeController::class, 'options']); // antes de {id}

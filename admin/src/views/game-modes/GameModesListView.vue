@@ -82,6 +82,9 @@ onMounted(init)
         @edit="edit(item)"
       >
         <template #badges>
+          <span v-if="item.is_default" class="chip is-success">{{
+            t('gameModes.badge.default')
+          }}</span>
           <span v-if="item.deleted_at" class="chip is-failed">{{
             t('gameModes.state.trashed')
           }}</span>
@@ -89,6 +92,14 @@ onMounted(init)
 
         <template #meta>
           <span class="game-modes__description">{{ tr(item.description) }}</span>
+          <!-- Resumen de la configuración de mazos del modo -->
+          <span>
+            {{ t('gameModes.summary.cards', { min: item.min_cards, max: item.max_cards }) }}
+            ·
+            {{ t('gameModes.summary.copies', { max: item.max_copies_per_card }) }}
+            ·
+            {{ t('gameModes.summary.heroes', { count: item.required_heroes }) }}
+          </span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -118,6 +129,29 @@ onMounted(init)
     >
       <template #meta>
         <p v-if="selected" class="manager-detail__meta">{{ tr(selected.description) }}</p>
+        <!-- Configuración de mazos del modo (sin chips en paneles) -->
+        <dl v-if="selected" class="game-modes__facts">
+          <div>
+            <dt>{{ t('gameModes.fields.minCards') }}</dt>
+            <dd>{{ selected.min_cards }}</dd>
+          </div>
+          <div>
+            <dt>{{ t('gameModes.fields.maxCards') }}</dt>
+            <dd>{{ selected.max_cards }}</dd>
+          </div>
+          <div>
+            <dt>{{ t('gameModes.fields.maxCopiesPerCard') }}</dt>
+            <dd>{{ selected.max_copies_per_card }}</dd>
+          </div>
+          <div>
+            <dt>{{ t('gameModes.fields.requiredHeroes') }}</dt>
+            <dd>{{ selected.required_heroes }}</dd>
+          </div>
+          <div>
+            <dt>{{ t('gameModes.fields.isDefault') }}</dt>
+            <dd>{{ selected.is_default ? t('common.yes') : t('common.no') }}</dd>
+          </div>
+        </dl>
       </template>
     </EntityPanel>
   </div>

@@ -59,8 +59,49 @@
   }
 }
 
+// Contenido asignado en el panel derecho del listado (listas con copias)
+.faction-decks__content {
+  margin-top: $space-3;
+
+  h4 {
+    margin: $space-3 0 $space-1;
+    font-size: $fs-13;
+    color: $text-3;
+    font-weight: $k-fw-semibold;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: grid;
+    gap: 2px;
+  }
+
+  li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: $space-2;
+    font-size: $fs-13;
+  }
+
+  &-name {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &-copies {
+    flex: none;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+}
+
 // Single editora del mazo: cabecera con límites y contadores en vivo + dos
-// paneles (cartas con copias y héroes) con buscador para añadir.
+// paneles (cartas y héroes, ambos con copias) con buscador para añadir.
 .deck-editor {
   &__bar-actions {
     display: flex;
@@ -226,19 +267,48 @@
     letter-spacing: 0.08em;
   }
 
-  // Control de copias (+/-), marcado si supera el máximo del modo
+  // Control de copias (+/- e input numérico), marcado si supera el máximo
   &__copies {
     display: inline-flex;
     align-items: center;
     gap: $space-1;
 
-    &.is-over &-value { color: $danger; }
+    &.is-over &-input { color: $danger; border-color: $danger; }
   }
 
-  &__copies-value {
-    min-width: 1.6rem;
+  &__copies-input {
+    width: 2.6rem;
+    padding: 0.1rem 0.2rem;
     text-align: center;
     font-weight: $k-fw-bold;
+    font-size: $fs-13;
+    color: $text-1;
+    border: 1px solid $border;
+    border-radius: $radius-sm;
+    background: $surface;
+    appearance: textfield;
+    -moz-appearance: textfield;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      appearance: none;
+      margin: 0;
+    }
+  }
+
+  // Asignados de una facción que ya no está en el mazo: marcados
+  &__row.is-foreign {
+    border-color: $warning;
+    background: color-mix(in srgb, $warning 6%, $surface);
+  }
+
+  &__foreign-note {
+    display: block;
+    color: $warning;
+    font-size: $fs-12;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   &__step,

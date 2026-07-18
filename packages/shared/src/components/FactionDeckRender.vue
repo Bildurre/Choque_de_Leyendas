@@ -75,11 +75,15 @@ const totals = computed(() => {
   )
 })
 
-// Héroes: nombres localizados (se tolera también un array de strings).
+// Héroes: nombre localizado + copias (se tolera también un array de strings).
 const heroes = computed(() =>
   (props.item?.heroes ?? [])
-    .map((h) => (typeof h === 'string' ? h : (h?.name ?? '')))
-    .filter(Boolean),
+    .map((h) =>
+      typeof h === 'string'
+        ? { name: h, copies: null as number | null }
+        : { name: h?.name ?? '', copies: h?.copies ?? null },
+    )
+    .filter((h) => !!h.name),
 )
 
 const cards = computed(() => (props.item?.cards ?? []).filter((c) => !!c?.name))
@@ -123,7 +127,12 @@ const cards = computed(() => (props.item?.cards ?? []).filter((c) => !!c?.name))
         <div v-if="heroes.length" class="game-deck__list">
           <h4 class="game-deck__list-title">{{ t('heroes') }}</h4>
           <ul>
-            <li v-for="(hero, i) in heroes" :key="i">{{ hero }}</li>
+            <li v-for="(hero, i) in heroes" :key="i">
+              {{ hero.name }}
+              <b v-if="hero.copies && hero.copies > 1" class="game-deck__copies"
+                >x{{ hero.copies }}</b
+              >
+            </li>
           </ul>
         </div>
         <div v-if="cards.length" class="game-deck__list game-deck__list--cards">
