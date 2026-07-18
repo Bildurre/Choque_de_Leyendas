@@ -158,6 +158,14 @@ const abilityTypesLine = computed(() => {
       </section>
 
       <footer class="game-card__footer">
+        <!-- Logo del gestor de iconos (slug "faerie", como el hada del viejo):
+             si no está subido no se pinta nada, sin hueco. -->
+        <img
+          v-if="item.icons.faerie"
+          class="game-card__footer-logo"
+          :src="item.icons.faerie"
+          alt=""
+        />
         <span class="game-card__footer-title">{{ t('gameTitle') }}:</span>
         <span class="game-card__footer-subtitle">{{ t('gameSubtitle') }}</span>
       </footer>

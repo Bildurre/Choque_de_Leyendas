@@ -239,6 +239,7 @@ class Card extends Model implements HasMedia, PreviewableContract
                 'physical', 'magical', 'area',
                 'dice-red', 'dice-green', 'dice-blue',
                 'hands-1', 'hands-2',
+                'faerie',
             ]),
             'cost' => $this->cost,
             'cost_parsed' => $this->parsed_cost,
