@@ -19,7 +19,8 @@ class HeroController extends Controller
     public function index(Request $request)
     {
         $heroes = Hero::query()
-            ->with(['faction', 'heroRace', 'heroClass'])
+            // Con habilidades: el panel derecho las pinta junto a la pasiva.
+            ->with($this->relations())
             ->filter($request->only('search', 'status'))
             // Filtros del listado (selects junto a la búsqueda).
             ->when(
@@ -77,7 +78,7 @@ class HeroController extends Controller
 
     public function show(string $slug)
     {
-        $hero = Hero::with(['faction', 'heroRace', 'heroClass', 'heroAbilities'])
+        $hero = Hero::with($this->relations())
             ->whereSlug($slug)
             ->firstOrFail();
 
@@ -205,9 +206,23 @@ class HeroController extends Controller
         $hero->heroAbilities()->sync($payload);
     }
 
+    /** Relaciones que pinta el admin (Resource con whenLoaded). */
+    protected function relations(): array
+    {
+        return [
+            'faction',
+            'heroRace',
+            // Con la superclase (el single la muestra) y la pasiva de clase.
+            'heroClass.heroSuperclass',
+            // Con su tipado: rango y subtipo de las habilidades activas.
+            'heroAbilities.attackRange',
+            'heroAbilities.attackSubtype',
+        ];
+    }
+
     /** El héroe con todo lo que pinta el admin tras guardar. */
     protected function loaded(Hero $hero): Hero
     {
-        return $hero->load(['faction', 'heroRace', 'heroClass', 'heroAbilities']);
+        return $hero->load($this->relations());
     }
 }

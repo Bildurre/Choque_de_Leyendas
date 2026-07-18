@@ -61,34 +61,6 @@
     color: $text-2;
   }
 
-  // Habilidad de héroe otorgada: cabecera (coste + nombre + tipado en
-  // badges) y descripción, como el bloque del render de la carta.
-  &__ability {
-    margin: 0 0 $space-4;
-    padding: $space-3;
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    background: $surface-2;
-
-    &-header {
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: $space-2;
-      margin: 0 0 $space-2;
-    }
-
-    &-name {
-      font-weight: $k-fw-bold;
-    }
-  }
-
-  &__restriction {
-    margin: $space-3 0 $space-2;
-    font-size: $fs-14;
-    color: $text-2;
-  }
-
   &__quote {
     margin: $space-4 0 0;
     padding-left: $space-4;

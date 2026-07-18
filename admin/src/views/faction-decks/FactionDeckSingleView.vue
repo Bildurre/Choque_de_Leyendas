@@ -311,14 +311,18 @@ onBeforeUnmount(() => {
         </div>
         <div>
           <h1>{{ tr(deck.name) }}</h1>
-          <p class="deck-editor__chips">
-            <span v-if="deck.is_published" class="chip is-ok">{{
+          <!-- Sin chips en los singles (regla transversal): texto coloreado -->
+          <p class="deck-editor__meta-line">
+            <span v-if="deck.is_published" class="deck-editor__state is-published">{{
               t('factionDecks.state.published')
             }}</span>
-            <span v-else class="chip">{{ t('factionDecks.state.draft') }}</span>
-            <span v-if="deck.game_mode" class="chip">{{ tr(deck.game_mode.name) }}</span>
-            <span v-for="faction in deck.factions ?? []" :key="faction.id" class="chip">
-              <span class="swatch" :style="{ background: faction.color || 'transparent' }" />
+            <span v-else class="deck-editor__state">{{ t('factionDecks.state.draft') }}</span>
+            <span v-if="deck.game_mode">{{ tr(deck.game_mode.name) }}</span>
+            <span
+              v-for="faction in deck.factions ?? []"
+              :key="faction.id"
+              :style="faction.color ? { color: faction.color } : undefined"
+            >
               {{ tr(faction.name) }}
             </span>
           </p>

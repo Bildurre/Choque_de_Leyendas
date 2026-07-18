@@ -19,6 +19,45 @@
   }
 }
 
+// Badge del color identitario en la tarjeta del listado: chip RELLENO con
+// el propio color (las badges solo viven en las cards; el texto negro o
+// blanco según el text_is_dark calculado en servidor).
+.faction-color-chip {
+  background: var(--c, transparent);
+  border-color: color-mix(in srgb, var(--c, transparent) 60%, $border);
+  color: #fff;
+
+  &.is-dark-text { color: #1a1a1a; }
+}
+
+// Panel derecho del listado: lore + cantidades (texto plano, sin chips).
+.factions {
+  &__panel-lore {
+    margin: $space-3 0 0;
+    font-size: 0.85rem;
+    color: $text-2;
+  }
+
+  &__panel-counts {
+    list-style: none;
+    margin: $space-3 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    font-size: 0.85rem;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      gap: $space-2;
+      color: $text-2;
+
+      strong { font-weight: $k-fw-medium; }
+    }
+  }
+}
+
 // Muestra del color identitario (meta de tarjeta, panel y single).
 .faction-swatch {
   display: inline-block;
@@ -30,45 +69,42 @@
   border: 1px solid $border;
 }
 
-// Ficha de la facción en el single: color de fondo + icono + cita épica.
-// El modificador --dark-text refleja el text_is_dark calculado en servidor.
-.faction-sheet {
-  width: min(280px, 100%);
-  border-radius: $radius-lg;
-  border: 1px solid $border;
-  padding: $space-5;
-  text-align: center;
-  background: color-mix(in srgb, var(--c, transparent) 82%, $surface-2);
-  color: #fff;
-
-  &--dark-text { color: #1a1a1a; }
-
+// Detalle de facción (single): la imagen subida tal cual, en un marco solo
+// con borde (mismo criterio que los info-blocks), y la cita del lore.
+.faction-single {
   &__art {
-    width: 96px;
-    height: 96px;
-    margin: 0 auto $space-3;
+    width: 250px;
+    max-width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
+    padding: $space-4;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    img { width: 100%; height: 100%; object-fit: contain; }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
 
   &__mono {
-    font-size: 2.6rem;
+    font-size: 3rem;
     font-weight: $k-fw-bold;
-  }
-
-  &__title {
-    margin: 0 0 $space-3;
-    font-size: $fs-18;
+    color: $text-2;
   }
 
   &__quote {
-    margin: 0;
-    padding-top: $space-3;
-    border-top: 1px solid color-mix(in srgb, currentColor 25%, transparent);
+    margin: $space-4 0 0;
+    padding-left: $space-4;
+    border-left: 3px solid $border;
     font-style: italic;
-    font-size: $fs-13;
+    color: $text-2;
   }
+
+  // Las tiles de estadísticas respiran antes de las gráficas.
+  .dashboard__tiles { margin-bottom: $space-4; }
 }
+

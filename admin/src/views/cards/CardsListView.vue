@@ -10,6 +10,8 @@ import CardFormModal from '@/components/cards/CardFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
 import CostDice from '@/components/game/CostDice.vue'
+import AttackLine from '@/components/game/AttackLine.vue'
+import CardEffect from '@/components/cards/CardEffect.vue'
 
 // Cartas: entidad completa con slug, single, publicación y previews PNG.
 // El listado filtra por facción y tipo con selects en el panel derecho
@@ -78,6 +80,11 @@ function typeLine(item: Card): string {
   ]
   return parts.filter(Boolean).join(' · ')
 }
+/** La carta tiene algo que pintar en la sección de efecto del panel. */
+function hasEffectContent(item: Card): boolean {
+  return tr(item.effect) !== '—' || tr(item.restriction) !== '—' || !!item.hero_ability
+}
+
 const cardTypeOptions = computed(() => [
   { value: '', label: t('cards.filters.allTypes') },
   ...cardTypes.value.map((ct) => ({ value: String(ct.id), label: tr(ct.name) })),
@@ -149,21 +156,38 @@ onMounted(async () => {
           </button>
         </template>
 
+        <!-- Sin badge de estado (los tabs ya separan): el tipado completo en
+             badges — facción (teñida con su color), tipo, subtipo, equipo,
+             manos y única (ámbar) -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{ t('cards.state.trashed') }}</span>
-          <span v-else-if="item.is_published" class="chip is-ok">{{
-            t('cards.state.published')
+          <span
+            class="chip"
+            :style="item.faction?.color ? { color: item.faction.color } : undefined"
+            >{{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}</span
+          >
+          <span v-if="item.card_type" class="chip">{{ tr(item.card_type.name) }}</span>
+          <span v-if="item.card_subtype" class="chip">{{ tr(item.card_subtype.name) }}</span>
+          <span v-if="item.equipment_type" class="chip">{{ tr(item.equipment_type.name) }}</span>
+          <span v-if="item.equipment_subtype" class="chip">{{
+            tr(item.equipment_subtype.name)
           }}</span>
-          <span v-else class="chip">{{ t('cards.state.draft') }}</span>
-          <!-- Carta única: badge propia (ámbar) -->
+          <span v-if="item.hands" class="chip">{{
+            t(item.hands > 1 ? 'cards.fields.twoHands' : 'cards.fields.oneHand')
+          }}</span>
           <span v-if="item.is_unique" class="chip is-unique">{{ t('cards.state.unique') }}</span>
         </template>
 
-        <!-- Coste DELANTE de la línea de tipado -->
+        <!-- Coste + línea de ataque + marca de habilidad de héroe otorgada -->
         <template #meta>
           <span v-if="item.cost"><CostDice :cost="item.cost" /></span>
-          <span v-if="typeLine(item)">{{ typeLine(item) }} ·</span>
-          <span>{{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}</span>
+          <AttackLine
+            v-if="item.attack_range || item.attack_type || item.attack_subtype"
+            :range="item.attack_range"
+            :type="item.attack_type"
+            :subtype="item.attack_subtype"
+            :area="item.area"
+          />
+          <span v-if="item.hero_ability_id">{{ t('cards.fields.withHeroAbility') }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -209,19 +233,38 @@ onMounted(async () => {
       </template>
 
       <template #meta>
-        <!-- Coste DELANTE del tipado; única dentro del tipado (coloreada) -->
+        <!-- Coste DELANTE del tipado; única DENTRO del tipado como texto
+             coloreado (sin chips en el panel, regla transversal) -->
         <p v-if="selected" class="manager-detail__meta card-panel-meta">
           <span v-if="selected.cost"><CostDice :cost="selected.cost" /></span>
           <span>{{ typeLine(selected) || '—' }}</span>
-          <span v-if="selected.is_unique" class="chip is-unique">{{
-            t('cards.state.unique')
-          }}</span>
+          <span v-if="selected.is_unique" class="tinted-unique">{{ t('cards.state.unique') }}</span>
+        </p>
+        <!-- Línea de ataque, si corresponde: rango-tipo-subtipo (+ área) -->
+        <p
+          v-if="
+            selected && (selected.attack_range || selected.attack_type || selected.attack_subtype)
+          "
+          class="manager-detail__meta"
+        >
+          <AttackLine
+            :range="selected.attack_range"
+            :type="selected.attack_type"
+            :subtype="selected.attack_subtype"
+            :area="selected.area"
+          />
         </p>
         <p v-if="selected" class="manager-detail__meta">
           <span>{{
             selected.faction ? tr(selected.faction.name) : t('cards.fields.noFaction')
           }}</span>
         </p>
+
+        <!-- Efecto (con la habilidad de héroe integrada), sobre las previews -->
+        <template v-if="selected && hasEffectContent(selected)">
+          <h4 class="cards__panel-title">{{ t('cards.sections.effects') }}</h4>
+          <CardEffect :card="selected" />
+        </template>
       </template>
     </EntityPanel>
   </div>

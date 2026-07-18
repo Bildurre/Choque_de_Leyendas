@@ -21,7 +21,10 @@ class FactionResource extends JsonResource
             'image' => $this->imageUrl(),
             'previews' => $this->previewUrls(),
             'is_published' => $this->is_published,
-            // TODO: heroes/cards con whenLoaded cuando existan sus clusters.
+            // Cantidades (withCount): el panel derecho del listado las pinta.
+            'heroes_count' => $this->whenCounted('heroes'),
+            'cards_count' => $this->whenCounted('cards'),
+            'faction_decks_count' => $this->whenCounted('factionDecks'),
             'deleted_at' => $this->deleted_at,
         ];
     }

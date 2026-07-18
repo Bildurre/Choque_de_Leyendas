@@ -578,6 +578,23 @@
       "restored": "Faction restored",
       "forceDeleted": "Faction permanently deleted",
       "saveError": "Could not save."
+    },
+    "sections": {
+      "basic": "Information",
+      "lore": "Lore",
+      "stats": "Statistics"
+    },
+    "counts": {
+      "heroes": "Heroes",
+      "cards": "Cards",
+      "decks": "Decks"
+    },
+    "stats": {
+      "cardsByType": "Cards by type",
+      "costCurve": "Cost curve (dice)",
+      "heroesByClass": "Heroes by class",
+      "heroesBySuperclass": "Heroes by superclass",
+      "decksByMode": "Decks by game mode"
     }
   },
   "counters": {
@@ -653,7 +670,8 @@
       "attributes": "Attributes",
       "passive": "Passive ability",
       "abilities": "Active abilities",
-      "lore": "Lore"
+      "lore": "Lore",
+      "classPassive": "Class passive"
     },
     "filters": {
       "allFactions": "All factions",
@@ -833,7 +851,9 @@
     "sections": {
       "basic": "Basic information",
       "effects": "Effects",
-      "lore": "Lore"
+      "lore": "Lore",
+      "details": "Details",
+      "attack": "Attack"
     },
     "fields": {
       "name": "Name",
@@ -870,7 +890,8 @@
       "effect": "Effect",
       "restriction": "Restriction",
       "loreText": "Lore text",
-      "epicQuote": "Epic quote"
+      "epicQuote": "Epic quote",
+      "withHeroAbility": "With hero ability"
     },
     "attackTypes": {
       "physical": "Physical",

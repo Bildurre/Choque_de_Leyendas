@@ -11,9 +11,16 @@ import { useLocalesStore } from '@/stores/locales'
 import { usePageCrumb } from '@/composables/usePageCrumb'
 import type { Card } from '@juego/shared'
 import CardFormModal from '@/components/cards/CardFormModal.vue'
+import CardEffect from '@/components/cards/CardEffect.vue'
 import PreviewPanel from '@/components/previews/PreviewPanel.vue'
+import InfoBlock from '@/components/InfoBlock.vue'
 import CostDice from '@/components/game/CostDice.vue'
+import AttackLine from '@/components/game/AttackLine.vue'
 
+// Single de carta en secciones info-block (borde sin fondo): detalles de la
+// carta y, si corresponde, del ataque — texto plano o coloreado, sin chips
+// (regla transversal). El efecto integra la habilidad de héroe otorgada,
+// como en la preview (CardEffect).
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -32,44 +39,21 @@ function tr(obj: Record<string, string> | null | undefined) {
 }
 const slug = computed(() => route.params.slug as string)
 
-/** Datos de ataque como chips, en orden canónico rango → tipo → subtipo. */
-const attackChips = computed(() => {
-  if (!item.value) return []
-  const chips: string[] = []
-  if (item.value.attack_range) chips.push(tr(item.value.attack_range.name))
-  if (item.value.attack_type) chips.push(t(`cards.attackTypes.${item.value.attack_type}`))
-  if (item.value.attack_subtype) chips.push(tr(item.value.attack_subtype.name))
-  if (item.value.area) chips.push(t('cards.fields.areaChip'))
-  return chips
-})
+/** La carta lleva línea de ataque (rango, tipo o subtipo). */
+const hasAttack = computed(
+  () =>
+    !!item.value &&
+    !!(item.value.attack_range || item.value.attack_type || item.value.attack_subtype),
+)
 
-/**
- * Tipado como chips: tipo · subtipo · tipo de equipo · subtipo de equipo ·
- * manos (badge, no ficha). La única va aparte (chip coloreado).
- */
-const typeChips = computed(() => {
-  if (!item.value) return []
-  const chips: string[] = []
-  if (item.value.card_type) chips.push(tr(item.value.card_type.name))
-  if (item.value.card_subtype) chips.push(tr(item.value.card_subtype.name))
-  if (item.value.equipment_type) chips.push(tr(item.value.equipment_type.name))
-  if (item.value.equipment_subtype) chips.push(tr(item.value.equipment_subtype.name))
-  if (item.value.hands)
-    chips.push(t(item.value.hands > 1 ? 'cards.fields.twoHands' : 'cards.fields.oneHand'))
-  return chips
-})
-
-/** Tipado de la habilidad otorgada: rango → tipo → subtipo → área. */
-const abilityChips = computed(() => {
-  const ability = item.value?.hero_ability
-  if (!ability) return []
-  const chips: string[] = []
-  if (ability.attack_range) chips.push(tr(ability.attack_range.name))
-  if (ability.attack_type) chips.push(t(`cards.attackTypes.${ability.attack_type}`))
-  if (ability.attack_subtype) chips.push(tr(ability.attack_subtype.name))
-  if (ability.area) chips.push(t('cards.fields.areaChip'))
-  return chips
-})
+/** Hay algo que pintar en la sección de efecto (incluida la habilidad). */
+const hasEffectContent = computed(
+  () =>
+    !!item.value &&
+    (tr(item.value.effect) !== '—' ||
+      tr(item.value.restriction) !== '—' ||
+      !!item.value.hero_ability),
+)
 
 async function load() {
   loading.value = true
@@ -138,56 +122,73 @@ onBeforeUnmount(() => {
 
       <div class="single__info">
         <h1>{{ tr(item.name) }}</h1>
-        <p class="single__meta">
-          <span class="chip">{{
-            item.faction ? tr(item.faction.name) : t('cards.fields.noFaction')
-          }}</span>
-        </p>
 
-        <!-- Coste DELANTE de la línea de tipado; todo el tipado en badges
-             (manos incluidas) y la única en su chip coloreado -->
-        <p class="single__meta">
-          <CostDice v-if="item.cost" :cost="item.cost" size="medium" />
-          <span v-for="chip in typeChips" :key="chip" class="chip">{{ chip }}</span>
-          <span v-if="item.is_unique" class="chip is-unique">{{ t('cards.state.unique') }}</span>
-        </p>
+        <!-- Sin chips: texto plano, la facción coloreada y la única en ámbar -->
+        <InfoBlock :title="t('cards.sections.details')">
+          <dl class="info-list">
+            <dt>{{ t('cards.fields.faction') }}</dt>
+            <dd :style="item.faction?.color ? { color: item.faction.color } : undefined">
+              {{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}
+            </dd>
 
-        <!-- Tipado del ataque, también en badges -->
-        <p v-if="attackChips.length" class="single__meta">
-          <span v-for="chip in attackChips" :key="chip" class="chip">{{ chip }}</span>
-        </p>
+            <template v-if="item.cost">
+              <dt>{{ t('cards.fields.cost') }}</dt>
+              <dd><CostDice :cost="item.cost" size="medium" /></dd>
+            </template>
 
-        <template v-if="tr(item.effect) !== '—' || tr(item.restriction) !== '—'">
-          <h2 class="single__section">{{ t('cards.sections.effects') }}</h2>
-          <div class="rich-content" v-html="tr(item.effect)" />
-          <template v-if="tr(item.restriction) !== '—'">
-            <h3 class="card-single__restriction">{{ t('cards.fields.restriction') }}</h3>
-            <div class="rich-content" v-html="tr(item.restriction)" />
-          </template>
-        </template>
+            <template v-if="item.card_type">
+              <dt>{{ t('cards.fields.type') }}</dt>
+              <dd>{{ tr(item.card_type.name) }}</dd>
+            </template>
 
-        <!-- Habilidad de héroe otorgada: nombre + tipado + coste + descripción -->
-        <template v-if="item.hero_ability">
-          <h2 class="single__section">{{ t('cards.fields.heroAbility') }}</h2>
-          <div class="card-single__ability">
-            <p class="card-single__ability-header">
-              <CostDice
-                v-if="item.hero_ability.cost"
-                :cost="item.hero_ability.cost"
-                size="medium"
-              />
-              <strong class="card-single__ability-name">{{ tr(item.hero_ability.name) }}</strong>
-              <span v-for="chip in abilityChips" :key="chip" class="chip">{{ chip }}</span>
-            </p>
-            <div
-              v-if="tr(item.hero_ability.description) !== '—'"
-              class="rich-content"
-              v-html="tr(item.hero_ability.description)"
-            />
-          </div>
-        </template>
+            <template v-if="item.card_subtype">
+              <dt>{{ t('cards.fields.subtype') }}</dt>
+              <dd>{{ tr(item.card_subtype.name) }}</dd>
+            </template>
+
+            <template v-if="item.equipment_type">
+              <dt>{{ t('cards.fields.equipmentType') }}</dt>
+              <dd>{{ tr(item.equipment_type.name) }}</dd>
+            </template>
+
+            <template v-if="item.equipment_subtype">
+              <dt>{{ t('cards.fields.equipmentSubtype') }}</dt>
+              <dd>{{ tr(item.equipment_subtype.name) }}</dd>
+            </template>
+
+            <template v-if="item.hands">
+              <dt>{{ t('cards.fields.hands') }}</dt>
+              <dd>
+                {{ t(item.hands > 1 ? 'cards.fields.twoHands' : 'cards.fields.oneHand') }}
+              </dd>
+            </template>
+
+            <template v-if="item.is_unique">
+              <dt>{{ t('cards.fields.isUnique') }}</dt>
+              <dd>
+                <span class="tinted-unique">{{ t('cards.state.unique') }}</span>
+              </dd>
+            </template>
+          </dl>
+        </InfoBlock>
+
+        <!-- Detalles del ataque, si corresponde: rango-tipo-subtipo (+ área) -->
+        <InfoBlock v-if="hasAttack" :title="t('cards.sections.attack')">
+          <AttackLine
+            :range="item.attack_range"
+            :type="item.attack_type"
+            :subtype="item.attack_subtype"
+            :area="item.area"
+          />
+        </InfoBlock>
       </div>
     </div>
+
+    <!-- Efecto con la habilidad de héroe integrada, como en la preview -->
+    <template v-if="hasEffectContent">
+      <h2 class="single__section">{{ t('cards.sections.effects') }}</h2>
+      <CardEffect :card="item" />
+    </template>
 
     <template v-if="tr(item.lore_text) !== '—' || tr(item.epic_quote) !== '—'">
       <h2 class="single__section">{{ t('cards.sections.lore') }}</h2>

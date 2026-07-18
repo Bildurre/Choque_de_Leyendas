@@ -43,6 +43,43 @@
       strong { font-weight: $k-fw-medium; }
     }
   }
+
+  // Secciones del panel bajo los atributos: habilidades y pasiva del héroe
+  // (texto plano; sin chips en el panel, regla transversal).
+  &__panel-title {
+    margin: $space-4 0 $space-2;
+    font-size: $fs-13;
+    font-weight: $k-fw-bold;
+    color: $text-2;
+  }
+
+  &__panel-abilities {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: $space-1;
+    font-size: 0.85rem;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: $space-2;
+    }
+  }
+
+  &__panel-passive-name {
+    margin: 0 0 $space-1;
+    font-size: 0.85rem;
+    font-weight: $k-fw-semibold;
+  }
+
+  &__panel-passive {
+    font-size: 0.85rem;
+    color: $text-2;
+  }
 }
 
 // Formulario de héroe (modal grande por fieldsets, como el form del viejo).

@@ -47,6 +47,7 @@ const {
 onMounted(init)
 </script>
 
+<!-- eslint-disable vue/no-v-html -- HTML del WYSIWYG propio (sanitización en servidor) -->
 <template>
   <div class="factions">
     <div class="list-view__top">
@@ -95,21 +96,14 @@ onMounted(init)
           </button>
         </template>
 
+        <!-- Sin badge de estado (los tabs ya separan): solo la badge del
+             color identitario, teñida con el propio color de la facción -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('factions.state.trashed')
-          }}</span>
-          <span v-else-if="item.is_published" class="chip is-ok">{{
-            t('factions.state.published')
-          }}</span>
-          <span v-else class="chip">{{ t('factions.state.draft') }}</span>
-        </template>
-
-        <template #meta>
           <span
-            ><span class="faction-swatch" :style="{ background: item.color || 'transparent' }" />{{
-              item.color || '—'
-            }}</span
+            class="chip faction-color-chip"
+            :class="{ 'is-dark-text': item.text_is_dark }"
+            :style="{ '--c': item.color || 'transparent' }"
+            >{{ item.color || '—' }}</span
           >
         </template>
       </EntityCard>
@@ -143,11 +137,29 @@ onMounted(init)
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
+      <!-- Lore + cantidades de héroes, cartas y mazos (texto plano) -->
       <template #meta>
-        <p v-if="selected" class="manager-detail__meta">
-          <span class="faction-swatch" :style="{ background: selected.color || 'transparent' }" />
-          {{ selected.color || '—' }}
-        </p>
+        <template v-if="selected">
+          <div
+            v-if="tr(selected.lore_text) !== '—'"
+            class="rich-content factions__panel-lore"
+            v-html="tr(selected.lore_text)"
+          ></div>
+          <ul class="factions__panel-counts">
+            <li>
+              <strong>{{ t('factions.counts.heroes') }}</strong
+              ><span>{{ selected.heroes_count ?? 0 }}</span>
+            </li>
+            <li>
+              <strong>{{ t('factions.counts.cards') }}</strong
+              ><span>{{ selected.cards_count ?? 0 }}</span>
+            </li>
+            <li>
+              <strong>{{ t('factions.counts.decks') }}</strong
+              ><span>{{ selected.faction_decks_count ?? 0 }}</span>
+            </li>
+          </ul>
+        </template>
       </template>
     </EntityPanel>
   </div>

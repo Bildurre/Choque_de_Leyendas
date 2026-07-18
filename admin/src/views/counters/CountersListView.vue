@@ -119,15 +119,9 @@ onMounted(async () => {
           </div>
         </template>
 
+        <!-- Sin badge de estado (los tabs ya separan). Beneficio en azul
+             ($info), perjuicio en rojo (mismo código que el panel) -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('counters.state.trashed')
-          }}</span>
-          <span v-else-if="item.is_published" class="chip is-ok">{{
-            t('counters.state.published')
-          }}</span>
-          <span v-else class="chip">{{ t('counters.state.draft') }}</span>
-          <!-- Beneficio en azul ($info), perjuicio en rojo (mismo código que el panel) -->
           <span class="chip" :class="item.type === 'boon' ? 'is-info' : 'is-failed'">{{
             t(`counters.types.${item.type}`)
           }}</span>

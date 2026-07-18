@@ -1,0 +1,103 @@
+@use "tokens" as *;
+
+// Bloque de información de los singles del admin (patrón del single de héroe
+// de la app, pero SOLO con borde: sin color de fondo ni blur). Reutilizable
+// en cualquier single (héroes, facciones, cartas…) vía InfoBlock.vue.
+.info-block {
+  border: 1px solid $border;
+  border-radius: $radius-lg;
+  padding: $space-4;
+  margin: 0 0 $space-4;
+
+  &__title {
+    margin: 0 0 $space-3;
+    font-size: $fs-16;
+    line-height: $k-lh-tight;
+    color: $accent-500;
+  }
+}
+
+// Lista etiqueta/valor dentro de un info-block (texto plano o coloreado;
+// nada de chips en singles ni paneles, regla transversal).
+.info-list {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: $space-2 $space-4;
+  margin: 0;
+
+  dt {
+    font-weight: $k-fw-semibold;
+    color: $text-2;
+  }
+
+  dd {
+    margin: 0;
+    min-width: 0;
+  }
+}
+
+// Rejilla de atributos dentro de un info-block: celdas solo con borde
+// (mismo criterio que el bloque: sin fondo).
+.info-attributes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: $space-2;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: $space-2 $space-3;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+
+    strong {
+      font-size: 0.75rem;
+      font-weight: $k-fw-medium;
+      color: $text-2;
+    }
+
+    span {
+      font-size: $fs-18;
+      font-weight: $k-fw-bold;
+    }
+  }
+}
+
+// Línea de ataque en texto (AttackLine.vue): rango-tipo-subtipo (+ área)
+// con separadores finos, sin chips.
+.attack-line {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  flex-wrap: wrap;
+  font-size: $fs-13;
+  color: $text-2;
+
+  &__part + &__part::before {
+    content: "· ";
+    color: $text-3;
+    font-weight: $k-fw-regular;
+  }
+}
+
+// Texto coloreado que sustituye a los chips fuera de las cards de listado:
+// única en ámbar (el "dorado" del tema, como la rareza) y el tipo de ataque
+// con el código físico=rojo / mágico=azul del resto del admin.
+.tinted-unique {
+  color: $warning;
+  font-weight: $k-fw-semibold;
+}
+
+.tinted-physical {
+  color: $danger;
+  font-weight: $k-fw-semibold;
+}
+
+.tinted-magical {
+  color: $info;
+  font-weight: $k-fw-semibold;
+}

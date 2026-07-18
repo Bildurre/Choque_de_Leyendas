@@ -38,6 +38,46 @@
   gap: $space-1 $space-2;
 }
 
+// Efecto de una carta como en la preview (CardEffect.vue): restricción,
+// efecto y la habilidad de héroe integrada al pie, separados por filetes.
+.card-effect {
+  &__restriction {
+    font-style: italic;
+    color: $text-2;
+  }
+
+  &__rule {
+    border: 0;
+    border-top: 1px solid $border;
+    margin: $space-3 0;
+  }
+
+  &__ability-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-2;
+    flex-wrap: wrap;
+    margin: 0 0 $space-2;
+  }
+
+  &__ability-info {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+}
+
+// Título de sección del panel derecho de cartas (efecto sobre las previews).
+.cards__panel-title {
+  margin: $space-4 0 $space-2;
+  font-size: $fs-13;
+  font-weight: $k-fw-bold;
+  color: $text-2;
+}
+
 // Botón "entrar" de las tarjetas con panel derecho: texto + flecha, la única
 // acción de la tarjeta (todo lo demás vive en el panel).
 .card-enter {

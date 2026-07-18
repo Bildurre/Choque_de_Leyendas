@@ -69,7 +69,8 @@ class Hero extends Model implements HasMedia, PreviewableContract
      * completo de cada campo traducible; los campos wysiwyg (lore_text,
      * epic_quote) se buscan con su HTML tal cual — asumido y aceptable.
      */
-    protected array $searchable = ['name', 'passive_name', 'passive_description', 'lore_text', 'epic_quote'];
+    // Solo campos "de juego": el lore y la cita quedan fuera de la búsqueda.
+    protected array $searchable = ['name', 'passive_name', 'passive_description'];
 
     protected function casts(): array
     {

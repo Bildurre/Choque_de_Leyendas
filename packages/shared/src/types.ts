@@ -102,6 +102,10 @@ export interface Faction extends EntityBase {
   color: string
   /** Computado en servidor por luminancia YIQ del color. */
   text_is_dark: boolean
+  /** Cantidades (withCount) que pinta el panel derecho del listado. */
+  heroes_count?: number
+  cards_count?: number
+  faction_decks_count?: number
 }
 
 /** Opción del selector de facciones (endpoint options: id + name + color). */
@@ -148,6 +152,9 @@ export interface HeroAbilityRef {
   description: Translations
   cost: string
   attack_type: 'physical' | 'magical' | null
+  /** Rango y subtipo en mínimo (la línea rango-tipo-subtipo del single). */
+  attack_range?: TaxonomyOption | null
+  attack_subtype?: TaxonomyOption | null
   area: boolean
   position: number
 }
@@ -168,6 +175,8 @@ export interface Hero extends EntityBase {
   /** Nombres de raza/clase YA resueltos con el género del héroe, por locale. */
   race_display?: Translations
   class_display?: Translations
+  /** Superclase (vía la clase) también resuelta con el género, por locale. */
+  superclass_display?: Translations | null
   gender: 'male' | 'female'
   agility: number
   mental: number

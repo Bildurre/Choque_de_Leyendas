@@ -578,6 +578,23 @@
       "restored": "Fakzioa berreskuratu da",
       "forceDeleted": "Fakzioa betiko ezabatu da",
       "saveError": "Ezin izan da gorde."
+    },
+    "sections": {
+      "basic": "Informazioa",
+      "lore": "Kondaira",
+      "stats": "Estatistikak"
+    },
+    "counts": {
+      "heroes": "Heroiak",
+      "cards": "Kartak",
+      "decks": "Sortak"
+    },
+    "stats": {
+      "cardsByType": "Kartak motaka",
+      "costCurve": "Kostu-kurba (dadoak)",
+      "heroesByClass": "Heroiak klaseka",
+      "heroesBySuperclass": "Heroiak superklaseka",
+      "decksByMode": "Sortak joko moduka"
     }
   },
   "counters": {
@@ -653,7 +670,8 @@
       "attributes": "Atributuak",
       "passive": "Gaitasun pasiboa",
       "abilities": "Gaitasun aktiboak",
-      "lore": "Kondaira"
+      "lore": "Kondaira",
+      "classPassive": "Klasearen pasiboa"
     },
     "filters": {
       "allFactions": "Fakzio guztiak",
@@ -833,7 +851,9 @@
     "sections": {
       "basic": "Oinarrizko informazioa",
       "effects": "Efektuak",
-      "lore": "Kondaira"
+      "lore": "Kondaira",
+      "details": "Xehetasunak",
+      "attack": "Erasoa"
     },
     "fields": {
       "name": "Izena",
@@ -870,7 +890,8 @@
       "effect": "Efektua",
       "restriction": "Murrizketa",
       "loreText": "Kondaira testua",
-      "epicQuote": "Aipu epikoa"
+      "epicQuote": "Aipu epikoa",
+      "withHeroAbility": "Heroi-gaitasunarekin"
     },
     "attackTypes": {
       "physical": "Fisikoa",

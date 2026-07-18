@@ -509,6 +509,23 @@
       "restored": "Facción restaurada",
       "forceDeleted": "Facción borrada definitivamente",
       "saveError": "No se pudo guardar."
+    },
+    "sections": {
+      "basic": "Información",
+      "lore": "Trasfondo",
+      "stats": "Estadísticas"
+    },
+    "counts": {
+      "heroes": "Héroes",
+      "cards": "Cartas",
+      "decks": "Mazos"
+    },
+    "stats": {
+      "cardsByType": "Cartas por tipo",
+      "costCurve": "Curva de coste (dados)",
+      "heroesByClass": "Héroes por clase",
+      "heroesBySuperclass": "Héroes por superclase",
+      "decksByMode": "Mazos por modo de juego"
     }
   },
   "counters": {
@@ -584,7 +601,8 @@
       "attributes": "Atributos",
       "passive": "Habilidad pasiva",
       "abilities": "Habilidades activas",
-      "lore": "Trasfondo"
+      "lore": "Trasfondo",
+      "classPassive": "Pasiva de clase"
     },
     "filters": {
       "allFactions": "Todas las facciones",
@@ -764,7 +782,9 @@
     "sections": {
       "basic": "Información básica",
       "effects": "Efectos",
-      "lore": "Trasfondo"
+      "lore": "Trasfondo",
+      "details": "Detalles",
+      "attack": "Ataque"
     },
     "fields": {
       "name": "Nombre",
@@ -801,7 +821,8 @@
       "effect": "Efecto",
       "restriction": "Restricción",
       "loreText": "Texto de trasfondo",
-      "epicQuote": "Cita épica"
+      "epicQuote": "Cita épica",
+      "withHeroAbility": "Con habilidad de héroe"
     },
     "attackTypes": {
       "physical": "Físico",

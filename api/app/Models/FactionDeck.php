@@ -45,7 +45,8 @@ class FactionDeck extends Model implements HasMedia, PreviewableContract
      * completo de cada campo traducible; los campos wysiwyg (description,
      * epic_quote) se buscan con su HTML tal cual — asumido y aceptable.
      */
-    protected array $searchable = ['name', 'description', 'epic_quote'];
+    // Solo campos "de juego": la cita épica queda fuera de la búsqueda.
+    protected array $searchable = ['name', 'description'];
 
     protected function casts(): array
     {

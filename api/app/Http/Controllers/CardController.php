@@ -21,8 +21,9 @@ class CardController extends Controller
     public function index(Request $request)
     {
         $cards = Card::query()
-            // El listado pinta el tipado completo: tipo, subtipo y equipo.
-            ->with(['faction', 'cardType', 'cardSubtype', 'equipmentType', 'equipmentSubtype'])
+            // El listado pinta el tipado completo (tipo, subtipo, equipo,
+            // ataque) y el panel derecho el efecto con su habilidad otorgada.
+            ->with($this->relations())
             ->filter($request->only('search', 'status'))
             // Filtros del listado (selects junto a la búsqueda).
             ->when(

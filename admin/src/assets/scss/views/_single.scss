@@ -36,6 +36,9 @@
     flex-wrap: wrap;
   }
 
+  // Aire entre la rejilla superior y los info-blocks a todo el ancho.
+  &__layout + .info-block { margin-top: $space-6; }
+
   &__section {
     margin: $space-7 0 $space-4;
     font-size: $fs-18;

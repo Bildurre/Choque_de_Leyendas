@@ -183,6 +183,7 @@ Route::middleware(['auth:sanctum', 'motor.admin', 'can:manage-game'])
         Route::get('factions/options', [FactionController::class, 'options']); // antes de {slug}
         Route::get('factions', [FactionController::class, 'index']);
         Route::post('factions', [FactionController::class, 'store']);
+        Route::get('factions/{slug}/stats', [FactionController::class, 'stats']); // antes de {slug}
         Route::get('factions/{slug}', [FactionController::class, 'show']);
         Route::put('factions/{slug}', [FactionController::class, 'update']);
         Route::delete('factions/{slug}', [FactionController::class, 'destroy']);

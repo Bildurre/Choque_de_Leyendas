@@ -30,8 +30,8 @@ class PublicCardController extends Controller
     /**
      * Índice filtrable. Parámetros: page, per_page (24, tope 48), search
      * (multi-campo vía scopeFilter del motor: LIKE sobre el json de cada
-     * columna de $searchable — nombre, efecto, restricción, lore y cita —
-     * en cualquier locale), faction_id, card_type_id, card_subtype_id,
+     * columna de $searchable — nombre, efecto y restricción; lore y cita
+     * fuera — en cualquier locale), faction_id, card_type_id, card_subtype_id,
      * equipment_type_id, equipment_subtype_id, attack_range_id,
      * attack_subtype_id, attack_type
      * (physical|magical), area ('1'/'0'; ausente = no filtra), cost_total

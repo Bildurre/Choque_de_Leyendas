@@ -36,6 +36,13 @@ class HeroResource extends JsonResource
             // pintarlos junto al héroe; los mapas de arriba son para editar).
             'race_display' => $this->whenLoaded('heroRace', fn () => $this->heroRace->namesForGender($this->gender)),
             'class_display' => $this->whenLoaded('heroClass', fn () => $this->heroClass->namesForGender($this->gender)),
+            // Superclase (vía la clase) también resuelta con el género.
+            'superclass_display' => $this->whenLoaded(
+                'heroClass',
+                fn () => $this->heroClass->relationLoaded('heroSuperclass')
+                    ? $this->heroClass->heroSuperclass?->namesForGender($this->gender)
+                    : null,
+            ),
             'gender' => $this->gender,
             'agility' => $this->agility,
             'mental' => $this->mental,
@@ -53,6 +60,15 @@ class HeroResource extends JsonResource
                     'description' => $ability->getTranslations('description'),
                     'cost' => $ability->cost,
                     'attack_type' => $ability->attack_type,
+                    // Rango y subtipo en mínimo (la línea rango-tipo-subtipo).
+                    'attack_range' => $ability->attackRange ? [
+                        'id' => $ability->attackRange->id,
+                        'name' => $ability->attackRange->getTranslations('name'),
+                    ] : null,
+                    'attack_subtype' => $ability->attackSubtype ? [
+                        'id' => $ability->attackSubtype->id,
+                        'name' => $ability->attackSubtype->getTranslations('name'),
+                    ] : null,
                     'area' => (bool) $ability->area,
                     'position' => (int) $ability->pivot->position,
                 ],

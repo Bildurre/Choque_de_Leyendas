@@ -45,7 +45,8 @@ class Faction extends Model implements HasMedia, PreviewableContract
      * completo de cada campo traducible; los campos wysiwyg (lore_text,
      * epic_quote) se buscan con su HTML tal cual — asumido y aceptable.
      */
-    protected array $searchable = ['name', 'lore_text', 'epic_quote'];
+    // Solo campos "de juego": el lore y la cita quedan fuera de la búsqueda.
+    protected array $searchable = ['name'];
 
     protected function casts(): array
     {

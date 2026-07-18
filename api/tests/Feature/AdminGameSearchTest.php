@@ -3,8 +3,10 @@
 // Búsqueda multi-campo (`search`) de los index de admin: HasFilters del motor
 // recorre TODAS las columnas de $searchable (LIKE sobre el json traducible
 // completo, en cualquier locale). Los campos wysiwyg se buscan con su HTML
-// tal cual. Cada caso casa SOLO por un campo secundario (no por el nombre) y
-// comprueba que lo que no está en ningún campo buscable no casa.
+// tal cual. Solo entran el nombre y los campos "de juego" (efecto,
+// restricción, descripción, pasivas): el lore y la cita épica quedan FUERA
+// en todos los modelos. Cada caso casa SOLO por un campo secundario (no por
+// el nombre) y comprueba que lo que no es buscable (incluido el lore) no casa.
 
 require_once __DIR__.'/Public/Helpers.php';
 
@@ -24,6 +26,7 @@ it('busca cartas por el texto del efecto y la restricción', function () {
         'name' => ['es' => 'Beta', 'en' => 'Beta'],
         'effect' => ['es' => 'Cura dos puntos.', 'en' => 'Heals two points.'],
         'restriction' => ['es' => 'Solo héroes de la Horda.', 'en' => 'Horde heroes only.'],
+        'lore_text' => ['es' => '<p>Forjada en la fragua ancestral.</p>', 'en' => '<p>Forged in the ancient forge.</p>'],
     ]);
 
     // 'rival' solo aparece en el efecto de la primera
@@ -37,6 +40,10 @@ it('busca cartas por el texto del efecto y la restricción', function () {
     // Lo que no está en ningún campo buscable no casa
     $none = $this->actingAs($admin)->getJson('/api/admin/cards?search=grimorio')->assertOk();
     expect($none->json('data'))->toBeEmpty();
+
+    // El lore ya no es buscable: 'fragua' solo está en el trasfondo
+    $byLore = $this->actingAs($admin)->getJson('/api/admin/cards?search=fragua')->assertOk();
+    expect($byLore->json('data'))->toBeEmpty();
 });
 
 it('busca héroes por la descripción de la pasiva', function () {
@@ -46,6 +53,7 @@ it('busca héroes por la descripción de la pasiva', function () {
         'name' => ['es' => 'Aritz', 'en' => 'Aritz the Bold'],
         'passive_name' => ['es' => 'Vigilia', 'en' => 'Vigil'],
         'passive_description' => ['es' => 'Ignora las emboscadas.', 'en' => 'Ignores ambushes.'],
+        'lore_text' => ['es' => '<p>Nacido bajo un eclipse.</p>', 'en' => '<p>Born under an eclipse.</p>'],
     ]);
     publicHero(['name' => ['es' => 'Beltza', 'en' => 'Beltza']]);
 
@@ -55,6 +63,10 @@ it('busca héroes por la descripción de la pasiva', function () {
 
     $none = $this->actingAs($admin)->getJson('/api/admin/heroes?search=grimorio')->assertOk();
     expect($none->json('data'))->toBeEmpty();
+
+    // El lore ya no es buscable: 'eclipse' solo está en el trasfondo
+    $byLore = $this->actingAs($admin)->getJson('/api/admin/heroes?search=eclipse')->assertOk();
+    expect($byLore->json('data'))->toBeEmpty();
 });
 
 it('busca habilidades por la descripción', function () {
@@ -91,7 +103,7 @@ it('busca contadores por el texto del efecto', function () {
     expect($none->json('data'))->toBeEmpty();
 });
 
-it('busca facciones por el lore (HTML del wysiwyg tal cual)', function () {
+it('busca facciones solo por el nombre (el lore queda fuera)', function () {
     $admin = motorUser('admin');
 
     $volcanica = publicFaction([
@@ -100,22 +112,26 @@ it('busca facciones por el lore (HTML del wysiwyg tal cual)', function () {
     ]);
     publicFaction(['name' => ['es' => 'Horda', 'en' => 'Horde']]);
 
-    // 'volcanes' solo aparece en el lore de la primera
-    $response = $this->actingAs($admin)->getJson('/api/admin/factions?search=volcanes')->assertOk();
-    expect(array_column($response->json('data'), 'id'))->toBe([$volcanica->id]);
+    // El nombre sigue casando (locale activo)
+    $byName = $this->actingAs($admin)->getJson('/api/admin/factions?search=alianza')->assertOk();
+    expect(array_column($byName->json('data'), 'id'))->toBe([$volcanica->id]);
+
+    // El lore ya no es buscable: 'volcanes' solo está en el trasfondo
+    $byLore = $this->actingAs($admin)->getJson('/api/admin/factions?search=volcanes')->assertOk();
+    expect($byLore->json('data'))->toBeEmpty();
 
     $none = $this->actingAs($admin)->getJson('/api/admin/factions?search=grimorio')->assertOk();
     expect($none->json('data'))->toBeEmpty();
 });
 
-it('busca mazos por la descripción y la cita épica', function () {
+it('busca mazos por la descripción pero ya no por la cita épica', function () {
     $admin = motorUser('admin');
 
     $iniciacion = publicDeck([
         'name' => ['es' => 'Mazo inicial', 'en' => 'Starter deck'],
         'description' => ['es' => '<p>Pensado para aprender las reglas.</p>', 'en' => '<p>Meant for learning the rules.</p>'],
     ]);
-    $legendario = publicDeck([
+    publicDeck([
         'name' => ['es' => 'Otro mazo', 'en' => 'Other deck'],
         'epic_quote' => ['es' => 'Que tiemblen las montañas', 'en' => 'Let the mountains tremble'],
     ]);
@@ -124,9 +140,9 @@ it('busca mazos por la descripción y la cita épica', function () {
     $byDescription = $this->actingAs($admin)->getJson('/api/admin/faction-decks?search=aprender')->assertOk();
     expect(array_column($byDescription->json('data'), 'id'))->toBe([$iniciacion->id]);
 
-    // 'tiemblen' solo aparece en la cita del segundo
+    // La cita ya no es buscable: 'tiemblen' solo está en la cita del segundo
     $byQuote = $this->actingAs($admin)->getJson('/api/admin/faction-decks?search=tiemblen')->assertOk();
-    expect(array_column($byQuote->json('data'), 'id'))->toBe([$legendario->id]);
+    expect($byQuote->json('data'))->toBeEmpty();
 
     $none = $this->actingAs($admin)->getJson('/api/admin/faction-decks?search=grimorio')->assertOk();
     expect($none->json('data'))->toBeEmpty();

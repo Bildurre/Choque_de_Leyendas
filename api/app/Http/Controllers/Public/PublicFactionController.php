@@ -20,7 +20,8 @@ class PublicFactionController extends Controller
     /**
      * Índice: tarjetas de facción con contadores de publicados. `search`
      * es multi-campo vía scopeFilter del motor: LIKE sobre el json de cada
-     * columna de $searchable (nombre, lore y cita) en cualquier locale.
+     * columna de $searchable (solo el nombre; el lore y la cita quedan
+     * fuera) en cualquier locale.
      */
     public function index(Request $request)
     {

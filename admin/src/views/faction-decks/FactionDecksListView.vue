@@ -120,14 +120,8 @@ onMounted(init)
           </button>
         </template>
 
+        <!-- Sin badge de estado (los tabs ya separan): solo el modo de juego -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('factionDecks.state.trashed')
-          }}</span>
-          <span v-else-if="item.is_published" class="chip is-ok">{{
-            t('factionDecks.state.published')
-          }}</span>
-          <span v-else class="chip">{{ t('factionDecks.state.draft') }}</span>
           <span v-if="item.game_mode" class="chip">{{ tr(item.game_mode.name) }}</span>
         </template>
 

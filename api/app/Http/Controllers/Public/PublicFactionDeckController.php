@@ -23,8 +23,9 @@ class PublicFactionDeckController extends Controller
     /**
      * Índice: tarjetas de mazo con modo, facciones (color) y totales.
      * Filtros: search (multi-campo vía scopeFilter del motor: LIKE sobre
-     * el json de cada columna de $searchable — nombre, descripción y cita —
-     * en cualquier locale), game_mode_id y faction_id (mazos que incluyan
+     * el json de cada columna de $searchable — nombre y descripción; la
+     * cita queda fuera — en cualquier locale), game_mode_id y faction_id
+     * (mazos que incluyan
      * esa facción, pivot faction_deck_faction).
      */
     public function index(Request $request)

@@ -9,6 +9,7 @@ import type { Hero, HeroClassOption, Translations } from '@juego/shared'
 import HeroFormModal from '@/components/heroes/HeroFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import CostDice from '@/components/game/CostDice.vue'
 
 // Héroes: entidad completa con slug, single, publicación y previews PNG.
 // El listado filtra por facción, superclase, clase y raza con selects en
@@ -93,6 +94,11 @@ watch(
   },
 )
 
+/** El héroe seleccionado tiene pasiva propia (nombre o descripción). */
+function heroPassive(hero: Hero): boolean {
+  return tr(hero.passive_name) !== '—' || tr(hero.passive_description) !== '—'
+}
+
 async function loadFilterOptions() {
   try {
     const [factionsRes, superclassesRes, classesRes, racesRes] = await Promise.all([
@@ -115,6 +121,7 @@ onMounted(async () => {
 })
 </script>
 
+<!-- eslint-disable vue/no-v-html -- HTML del WYSIWYG propio (sanitización en servidor) -->
 <template>
   <div class="heroes">
     <div class="list-view__top">
@@ -163,18 +170,21 @@ onMounted(async () => {
           </button>
         </template>
 
+        <!-- Sin badge de estado (los tabs ya separan): facción, raza y clase.
+             La de facción va teñida con su color identitario. -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{ t('heroes.state.trashed') }}</span>
-          <span v-else-if="item.is_published" class="chip is-ok">{{
-            t('heroes.state.published')
+          <span
+            class="chip"
+            :style="item.faction?.color ? { color: item.faction.color } : undefined"
+            >{{ item.faction ? tr(item.faction.name) : t('heroes.fields.noFaction') }}</span
+          >
+          <!-- Raza y clase con el género del héroe (·_display) -->
+          <span v-if="item.hero_race" class="chip">{{
+            tr(item.race_display ?? item.hero_race.name)
           }}</span>
-          <span v-else class="chip">{{ t('heroes.state.draft') }}</span>
-        </template>
-
-        <template #meta>
-          <span>{{ item.faction ? tr(item.faction.name) : t('heroes.fields.noFaction') }}</span>
-          <!-- Nombre de clase con el género del héroe (class_display) -->
-          <span v-if="item.hero_class">· {{ tr(item.class_display ?? item.hero_class.name) }}</span>
+          <span v-if="item.hero_class" class="chip">{{
+            tr(item.class_display ?? item.hero_class.name)
+          }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -268,6 +278,28 @@ onMounted(async () => {
             ><span>{{ selected.health }}</span>
           </li>
         </ul>
+
+        <!-- Habilidades activas y pasiva DEL HÉROE (la de clase, en el single) -->
+        <template v-if="selected && selected.abilities?.length">
+          <h4 class="heroes__panel-title">{{ t('heroes.sections.abilities') }}</h4>
+          <ul class="heroes__panel-abilities">
+            <li v-for="ability in selected.abilities" :key="ability.id">
+              <span>{{ tr(ability.name) }}</span>
+              <CostDice v-if="ability.cost" :cost="ability.cost" />
+            </li>
+          </ul>
+        </template>
+        <template v-if="selected && heroPassive(selected)">
+          <h4 class="heroes__panel-title">{{ t('heroes.sections.passive') }}</h4>
+          <p v-if="tr(selected.passive_name) !== '—'" class="heroes__panel-passive-name">
+            {{ tr(selected.passive_name) }}
+          </p>
+          <div
+            v-if="tr(selected.passive_description) !== '—'"
+            class="rich-content heroes__panel-passive"
+            v-html="tr(selected.passive_description)"
+          ></div>
+        </template>
       </template>
     </EntityPanel>
   </div>
