@@ -26,7 +26,6 @@ use App\Http\Controllers\Public\PublicFactionDeckController;
 use App\Http\Controllers\Public\PublicHeroController;
 use App\Models\Card;
 use App\Models\Hero;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
