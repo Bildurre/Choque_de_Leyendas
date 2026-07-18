@@ -185,23 +185,23 @@
     margin-top: auto;
     display: flex;
     justify-content: flex-end;
-    align-items: baseline;
-    gap: 2%;
+    align-items: flex-end;
+    gap: 1.5%;
+    height: 16cqw;
   }
 
   &__attr {
     position: relative;
-    width: 8%;
+    height: 8cqw;
     aspect-ratio: 1;
-    transform: translateY(8%);
-
+    transform: translateY(1cqw);
     // El icono (real o fallback) baja un 25% de su propio alto dentro de su
     // caja; el valor se recentra sobre esa nueva posición más abajo (75% en
     // vez del 50% de siempre: top:50% + este 25% = top:75%).
     > img {
       width: 100%;
-      height: 100%;
-      transform: translateY(25%);
+      height: auto;
+      aspect-ratio: 1;
     }
 
     // Fallback sin icono de atributo subido: círculo plano.
@@ -211,7 +211,6 @@
       border-radius: 50%;
       background: #ffffffbd;
       border: .3cqw solid #000;
-      transform: translateY(25%);
     }
 
     // Mismo box y mismo translateY(25%) que el icono/círculo (arriba): al
@@ -224,14 +223,13 @@
     &-value {
       position: absolute;
       inset: 0;
-      transform: translateY(25%);
       display: flex;
       align-items: center;
       justify-content: center;
       line-height: 1;
       text-align: center;
       font-weight: 900; // ya es el tope de la escala (100-900)
-      font-size: 5.6cqw; // antes 4.8cqw: un poco más grandes
+      font-size: 4.5cqw; // antes 4.8cqw: un poco más grandes
       // Weight 900 en una fuente de sistema sin ese corte real se queda en
       // el 700 disponible: un stroke fino del mismo color de relleno
       // engorda el trazo un poco más ("un poco más bold").
@@ -251,7 +249,9 @@
 
     // La vida: círculo grande al final de la fila (mismo cuerpo de texto).
     &--health {
-      width: 15%;
+      width: 12cqw;
+      height: 12cqw;
+      transform: translateY(1.5cqw);
     }
   }
 
@@ -298,7 +298,7 @@
 
     // Iconos en línea del WYSIWYG, a la altura del texto.
     img {
-      height: 1.3em;
+      height: 1.1em;
       width: auto;
       aspect-ratio: 1;
       vertical-align: middle;
@@ -336,14 +336,15 @@
 
   // Banda diagonal de info (única + tipos de ataque) sobre la caja.
   &__info {
+    font-family: var(--font-headings, inherit);
     position: absolute;
     bottom: 100%;
     left: -1px;
     width: calc(100% + 2px);
-    height: 12cqw;
+    height: 8cqw;
     padding: 0 2.4cqw;
     background-color: color-mix(in srgb, var(--fc) 80%, transparent);
-    clip-path: polygon(0 30%, 100% 0, 100% 100%, 0 100%);
+    clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 100%);
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -389,8 +390,8 @@
   }
 
   &__active {
-    font-size: 3.1cqw;
-    line-height: 1.2;
+    font-size: 3cqw;
+    line-height: 1.1;
     padding: 1%;
 
     &-header {
@@ -401,29 +402,31 @@
     &-info {
       margin: auto 0;
       display: flex;
-      gap: 2.4cqw;
+      gap: 2cqw;
       align-items: baseline;
     }
 
     &-name {
-      font-size: 3.4cqw;
+      font-size: 3.2cqw;
       font-weight: 700;
     }
 
     &-types {
-      font-size: 2.9cqw;
+      font-size: 2.7cqw;
       font-style: italic;
     }
 
     &-cost {
       display: flex;
-      gap: .4cqw;
 
       .game-card__die {
-        width: 5.3cqw;
-        height: 5.3cqw;
+        width: 4.5cqw;
+        height: 4.5cqw;
 
-        i { font-size: 3cqw; }
+        img {
+          width: 100%;
+          height: 100%;
+        }
       }
     }
   }
@@ -432,16 +435,16 @@
   // su propio borde transparente; con gap se veía como un hueco doble entre
   // ellos) y un escalón más grandes. Solo en la preview de héroe: la carta
   // reutiliza __active-cost para la habilidad otorgada y ahí no se toca.
-  &--hero &__active-cost {
-    gap: 0;
+  // &--hero &__active-cost {
+  //   gap: 0;
 
-    .game-card__die {
-      width: 6cqw; // antes 5.3cqw (+13%, "un poco" más grandes)
-      height: 6cqw;
+  //   .game-card__die {
+  //     width: 6cqw; // antes 5.3cqw (+13%, "un poco" más grandes)
+  //     height: 6cqw;
 
-      i { font-size: 3.4cqw; } // antes 3cqw, a juego con el dado
-    }
-  }
+  //     i { font-size: 3.4cqw; } // antes 3cqw, a juego con el dado
+  //   }
+  // }
 
   // --- Pie con el título del juego ---
 
