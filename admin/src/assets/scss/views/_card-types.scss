@@ -1,11 +1,3 @@
-@use "tokens" as *;
-
-// Listado de tipos de carta: los flags (permite subtipos / es equipo) se
-// muestran como chips; en el panel derecho van en una fila propia.
-.card-types {
-  &__flags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: $space-2;
-  }
-}
+// Listado de tipos de carta: los flags (permite subtipos / es equipo) van
+// como badges en la card; en el panel derecho, en texto plano (solo los
+// activos). Sin estilos propios: todo lo cubren chip y manager-detail__meta.

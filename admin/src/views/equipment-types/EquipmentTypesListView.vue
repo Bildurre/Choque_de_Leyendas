@@ -81,10 +81,8 @@ onMounted(init)
         @view="select(item)"
         @edit="edit(item)"
       >
+        <!-- Sin badge de estado (los tabs ya separan): solo la marca de manos -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('equipmentTypes.state.trashed')
-          }}</span>
           <span v-if="item.uses_hands" class="chip equipment-types__hands">{{
             t('equipmentTypes.fields.usesHands')
           }}</span>
@@ -121,9 +119,13 @@ onMounted(init)
       @force-delete="selected && forceDelete(selected)"
     >
       <template #meta>
+        <!-- Solo si lleva manos (si no lleva, no aparece nada de manos) -->
+        <p v-if="selected?.uses_hands" class="manager-detail__meta">
+          {{ t('equipmentTypes.fields.usesHands') }}
+        </p>
+        <!-- Cuántos subtipos cuelgan del tipo (withCount del index) -->
         <p v-if="selected" class="manager-detail__meta">
-          {{ t('equipmentTypes.fields.usesHands') }}:
-          {{ selected.uses_hands ? t('common.yes') : t('common.no') }}
+          {{ t('equipmentTypes.counts.subtypes') }}: {{ selected.subtypes_count ?? 0 }}
         </p>
       </template>
     </EntityPanel>

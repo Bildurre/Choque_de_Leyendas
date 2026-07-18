@@ -10,6 +10,7 @@ import HeroAbilityFormModal from '@/components/hero-abilities/HeroAbilityFormMod
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
 import CostDice from '@/components/game/CostDice.vue'
+import AttackLine from '@/components/game/AttackLine.vue'
 
 // Habilidades activas: sin single ni publicación (tabs all/trashed); la API
 // resuelve por id y la edición rellena desde el ítem del listado. El listado
@@ -98,14 +99,22 @@ const costOptions = computed(() => [
   })),
 ])
 
-/** Tipado completo en orden canónico: rango · tipo · subtipo · área. */
-function typing(a: HeroAbility): string {
-  const parts: string[] = []
-  if (a.attack_range) parts.push(tr(a.attack_range.name))
-  if (a.attack_type) parts.push(t(`heroAbilities.attackTypes.${a.attack_type}`))
-  if (a.attack_subtype) parts.push(tr(a.attack_subtype.name))
-  if (a.area) parts.push(t('heroAbilities.fields.area'))
-  return parts.join(' · ')
+/**
+ * Extracto del efecto para el meta de la card: el HTML del WYSIWYG pasa a
+ * texto plano (DOMParser: no ejecuta ni carga nada) y se trunca a ~90
+ * caracteres cortando en límite de palabra (si el corte cae razonablemente
+ * cerca) con puntos suspensivos.
+ */
+function excerpt(item: HeroAbility, max = 90): string {
+  const html = tr(item.description)
+  if (html === '—') return ''
+  const text = (new DOMParser().parseFromString(html, 'text/html').body.textContent || '')
+    .replace(/\s+/g, ' ')
+    .trim()
+  if (text.length <= max) return text
+  const cut = text.slice(0, max + 1)
+  const lastSpace = cut.lastIndexOf(' ')
+  return `${cut.slice(0, lastSpace > max * 0.6 ? lastSpace : max).trimEnd()}…`
 }
 
 onMounted(() => {
@@ -151,15 +160,22 @@ onMounted(() => {
         @view="select(item)"
         @edit="edit(item)"
       >
+        <!-- Sin badge de estado (los tabs ya separan): el tipado completo en
+             badges, SIEMPRE en orden rango-tipo-subtipo (+ área); el tipo,
+             coloreado (físico rojo / mágico azul) -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('heroAbilities.state.trashed')
+          <span v-if="item.attack_range" class="chip">{{ tr(item.attack_range.name) }}</span>
+          <span v-if="item.attack_type" class="chip" :class="`is-${item.attack_type}`">{{
+            t(`heroAbilities.attackTypes.${item.attack_type}`)
           }}</span>
+          <span v-if="item.attack_subtype" class="chip">{{ tr(item.attack_subtype.name) }}</span>
+          <span v-if="item.area" class="chip">{{ t('heroAbilities.fields.area') }}</span>
         </template>
 
+        <!-- Meta: coste (dados) + extracto del efecto en texto plano -->
         <template #meta>
           <CostDice v-if="item.cost" :cost="item.cost" />
-          <span v-if="typing(item)">{{ typing(item) }}</span>
+          <span v-if="excerpt(item)" class="hero-abilities__excerpt">{{ excerpt(item) }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -219,10 +235,22 @@ onMounted(() => {
       </template>
 
       <template #meta>
-        <!-- Tipado completo en orden canónico: rango · tipo · subtipo · área -->
+        <!-- Tipado completo en orden canónico rango-tipo-subtipo (+ área),
+             con el tipo coloreado (AttackLine, sin chips en el panel) -->
         <p v-if="selected" class="manager-detail__meta hero-abilities__panel-meta">
           <CostDice v-if="selected.cost" :cost="selected.cost" />
-          <span v-if="typing(selected)">{{ typing(selected) }}</span>
+          <AttackLine
+            v-if="
+              selected.attack_range ||
+              selected.attack_type ||
+              selected.attack_subtype ||
+              selected.area
+            "
+            :range="selected.attack_range"
+            :type="selected.attack_type"
+            :subtype="selected.attack_subtype"
+            :area="selected.area"
+          />
         </p>
         <!-- HTML del WYSIWYG propio (saneado en origen) -->
         <div

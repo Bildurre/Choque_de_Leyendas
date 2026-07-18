@@ -82,22 +82,14 @@ onMounted(init)
         @view="select(item)"
         @edit="edit(item)"
       >
+        <!-- Sin badge de estado (los tabs ya separan): la superclase (si la
+             tiene) + los flags activos, en badges neutros -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('cardTypes.state.trashed')
-          }}</span>
-          <span v-if="item.allows_subtypes" class="chip is-ok">{{
+          <span v-if="item.hero_superclass" class="chip">{{ tr(item.hero_superclass.name) }}</span>
+          <span v-if="item.allows_subtypes" class="chip">{{
             t('cardTypes.fields.allowsSubtypes')
           }}</span>
-          <span v-if="item.is_equipment" class="chip is-ok">{{
-            t('cardTypes.fields.isEquipment')
-          }}</span>
-        </template>
-
-        <template #meta>
-          <span>{{
-            item.hero_superclass ? tr(item.hero_superclass.name) : t('cardTypes.noSuperclass')
-          }}</span>
+          <span v-if="item.is_equipment" class="chip">{{ t('cardTypes.fields.isEquipment') }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -127,19 +119,20 @@ onMounted(init)
     >
       <template #meta>
         <p v-if="selected" class="manager-detail__meta">
+          {{ t('cardTypes.fields.heroSuperclass') }}:
           {{
             selected.hero_superclass
               ? tr(selected.hero_superclass.name)
               : t('cardTypes.noSuperclass')
           }}
         </p>
-        <p v-if="selected" class="manager-detail__meta card-types__flags">
-          <span :class="['chip', selected.allows_subtypes ? 'is-ok' : 'is-missing']">{{
-            t('cardTypes.fields.allowsSubtypes')
-          }}</span>
-          <span :class="['chip', selected.is_equipment ? 'is-ok' : 'is-missing']">{{
-            t('cardTypes.fields.isEquipment')
-          }}</span>
+        <!-- Solo lo que SÍ tiene, en texto plano (sin chips ni colores de
+             sí/no, regla transversal); lo que no tiene, no aparece -->
+        <p v-if="selected?.allows_subtypes" class="manager-detail__meta">
+          {{ t('cardTypes.fields.allowsSubtypes') }}
+        </p>
+        <p v-if="selected?.is_equipment" class="manager-detail__meta">
+          {{ t('cardTypes.fields.isEquipment') }}
         </p>
       </template>
     </EntityPanel>

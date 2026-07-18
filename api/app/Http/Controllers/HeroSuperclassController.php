@@ -16,6 +16,10 @@ class HeroSuperclassController extends Controller
     public function index(Request $request)
     {
         $superclasses = HeroSuperclass::query()
+            // El panel pinta cuántas clases cuelgan y el tipo de carta
+            // asociado: withCount/with en la misma query (sin N+1).
+            ->withCount('heroClasses')
+            ->with('cardType')
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);

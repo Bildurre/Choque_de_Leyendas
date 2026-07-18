@@ -54,6 +54,17 @@ const typeOptions = computed(() => [
   ...equipmentTypes.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
 ])
 
+// Paleta del juego (tokens del admin: $danger, $info, $warning, $success +
+// dos acentos más) para teñir el badge del tipo de equipo. Criterio: color
+// ESTABLE y determinista por id — paleta[(id - 1) % paleta.length] — así
+// Arma (id 1) es siempre roja, Armadura (id 2) azul, etc., y cada tipo nuevo
+// recibe el siguiente color de la rueda sin repetir hasta agotarla.
+const TYPE_PALETTE = ['#ff6b6b', '#6c8cff', '#fbbf24', '#4ade80', '#c084fc', '#2dd4bf']
+
+function typeColor(typeId: number): string {
+  return TYPE_PALETTE[(typeId - 1) % TYPE_PALETTE.length]
+}
+
 async function loadFilterOptions() {
   try {
     const { data } = await api.get('/admin/equipment-types/options')
@@ -103,11 +114,15 @@ onMounted(async () => {
         @view="select(item)"
         @edit="edit(item)"
       >
+        <!-- Sin badge de estado (los tabs ya separan): el tipo de equipo,
+             teñido con su color estable de la paleta (determinista por id) -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('equipmentSubtypes.state.trashed')
-          }}</span>
-          <span v-if="item.equipment_type" class="chip">{{ tr(item.equipment_type.name) }}</span>
+          <span
+            v-if="item.equipment_type"
+            class="chip"
+            :style="{ color: typeColor(item.equipment_type_id) }"
+            >{{ tr(item.equipment_type.name) }}</span
+          >
         </template>
       </EntityCard>
     </BaseGrid>

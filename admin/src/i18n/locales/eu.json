@@ -1065,7 +1065,11 @@
     },
     "fields": {
       "name": "Izena",
-      "nameFemale": "Izen femeninoa"
+      "nameFemale": "Izen femeninoa",
+      "cardType": "Karta mota"
+    },
+    "counts": {
+      "classes": "Klaseak"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
@@ -1314,6 +1318,9 @@
     "fields": {
       "name": "Izena",
       "usesHands": "Eskuak behar ditu"
+    },
+    "counts": {
+      "subtypes": "Azpimotak"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",

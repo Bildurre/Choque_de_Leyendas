@@ -82,10 +82,10 @@ onMounted(init)
         @view="select(item)"
         @edit="edit(item)"
       >
+        <!-- Sin badge de estado (los tabs ya separan): el tipo de carta
+             asociado (si lo hay), en badge -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('heroSuperclasses.state.trashed')
-          }}</span>
+          <span v-if="item.card_type" class="chip">{{ tr(item.card_type.name) }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -117,6 +117,21 @@ onMounted(init)
       @del="selected && del(selected)"
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
-    />
+    >
+      <template #meta>
+        <!-- Término femenino (si existe), con su etiqueta; texto plano -->
+        <p v-if="selected && tr(selected.name_female) !== '—'" class="manager-detail__meta">
+          {{ t('heroSuperclasses.fields.nameFemale') }}: {{ tr(selected.name_female) }}
+        </p>
+        <!-- Cuántas clases pertenecen a la superclase (withCount del index) -->
+        <p v-if="selected" class="manager-detail__meta">
+          {{ t('heroSuperclasses.counts.classes') }}: {{ selected.hero_classes_count ?? 0 }}
+        </p>
+        <!-- Tipo de carta asociado, solo si lo tiene -->
+        <p v-if="selected?.card_type" class="manager-detail__meta">
+          {{ t('heroSuperclasses.fields.cardType') }}: {{ tr(selected.card_type.name) }}
+        </p>
+      </template>
+    </EntityPanel>
   </div>
 </template>

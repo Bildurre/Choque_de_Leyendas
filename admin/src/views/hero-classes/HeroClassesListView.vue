@@ -82,14 +82,9 @@ onMounted(init)
         @view="select(item)"
         @edit="edit(item)"
       >
+        <!-- Sin badge de estado (los tabs ya separan): la superclase, en badge -->
         <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('heroClasses.state.trashed')
-          }}</span>
-        </template>
-
-        <template #meta>
-          <span>{{ item.hero_superclass ? tr(item.hero_superclass.name) : '—' }}</span>
+          <span v-if="item.hero_superclass" class="chip">{{ tr(item.hero_superclass.name) }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -122,12 +117,16 @@ onMounted(init)
           {{ t('heroClasses.fields.superclass') }}:
           {{ selected.hero_superclass ? tr(selected.hero_superclass.name) : '—' }}
         </p>
-        <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg, saneado en servidor (DC-09) -->
-        <div
-          v-if="selected && selected.passive"
-          class="hero-classes__passive"
-          v-html="tr(selected.passive) !== '—' ? tr(selected.passive) : ''"
-        ></div>
+        <!-- Término femenino (si existe), con su etiqueta; texto plano -->
+        <p v-if="selected && tr(selected.name_female) !== '—'" class="manager-detail__meta">
+          {{ t('heroClasses.fields.nameFemale') }}: {{ tr(selected.name_female) }}
+        </p>
+        <!-- Pasiva de la clase, en sección propia -->
+        <template v-if="selected && tr(selected.passive) !== '—'">
+          <h4 class="hero-classes__panel-title">{{ t('heroClasses.fields.passive') }}</h4>
+          <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg, saneado en servidor (DC-09) -->
+          <div class="rich-content hero-classes__passive" v-html="tr(selected.passive)"></div>
+        </template>
       </template>
     </EntityPanel>
   </div>

@@ -1065,7 +1065,11 @@
     },
     "fields": {
       "name": "Name",
-      "nameFemale": "Female name"
+      "nameFemale": "Female name",
+      "cardType": "Card type"
+    },
+    "counts": {
+      "classes": "Classes"
     },
     "confirmDelete": {
       "title": "Send to trash",
@@ -1314,6 +1318,9 @@
     "fields": {
       "name": "Name",
       "usesHands": "Uses hands"
+    },
+    "counts": {
+      "subtypes": "Subtypes"
     },
     "confirmDelete": {
       "title": "Send to trash",

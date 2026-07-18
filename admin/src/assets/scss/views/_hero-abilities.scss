@@ -28,3 +28,15 @@
     }
   }
 }
+
+// Chips del tipo de ataque en las cards del listado: mismo código de color
+// que AttackLine y el resto del admin (físico = rojo, mágico = azul).
+.chip.is-physical {
+  color: $danger;
+  border-color: color-mix(in srgb, $danger 45%, transparent);
+}
+
+.chip.is-magical {
+  color: $info;
+  border-color: color-mix(in srgb, $info 45%, transparent);
+}

@@ -81,13 +81,7 @@ onMounted(init)
         :edit-label="t('common.actions.edit')"
         @view="select(item)"
         @edit="edit(item)"
-      >
-        <template #badges>
-          <span v-if="item.deleted_at" class="chip is-failed">{{
-            t('heroRaces.state.trashed')
-          }}</span>
-        </template>
-      </EntityCard>
+      />
     </BaseGrid>
 
     <BasePagination
@@ -112,6 +106,13 @@ onMounted(init)
       @del="selected && del(selected)"
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
-    />
+    >
+      <template #meta>
+        <!-- Término femenino (si existe), con su etiqueta; texto plano -->
+        <p v-if="selected && tr(selected.name_female) !== '—'" class="manager-detail__meta">
+          {{ t('heroRaces.fields.nameFemale') }}: {{ tr(selected.name_female) }}
+        </p>
+      </template>
+    </EntityPanel>
   </div>
 </template>

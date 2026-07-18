@@ -42,7 +42,12 @@ export interface GenderedTaxonomy extends TaxonomyBase {
   name_female?: Translations
 }
 
-export type HeroSuperclass = GenderedTaxonomy
+export interface HeroSuperclass extends GenderedTaxonomy {
+  /** Cuántas clases cuelgan de ella (withCount del index). */
+  hero_classes_count?: number
+  /** Tipo de carta asociado (único por superclase), si lo hay. */
+  card_type?: TaxonomyOption | null
+}
 export type HeroRace = GenderedTaxonomy
 export type AttackRange = TaxonomyBase
 export type AttackSubtype = TaxonomyBase
@@ -81,6 +86,8 @@ export interface CardType extends TaxonomyBase {
 export interface EquipmentType extends TaxonomyBase {
   /** Las cartas de este tipo llevan manos (armas). */
   uses_hands: boolean
+  /** Cuántos subtipos cuelgan de él (withCount del index). */
+  subtypes_count?: number
 }
 
 export interface EquipmentSubtype extends TaxonomyBase {

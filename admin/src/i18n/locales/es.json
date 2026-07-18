@@ -996,7 +996,11 @@
     },
     "fields": {
       "name": "Nombre",
-      "nameFemale": "Nombre femenino"
+      "nameFemale": "Nombre femenino",
+      "cardType": "Tipo de carta"
+    },
+    "counts": {
+      "classes": "Clases"
     },
     "confirmDelete": {
       "title": "Enviar a la papelera",
@@ -1245,6 +1249,9 @@
     "fields": {
       "name": "Nombre",
       "usesHands": "Lleva manos"
+    },
+    "counts": {
+      "subtypes": "Subtipos"
     },
     "confirmDelete": {
       "title": "Enviar a la papelera",

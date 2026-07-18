@@ -14,6 +14,14 @@ class HeroSuperclassResource extends JsonResource
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
             'name_female' => $this->getTranslations('name_female'),
+            // Cuántas clases cuelgan de la superclase (withCount del index)
+            'hero_classes_count' => $this->whenCounted('heroClasses'),
+            // Tipo de carta asociado (único por superclase, nullable).
+            // Inline (id + nombre) para no arrastrar el Resource completo.
+            'card_type' => $this->whenLoaded('cardType', fn () => $this->cardType ? [
+                'id' => $this->cardType->id,
+                'name' => $this->cardType->getTranslations('name'),
+            ] : null),
             'deleted_at' => $this->deleted_at,
         ];
     }
