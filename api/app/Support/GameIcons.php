@@ -31,6 +31,23 @@ class GameIcons
         return $urls;
     }
 
+    /**
+     * Contenido del SVG del icono, para inlinearlo en el HTML y que su
+     * currentColor herede del entorno (un <img> no hereda nada y el fill
+     * cae a negro). El motor sanea los SVG al subirlos. Null si el icono
+     * no existe o no es SVG.
+     */
+    public static function inlineSvg(string $name): ?string
+    {
+        $media = Icon::query()->where('slug', $name)->first()?->getFirstMedia('image');
+        if (! $media || strtolower($media->extension) !== 'svg') {
+            return null;
+        }
+        $path = $media->getPath();
+
+        return is_file($path) ? file_get_contents($path) : null;
+    }
+
     /** Vacía la cache (tests / tras subir iconos en el mismo proceso). */
     public static function flush(): void
     {

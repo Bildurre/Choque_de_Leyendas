@@ -193,6 +193,9 @@ class Hero extends Model implements HasMedia, PreviewableContract
                 // subido el pie se queda como estaba, sin hueco.
                 'faerie',
             ]),
+            // El hada inlineada (SVG con currentColor: por <img> saldría en
+            // negro; inline hereda el color del texto del pie).
+            'faerie_svg' => GameIcons::inlineSvg('faerie'),
             'attributes' => [
                 'agility' => (int) $this->agility,
                 'mental' => (int) $this->mental,

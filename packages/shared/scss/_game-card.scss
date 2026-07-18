@@ -469,6 +469,14 @@
   &__footer-logo {
     height: 1.3em;
     width: auto;
+    display: inline-flex;
+    color: var(--ftx); // fuente del currentColor del SVG inlineado
+
+    svg {
+      height: 100%;
+      width: auto;
+      display: block;
+    }
   }
 }
 

@@ -241,6 +241,9 @@ class Card extends Model implements HasMedia, PreviewableContract
                 'hands-1', 'hands-2',
                 'faerie',
             ]),
+            // El hada inlineada (SVG con currentColor: por <img> saldría en
+            // negro; inline hereda el color del texto del pie).
+            'faerie_svg' => GameIcons::inlineSvg('faerie'),
             'cost' => $this->cost,
             'cost_parsed' => $this->parsed_cost,
             'type' => $this->cardType?->getTranslation('name', $locale),

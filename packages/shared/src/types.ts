@@ -338,6 +338,7 @@ export interface CardRenderData {
   name: string
   image: string | null
   icons: RenderIcons
+  faerie_svg?: string | null
   cost: string | null
   cost_parsed: RenderDie[]
   type: string | null
@@ -370,6 +371,7 @@ export interface HeroRenderData {
   name: string
   image: string | null
   icons: RenderIcons
+  faerie_svg?: string | null
   attributes: {
     agility: number
     mental: number
