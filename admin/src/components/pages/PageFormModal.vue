@@ -49,29 +49,44 @@ const metaTitle = ref<Record<string, string>>({})
 const metaDescription = ref<Record<string, string>>({})
 const parentId = ref<string>('')
 const template = ref('default')
-const backgroundImage = ref<string | null>(null)
+// Imagen de fondo DIFERIDA (mismo patrón que ImageUpload/HasImage): la subida
+// real al endpoint de contenidos (misma ruta que las de los bloques) no
+// viaja hasta el GUARDAR. `originalBackgroundImage` guarda la URL cargada al
+// abrir para poder sustituirla (`replaces`) o borrarla si se quita/cambia.
+const backgroundImageFile = ref<File | null>(null)
+const currentBackgroundImage = ref<string | null>(null)
+const originalBackgroundImage = ref<string | null>(null)
+const removeBackgroundImage = ref(false)
+watch(backgroundImageFile, (file) => {
+  if (file) removeBackgroundImage.value = false
+})
 const isPublished = ref(false)
 const isPrintable = ref(false)
 
-/** Sube la imagen de fondo al momento (misma ruta que las de los bloques);
- *  el backend borra la sustituida y el "quitar" la borra del disco. */
-async function uploadBackground(file: File | null) {
-  if (!file) {
-    if (backgroundImage.value) {
-      api.delete('/admin/content/uploads', { data: { url: backgroundImage.value } }).catch(() => {})
-    }
-    backgroundImage.value = null
-    return
-  }
-  try {
+function onRemoveBackgroundImage() {
+  removeBackgroundImage.value = true
+  currentBackgroundImage.value = null
+}
+
+/** Resuelve la imagen de fondo final al guardar: sube el fichero pendiente
+ *  (sustituyendo la anterior), borra si se quitó, o mantiene la actual. */
+async function resolveBackgroundImage(): Promise<string | null> {
+  if (backgroundImageFile.value) {
     const form = new FormData()
-    form.append('image', file)
-    if (backgroundImage.value) form.append('replaces', backgroundImage.value)
+    form.append('image', backgroundImageFile.value)
+    if (originalBackgroundImage.value) form.append('replaces', originalBackgroundImage.value)
     const { data } = await api.post('/admin/content/uploads', form)
-    backgroundImage.value = data.url
-  } catch {
-    toast.danger(t('common.errors.action'))
+    return data.url
   }
+  if (removeBackgroundImage.value) {
+    if (originalBackgroundImage.value) {
+      await api
+        .delete('/admin/content/uploads', { data: { url: originalBackgroundImage.value } })
+        .catch(() => {})
+    }
+    return null
+  }
+  return originalBackgroundImage.value
 }
 
 // Plantillas del juego (config del motor): el select solo aparece si hay más
@@ -92,7 +107,10 @@ watch(
     metaDescription.value = { ...(props.page?.meta_description ?? {}) }
     parentId.value = props.page?.parent_id ? String(props.page.parent_id) : ''
     template.value = props.page?.template ?? 'default'
-    backgroundImage.value = props.page?.background_image ?? null
+    backgroundImageFile.value = null
+    currentBackgroundImage.value = props.page?.background_image ?? null
+    originalBackgroundImage.value = props.page?.background_image ?? null
+    removeBackgroundImage.value = false
     isPublished.value = props.page?.is_published ?? false
     isPrintable.value = props.page?.is_printable ?? false
     if (!templates.value.length) {
@@ -109,6 +127,8 @@ watch(
 async function save() {
   saving.value = true
   try {
+    // La imagen de fondo se sube (o borra) aquí, solo al guardar.
+    const background_image = await resolveBackgroundImage()
     const payload = {
       title: title.value,
       description: description.value,
@@ -116,7 +136,7 @@ async function save() {
       meta_description: metaDescription.value,
       parent_id: parentId.value ? Number(parentId.value) : null,
       template: template.value,
-      background_image: backgroundImage.value,
+      background_image,
       is_published: isPublished.value,
       is_printable: isPrintable.value,
     }
@@ -175,13 +195,12 @@ async function save() {
       :options="templates.map((tpl) => ({ value: tpl.key, label: templateLabel(tpl) }))"
     />
     <ImageUpload
-      :model-value="null"
-      :current-url="backgroundImage"
+      v-model="backgroundImageFile"
+      :current-url="currentBackgroundImage"
       :label="t('pages.fields.backgroundImage')"
       :drag-text="t('common.imageDrag')"
       :hint-text="t('pages.fields.backgroundImageHint')"
-      @update:model-value="uploadBackground"
-      @remove="uploadBackground(null)"
+      @remove="onRemoveBackgroundImage"
     />
     <TranslatableInput
       v-model="metaTitle"

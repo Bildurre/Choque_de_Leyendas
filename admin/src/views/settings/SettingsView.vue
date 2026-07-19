@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watchEffect } from 'vue'
+import { computed, onMounted, ref, watch, watchEffect } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Plus, Save, Upload, X } from '@lucide/vue'
 import {
@@ -30,8 +30,22 @@ const saving = ref(false)
 
 const title = ref<Record<string, string>>({})
 const description = ref<Record<string, string>>({})
-const logo = ref<Record<string, string>>({})
-const favicon = ref<string | null>(null)
+// Logo traducible DIFERIDO (mismo patrón que TranslatableImage/ImageUpload):
+// el mapa mezcla URLs guardadas (string) y ficheros pendientes (File); nada
+// se sube hasta el GUARDAR. `originalLogo` guarda el snapshot cargado (solo
+// URLs) para poder sustituir (`replaces`) o borrar del disco lo que cambie.
+const logo = ref<Record<string, string | File>>({})
+const originalLogo = ref<Record<string, string>>({})
+// Favicon DIFERIDO con el mismo patrón que un ImageUpload de entidad:
+// `currentFavicon` es lo que se muestra, `faviconFile`/`removeFavicon` viajan
+// al guardar, `originalFavicon` es el snapshot para sustituir/borrar.
+const faviconFile = ref<File | null>(null)
+const currentFavicon = ref<string | null>(null)
+const originalFavicon = ref<string | null>(null)
+const removeFavicon = ref(false)
+watch(faviconFile, (file) => {
+  if (file) removeFavicon.value = false
+})
 const accentMode = ref<'fixed' | 'random'>('fixed')
 const accentColor = ref('#6c5ce7')
 const accentColors = ref<string[]>([])
@@ -130,40 +144,59 @@ function removeCustomFont(font: CustomFont) {
   if (fontBody.value === font.key) fontBody.value = 'system'
 }
 
-async function upload(file: File, replaces?: string | null): Promise<string | null> {
-  try {
-    const form = new FormData()
-    form.append('image', file)
-    // El backend borra el fichero sustituido: sin huérfanos.
-    if (replaces) form.append('replaces', replaces)
-    const { data } = await api.post('/admin/content/uploads', form)
-    return data.url
-  } catch {
-    toast.danger(t('common.errors.action'))
-    return null
-  }
+/** Sube un fichero al endpoint de contenidos (misma ruta que las de los
+ *  bloques); el backend borra el sustituido (`replaces`): sin huérfanos.
+ *  Se llama SOLO al guardar (patrón diferido): nunca al elegir el fichero. */
+async function upload(file: File, replaces?: string | null): Promise<string> {
+  const form = new FormData()
+  form.append('image', file)
+  if (replaces) form.append('replaces', replaces)
+  const { data } = await api.post('/admin/content/uploads', form)
+  return data.url
 }
 
-/** Borra la subida del disco (el botón "quitar"); en silencio si falla. */
+/** Borra la subida del disco (el botón "quitar", diferido al guardar); en
+ *  silencio si falla (no debe tumbar el resto del guardado). */
 async function removeUpload(url: string): Promise<void> {
   await api.delete('/admin/content/uploads', { data: { url } }).catch(() => {})
 }
 
-// Subida para TranslatableImage (una URL por idioma): lanza si falla para
-// que el componente no borre el valor del locale activo.
-async function uploadLogo(file: File, replaces?: string | null): Promise<string> {
-  const url = await upload(file, replaces)
-  if (!url) throw new Error('upload failed')
-  return url
+/** Resuelve el logo final al guardar: sube los ficheros pendientes por
+ *  locale (sustituyendo el anterior), borra los que se hayan quitado y deja
+ *  igual los que no cambiaron. Nada de esto viaja hasta el submit. */
+async function resolveLogo(): Promise<Record<string, string>> {
+  const codes = new Set([...Object.keys(originalLogo.value), ...Object.keys(logo.value)])
+  const result: Record<string, string> = {}
+  for (const code of codes) {
+    const original = originalLogo.value[code] ?? null
+    const current = logo.value[code]
+    if (current instanceof File) {
+      result[code] = await upload(current, original)
+    } else if (typeof current === 'string') {
+      result[code] = current
+    } else if (original) {
+      await removeUpload(original)
+    }
+  }
+  return result
 }
 
-async function uploadFavicon(file: File | null) {
-  if (!file) {
-    if (favicon.value) removeUpload(favicon.value)
-    favicon.value = null
-    return
+/** Resuelve el favicon final al guardar: sube el pendiente (sustituyendo el
+ *  anterior), lo borra si se quitó, o lo deja igual. Diferido hasta el submit. */
+async function resolveFavicon(): Promise<string | null> {
+  if (faviconFile.value) {
+    return await upload(faviconFile.value, originalFavicon.value)
   }
-  favicon.value = (await upload(file, favicon.value)) ?? favicon.value
+  if (removeFavicon.value) {
+    if (originalFavicon.value) await removeUpload(originalFavicon.value)
+    return null
+  }
+  return originalFavicon.value
+}
+
+function onRemoveFavicon() {
+  removeFavicon.value = true
+  currentFavicon.value = null
 }
 
 async function load() {
@@ -173,8 +206,12 @@ async function load() {
     const s = data.data
     title.value = s.title ?? {}
     description.value = s.description ?? {}
-    logo.value = s.logo ?? {}
-    favicon.value = s.favicon
+    logo.value = { ...(s.logo ?? {}) }
+    originalLogo.value = { ...(s.logo ?? {}) }
+    faviconFile.value = null
+    currentFavicon.value = s.favicon ?? null
+    originalFavicon.value = s.favicon ?? null
+    removeFavicon.value = false
     accentMode.value = s.accent_mode
     accentColor.value = s.accent_color
     accentColors.value = s.accent_colors ?? []
@@ -194,11 +231,13 @@ async function load() {
 async function save() {
   saving.value = true
   try {
+    // Logo y favicon se suben/borran aquí, solo al guardar (patrón diferido).
+    const [resolvedLogo, resolvedFavicon] = await Promise.all([resolveLogo(), resolveFavicon()])
     await api.put('/admin/settings/site', {
       title: title.value,
       description: description.value,
-      logo: logo.value,
-      favicon: favicon.value,
+      logo: resolvedLogo,
+      favicon: resolvedFavicon,
       accent_mode: accentMode.value,
       accent_color: accentColor.value,
       accent_colors: accentColors.value,
@@ -208,6 +247,14 @@ async function save() {
       custom_fonts: customFonts.value.map(({ key, name, file }) => ({ key, name, file })),
       footer_text: footerText.value,
     })
+    // La vista no se cierra tras guardar: el nuevo estado persistido pasa a
+    // ser el snapshot base para el próximo guardado.
+    logo.value = { ...resolvedLogo }
+    originalLogo.value = { ...resolvedLogo }
+    faviconFile.value = null
+    currentFavicon.value = resolvedFavicon
+    originalFavicon.value = resolvedFavicon
+    removeFavicon.value = false
     toast.success(t('settings.toast.saved'))
   } catch {
     toast.danger(t('settings.toast.saveError'))
@@ -251,23 +298,21 @@ onMounted(async () => {
             :rows="2"
           />
           <div class="settings-view__uploads">
-            <!-- Logo por idioma (fallback al por defecto en la web) -->
+            <!-- Logo por idioma (fallback al por defecto en la web): DIFERIDO,
+                 la subida real no viaja hasta el guardar. -->
             <TranslatableImage
               v-model="logo"
               :locales="locales.locales"
               :label="t('settings.fields.logo')"
-              :upload="uploadLogo"
-              :remove-file="removeUpload"
             />
             <ImageUpload
-              :model-value="null"
-              :current-url="favicon"
+              v-model="faviconFile"
+              :current-url="currentFavicon"
               :label="t('settings.fields.favicon')"
               accept=".png,.svg"
               :drag-text="t('common.imageDrag')"
               :hint-text="t('settings.fields.faviconHint')"
-              @update:model-value="uploadFavicon"
-              @remove="uploadFavicon(null)"
+              @remove="onRemoveFavicon"
             />
           </div>
         </section>

@@ -203,6 +203,8 @@ class FactionDeckController extends Controller
             'faction_ids.*' => ['integer', 'distinct', 'exists:factions,id'],
             'is_published' => ['boolean'],
             'image' => ['nullable', 'image', 'max:4096'],
+            // Quitar la imagen actual, diferido desde el form (viaja al guardar).
+            'remove_image' => ['sometimes', 'boolean'],
         ];
         foreach (array_keys(config('motor.locales', [])) as $locale) {
             $rules["name.$locale"] = [$locale === $default ? 'required' : 'nullable', 'string', 'max:255'];

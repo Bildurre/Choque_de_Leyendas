@@ -37,7 +37,18 @@ const editorLabels = useEditorLabels()
 const saving = ref(false)
 const image = ref<File | null>(null)
 const currentImage = ref<string | null>(null)
+// "Quitar imagen" DIFERIDO: solo marca el flag; el borrado real viaja con el
+// GUARDAR (remove_image). Elegir un fichero nuevo lo desactiva.
+const removeImage = ref(false)
+watch(image, (file) => {
+  if (file) removeImage.value = false
+})
 const errors = reactive<Record<string, string>>({})
+
+function onRemoveImage() {
+  removeImage.value = true
+  currentImage.value = null
+}
 
 function clearErrors() {
   for (const k of Object.keys(errors)) delete errors[k]
@@ -72,6 +83,7 @@ function reset() {
   form.is_published = false
   image.value = null
   currentImage.value = null
+  removeImage.value = false
   clearErrors()
 }
 
@@ -114,6 +126,7 @@ function toFormData(): FormData {
   fd.append('color', form.color)
   fd.append('is_published', form.is_published ? '1' : '0')
   if (image.value) fd.append('image', image.value)
+  else if (removeImage.value) fd.append('remove_image', '1')
   return fd
 }
 
@@ -188,6 +201,7 @@ async function submit() {
       :hint-text="t('common.imageHint')"
       :too-large-text="t('common.fileTooLarge')"
       :invalid-type-text="t('common.fileType')"
+      @remove="onRemoveImage"
     />
 
     <BaseCheckbox v-model="form.is_published" :label="t('factions.fields.published')" />
