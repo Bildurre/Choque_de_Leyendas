@@ -59,7 +59,7 @@
   }
 }
 
-// Contenido asignado en el panel derecho del listado (listas con copias)
+// Contenido asignado en el panel derecho del listado (cartas con copias)
 .faction-decks__content {
   margin-top: $space-3;
 
@@ -101,7 +101,8 @@
 }
 
 // Single editora del mazo: cabecera con límites y contadores en vivo + dos
-// paneles (cartas y héroes, ambos con copias) con buscador para añadir.
+// paneles (cartas con copias; héroes solo asignar/quitar) con buscador para
+// añadir.
 .deck-editor {
   &__bar-actions {
     display: flex;

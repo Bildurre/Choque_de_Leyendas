@@ -980,7 +980,7 @@
       "limitsLine": "{min}–{max} cards · max {copies} copies · {heroes} heroes",
       "cardsCount": "Cards (copies)",
       "uniqueCards": "{count} unique",
-      "heroesCount": "Heroes (copies)",
+      "heroesCount": "Heroes",
       "cardsTitle": "Deck cards",
       "heroesTitle": "Deck heroes",
       "noCards": "There are no cards in this deck.",
@@ -998,7 +998,6 @@
       "next": "Next",
       "notInFactions": "Not in the deck factions",
       "factionMismatch": "There are {count} assigned items from factions no longer in the deck.",
-      "uniqueHeroes": "{count} unique",
       "copies": "Copies"
     },
     "validation": {

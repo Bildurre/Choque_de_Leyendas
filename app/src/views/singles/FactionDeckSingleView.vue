@@ -21,9 +21,10 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 // info | héroes | cartas — info con la rejilla de estadísticas del viejo
 // (básica, coste de las cartas, distribución de dados con sus iconos, tipos
 // de carta, clases y superclases de héroe), cartas con su badge "xN" de
-// copias —, cita épica y relateds de mazos (tarjetas CSS). Lo monta
-// EntityDetailView (banner, fondo, head SEO). El botón de descarga de PDF
-// del viejo no se porta: no hay endpoint público equivalente (desviación).
+// copias (los héroes no llevan copias: asignado = 1) —, cita épica y
+// relateds de mazos (tarjetas CSS). Lo monta EntityDetailView (banner,
+// fondo, head SEO). El botón de descarga de PDF del viejo no se porta: no
+// hay endpoint público equivalente (desviación).
 interface FactionRef {
   id: number
   name: string
@@ -36,9 +37,7 @@ interface DeckCard extends CatalogItem {
   copies: number
 }
 
-interface DeckHero extends CatalogItem {
-  copies: number
-}
+type DeckHero = CatalogItem
 
 interface DeckStats {
   total_cards: number
@@ -124,7 +123,7 @@ function factionRoute(faction: FactionRef) {
   return sectionDetailRoute('factions', faction.slug, props.locale)
 }
 
-const heroItems = computed<Array<PreviewGridItem & { copies: number }>>(() =>
+const heroItems = computed<PreviewGridItem[]>(() =>
   props.item.heroes.map((row) => ({
     ...row,
     to: sectionDetailRoute('heroes', row.slug, props.locale),
@@ -290,7 +289,7 @@ watch(
       </InfoBlock>
     </div>
 
-    <!-- Héroes del mazo, con el badge de copias si llevan más de una -->
+    <!-- Héroes del mazo (sin copias: asignado = 1, sin badge) -->
     <PreviewGrid
       v-else-if="tab === 'heroes'"
       :items="heroItems"
@@ -306,9 +305,6 @@ watch(
           loading="lazy"
         />
         <span v-else class="preview-grid__fallback">{{ hero.name }}</span>
-        <span v-if="(hero as DeckHero).copies > 1" class="deck-single__copies">
-          {{ t('singles.deck.copies', { count: (hero as DeckHero).copies }) }}
-        </span>
       </template>
       <template #actions="{ item: hero }">
         <AddToCollection :id="hero.id" class="single-grid__add" entity="hero" />

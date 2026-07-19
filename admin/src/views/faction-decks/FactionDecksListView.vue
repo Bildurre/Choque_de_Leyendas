@@ -49,8 +49,8 @@ const {
 
 const toast = useToast()
 
-// Contenido del mazo seleccionado (héroes y cartas con copias) para el
-// panel derecho: se carga bajo demanda con el show al seleccionar.
+// Contenido del mazo seleccionado (héroes sin copias, cartas con copias)
+// para el panel derecho: se carga bajo demanda con el show al seleccionar.
 const selectedDetail = ref<FactionDeck | null>(null)
 watch(selected, async (item) => {
   selectedDetail.value = null
@@ -187,16 +187,13 @@ onMounted(init)
           {{ t('factionDecks.counts.cards', { count: selected.total_cards }) }} ·
           {{ t('factionDecks.counts.heroes', { count: selected.total_heroes }) }}
         </p>
-        <!-- Contenido asignado (listas con copias), cargado con el show -->
+        <!-- Contenido asignado (cartas con copias), cargado con el show -->
         <div v-if="selectedDetail" class="faction-decks__content">
           <template v-if="selectedDetail.heroes?.length">
             <h4>{{ t('factionDecks.single.heroesTitle') }}</h4>
             <ul>
               <li v-for="hero in selectedDetail.heroes" :key="hero.id">
                 <span class="faction-decks__content-name">{{ tr(hero.name) }}</span>
-                <span v-if="hero.copies > 1" class="faction-decks__content-copies"
-                  >×{{ hero.copies }}</span
-                >
               </li>
             </ul>
           </template>

@@ -6,9 +6,9 @@ import type { DeckRenderFaction, FactionDeckRenderData } from '../types'
 // preview del viejo (previews/deck.blade.php + _deck-preview.scss): cabecera
 // con el color de la facción (o el GRADIENTE por bandas si es multifacción),
 // icono del mazo, modo de juego y chips de facciones; añade los totales y el
-// resumen de héroes y cartas (con copias). El payload es
-// FactionDeck::renderData() de la api, YA localizado; aun así se programa
-// defensivo: todo puede venir null.
+// resumen de héroes (sin copias: asignado = 1) y cartas (con copias). El
+// payload es FactionDeck::renderData() de la api, YA localizado; aun así se
+// programa defensivo: todo puede venir null.
 const props = defineProps<{ item: FactionDeckRenderData; locale: string }>()
 
 // Textos fijos de la propia ficha (el resto del payload llega localizado).
@@ -75,14 +75,11 @@ const totals = computed(() => {
   )
 })
 
-// Héroes: nombre localizado + copias (se tolera también un array de strings).
+// Héroes: solo nombre localizado (sin copias: asignado = 1); se tolera
+// también un array de strings.
 const heroes = computed(() =>
   (props.item?.heroes ?? [])
-    .map((h) =>
-      typeof h === 'string'
-        ? { name: h, copies: null as number | null }
-        : { name: h?.name ?? '', copies: h?.copies ?? null },
-    )
+    .map((h) => (typeof h === 'string' ? { name: h } : { name: h?.name ?? '' }))
     .filter((h) => !!h.name),
 )
 
@@ -122,16 +119,13 @@ const cards = computed(() => (props.item?.cards ?? []).filter((c) => !!c?.name))
         </span>
       </div>
 
-      <!-- Resumen: héroes y cartas (con copias) -->
+      <!-- Resumen: héroes (sin copias) y cartas (con copias) -->
       <section class="game-deck__lists">
         <div v-if="heroes.length" class="game-deck__list">
           <h4 class="game-deck__list-title">{{ t('heroes') }}</h4>
           <ul>
             <li v-for="(hero, i) in heroes" :key="i">
               {{ hero.name }}
-              <b v-if="hero.copies && hero.copies > 1" class="game-deck__copies"
-                >x{{ hero.copies }}</b
-              >
             </li>
           </ul>
         </div>

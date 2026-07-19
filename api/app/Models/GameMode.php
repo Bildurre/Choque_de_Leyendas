@@ -76,7 +76,8 @@ class GameMode extends Model
      * Valida un mazo contra los límites de este modo. Devuelve errores
      * localizables para el admin: [['key' => 'factionDecks.validation.…',
      * 'params' => […]], …] (lista vacía = mazo válido). Las relaciones
-     * cards/heroes deben venir cargadas.
+     * cards/heroes deben venir cargadas. total_heroes cuenta héroes (cada
+     * uno vale 1, sin copias); total_cards sí suma las copias del pivot.
      */
     public function validateDeck(FactionDeck $deck): array
     {

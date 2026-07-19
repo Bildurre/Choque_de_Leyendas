@@ -102,15 +102,15 @@ it('publicar un mazo valida contra la configuración de su modo', function () {
     expect(collect($response->json('errors.deck'))->pluck('key'))
         ->toContain('factionDecks.validation.requiredHeroes');
 
-    // Con dos copias de un héroe (suman como total) ya publica
-    $deck->heroes()->attach(publicHero()->id, ['copies' => 2]);
+    // Con dos héroes distintos (cada uno cuenta 1: sin copias) ya publica
+    $deck->heroes()->attach([publicHero()->id, publicHero(['name' => ['es' => 'Segundo héroe']])->id]);
     $this->actingAs($admin)
         ->postJson("/api/admin/faction-decks/{$slug}/toggle-published")
         ->assertOk()
         ->assertJsonPath('data.is_published', true);
 });
 
-it('guarda los héroes del mazo con sus copias y los totales las suman', function () {
+it('guarda los héroes del mazo (sin copias: cada uno cuenta 1) y suma el total', function () {
     $admin = motorUser('admin');
 
     $deck = publicDeck(['is_published' => false]);
@@ -119,16 +119,16 @@ it('guarda los héroes del mazo con sus copias y los totales las suman', functio
 
     $this->actingAs($admin)
         ->putJson("/api/admin/faction-decks/{$slug}/heroes", [
-            'items' => [['hero_id' => $hero->id, 'copies' => 3]],
+            'items' => [['hero_id' => $hero->id]],
         ])
         ->assertOk()
-        ->assertJsonPath('data.heroes.0.copies', 3)
-        ->assertJsonPath('data.total_heroes', 3);
+        ->assertJsonMissingPath('data.heroes.0.copies')
+        ->assertJsonPath('data.total_heroes', 1);
 
-    // Copias inválidas (mínimo 1), tanto en héroes como en cartas
+    // Héroe inexistente: 422 (las copias inválidas, solo en cartas)
     $this->actingAs($admin)
         ->putJson("/api/admin/faction-decks/{$slug}/heroes", [
-            'items' => [['hero_id' => $hero->id, 'copies' => 0]],
+            'items' => [['hero_id' => 0]],
         ])
         ->assertStatus(422);
     $this->actingAs($admin)

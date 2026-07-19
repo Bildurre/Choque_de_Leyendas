@@ -22,7 +22,8 @@ import CostDice from '@/components/game/CostDice.vue'
 
 // Single editora del mazo (patrón página+bloques): cabecera con límites del
 // modo (la configuración vive en el propio modo de juego) y contadores en
-// vivo + panel de cartas y panel de héroes, ambos con copias. Los listados
+// vivo + panel de cartas (con copias) y panel de héroes (solo asignar/quitar:
+// sin control de cantidad, un héroe asignado es siempre 1). Los listados
 // de disponibles se acotan a las facciones del mazo; lo ya asignado de una
 // facción quitada se marca y se avisa. Guardar borradores es libre; los
 // límites solo avisan (el servidor decide al publicar).
@@ -76,11 +77,11 @@ async function load() {
   }
 }
 
-// --- Contadores en vivo (héroes y cartas suman copias) ---
+// --- Contadores en vivo (las cartas suman copias; los héroes se cuentan,
+// sin copias: cada uno vale 1) ---
 const totalCopies = computed(() => cards.value.reduce((sum, c) => sum + c.copies, 0))
 const uniqueCards = computed(() => cards.value.length)
-const totalHeroes = computed(() => heroes.value.reduce((sum, h) => sum + h.copies, 0))
-const uniqueHeroes = computed(() => heroes.value.length)
+const totalHeroes = computed(() => heroes.value.length)
 
 /** ¿El elemento pertenece a una facción que ya no está en el mazo? */
 function isForeign(item: { faction_id: number | null }): boolean {
@@ -145,20 +146,15 @@ function removeCard(card: DeckCardItem) {
   dirty.value = true
 }
 
-// --- Edición de héroes del mazo (también con copias) ---
+// --- Edición de héroes del mazo (sin copias: asignar/quitar únicamente) ---
 function addHero(item: SearchResult) {
-  const existing = heroes.value.find((h) => h.id === item.id)
-  if (existing) {
-    existing.copies += 1
-  } else {
-    heroes.value.push({
-      id: item.id,
-      name: item.name,
-      image: item.image ?? null,
-      faction_id: item.faction_id ?? null,
-      copies: 1,
-    })
-  }
+  if (heroes.value.some((h) => h.id === item.id)) return
+  heroes.value.push({
+    id: item.id,
+    name: item.name,
+    image: item.image ?? null,
+    faction_id: item.faction_id ?? null,
+  })
   dirty.value = true
 }
 function removeHero(hero: DeckHeroItem) {
@@ -166,7 +162,7 @@ function removeHero(hero: DeckHeroItem) {
   dirty.value = true
 }
 
-// Copias: steppers +/- y también input numérico directo (mínimo 1).
+// Copias de cartas: steppers +/- y también input numérico directo (mínimo 1).
 function stepCopies(item: { copies: number }, delta: number) {
   item.copies = Math.max(1, item.copies + delta)
   dirty.value = true
@@ -239,7 +235,7 @@ async function save() {
       items: cards.value.map((c) => ({ card_id: c.id, copies: c.copies })),
     })
     const { data } = await api.put(`/admin/faction-decks/${slug.value}/heroes`, {
-      items: heroes.value.map((h) => ({ hero_id: h.id, copies: h.copies })),
+      items: heroes.value.map((h) => ({ hero_id: h.id })),
     })
     deck.value = data.data
     cards.value = (deck.value?.cards ?? []).map((c) => ({ ...c }))
@@ -376,10 +372,7 @@ onBeforeUnmount(() => {
         </div>
         <div>
           <dt>{{ t('factionDecks.single.heroesCount') }}</dt>
-          <dd>
-            {{ totalHeroes }}
-            <small>({{ t('factionDecks.single.uniqueHeroes', { count: uniqueHeroes }) }})</small>
-          </dd>
+          <dd>{{ totalHeroes }}</dd>
         </div>
       </dl>
     </header>
@@ -529,33 +522,6 @@ onBeforeUnmount(() => {
               <small v-if="isForeign(hero)" class="deck-editor__foreign-note">{{
                 t('factionDecks.single.notInFactions')
               }}</small>
-            </span>
-            <span class="deck-editor__copies">
-              <button
-                type="button"
-                class="deck-editor__step"
-                :disabled="hero.copies <= 1"
-                :aria-label="t('factionDecks.single.fewerCopies')"
-                @click="stepCopies(hero, -1)"
-              >
-                <Minus :size="14" />
-              </button>
-              <input
-                class="deck-editor__copies-input"
-                type="number"
-                min="1"
-                :value="hero.copies"
-                :aria-label="t('factionDecks.single.moreCopies')"
-                @change="setCopies(hero, $event)"
-              />
-              <button
-                type="button"
-                class="deck-editor__step"
-                :aria-label="t('factionDecks.single.moreCopies')"
-                @click="stepCopies(hero, 1)"
-              >
-                <Plus :size="14" />
-              </button>
             </span>
             <button
               type="button"

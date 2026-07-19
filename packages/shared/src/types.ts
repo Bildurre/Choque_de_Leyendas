@@ -304,13 +304,12 @@ export interface DeckCardItem {
   copies: number
 }
 
-/** Héroe dentro de un mazo (mínimo del Resource + copias del pivot). */
+/** Héroe dentro de un mazo (mínimo del Resource). Sin copias: asignado = 1. */
 export interface DeckHeroItem {
   id: number
   name: Translations
   image: string | null
   faction_id: number | null
-  copies: number
 }
 
 export interface FactionDeck extends EntityBase {
@@ -464,12 +463,13 @@ export interface FactionDeckRenderData {
   /** Nombre del modo YA localizado. */
   game_mode?: string | null
   factions?: DeckRenderFaction[] | null
-  /** Totales de contenido publicado (las cartas suman copias). */
+  /** Totales de contenido publicado (las cartas suman copias; los héroes se
+   * cuentan, sin copias). */
   total_heroes?: number | null
   total_cards?: number | null
   cards?: DeckRenderCard[] | null
-  /** Héroes del mazo (nombre localizado + copias). */
-  heroes?: Array<{ name?: string | null; copies?: number | null }> | null
+  /** Héroes del mazo (solo nombre localizado: sin copias, asignado = 1). */
+  heroes?: Array<{ name?: string | null }> | null
 }
 
 export interface PaginationMeta {

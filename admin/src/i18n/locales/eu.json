@@ -980,7 +980,7 @@
       "limitsLine": "{min}–{max} karta · gehienez {copies} kopia · {heroes} heroi",
       "cardsCount": "Kartak (kopiak)",
       "uniqueCards": "{count} bakar",
-      "heroesCount": "Heroiak (kopiak)",
+      "heroesCount": "Heroiak",
       "cardsTitle": "Sortako kartak",
       "heroesTitle": "Sortako heroiak",
       "noCards": "Sorta honetan ez dago kartarik.",
@@ -998,7 +998,6 @@
       "next": "Hurrengoa",
       "notInFactions": "Ez dago sortaren fakzioetan",
       "factionMismatch": "Sortan jada ez dauden fakzioetako {count} elementu daude esleituta.",
-      "uniqueHeroes": "{count} bakar",
       "copies": "Kopiak"
     },
     "validation": {

@@ -39,15 +39,15 @@ class FactionDeckResource extends JsonResource
                     'color' => $faction->color,
                 ],
             )),
-            // Héroes y cartas con las copias del pivot y su facción (el
-            // editor de mazos acota por facciones y avisa de las quitadas)
+            // Héroes (sin copias: asignado = 1) y cartas (con las copias del
+            // pivot), con su facción (el editor de mazos acota por facciones
+            // y avisa de las quitadas)
             'heroes' => $this->whenLoaded('heroes', fn () => $this->heroes->map(
                 fn (Hero $hero) => [
                     'id' => $hero->id,
                     'name' => $hero->getTranslations('name'),
                     'image' => $hero->imageUrl(),
                     'faction_id' => $hero->faction_id,
-                    'copies' => (int) $hero->pivot->copies,
                 ],
             )),
             'cards' => $this->whenLoaded('cards', fn () => $this->cards->map(

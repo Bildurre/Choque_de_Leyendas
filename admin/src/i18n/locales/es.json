@@ -911,7 +911,7 @@
       "limitsLine": "{min}–{max} cartas · máx. {copies} copias · {heroes} héroes",
       "cardsCount": "Cartas (copias)",
       "uniqueCards": "{count} únicas",
-      "heroesCount": "Héroes (copias)",
+      "heroesCount": "Héroes",
       "cardsTitle": "Cartas del mazo",
       "heroesTitle": "Héroes del mazo",
       "noCards": "No hay cartas en este mazo.",
@@ -929,7 +929,6 @@
       "next": "Siguiente",
       "notInFactions": "No pertenece a las facciones del mazo",
       "factionMismatch": "Hay {count} elementos asignados de facciones que ya no están en el mazo.",
-      "uniqueHeroes": "{count} únicos",
       "copies": "Copias"
     },
     "validation": {

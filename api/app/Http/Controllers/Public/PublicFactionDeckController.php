@@ -38,7 +38,7 @@ class PublicFactionDeckController extends Controller
             ->filter($request->only('search'))
             ->with(['gameMode', 'factions' => fn ($q) => $q->published()])
             ->withSum(['cards as total_cards' => fn ($q) => $q->published()], 'card_faction_deck.copies')
-            ->withSum(['heroes as total_heroes' => fn ($q) => $q->published()], 'faction_deck_hero.copies');
+            ->withCount(['heroes as total_heroes' => fn ($q) => $q->published()]);
 
         if (($modeId = (int) $request->query('game_mode_id')) > 0) {
             $query->where('game_mode_id', $modeId);

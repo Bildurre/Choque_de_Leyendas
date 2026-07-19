@@ -318,13 +318,14 @@ class DashboardStatsController extends Controller
             ->selectRaw('sum(card_faction_deck.copies) as total')
             ->pluck('total');
 
+        // Los héroes no llevan copias: cada fila del pivot cuenta 1.
         $heroTotals = DB::table('faction_deck_hero')
             ->join('faction_decks', 'faction_decks.id', '=', 'faction_deck_hero.faction_deck_id')
             ->join('heroes', 'heroes.id', '=', 'faction_deck_hero.hero_id')
             ->whereNull('faction_decks.deleted_at')
             ->whereNull('heroes.deleted_at')
             ->groupBy('faction_deck_hero.faction_deck_id')
-            ->selectRaw('sum(faction_deck_hero.copies) as total')
+            ->selectRaw('count(*) as total')
             ->pluck('total');
 
         return [

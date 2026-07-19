@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\Validator;
 
 /**
  * CRUD de admin para los mazos de facción, más los endpoints del editor
- * (cartas y héroes con copias). Guardar borradores es libre; al publicar
- * se exige la configuración del modo (422 con errores localizables).
+ * (cartas con copias; héroes solo asignación, siempre 1 copia). Guardar
+ * borradores es libre; al publicar se exige la configuración del modo (422
+ * con errores localizables).
  */
 class FactionDeckController extends Controller
 {
@@ -25,7 +26,7 @@ class FactionDeckController extends Controller
         $decks = FactionDeck::query()
             ->with(['gameMode', 'factions'])
             ->withSum('cards as total_cards', 'card_faction_deck.copies')
-            ->withSum('heroes as total_heroes', 'faction_deck_hero.copies')
+            ->withCount('heroes as total_heroes')
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
@@ -108,19 +109,19 @@ class FactionDeckController extends Controller
         return new FactionDeckResource($deck->load(['gameMode', 'factions', 'heroes', 'cards']));
     }
 
-    /** Reemplaza los héroes del mazo con sus copias (borrador libre). */
+    /**
+     * Reemplaza los héroes del mazo (borrador libre). Sin copias: un héroe
+     * asignado cuenta como 1 (decisión de producto, no se controla cantidad).
+     */
     public function updateHeroes(Request $request, string $slug)
     {
         $deck = FactionDeck::whereSlug($slug)->firstOrFail();
         $data = Validator::make($request->all(), [
             'items' => ['present', 'array'],
             'items.*.hero_id' => ['required', 'integer', 'distinct', 'exists:heroes,id'],
-            'items.*.copies' => ['required', 'integer', 'between:1,99'],
         ])->validate();
 
-        $deck->heroes()->sync(collect($data['items'])->mapWithKeys(
-            fn (array $item) => [$item['hero_id'] => ['copies' => $item['copies']]],
-        ));
+        $deck->heroes()->sync(collect($data['items'])->pluck('hero_id'));
         // Los héroes (pivot) salen en la preview y no son columnas: a mano.
         $deck->regeneratePreviews();
 

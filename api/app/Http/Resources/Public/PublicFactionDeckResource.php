@@ -10,11 +10,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Collection;
 
 /**
- * Ficha pública de mazo: listas de héroes y cartas (con copias, ordenadas
- * por coste y nombre como el viejo) + estadísticas portadas del
- * FactionDeckService viejo (dados, símbolos, tipos, clases). Las relaciones
- * llegan YA filtradas a publicado desde el controlador; los totales se
- * calculan sobre eso. name/slug/description por locales (EntityDetailView).
+ * Ficha pública de mazo: listas de héroes (sin copias: asignado = 1) y
+ * cartas (con copias, ordenadas por coste y nombre como el viejo) +
+ * estadísticas portadas del FactionDeckService viejo (dados, símbolos,
+ * tipos, clases). Las relaciones llegan YA filtradas a publicado desde el
+ * controlador; los totales se calculan sobre eso. name/slug/description por
+ * locales (EntityDetailView).
  */
 class PublicFactionDeckResource extends JsonResource
 {
@@ -45,13 +46,12 @@ class PublicFactionDeckResource extends JsonResource
                 ->values(),
             'heroes' => $this->heroes->map(fn ($hero) => [
                 ...PublicCatalogItem::fromModel($hero, 'hero', $locale),
-                'copies' => (int) $hero->pivot->copies,
             ])->values(),
             'cards' => $cards->map(fn (Card $card) => [
                 ...PublicCatalogItem::fromModel($card, 'card', $locale),
                 'copies' => (int) $card->pivot->copies,
             ])->values(),
-            'total_heroes' => (int) $this->heroes->sum('pivot.copies'),
+            'total_heroes' => $this->heroes->count(),
             'total_cards' => (int) $cards->sum('pivot.copies'),
             'stats' => $this->stats($cards, $locale),
         ];
@@ -89,11 +89,10 @@ class PublicFactionDeckResource extends JsonResource
         $bySuperclass = [];
         foreach ($this->heroes as $hero) {
             /** @var Hero $hero */
-            $copies = (int) $hero->pivot->copies;
             $className = $hero->heroClass?->getTranslation('name', $locale) ?? '';
             $superclassName = $hero->heroClass?->heroSuperclass?->getTranslation('name', $locale) ?? '';
-            $byClass[$className] = ($byClass[$className] ?? 0) + $copies;
-            $bySuperclass[$superclassName] = ($bySuperclass[$superclassName] ?? 0) + $copies;
+            $byClass[$className] = ($byClass[$className] ?? 0) + 1;
+            $bySuperclass[$superclassName] = ($bySuperclass[$superclassName] ?? 0) + 1;
         }
 
         // Listas {name|dice, ...} en vez de mapas por nombre localizado:
@@ -111,7 +110,7 @@ class PublicFactionDeckResource extends JsonResource
                 ->map(fn (int $copies, string $name) => ['name' => $name, 'copies' => $copies])
                 ->values()
                 ->all(),
-            'total_heroes' => (int) $this->heroes->sum('pivot.copies'),
+            'total_heroes' => $this->heroes->count(),
             'unique_heroes' => $this->heroes->count(),
             'heroes_by_class' => collect($byClass)
                 ->map(fn (int $count, string $name) => ['name' => $name, 'count' => $count])
