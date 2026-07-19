@@ -340,12 +340,15 @@
       "panelEmpty": "Pick a block to see its actions.",
       "panelContent": "Content",
       "parent": "Parent block (indented indexes)",
-      "parentNone": "— None —"
+      "parentNone": "— None —",
+      "printableShort": "PDF",
+      "indexableShort": "Index"
     },
     "panelTitle": "Page",
     "panelEmpty": "Pick a page to see its actions.",
     "panelBlocks": "Blocks",
-    "open": "Open"
+    "open": "Open",
+    "printable": "Printable"
   },
   "blockTypes": {
     "header": "Header",
@@ -473,12 +476,16 @@
     "download": "Download",
     "fields": {
       "date": "Date",
-      "size": "Size"
+      "size": "Size",
+      "origin": "Origin"
     },
     "confirmDelete": "Delete backup \"{name}\"?",
     "toast": {
       "created": "Backup created.",
-      "deleted": "Backup deleted."
+      "deleted": "Backup deleted.",
+      "queued": "Backup started: it will appear in the list when it finishes.",
+      "uploaded": "Backup uploaded.",
+      "restored": "Backup restored: if your session closes, log in again."
     },
     "schedule": {
       "title": "Automatic backup",
@@ -499,6 +506,24 @@
         "6": "Saturday",
         "7": "Sunday"
       }
+    },
+    "pending": "Backup in progress… the list will refresh by itself.",
+    "restore": "Restore",
+    "restoreHint": "Restoring imports ONLY the database from the zip (SQL dump or SQLite file), overwriting the current one. Storage files (images, fonts…) are not restored, and your session may be closed: you will have to log in again.",
+    "confirmRestore": "You are about to restore backup \"{name}\": the CURRENT database will be replaced by the one in the backup and any later changes will be lost. Continue?",
+    "confirmRestoreAgain": "Last confirmation: this action OVERWRITES the current database and cannot be undone. Really restore?",
+    "confirmRestoreLabel": "Yes, restore",
+    "origin": {
+      "manual": "Manual",
+      "auto": "Automatic",
+      "upload": "Uploaded"
+    },
+    "upload": {
+      "title": "Upload backup",
+      "hint": "Import a backup zip (with the database inside) so it can be restored here. Max 500 MB.",
+      "choose": "Choose file",
+      "submit": "Upload",
+      "invalid": "The file is not a valid backup: it must be a zip with the database inside."
     }
   },
   "users": {
@@ -527,7 +552,8 @@
       "saved": "User saved.",
       "deleted": "User deleted.",
       "saveError": "Could not save."
-    }
+    },
+    "verifiedBadge": "Verified"
   },
   "blockEditor": {
     "addRow": "Add"

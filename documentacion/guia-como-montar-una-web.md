@@ -837,6 +837,7 @@ provider del motor) deriva todo de `motor.backup`:
     'disk' => env('MOTOR_BACKUP_DISK', 'backups'), // si no existe en filesystems, se crea local en storage/app/backups
     'keep_days' => env('MOTOR_BACKUP_KEEP_DAYS', 14), // retención de backup:clean
     'include_media' => env('MOTOR_BACKUP_MEDIA', true), // mete storage/app/public en el zip
+    'upload_max_mb' => env('MOTOR_BACKUP_UPLOAD_MAX_MB', 500), // tamaño máx. de una copia SUBIDA
 ],
 ```
 
@@ -846,12 +847,19 @@ Detalles que resuelve el motor:
   el dump normal (necesitan `mysqldump`/`pg_dump` en el servidor).
 - **Sin notificaciones por correo** y `backup:list`/`backup:monitor`
   apuntando al disco del motor.
+- **Crear va SIEMPRE en cola** (DC-16): el POST despacha `RunBackupJob`
+  (202 + `queued`) y el listado expone `pending` para que el admin sondee
+  sin bloquear la web; hace falta un worker de cola arrancado. Ya no existe
+  `motor.backup.queue` (no hay modo síncrono).
 
 **API + admin** (solo `manage-web`): `GET/POST /api/admin/backups`,
-`GET /api/admin/backups/{file}/download`, `DELETE /api/admin/backups/{file}`.
-La vista **Copias** del admin crea con un clic, lista con fecha y tamaño, y
-descarga/borra desde el panel derecho (descarga autenticada por la API, con
-blob).
+`GET /api/admin/backups/{file}/download`, `DELETE /api/admin/backups/{file}`,
+`POST /api/admin/backups/upload` (sube un zip externo) y
+`POST /api/admin/backups/{file}/restore` (importa su BBDD machacando la
+actual). La vista **Copias** del admin crea en un clic (queda en cola y se
+sondea sin bloquear), lista con fecha, tamaño y origen (manual/automática/
+subida), descarga/borra desde el panel derecho (descarga autenticada por la
+API, con blob), sube una copia externa y restaura con doble confirmación.
 
 **Copia automática (se configura desde el admin).** La programa el MOTOR:
 la vista Copias trae la tarjeta "Copia automática" (activada, frecuencia
@@ -869,10 +877,12 @@ el resto de tareas:
 Schedule::command('pdf:cleanup')->hourly(); // PDFs temporales (doc 02)
 ```
 
-**Restore** (DC-16, manual): paso a paso en `funcionalidades/06`
-(down → reponer BBDD y media → optimize:clear → up). **BBDD grandes**:
-`MOTOR_BACKUP_QUEUE=true` y la copia manual va en cola (respuesta 202; la
-vista sondea el listado hasta que aparece; hace falta un worker).
+**Restore**: acción "Restaurar" en el panel derecho de **Copias** (doble
+confirmación) — `POST /api/admin/backups/{file}/restore` importa SOLO la
+BBDD del zip (fichero SQLite tal cual o dump SQL), machacando la actual; el
+storage no se restaura y puede cerrar la sesión. **Crear siempre en cola**
+(DC-16): la petición responde al momento y la vista sondea el listado hasta
+que aparece la copia nueva; hace falta un worker de cola arrancado.
 
 ## 6quinquies. Web pública: locale, SEO y listados (Fase 6)
 

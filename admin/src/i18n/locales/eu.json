@@ -340,12 +340,15 @@
       "panelEmpty": "Aukeratu bloke bat bere ekintzak ikusteko.",
       "panelContent": "Edukia",
       "parent": "Bloke gurasoa (aurkibide koskatuak)",
-      "parentNone": "— Bat ere ez —"
+      "parentNone": "— Bat ere ez —",
+      "printableShort": "PDF",
+      "indexableShort": "Aurkibidea"
     },
     "panelTitle": "Orria",
     "panelEmpty": "Aukeratu orri bat bere ekintzak ikusteko.",
     "panelBlocks": "Blokeak",
-    "open": "Ireki"
+    "open": "Ireki",
+    "printable": "Inprimagarria"
   },
   "blockTypes": {
     "header": "Goiburua",
@@ -473,12 +476,16 @@
     "download": "Deskargatu",
     "fields": {
       "date": "Data",
-      "size": "Tamaina"
+      "size": "Tamaina",
+      "origin": "Jatorria"
     },
     "confirmDelete": "\"{name}\" kopia ezabatu?",
     "toast": {
       "created": "Kopia sortuta.",
-      "deleted": "Kopia ezabatuta."
+      "deleted": "Kopia ezabatuta.",
+      "queued": "Kopia abian: amaitzean zerrendan agertuko da.",
+      "uploaded": "Kopia igo da.",
+      "restored": "Kopia leheneratu da: saioa ixten bazaizu, sartu berriro."
     },
     "schedule": {
       "title": "Kopia automatikoa",
@@ -499,6 +506,24 @@
         "6": "Larunbata",
         "7": "Igandea"
       }
+    },
+    "pending": "Kopia egiten ari da… zerrenda berez eguneratuko da.",
+    "restore": "Leheneratu",
+    "restoreHint": "Leheneratzeak zip-eko datu-basea BAKARRIK inportatzen du (SQL dump edo SQLite fitxategia), oraingoa gainidatziz. Storage-ko fitxategiak (irudiak, letra-tipoak…) ez dira leheneratzen, eta zure saioa itxi daiteke: berriro sartu beharko duzu.",
+    "confirmRestore": "\"{name}\" kopia leheneratuko duzu: ORAINGO datu-basea kopiakoarekin ordezkatuko da eta data horren ondorengo aldaketak galduko dira. Jarraitu?",
+    "confirmRestoreAgain": "Azken baieztapena: ekintza honek oraingo datu-basea GAINIDAZTEN du eta ezin da desegin. Benetan leheneratu?",
+    "confirmRestoreLabel": "Bai, leheneratu",
+    "origin": {
+      "manual": "Eskuzkoa",
+      "auto": "Automatikoa",
+      "upload": "Igoa"
+    },
+    "upload": {
+      "title": "Kopia igo",
+      "hint": "Igo kopia-zip bat (datu-basea barruan duena) hemen leheneratu ahal izateko. Geh. 500 MB.",
+      "choose": "Fitxategia aukeratu",
+      "submit": "Igo",
+      "invalid": "Fitxategia ez da kopia baliagarria: datu-basea barruan duen zip bat izan behar du."
     }
   },
   "users": {
@@ -527,7 +552,8 @@
       "saved": "Erabiltzailea gordeta.",
       "deleted": "Erabiltzailea ezabatuta.",
       "saveError": "Ezin izan da gorde."
-    }
+    },
+    "verifiedBadge": "Egiaztatua"
   },
   "blockEditor": {
     "addRow": "Gehitu"

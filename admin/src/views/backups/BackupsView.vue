@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Download, Plus, Save, Trash2 } from '@lucide/vue'
+import { Download, FileUp, Plus, RotateCcw, Save, Trash2 } from '@lucide/vue'
 import {
   BaseButton,
   BaseCheckbox,
@@ -14,14 +14,17 @@ import {
 import { useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 
-// Copias de seguridad (doc 06): crear con un clic, listar, descargar y
-// borrar; la fila entera selecciona y el panel derecho trae las acciones.
-// La copia AUTOMÁTICA (frecuencia, hora, retención) se configura aquí y la
-// programa el scheduler del motor.
+// Copias de seguridad (doc 06): crear (EN COLA: la petición no espera al
+// zip y la vista sondea el flag `pending`), subir una copia externa,
+// restaurar (destructivo: doble confirmación), listar, descargar y borrar;
+// la fila entera selecciona y el panel derecho trae las acciones. La copia
+// AUTOMÁTICA (frecuencia, hora, retención) se configura aquí y la programa
+// el scheduler del motor. Cada copia lleva su ORIGEN (manual/auto/subida).
 interface BackupRow {
   file: string
   date: string
   size: number
+  origin: 'manual' | 'auto' | 'upload'
 }
 
 interface BackupSchedule {
@@ -42,9 +45,17 @@ sidebar.useRegister(t('backups.panelTitle'))
 const backups = ref<BackupRow[]>([])
 const loading = ref(true)
 const creating = ref(false)
+const pending = ref(false)
+const restoring = ref(false)
 const selectedFile = ref<string | null>(null)
 const schedule = ref<BackupSchedule | null>(null)
 const savingSchedule = ref(false)
+
+// Subida de una copia externa (zip de spatie/laravel-backup).
+const uploadInput = ref<HTMLInputElement | null>(null)
+const uploadFile = ref<File | null>(null)
+const uploading = ref(false)
+const UPLOAD_MAX_MB = 500 // espejo de motor.backup.upload_max_mb
 
 const selected = computed(() => backups.value.find((b) => b.file === selectedFile.value) ?? null)
 
@@ -61,16 +72,44 @@ const weekdayOptions = computed(() =>
   })),
 )
 
+let alive = true
+onBeforeUnmount(() => {
+  alive = false
+})
+
 async function load() {
   loading.value = true
   try {
     const { data } = await api.get('/admin/backups')
     backups.value = data.data
     schedule.value = data.schedule
+    pending.value = data.pending ?? false
+    // Si hay una copia en curso (p. ej. al volver a la vista), sigue el sondeo.
+    if (pending.value) void poll()
   } catch {
     toast.danger(t('common.errors.load'))
   } finally {
     loading.value = false
+  }
+}
+
+/** Sondea el listado mientras haya una copia en curso (sin bloquear nada). */
+let polling = false
+async function poll() {
+  if (polling) return
+  polling = true
+  try {
+    for (let i = 0; i < 120 && pending.value && alive; i++) {
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      const { data } = await api.get('/admin/backups')
+      backups.value = data.data
+      pending.value = data.pending ?? false
+    }
+    if (!pending.value && alive) toast.success(t('backups.toast.created'))
+  } catch {
+    // el sondeo es best-effort: el listado se refresca al volver
+  } finally {
+    polling = false
   }
 }
 
@@ -95,29 +134,82 @@ function select(backup: BackupRow, event: MouseEvent) {
   sidebar.reveal()
 }
 
+/** Crear va EN COLA: la respuesta vuelve al momento y el sondeo refresca. */
 async function create() {
   creating.value = true
   try {
-    const { data, status } = await api.post('/admin/backups')
+    const { data } = await api.post('/admin/backups')
     backups.value = data.data
-
-    // 202 = en cola (BBDD grandes, DC-16): sondea hasta que aparezca la
-    // copia nueva (o desiste a los ~3 minutos).
-    if (status === 202) {
-      const before = backups.value.length
-      for (let i = 0; i < 90; i++) {
-        await new Promise((resolve) => setTimeout(resolve, 2000))
-        const { data: fresh } = await api.get('/admin/backups')
-        backups.value = fresh.data
-        if (backups.value.length > before) break
-      }
-    }
-
-    toast.success(t('backups.toast.created'))
+    pending.value = data.pending ?? false
+    toast.success(t('backups.toast.queued'))
+    void poll()
   } catch {
     toast.danger(t('common.errors.action'))
   } finally {
     creating.value = false
+  }
+}
+
+function onUploadChange(event: Event) {
+  const input = event.target as HTMLInputElement
+  const file = input.files?.[0] ?? null
+  if (!file) return
+  if (!file.name.toLowerCase().endsWith('.zip')) {
+    toast.danger(t('common.fileType'))
+    input.value = ''
+    return
+  }
+  if (file.size > UPLOAD_MAX_MB * 1024 * 1024) {
+    toast.danger(t('common.fileTooLarge'))
+    input.value = ''
+    return
+  }
+  uploadFile.value = file
+}
+
+async function upload() {
+  if (!uploadFile.value) return
+  uploading.value = true
+  try {
+    const form = new FormData()
+    form.append('file', uploadFile.value)
+    const { data } = await api.post('/admin/backups/upload', form)
+    backups.value = data.data
+    uploadFile.value = null
+    if (uploadInput.value) uploadInput.value.value = ''
+    toast.success(t('backups.toast.uploaded'))
+  } catch {
+    toast.danger(t('backups.upload.invalid'))
+  } finally {
+    uploading.value = false
+  }
+}
+
+/** RESTAURAR es destructivo (machaca la BBDD actual): doble confirmación. */
+async function restore(backup: BackupRow) {
+  const first = await confirm({
+    message: t('backups.confirmRestore', { name: backup.file }),
+    confirmLabel: t('backups.restore'),
+    cancelLabel: t('common.cancel'),
+    variant: 'danger',
+  })
+  if (!first) return
+  const second = await confirm({
+    message: t('backups.confirmRestoreAgain'),
+    confirmLabel: t('backups.confirmRestoreLabel'),
+    cancelLabel: t('common.cancel'),
+    variant: 'danger',
+  })
+  if (!second) return
+  restoring.value = true
+  try {
+    await api.post(`/admin/backups/${backup.file}/restore`)
+    toast.success(t('backups.toast.restored'))
+    await load()
+  } catch {
+    toast.danger(t('common.errors.action'))
+  } finally {
+    restoring.value = false
   }
 }
 
@@ -156,6 +248,13 @@ async function remove(backup: BackupRow) {
   }
 }
 
+/** Chip del origen: manual (acento), automática (azul), subida (ámbar). */
+function originChipClass(backup: BackupRow): string {
+  if (backup.origin === 'auto') return 'is-info'
+  if (backup.origin === 'upload') return 'is-missing'
+  return ''
+}
+
 function formatDate(iso: string): string {
   return new Intl.DateTimeFormat(locale.value, { dateStyle: 'medium', timeStyle: 'short' }).format(
     new Date(iso),
@@ -174,7 +273,7 @@ onMounted(load)
 <template>
   <div class="backups-view">
     <div class="list-view__top">
-      <BaseButton :disabled="creating" @click="create">
+      <BaseButton :disabled="creating || pending" @click="create">
         <template #icon><Plus :size="16" /></template>
         {{ t('backups.create') }}
       </BaseButton>
@@ -182,38 +281,70 @@ onMounted(load)
 
     <p class="backups-view__hint">{{ t('backups.hint') }}</p>
 
-    <!-- Copia automática: la programa el scheduler del motor -->
-    <section v-if="schedule" class="backups-view__schedule">
-      <h2>{{ t('backups.schedule.title') }}</h2>
-      <BaseCheckbox v-model="schedule.auto" :label="t('backups.schedule.auto')" />
-      <div v-if="schedule.auto" class="backups-view__schedule-fields">
-        <BaseSelect
-          v-model="schedule.frequency"
-          :label="t('backups.schedule.frequency')"
-          :options="frequencyOptions"
+    <!-- Copia en curso (en cola): el listado se refresca solo -->
+    <p v-if="pending" class="backups-view__pending" role="status">
+      {{ t('backups.pending') }}
+    </p>
+
+    <!-- Copia automática + subir copia, lado a lado (columna en estrecho) -->
+    <div class="backups-view__cards">
+      <section v-if="schedule" class="backups-view__card">
+        <h2>{{ t('backups.schedule.title') }}</h2>
+        <BaseCheckbox v-model="schedule.auto" :label="t('backups.schedule.auto')" />
+        <div v-if="schedule.auto" class="backups-view__schedule-fields">
+          <BaseSelect
+            v-model="schedule.frequency"
+            :label="t('backups.schedule.frequency')"
+            :options="frequencyOptions"
+          />
+          <BaseSelect
+            v-if="schedule.frequency === 'weekly'"
+            :model-value="String(schedule.weekday)"
+            :label="t('backups.schedule.weekday')"
+            :options="weekdayOptions"
+            @update:model-value="(v) => (schedule!.weekday = Number(v))"
+          />
+          <BaseInput v-model="schedule.time" type="time" :label="t('backups.schedule.time')" />
+          <NumericInput
+            v-model="schedule.keep_days"
+            :label="t('backups.schedule.keepDays')"
+            :min="1"
+            :max="365"
+          />
+        </div>
+        <div>
+          <BaseButton :disabled="savingSchedule" @click="saveSchedule">
+            <template #icon><Save :size="14" /></template>
+            {{ t('common.save') }}
+          </BaseButton>
+        </div>
+      </section>
+
+      <section class="backups-view__card">
+        <h2>{{ t('backups.upload.title') }}</h2>
+        <p class="backups-view__hint">{{ t('backups.upload.hint') }}</p>
+        <input
+          ref="uploadInput"
+          type="file"
+          accept=".zip"
+          class="backups-view__upload-input"
+          @change="onUploadChange"
         />
-        <BaseSelect
-          v-if="schedule.frequency === 'weekly'"
-          :model-value="String(schedule.weekday)"
-          :label="t('backups.schedule.weekday')"
-          :options="weekdayOptions"
-          @update:model-value="(v) => (schedule!.weekday = Number(v))"
-        />
-        <BaseInput v-model="schedule.time" type="time" :label="t('backups.schedule.time')" />
-        <NumericInput
-          v-model="schedule.keep_days"
-          :label="t('backups.schedule.keepDays')"
-          :min="1"
-          :max="365"
-        />
-      </div>
-      <div>
-        <BaseButton :disabled="savingSchedule" @click="saveSchedule">
-          <template #icon><Save :size="14" /></template>
-          {{ t('common.save') }}
-        </BaseButton>
-      </div>
-    </section>
+        <div class="backups-view__upload-row">
+          <BaseButton variant="secondary" @click="uploadInput?.click()">
+            <template #icon><FileUp :size="14" /></template>
+            {{ t('backups.upload.choose') }}
+          </BaseButton>
+          <span v-if="uploadFile" class="backups-view__upload-name">{{ uploadFile.name }}</span>
+        </div>
+        <div>
+          <BaseButton :disabled="!uploadFile || uploading" @click="upload">
+            <template #icon><FileUp :size="14" /></template>
+            {{ t('backups.upload.submit') }}
+          </BaseButton>
+        </div>
+      </section>
+    </div>
 
     <p v-if="!loading && !backups.length" class="backups-view__empty">{{ t('backups.empty') }}</p>
 
@@ -228,6 +359,9 @@ onMounted(load)
         <strong class="backups-view__name">{{ backup.file }}</strong>
         <span class="backups-view__date">{{ formatDate(backup.date) }}</span>
         <span class="pages-view__chips">
+          <span :class="['chip', originChipClass(backup)]">
+            {{ t(`backups.origin.${backup.origin}`) }}
+          </span>
           <span class="chip">{{ formatSize(backup.size) }}</span>
         </span>
       </article>
@@ -246,6 +380,10 @@ onMounted(load)
               <template #icon><Download :size="14" /></template>
               {{ t('backups.download') }}
             </BaseButton>
+            <BaseButton variant="warning" :disabled="restoring" @click="restore(selected)">
+              <template #icon><RotateCcw :size="14" /></template>
+              {{ t('backups.restore') }}
+            </BaseButton>
             <BaseButton variant="danger" @click="remove(selected)">
               <template #icon><Trash2 :size="14" /></template>
               {{ t('common.actions.delete') }}
@@ -257,11 +395,19 @@ onMounted(load)
           <h3 class="manager-detail__title">{{ selected.file }}</h3>
 
           <p class="manager-detail__meta">
+            <strong>{{ t('backups.fields.origin') }}</strong>
+            {{ t(`backups.origin.${selected.origin}`) }}
+          </p>
+          <p class="manager-detail__meta">
             <strong>{{ t('backups.fields.date') }}</strong> {{ formatDate(selected.date) }}
           </p>
           <p class="manager-detail__meta">
             <strong>{{ t('backups.fields.size') }}</strong> {{ formatSize(selected.size) }}
           </p>
+
+          <!-- Qué hace (y qué NO hace) restaurar: límites documentados -->
+          <hr class="manager-panel__divider" />
+          <p class="manager-panel__empty">{{ t('backups.restoreHint') }}</p>
         </template>
       </div>
     </Teleport>

@@ -2,8 +2,8 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-import { ArrowLeft, SquarePen } from '@lucide/vue'
-import { BaseButton, BaseCheckbox, useToast } from '@edc-motor/ui'
+import { ArrowLeft, Eye, Printer, SquarePen } from '@lucide/vue'
+import { BaseButton, useToast } from '@edc-motor/ui'
 import { PageBlocks, type PageBlocksLabels } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 import { useLocalesStore } from '@/stores/locales'
@@ -44,7 +44,11 @@ const blockLabels = computed<Partial<PageBlocksLabels>>(() => ({
   cancel: t('common.cancel'),
   empty: t('pages.blocks.empty'),
   printable: t('pages.blocks.printable'),
+  printableShort: t('pages.blocks.printableShort'),
   indexable: t('pages.blocks.indexable'),
+  indexableShort: t('pages.blocks.indexableShort'),
+  yes: t('common.yes'),
+  no: t('common.no'),
   common: t('pages.blocks.common'),
   confirmDelete: t('pages.blocks.confirmDelete'),
   error: t('common.errors.action'),
@@ -124,7 +128,26 @@ onBeforeUnmount(crumb.clear)
       <template #panel-default>
         <p class="manager-panel__kicker">{{ t('pages.panelTitle') }}</p>
 
+        <!-- Interruptores publicada/imprimible ARRIBA, con las acciones -->
         <div class="manager-detail__actions">
+          <BaseButton
+            variant="success"
+            :class="page.is_published ? 'is-on' : 'is-off'"
+            :aria-pressed="page.is_published"
+            @click="toggleFlag('is_published', !page.is_published)"
+          >
+            <template #icon><Eye :size="14" /></template>
+            {{ t('pages.published') }}
+          </BaseButton>
+          <BaseButton
+            variant="info"
+            :class="page.is_printable ? 'is-on' : 'is-off'"
+            :aria-pressed="page.is_printable"
+            @click="toggleFlag('is_printable', !page.is_printable)"
+          >
+            <template #icon><Printer :size="14" /></template>
+            {{ t('pages.printable') }}
+          </BaseButton>
           <BaseButton variant="info" @click="formOpen = true">
             <template #icon><SquarePen :size="14" /></template>
             {{ t('common.actions.edit') }}
@@ -136,17 +159,6 @@ onBeforeUnmount(crumb.clear)
         <h3 class="manager-detail__title">
           {{ page.title[locales.current] ?? page.title.es }}
         </h3>
-
-        <BaseCheckbox
-          :model-value="page.is_published"
-          :label="t('pages.fields.published')"
-          @update:model-value="(v) => toggleFlag('is_published', v)"
-        />
-        <BaseCheckbox
-          :model-value="page.is_printable"
-          :label="t('pages.fields.printable')"
-          @update:model-value="(v) => toggleFlag('is_printable', v)"
-        />
 
         <p v-for="(slugValue, code) in page.slug" :key="code" class="manager-detail__meta">
           <strong>{{ String(code).toUpperCase() }}</strong> /{{ slugValue }}

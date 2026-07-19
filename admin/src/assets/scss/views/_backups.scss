@@ -16,9 +16,28 @@
     margin: 0;
   }
 
-  // Tarjeta de la copia automática (misma piel que las secciones de
-  // Configuración): los campos en fila con wrap.
-  &__schedule {
+  // Copia manual en curso (en cola): el listado se refresca solo.
+  &__pending {
+    color: $warning;
+    font-size: $fs-13;
+    margin: 0;
+  }
+
+  // Copia automática + subir copia, lado a lado (columna en estrecho).
+  &__cards {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-4;
+    align-items: start;
+
+    @container content (min-width: #{$bp-md}) {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr);
+    }
+  }
+
+  // Tarjeta de sección (copia automática, subir copia): misma piel que las
+  // secciones de Configuración.
+  &__card {
     background: $surface;
     border: 1px solid $border;
     border-radius: $radius-lg;
@@ -26,6 +45,7 @@
     display: grid;
     gap: $space-4;
     justify-items: start;
+    align-content: start;
 
     h2 {
       margin: 0;
@@ -43,6 +63,24 @@
     align-items: flex-end;
 
     > * { min-width: 140px; }
+  }
+
+  // Subir copia: input nativo oculto (lo dispara el botón).
+  &__upload-input { display: none; }
+
+  &__upload-row {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    flex-wrap: wrap;
+    min-width: 0;
+  }
+
+  &__upload-name {
+    color: $text-2;
+    font-size: $fs-13;
+    min-width: 0;
+    overflow-wrap: anywhere;
   }
 
   &__name {

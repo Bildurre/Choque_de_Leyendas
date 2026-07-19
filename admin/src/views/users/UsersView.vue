@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Plus, SquarePen, Trash2 } from '@lucide/vue'
-import { BaseButton, BaseCheckbox, BasePagination, useConfirm, useToast } from '@edc-motor/ui'
+import { MailCheck, Plus, SquarePen, Trash2 } from '@lucide/vue'
+import { BaseButton, BasePagination, useConfirm, useToast } from '@edc-motor/ui'
 import type { SortValue } from '@edc-motor/ui'
 import { ManagerCard, useCardDeselect, useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
@@ -87,12 +87,12 @@ function openEdit(user: UserRow) {
   formOpen.value = true
 }
 
-/** Acción rápida del panel: marca/desmarca el email como verificado. */
-async function toggleVerified(value: boolean) {
+/** Interruptor del panel: marca/desmarca el email como verificado. */
+async function toggleVerified() {
   if (!selected.value) return
   try {
-    await api.post(`/admin/users/${selected.value.id}/toggle-verified`)
-    selected.value.email_verified = value
+    const { data } = await api.post(`/admin/users/${selected.value.id}/toggle-verified`)
+    selected.value.email_verified = data.data.email_verified
     toast.success(t('users.toast.saved'))
   } catch {
     toast.danger(t('common.errors.action'))
@@ -158,6 +158,7 @@ onMounted(load)
     <p v-if="!loading && !users.length" class="users-view__empty">{{ t('common.empty') }}</p>
 
     <div class="manager-grid">
+      <!-- Como EntityCard: BADGES (rol + verificado) arriba, meta debajo -->
       <ManagerCard
         v-for="user in users"
         :key="user.id"
@@ -165,12 +166,13 @@ onMounted(load)
         :active="selectedId === user.id"
         @select="select(user)"
       >
+        <template #badges>
+          <span class="chip" :class="roleChipClass(user)">{{ roleLabel(user) }}</span>
+          <span v-if="user.email_verified" class="chip is-ok">{{ t('users.verifiedBadge') }}</span>
+          <span v-else class="chip is-missing">{{ t('users.unverified') }}</span>
+        </template>
         <template #meta>
           <span class="users-view__email">{{ user.email }}</span>
-          <span class="chip" :class="roleChipClass(user)">{{ roleLabel(user) }}</span>
-          <span v-if="!user.email_verified" class="chip is-missing">
-            {{ t('users.unverified') }}
-          </span>
         </template>
       </ManagerCard>
     </div>
@@ -193,8 +195,18 @@ onMounted(load)
         <template v-else>
           <p class="manager-panel__kicker">{{ t('users.panelTitle') }}</p>
 
-          <!-- Acciones PRIMERO; después, secciones separadas (patrón panel) -->
+          <!-- Acciones PRIMERO (el interruptor de verificado arriba);
+               después, secciones separadas (patrón panel) -->
           <div class="manager-detail__actions">
+            <BaseButton
+              variant="success"
+              :class="selected.email_verified ? 'is-on' : 'is-off'"
+              :aria-pressed="selected.email_verified"
+              @click="toggleVerified"
+            >
+              <template #icon><MailCheck :size="14" /></template>
+              {{ t('users.verifiedBadge') }}
+            </BaseButton>
             <BaseButton variant="info" @click="openEdit(selected)">
               <template #icon><SquarePen :size="14" /></template>
               {{ t('common.actions.edit') }}
@@ -209,12 +221,11 @@ onMounted(load)
 
           <h3 class="manager-detail__title">{{ selected.name }}</h3>
 
-          <!-- Acción rápida sin modal (patrón páginas) -->
-          <BaseCheckbox
-            :model-value="selected.email_verified"
-            :label="t('users.verified')"
-            @update:model-value="toggleVerified"
-          />
+          <!-- Estado del interruptor, en texto -->
+          <p class="manager-detail__meta">
+            <strong>{{ t('users.verified') }}</strong>
+            {{ selected.email_verified ? t('common.yes') : t('common.no') }}
+          </p>
 
           <p class="manager-detail__meta">
             <strong>{{ t('users.fields.email') }}</strong> {{ selected.email }}

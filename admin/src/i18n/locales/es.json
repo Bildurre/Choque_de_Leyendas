@@ -340,12 +340,15 @@
       "panelEmpty": "Selecciona un bloque para ver sus acciones.",
       "panelContent": "Contenido",
       "parent": "Bloque padre (índices indentados)",
-      "parentNone": "— Ninguno —"
+      "parentNone": "— Ninguno —",
+      "printableShort": "PDF",
+      "indexableShort": "Índice"
     },
     "panelTitle": "Página",
     "panelEmpty": "Selecciona una página para ver sus acciones.",
     "panelBlocks": "Bloques",
-    "open": "Abrir"
+    "open": "Abrir",
+    "printable": "Imprimible"
   },
   "settings": {
     "title": "Configuración",
@@ -404,12 +407,16 @@
     "download": "Descargar",
     "fields": {
       "date": "Fecha",
-      "size": "Tamaño"
+      "size": "Tamaño",
+      "origin": "Origen"
     },
     "confirmDelete": "¿Borrar la copia \"{name}\"?",
     "toast": {
       "created": "Copia creada.",
-      "deleted": "Copia borrada."
+      "deleted": "Copia borrada.",
+      "queued": "Copia en marcha: aparecerá en el listado al terminar.",
+      "uploaded": "Copia subida.",
+      "restored": "Copia restaurada: si tu sesión se cierra, vuelve a entrar."
     },
     "schedule": {
       "title": "Copia automática",
@@ -430,6 +437,24 @@
         "6": "Sábado",
         "7": "Domingo"
       }
+    },
+    "pending": "Copia en curso… el listado se actualizará solo.",
+    "restore": "Restaurar",
+    "restoreHint": "Restaurar importa SOLO la base de datos del zip (dump SQL o fichero SQLite) y machaca la actual. Los archivos de storage (imágenes, fuentes…) no se restauran, y puede cerrar tu sesión: tendrás que volver a entrar.",
+    "confirmRestore": "Vas a restaurar la copia \"{name}\": la base de datos ACTUAL se sustituirá por la de la copia y los cambios posteriores a esa fecha se perderán. ¿Continuar?",
+    "confirmRestoreAgain": "Última confirmación: esta acción MACHACA la base de datos actual y no se puede deshacer. ¿Restaurar de verdad?",
+    "confirmRestoreLabel": "Sí, restaurar",
+    "origin": {
+      "manual": "Manual",
+      "auto": "Automática",
+      "upload": "Subida"
+    },
+    "upload": {
+      "title": "Subir copia",
+      "hint": "Importa un zip de copia (con la base de datos dentro) para poder restaurarlo aquí. Máx. 500 MB.",
+      "choose": "Elegir archivo",
+      "submit": "Subir",
+      "invalid": "El archivo no es una copia válida: debe ser un zip con la base de datos dentro."
     }
   },
   "users": {
@@ -458,7 +483,8 @@
       "saved": "Usuario guardado.",
       "deleted": "Usuario borrado.",
       "saveError": "No se pudo guardar."
-    }
+    },
+    "verifiedBadge": "Verificado"
   },
   "blockEditor": {
     "addRow": "Añadir"

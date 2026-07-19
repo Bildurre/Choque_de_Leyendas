@@ -2,8 +2,17 @@
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
-import { ArrowLeft, ArrowRight, House as HomeIcon, Plus, SquarePen, Trash2 } from '@lucide/vue'
-import { BaseButton, BaseCheckbox, BaseSelect, useConfirm, useToast } from '@edc-motor/ui'
+import {
+  ArrowLeft,
+  ArrowRight,
+  Eye,
+  House as HomeIcon,
+  Plus,
+  Printer,
+  SquarePen,
+  Trash2,
+} from '@lucide/vue'
+import { BaseButton, BaseSelect, useConfirm, useToast } from '@edc-motor/ui'
 import { useCardDeselect, useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 import ListToolbar from '@/components/ListToolbar.vue'
@@ -211,6 +220,7 @@ onMounted(load)
           <span :class="['chip', page.is_published ? 'is-ok' : 'is-missing']">
             {{ page.is_published ? t('pages.published') : t('pages.draft') }}
           </span>
+          <span v-if="page.is_printable" class="chip is-info">{{ t('pages.printable') }}</span>
           <span class="chip">{{ page.blocks_count ?? 0 }} ▤</span>
         </span>
         <span class="pages-view__buttons">
@@ -249,8 +259,27 @@ onMounted(load)
 
           <p class="manager-panel__kicker">{{ t('pages.panelTitle') }}</p>
 
-          <!-- Acciones PRIMERO; después, secciones separadas (patrón panel) -->
+          <!-- Acciones PRIMERO (los interruptores publicada/imprimible
+               arriba); después, secciones separadas (patrón panel) -->
           <div class="manager-detail__actions">
+            <BaseButton
+              variant="success"
+              :class="selected.is_published ? 'is-on' : 'is-off'"
+              :aria-pressed="selected.is_published"
+              @click="toggleFlag('is_published', !selected.is_published)"
+            >
+              <template #icon><Eye :size="14" /></template>
+              {{ t('pages.published') }}
+            </BaseButton>
+            <BaseButton
+              variant="info"
+              :class="selected.is_printable ? 'is-on' : 'is-off'"
+              :aria-pressed="selected.is_printable"
+              @click="toggleFlag('is_printable', !selected.is_printable)"
+            >
+              <template #icon><Printer :size="14" /></template>
+              {{ t('pages.printable') }}
+            </BaseButton>
             <BaseButton @click="open(selected)">
               <template #icon><ArrowRight :size="14" /></template>
               {{ t('pages.open') }}
@@ -274,18 +303,6 @@ onMounted(load)
           <h3 class="manager-detail__title">
             {{ selected.title.es ?? Object.values(selected.title)[0] }}
           </h3>
-
-          <!-- Acciones rápidas sin modal -->
-          <BaseCheckbox
-            :model-value="selected.is_published"
-            :label="t('pages.fields.published')"
-            @update:model-value="(v) => toggleFlag('is_published', v)"
-          />
-          <BaseCheckbox
-            :model-value="selected.is_printable"
-            :label="t('pages.fields.printable')"
-            @update:model-value="(v) => toggleFlag('is_printable', v)"
-          />
 
           <!-- Info: slugs por idioma -->
           <p v-for="(slugValue, code) in selected.slug" :key="code" class="manager-detail__meta">
