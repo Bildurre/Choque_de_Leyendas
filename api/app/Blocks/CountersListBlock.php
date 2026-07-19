@@ -27,7 +27,7 @@ class CountersListBlock extends BlockType
     {
         return [
             Field::text('title')->label('Título')->translatable(),
-            Field::text('subtitle')->label('Subtítulo')->translatable(),
+            Field::textarea('subtitle')->label('Subtítulo')->translatable(),
             Field::richtext('intro')->label('Introducción')->translatable(),
             Field::select('counter_type', [
                 'boon' => 'Beneficios',
