@@ -374,6 +374,19 @@ export function createLocalizedRoutes(locale: string): RouteRecordRaw[] {
       },
     },
     {
+      path: `/${p.menu}`,
+      name: 'menu',
+      component: () => import('@/views/menu/MenuView.vue'),
+      alias: buildAliases((t) => `/${t.menu}`, locale),
+      meta: {
+        admin: true,
+        nav: 'menu',
+        permission: 'manage-web',
+        titleKey: 'menu.title',
+        breadcrumbs: [{ key: 'menu' }],
+      },
+    },
+    {
       path: `/${p.pdfs}`,
       name: 'pdfs',
       component: () => import('@/views/pdfs/PdfsView.vue'),

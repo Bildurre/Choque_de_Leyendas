@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
+import type { RouteLocationRaw } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ChevronDown, FileDown, LayoutDashboard, LogIn, LogOut, Menu, X } from '@lucide/vue'
@@ -7,6 +8,7 @@ import { LocaleSelector, MotorBadge, ThemeSelector } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { entitySections } from '@/entities/registry'
 import { DOWNLOAD_PATHS } from '@/router/downloads'
+import { DICE_ROLLER_PATHS, LIFE_COUNTER_PATHS, TOOLS_PATHS } from '@/router/tools'
 import { useAuthStore } from '@/stores/auth'
 import { useCollectionStore } from '@/stores/collection'
 import { useLocalesStore } from '@/stores/locales'
@@ -14,10 +16,14 @@ import { useSiteStore } from '@/stores/site'
 
 // Cabecera pública estilo kontuan en dos líneas: arriba la marca y las
 // acciones (admin si procede, descargas, entrar/usuario, idioma y tema);
-// debajo, la barra de navegación CENTRADA. Las páginas con hijas publicadas
-// despliegan submenú al hover (chevron, patrón CDL); en móvil TODO lo del
-// header (salvo el logo) pasa a la barra lateral off-canvas, con las hijas
-// indentadas. Fija arriba, siempre visible.
+// debajo, la barra de navegación CENTRADA, montada sobre el menú configurable
+// del admin (GET /api/menu, doc 10 ampliado): mezcla páginas del CRM y rutas
+// propias del juego (entitySections + herramientas + descargas), y agrupa
+// bajo carpetas. Los grupos despliegan submenú al hover (chevron, mismo
+// patrón que antes tenían las páginas con hijas); en móvil TODO lo del
+// header (salvo el logo) pasa a la barra lateral off-canvas, con los hijos
+// indentados. Fija arriba, siempre visible. El endpoint viejo /pages/nav
+// sigue vivo en el motor (retrocompat); este cascarón ya no lo usa.
 const auth = useAuthStore()
 const route = useRoute()
 const router = useRouter()
@@ -30,15 +36,24 @@ const collection = useCollectionStore()
 // AppRightSidebar (@edc-motor/ui) trae su propia asa anclada a la barra,
 // fija desde el borde inferior de esta cabecera hasta abajo.
 
-interface NavPage {
+interface MenuNode {
   id: number
-  title: Record<string, string>
-  slugs: Record<string, string>
-  is_home: boolean
-  children?: Omit<NavPage, 'is_home' | 'children'>[]
+  type: 'page' | 'route' | 'group'
+  label: Record<string, string> | null
+  route_key: string | null
+  page: { id: number; title: Record<string, string>; slugs: Record<string, string> } | null
+  children: MenuNode[]
 }
 
-const pages = ref<NavPage[]>([])
+interface NavEntry {
+  id: number
+  routeKey: string | null
+  label: string
+  to: RouteLocationRaw | null
+  children: NavEntry[]
+}
+
+const menu = ref<MenuNode[]>([])
 const navOpen = ref(false)
 
 // El submenú vive del :hover: al hacer clic en una hija seguiría abierto
@@ -46,47 +61,116 @@ const navOpen = ref(false)
 // ratón sale del ítem.
 const suppressedDropdown = ref<number | null>(null)
 
-function closeDropdown(pageId: number) {
-  suppressedDropdown.value = pageId
+function closeDropdown(entryId: number) {
+  suppressedDropdown.value = entryId
 }
 
-function releaseDropdown(pageId: number) {
-  if (suppressedDropdown.value === pageId) suppressedDropdown.value = null
+function releaseDropdown(entryId: number) {
+  if (suppressedDropdown.value === entryId) suppressedDropdown.value = null
 }
 
-/** El padre se colorea también cuando la ruta activa es una de sus hijas. */
-function isParentActive(page: { slug: string; children: { slug: string }[] }): boolean {
-  if (route.name !== 'page') return false
-  const slug = String(route.params.slug ?? '')
-  return slug === page.slug || page.children.some((child) => child.slug === slug)
+/** Primer texto disponible en el locale activo, con fallback al primero que haya. */
+function firstText(map: Record<string, string> | null | undefined): string {
+  if (!map) return ''
+  return map[locales.current] || Object.values(map).find(Boolean) || ''
 }
-
-function navEntry(p: { id: number; title: Record<string, string>; slugs: Record<string, string> }) {
-  return {
-    id: p.id,
-    label: p.title[locales.current] || Object.values(p.title)[0] || '',
-    slug: p.slugs[locales.current] || Object.values(p.slugs)[0] || '',
-  }
-}
-
-const navPages = computed(() =>
-  pages.value
-    .filter((p) => !p.is_home)
-    .map((p) => ({
-      ...navEntry(p),
-      children: (p.children ?? []).map(navEntry),
-    })),
-)
-
-const navSections = computed(() =>
-  entitySections.map((s) => ({
-    key: s.key,
-    label: t(s.titleKey),
-    section: s.paths[locales.current] || s.paths.es,
-  })),
-)
 
 const downloadsSegment = computed(() => DOWNLOAD_PATHS[locales.current] ?? DOWNLOAD_PATHS.es)
+const toolsSegment = computed(() => TOOLS_PATHS[locales.current] ?? TOOLS_PATHS.es)
+const lifeCounterSegment = computed(() => LIFE_COUNTER_PATHS[locales.current] ?? LIFE_COUNTER_PATHS.es)
+const diceRollerSegment = computed(() => DICE_ROLLER_PATHS[locales.current] ?? DICE_ROLLER_PATHS.es)
+
+// Rutas propias del juego que el menú puede ofrecer (motor.menu.routes, doc
+// 10 ampliado): cada clave se mapea a su destino + etiqueta. Una clave que
+// llegue del backend sin mapa aquí se OMITE sin romper el resto del menú.
+const routeMap = computed<Record<string, { label: string; to: RouteLocationRaw }>>(() => {
+  const map: Record<string, { label: string; to: RouteLocationRaw }> = {}
+  for (const section of entitySections) {
+    map[section.key] = {
+      label: t(section.titleKey),
+      to: {
+        name: 'entity-index',
+        params: {
+          locale: locales.current,
+          section: section.paths[locales.current] || section.paths.es,
+        },
+      },
+    }
+  }
+  map['life-counter'] = {
+    label: t('tools.lifeCounter.title'),
+    to: {
+      name: 'life-counter',
+      params: {
+        locale: locales.current,
+        tools: toolsSegment.value,
+        tool: lifeCounterSegment.value,
+      },
+    },
+  }
+  map['dice-roller'] = {
+    label: t('tools.diceRoller.title'),
+    to: {
+      name: 'dice-roller',
+      params: {
+        locale: locales.current,
+        tools: toolsSegment.value,
+        tool: diceRollerSegment.value,
+      },
+    },
+  }
+  map.downloads = {
+    label: t('nav.downloads'),
+    to: { name: 'downloads', params: { locale: locales.current, dl: downloadsSegment.value } },
+  }
+  return map
+})
+
+/** Nodo del menú -> entrada de nav (o null si no debe pintarse). */
+function buildEntry(node: MenuNode): NavEntry | null {
+  if (node.type === 'page') {
+    if (!node.page) return null
+    return {
+      id: node.id,
+      routeKey: null,
+      label: firstText(node.page.title),
+      to: { name: 'page', params: { locale: locales.current, slug: firstText(node.page.slugs) } },
+      children: [],
+    }
+  }
+  if (node.type === 'route') {
+    const target = node.route_key ? routeMap.value[node.route_key] : undefined
+    if (!target) return null // clave desconocida (aún) para este front: se omite
+    return {
+      id: node.id,
+      routeKey: node.route_key,
+      label: target.label,
+      to: target.to,
+      children: [],
+    }
+  }
+  // Grupo: sale con los hijos que hayan podido resolverse (el público ya
+  // filtra los grupos sin hijos visibles, pero por si una ruta es desconocida
+  // aquí, un grupo que se queda vacío tampoco se pinta).
+  const children = node.children.map(buildEntry).filter((e): e is NavEntry => e !== null)
+  if (!children.length) return null
+
+  return { id: node.id, routeKey: null, label: firstText(node.label), to: null, children }
+}
+
+const navItems = computed(() => menu.value.map(buildEntry).filter((e): e is NavEntry => e !== null))
+
+/** El padre (o grupo) se colorea también si la ruta activa es una de sus hijas. */
+function isActive(entry: NavEntry): boolean {
+  if (entry.children.length) return entry.children.some(isActive)
+  if (!entry.to || typeof entry.to !== 'object' || !('name' in entry.to)) return false
+  if (route.name !== entry.to.name) return false
+  const params = (entry.to.params ?? {}) as Record<string, unknown>
+  for (const key of ['slug', 'section', 'dl', 'tool']) {
+    if (key in params) return String(route.params[key] ?? '') === String(params[key])
+  }
+  return true
+}
 
 const userInitial = computed(() => auth.user?.name?.charAt(0)?.toUpperCase() ?? '?')
 
@@ -138,10 +222,10 @@ onMounted(async () => {
   collection.load()
   await locales.load()
   try {
-    const { data } = await api.get('/pages/nav')
-    pages.value = data.data
+    const { data } = await api.get('/menu')
+    menu.value = data.data
   } catch {
-    // sin menú de páginas: la nav base sigue funcionando
+    // sin menú: la cabecera sigue funcionando (marca, acciones, idioma…)
   }
 })
 </script>
@@ -247,51 +331,40 @@ onMounted(async () => {
     <nav class="site-header__nav">
       <ul class="site-header__list">
         <li
-          v-for="page in navPages"
-          :key="page.id"
+          v-for="entry in navItems"
+          :key="entry.id"
           class="site-header__item"
           :class="{
-            'has-children': page.children.length,
-            'is-suppressed': suppressedDropdown === page.id,
+            'has-children': entry.children.length,
+            'is-suppressed': suppressedDropdown === entry.id,
           }"
-          @mouseleave="releaseDropdown(page.id)"
+          @mouseleave="releaseDropdown(entry.id)"
         >
           <RouterLink
+            v-if="entry.to"
             class="site-header__link"
-            :class="{ 'is-active': isParentActive(page) }"
-            :to="{ name: 'page', params: { locale: locales.current, slug: page.slug } }"
+            :class="{ 'is-active': isActive(entry) }"
+            :to="entry.to"
           >
-            {{ page.label }}
-            <ChevronDown v-if="page.children.length" :size="14" class="site-header__chevron" />
+            {{ entry.label }}
+            <ChevronDown v-if="entry.children.length" :size="14" class="site-header__chevron" />
           </RouterLink>
+          <!-- Grupo: no enlaza a nada, solo abre el desplegable -->
+          <span v-else class="site-header__link" :class="{ 'is-active': isActive(entry) }">
+            {{ entry.label }}
+            <ChevronDown v-if="entry.children.length" :size="14" class="site-header__chevron" />
+          </span>
           <!-- Submenú (hover / focus-within, patrón CDL): se cierra al elegir -->
-          <ul v-if="page.children.length" class="site-header__dropdown">
-            <li v-for="child in page.children" :key="child.id">
+          <ul v-if="entry.children.length" class="site-header__dropdown">
+            <li v-for="child in entry.children" :key="child.id">
               <RouterLink
                 class="site-header__dropdown-link"
-                :to="{ name: 'page', params: { locale: locales.current, slug: child.slug } }"
-                @click="closeDropdown(page.id)"
+                :to="child.to!"
+                @click="closeDropdown(entry.id)"
                 >{{ child.label }}</RouterLink
               >
             </li>
           </ul>
-        </li>
-        <li v-for="section in navSections" :key="section.key" class="site-header__item">
-          <RouterLink
-            class="site-header__link"
-            :to="{
-              name: 'entity-index',
-              params: { locale: locales.current, section: section.section },
-            }"
-            >{{ section.label }}</RouterLink
-          >
-        </li>
-        <li class="site-header__item">
-          <RouterLink
-            class="site-header__link"
-            :to="{ name: 'downloads', params: { locale: locales.current, dl: downloadsSegment } }"
-            >{{ t('nav.downloads') }}</RouterLink
-          >
         </li>
       </ul>
     </nav>
@@ -309,43 +382,32 @@ onMounted(async () => {
       <hr class="site-sidebar__divider" />
 
       <ul class="site-sidebar__list">
-        <li v-for="page in navPages" :key="page.id">
-          <RouterLink
-            class="site-header__link"
-            :to="{ name: 'page', params: { locale: locales.current, slug: page.slug } }"
-            >{{ page.label }}</RouterLink
-          >
-          <!-- Hijas: siempre desplegadas, con indentación (patrón CDL) -->
-          <ul v-if="page.children.length" class="site-sidebar__children">
-            <li v-for="child in page.children" :key="child.id">
-              <RouterLink
-                class="site-header__link"
-                :to="{ name: 'page', params: { locale: locales.current, slug: child.slug } }"
-                >{{ child.label }}</RouterLink
-              >
-            </li>
-          </ul>
-        </li>
-        <li v-for="section in navSections" :key="section.key">
-          <RouterLink
-            class="site-header__link"
-            :to="{
-              name: 'entity-index',
-              params: { locale: locales.current, section: section.section },
-            }"
-            >{{ section.label }}</RouterLink
-          >
-        </li>
-        <li>
-          <RouterLink
-            class="site-header__link"
-            :to="{ name: 'downloads', params: { locale: locales.current, dl: downloadsSegment } }"
-          >
-            {{ t('nav.downloads') }}
-            <span v-if="collection.count" class="site-header__collection-count">
+        <li v-for="entry in navItems" :key="entry.id">
+          <RouterLink v-if="entry.to" class="site-header__link" :to="entry.to">
+            {{ entry.label }}
+            <span
+              v-if="entry.routeKey === 'downloads' && collection.count"
+              class="site-header__collection-count"
+            >
               {{ collection.count }}
             </span>
           </RouterLink>
+          <!-- Grupo: solo etiqueta; sus hijos van desplegados debajo -->
+          <span v-else class="site-header__link">{{ entry.label }}</span>
+          <!-- Hijos: siempre desplegados, con indentación (patrón CDL) -->
+          <ul v-if="entry.children.length" class="site-sidebar__children">
+            <li v-for="child in entry.children" :key="child.id">
+              <RouterLink class="site-header__link" :to="child.to!">
+                {{ child.label }}
+                <span
+                  v-if="child.routeKey === 'downloads' && collection.count"
+                  class="site-header__collection-count"
+                >
+                  {{ collection.count }}
+                </span>
+              </RouterLink>
+            </li>
+          </ul>
         </li>
         <li v-if="canAccessAdmin">
           <a class="site-header__link" :href="adminUrl" @click="goToAdmin">

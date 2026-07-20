@@ -24,7 +24,8 @@
     "cardSubtypes": "card-subtypes",
     "equipmentTypes": "equipment-types",
     "equipmentSubtypes": "equipment-subtypes",
-    "gameModes": "game-modes"
+    "gameModes": "game-modes",
+    "menu": "menu"
   },
   "breadcrumbs": {
     "home": "Home",
@@ -51,7 +52,8 @@
     "cardSubtypes": "Card subtypes",
     "equipmentTypes": "Equipment types",
     "equipmentSubtypes": "Equipment subtypes",
-    "gameModes": "Game modes"
+    "gameModes": "Game modes",
+    "menu": "Menu"
   },
   "nav": {
     "dashboard": "Dashboard",
@@ -83,7 +85,8 @@
     "heroSystem": "Hero system",
     "cardSystem": "Card system",
     "attackSystem": "Attack system",
-    "files": "Files"
+    "files": "Files",
+    "menu": "Menu"
   },
   "icons": {
     "title": "Icons",
@@ -348,7 +351,9 @@
     "panelEmpty": "Pick a page to see its actions.",
     "panelBlocks": "Blocks",
     "open": "Open",
-    "printable": "Printable"
+    "printable": "Printable",
+    "moveUp": "Move up",
+    "moveDown": "Move down"
   },
   "blockTypes": {
     "header": "Header",
@@ -1412,6 +1417,25 @@
     },
     "errors": {
       "maxBelowMin": "The maximum number of cards cannot be lower than the minimum."
+    }
+  },
+  "menu": {
+    "title": "Menu",
+    "hint": "Configure the site menu: reorder, hide or group pages and sections.",
+    "newGroup": "New group",
+    "newGroupTitle": "New group",
+    "editGroupTitle": "Edit group",
+    "groupLabel": "Group name",
+    "confirmDelete": "Delete this group? Its items will move to the root.",
+    "empty": "The menu has no items yet.",
+    "root": "— Root —",
+    "hidden": "Hidden",
+    "visible": "Visible",
+    "group": "Group",
+    "routes": {
+      "lifeCounter": "Life counter",
+      "diceRoller": "Dice roller",
+      "downloads": "Downloads"
     }
   }
 }

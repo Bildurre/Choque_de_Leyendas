@@ -153,4 +153,15 @@ return [
             'editor' => ['manage-game'],
         ],
     ],
+
+    // Menú configurable de la web pública (doc 10 ampliado): rutas propias
+    // del juego que el admin puede añadir al menú junto a las páginas del
+    // CRM. Cada clave se mapea a ruta+etiqueta en AppHeader.vue (app) y a su
+    // etiqueta en MenuView.vue (admin) — una clave sin mapear en el front se
+    // omite sola. Las claves casan con entitySections (src/entities/registry.ts)
+    // y con los nombres de ruta de las herramientas (src/router/tools.ts) y
+    // descargas (src/router/downloads.ts).
+    'menu' => [
+        'routes' => ['cards', 'heroes', 'factions', 'decks', 'life-counter', 'dice-roller', 'downloads'],
+    ],
 ];

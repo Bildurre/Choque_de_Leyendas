@@ -24,7 +24,8 @@
     "cardSubtypes": "karta-azpimotak",
     "equipmentTypes": "ekipamendu-motak",
     "equipmentSubtypes": "ekipamendu-azpimotak",
-    "gameModes": "joko-moduak"
+    "gameModes": "joko-moduak",
+    "menu": "menu"
   },
   "breadcrumbs": {
     "home": "Hasiera",
@@ -51,7 +52,8 @@
     "cardSubtypes": "Karta azpimotak",
     "equipmentTypes": "Ekipamendu motak",
     "equipmentSubtypes": "Ekipamendu azpimotak",
-    "gameModes": "Joko moduak"
+    "gameModes": "Joko moduak",
+    "menu": "Menua"
   },
   "nav": {
     "dashboard": "Panela",
@@ -83,7 +85,8 @@
     "heroSystem": "Heroien sistema",
     "cardSystem": "Karten sistema",
     "attackSystem": "Erasoen sistema",
-    "files": "Fitxategiak"
+    "files": "Fitxategiak",
+    "menu": "Menua"
   },
   "icons": {
     "title": "Ikonoak",
@@ -348,7 +351,9 @@
     "panelEmpty": "Aukeratu orri bat bere ekintzak ikusteko.",
     "panelBlocks": "Blokeak",
     "open": "Ireki",
-    "printable": "Inprimagarria"
+    "printable": "Inprimagarria",
+    "moveUp": "Igo",
+    "moveDown": "Jaitsi"
   },
   "blockTypes": {
     "header": "Goiburua",
@@ -1412,6 +1417,25 @@
     },
     "errors": {
       "maxBelowMin": "Gehienezko karta kopurua ezin da gutxienekoa baino txikiagoa izan."
+    }
+  },
+  "menu": {
+    "title": "Menua",
+    "hint": "Konfiguratu webgunearen menua: birrantolatu, ezkutatu edo taldekatu orriak eta atalak.",
+    "newGroup": "Talde berria",
+    "newGroupTitle": "Talde berria",
+    "editGroupTitle": "Editatu taldea",
+    "groupLabel": "Taldearen izena",
+    "confirmDelete": "Talde hau ezabatu? Bere elementuak errora igaroko dira.",
+    "empty": "Menuak oraindik ez du elementurik.",
+    "root": "— Erroa —",
+    "hidden": "Ezkutuan",
+    "visible": "Ikusgai",
+    "group": "Taldea",
+    "routes": {
+      "lifeCounter": "Bizitza-kontagailua",
+      "diceRoller": "Dado-jaurtitzailea",
+      "downloads": "Deskargak"
     }
   }
 }
