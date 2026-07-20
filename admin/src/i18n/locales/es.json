@@ -353,7 +353,9 @@
     "open": "Abrir",
     "printable": "Imprimible",
     "moveUp": "Subir",
-    "moveDown": "Bajar"
+    "moveDown": "Bajar",
+    "childOf": "Hija de {name}",
+    "moveToRoot": "Sacar a la raíz"
   },
   "settings": {
     "title": "Configuración",
@@ -1360,17 +1362,16 @@
   },
   "menu": {
     "title": "Menú",
-    "hint": "Configura el menú de la web: reordena, oculta o agrupa páginas y secciones.",
-    "newGroup": "Nuevo grupo",
-    "newGroupTitle": "Nuevo grupo",
-    "editGroupTitle": "Editar grupo",
-    "groupLabel": "Nombre del grupo",
-    "confirmDelete": "¿Borrar este grupo? Sus elementos pasarán a la raíz.",
+    "hint": "Configura el menú de la web: arrastra o usa las flechas para ordenar y anidar páginas y secciones, y oculta lo que no quieras mostrar.",
     "empty": "El menú aún no tiene elementos.",
-    "root": "— Raíz —",
     "hidden": "Oculto",
     "visible": "Visible",
-    "group": "Grupo",
+    "discard": "Descartar",
+    "unsaved": "Cambios sin guardar",
+    "confirmLeave": "Hay cambios del menú sin guardar. ¿Salir de todos modos?",
+    "toast": {
+      "saved": "Menú guardado."
+    },
     "routes": {
       "lifeCounter": "Contador de vidas",
       "diceRoller": "Lanzador de dados",

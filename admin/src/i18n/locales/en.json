@@ -353,7 +353,9 @@
     "open": "Open",
     "printable": "Printable",
     "moveUp": "Move up",
-    "moveDown": "Move down"
+    "moveDown": "Move down",
+    "childOf": "Child of {name}",
+    "moveToRoot": "Move to root"
   },
   "blockTypes": {
     "header": "Header",
@@ -1421,17 +1423,16 @@
   },
   "menu": {
     "title": "Menu",
-    "hint": "Configure the site menu: reorder, hide or group pages and sections.",
-    "newGroup": "New group",
-    "newGroupTitle": "New group",
-    "editGroupTitle": "Edit group",
-    "groupLabel": "Group name",
-    "confirmDelete": "Delete this group? Its items will move to the root.",
+    "hint": "Configure the site menu: drag or use the arrows to order and nest pages and sections, and hide what you don't want to show.",
     "empty": "The menu has no items yet.",
-    "root": "— Root —",
     "hidden": "Hidden",
     "visible": "Visible",
-    "group": "Group",
+    "discard": "Discard",
+    "unsaved": "Unsaved changes",
+    "confirmLeave": "The menu has unsaved changes. Leave anyway?",
+    "toast": {
+      "saved": "Menu saved."
+    },
     "routes": {
       "lifeCounter": "Life counter",
       "diceRoller": "Dice roller",
