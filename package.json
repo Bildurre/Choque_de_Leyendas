@@ -9,8 +9,8 @@
     "app"
   ],
   "dependencies": {
-    "@edc-motor/admin-kit": "^0.4.23",
-    "@edc-motor/ui": "^0.4.23"
+    "@edc-motor/admin-kit": "^0.4.24",
+    "@edc-motor/ui": "^0.4.24"
   },
   "scripts": {
     "dev": "concurrently -n app,admin,api,queue -c blue,green,red,yellow \"npm run dev -w app\" \"npm run dev -w admin\" \"npm run dev:api\" \"npm run dev:queue\"",
