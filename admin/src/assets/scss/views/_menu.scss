@@ -1,0 +1,11 @@
+@use "tokens" as *;
+
+// Configurador del menú de la web (doc 10 ampliado): el propio
+// MenuManager (admin-kit) trae sus filas; aquí solo el título y la ayuda.
+.menu-view {
+  &__hint {
+    margin: 0 0 $space-4;
+    color: $text-3;
+    font-size: $fs-13;
+  }
+}

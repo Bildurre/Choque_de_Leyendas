@@ -3,8 +3,10 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import {
+  ArrowDown,
   ArrowLeft,
   ArrowRight,
+  ArrowUp,
   Eye,
   House as HomeIcon,
   Plus,
@@ -157,6 +159,37 @@ async function toggleFlag(flag: 'is_published' | 'is_printable', value: boolean)
   }
 }
 
+// Subir/Bajar (panel derecho): intercambia la página seleccionada con su
+// hermana anterior/siguiente (mismo parent_id) y persiste con el endpoint de
+// reorder (la lista completa de hermanas, en el nuevo orden). `pages` ya
+// llega ordenado por hermanos (parent_id, order, id — el index del admin),
+// así que filtrar por parent_id basta para tener el orden correcto.
+const siblingPages = computed(() =>
+  selected.value ? pages.value.filter((p) => p.parent_id === selected.value!.parent_id) : [],
+)
+const selectedSiblingIndex = computed(() =>
+  selected.value ? siblingPages.value.findIndex((p) => p.id === selected.value!.id) : -1,
+)
+const canMoveUp = computed(() => selectedSiblingIndex.value > 0)
+const canMoveDown = computed(
+  () =>
+    selectedSiblingIndex.value >= 0 && selectedSiblingIndex.value < siblingPages.value.length - 1,
+)
+
+async function move(direction: 'up' | 'down') {
+  const idx = selectedSiblingIndex.value
+  const swapWith = direction === 'up' ? idx - 1 : idx + 1
+  if (idx < 0 || swapWith < 0 || swapWith >= siblingPages.value.length) return
+  const ids = siblingPages.value.map((p) => p.id)
+  ;[ids[idx], ids[swapWith]] = [ids[swapWith], ids[idx]]
+  try {
+    await api.post('/admin/pages/reorder', { ids })
+    await load()
+  } catch {
+    toast.danger(t('common.errors.action'))
+  }
+}
+
 async function setHome(page: PageRow) {
   try {
     await api.post(`/admin/pages/${page.id}/set-home`)
@@ -279,6 +312,14 @@ onMounted(load)
             >
               <template #icon><Printer :size="14" /></template>
               {{ t('pages.printable') }}
+            </BaseButton>
+            <BaseButton variant="info" :disabled="!canMoveUp" @click="move('up')">
+              <template #icon><ArrowUp :size="14" /></template>
+              {{ t('pages.moveUp') }}
+            </BaseButton>
+            <BaseButton variant="info" :disabled="!canMoveDown" @click="move('down')">
+              <template #icon><ArrowDown :size="14" /></template>
+              {{ t('pages.moveDown') }}
             </BaseButton>
             <BaseButton @click="open(selected)">
               <template #icon><ArrowRight :size="14" /></template>

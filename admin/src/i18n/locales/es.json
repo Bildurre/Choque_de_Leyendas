@@ -24,7 +24,8 @@
     "cardSubtypes": "subtipos-de-carta",
     "equipmentTypes": "tipos-de-equipo",
     "equipmentSubtypes": "subtipos-de-equipo",
-    "gameModes": "modos-de-juego"
+    "gameModes": "modos-de-juego",
+    "menu": "menu"
   },
   "breadcrumbs": {
     "home": "Inicio",
@@ -51,7 +52,8 @@
     "cardSubtypes": "Subtipos de carta",
     "equipmentTypes": "Tipos de equipo",
     "equipmentSubtypes": "Subtipos de equipo",
-    "gameModes": "Modos de juego"
+    "gameModes": "Modos de juego",
+    "menu": "Menú"
   },
   "nav": {
     "dashboard": "Panel",
@@ -83,7 +85,8 @@
     "heroSystem": "Sistema de héroes",
     "cardSystem": "Sistema de cartas",
     "attackSystem": "Sistema de ataques",
-    "files": "Archivos"
+    "files": "Archivos",
+    "menu": "Menú"
   },
   "icons": {
     "title": "Iconos",
@@ -348,7 +351,9 @@
     "panelEmpty": "Selecciona una página para ver sus acciones.",
     "panelBlocks": "Bloques",
     "open": "Abrir",
-    "printable": "Imprimible"
+    "printable": "Imprimible",
+    "moveUp": "Subir",
+    "moveDown": "Bajar"
   },
   "settings": {
     "title": "Configuración",
@@ -1352,5 +1357,24 @@
   "blockFields": {
     "intro": "Introducción",
     "counter_type": "Tipo de contador"
+  },
+  "menu": {
+    "title": "Menú",
+    "hint": "Configura el menú de la web: reordena, oculta o agrupa páginas y secciones.",
+    "newGroup": "Nuevo grupo",
+    "newGroupTitle": "Nuevo grupo",
+    "editGroupTitle": "Editar grupo",
+    "groupLabel": "Nombre del grupo",
+    "confirmDelete": "¿Borrar este grupo? Sus elementos pasarán a la raíz.",
+    "empty": "El menú aún no tiene elementos.",
+    "root": "— Raíz —",
+    "hidden": "Oculto",
+    "visible": "Visible",
+    "group": "Grupo",
+    "routes": {
+      "lifeCounter": "Contador de vidas",
+      "diceRoller": "Lanzador de dados",
+      "downloads": "Descargas"
+    }
   }
 }
