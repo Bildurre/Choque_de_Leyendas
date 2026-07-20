@@ -17,13 +17,15 @@ import { useSiteStore } from '@/stores/site'
 // Cabecera pública estilo kontuan en dos líneas: arriba la marca y las
 // acciones (admin si procede, descargas, entrar/usuario, idioma y tema);
 // debajo, la barra de navegación CENTRADA, montada sobre el menú configurable
-// del admin (GET /api/menu, doc 10 ampliado): mezcla páginas del CRM y rutas
-// propias del juego (entitySections + herramientas + descargas), y agrupa
-// bajo carpetas. Los grupos despliegan submenú al hover (chevron, mismo
-// patrón que antes tenían las páginas con hijas); en móvil TODO lo del
-// header (salvo el logo) pasa a la barra lateral off-canvas, con los hijos
-// indentados. Fija arriba, siempre visible. El endpoint viejo /pages/nav
-// sigue vivo en el motor (retrocompat); este cascarón ya no lo usa.
+// del admin (GET /api/menu, doc 10 ampliado, rediseño sin grupos): mezcla
+// páginas del CRM y rutas propias del juego (entitySections + herramientas +
+// descargas). La jerarquía es la de las páginas — "si quieres un grupo, haz
+// una página": una página con hijas (visibles y publicadas) despliega
+// submenú al hover (chevron) y ella misma sigue siendo un enlace normal; en
+// móvil TODO lo del header (salvo el logo) pasa a la barra lateral
+// off-canvas, con los hijos indentados. Fija arriba, siempre visible. El
+// endpoint viejo /pages/nav sigue vivo en el motor (retrocompat); este
+// cascarón ya no lo usa.
 const auth = useAuthStore()
 const route = useRoute()
 const router = useRouter()
@@ -38,8 +40,7 @@ const collection = useCollectionStore()
 
 interface MenuNode {
   id: number
-  type: 'page' | 'route' | 'group'
-  label: Record<string, string> | null
+  type: 'page' | 'route'
   route_key: string | null
   page: { id: number; title: Record<string, string>; slugs: Record<string, string> } | null
   children: MenuNode[]
@@ -49,7 +50,9 @@ interface NavEntry {
   id: number
   routeKey: string | null
   label: string
-  to: RouteLocationRaw | null
+  // Siempre un enlace (páginas y rutas) — sin grupos, nada del menú carece
+  // de destino propio.
+  to: RouteLocationRaw
   children: NavEntry[]
 }
 
@@ -126,44 +129,37 @@ const routeMap = computed<Record<string, { label: string; to: RouteLocationRaw }
   return map
 })
 
-/** Nodo del menú -> entrada de nav (o null si no debe pintarse). */
+/** Nodo del menú -> entrada de nav (o null si no debe pintarse). Sin
+ *  grupos: una página con hijas (visibles y publicadas) hace de desplegable
+ *  — sale como enlace normal, con las hijas anidadas debajo. */
 function buildEntry(node: MenuNode): NavEntry | null {
   if (node.type === 'page') {
     if (!node.page) return null
+    const children = node.children.map(buildEntry).filter((e): e is NavEntry => e !== null)
+
     return {
       id: node.id,
       routeKey: null,
       label: firstText(node.page.title),
       to: { name: 'page', params: { locale: locales.current, slug: firstText(node.page.slugs) } },
-      children: [],
+      children,
     }
   }
-  if (node.type === 'route') {
-    const target = node.route_key ? routeMap.value[node.route_key] : undefined
-    if (!target) return null // clave desconocida (aún) para este front: se omite
-    return {
-      id: node.id,
-      routeKey: node.route_key,
-      label: target.label,
-      to: target.to,
-      children: [],
-    }
-  }
-  // Grupo: sale con los hijos que hayan podido resolverse (el público ya
-  // filtra los grupos sin hijos visibles, pero por si una ruta es desconocida
-  // aquí, un grupo que se queda vacío tampoco se pinta).
-  const children = node.children.map(buildEntry).filter((e): e is NavEntry => e !== null)
-  if (!children.length) return null
+  // Ruta: sin hijos (una ruta nunca es madre); si su clave es desconocida
+  // para este front (aún no mapeada en routeMap), se omite sin romper el
+  // resto del menú.
+  const target = node.route_key ? routeMap.value[node.route_key] : undefined
+  if (!target) return null
 
-  return { id: node.id, routeKey: null, label: firstText(node.label), to: null, children }
+  return { id: node.id, routeKey: node.route_key, label: target.label, to: target.to, children: [] }
 }
 
 const navItems = computed(() => menu.value.map(buildEntry).filter((e): e is NavEntry => e !== null))
 
-/** El padre (o grupo) se colorea también si la ruta activa es una de sus hijas. */
+/** La página madre se colorea también si la ruta activa es una de sus hijas. */
 function isActive(entry: NavEntry): boolean {
   if (entry.children.length) return entry.children.some(isActive)
-  if (!entry.to || typeof entry.to !== 'object' || !('name' in entry.to)) return false
+  if (typeof entry.to !== 'object' || !('name' in entry.to)) return false
   if (route.name !== entry.to.name) return false
   const params = (entry.to.params ?? {}) as Record<string, unknown>
   for (const key of ['slug', 'section', 'dl', 'tool']) {
@@ -341,7 +337,6 @@ onMounted(async () => {
           @mouseleave="releaseDropdown(entry.id)"
         >
           <RouterLink
-            v-if="entry.to"
             class="site-header__link"
             :class="{ 'is-active': isActive(entry) }"
             :to="entry.to"
@@ -349,17 +344,13 @@ onMounted(async () => {
             {{ entry.label }}
             <ChevronDown v-if="entry.children.length" :size="14" class="site-header__chevron" />
           </RouterLink>
-          <!-- Grupo: no enlaza a nada, solo abre el desplegable -->
-          <span v-else class="site-header__link" :class="{ 'is-active': isActive(entry) }">
-            {{ entry.label }}
-            <ChevronDown v-if="entry.children.length" :size="14" class="site-header__chevron" />
-          </span>
-          <!-- Submenú (hover / focus-within, patrón CDL): se cierra al elegir -->
+          <!-- Submenú (hover / focus-within, patrón CDL): se cierra al elegir.
+               Sin grupos: son las hijas de esta página (pages.parent_id). -->
           <ul v-if="entry.children.length" class="site-header__dropdown">
             <li v-for="child in entry.children" :key="child.id">
               <RouterLink
                 class="site-header__dropdown-link"
-                :to="child.to!"
+                :to="child.to"
                 @click="closeDropdown(entry.id)"
                 >{{ child.label }}</RouterLink
               >
@@ -383,7 +374,7 @@ onMounted(async () => {
 
       <ul class="site-sidebar__list">
         <li v-for="entry in navItems" :key="entry.id">
-          <RouterLink v-if="entry.to" class="site-header__link" :to="entry.to">
+          <RouterLink class="site-header__link" :to="entry.to">
             {{ entry.label }}
             <span
               v-if="entry.routeKey === 'downloads' && collection.count"
@@ -392,12 +383,10 @@ onMounted(async () => {
               {{ collection.count }}
             </span>
           </RouterLink>
-          <!-- Grupo: solo etiqueta; sus hijos van desplegados debajo -->
-          <span v-else class="site-header__link">{{ entry.label }}</span>
-          <!-- Hijos: siempre desplegados, con indentación (patrón CDL) -->
+          <!-- Hijas (sin grupos): siempre desplegadas, con indentación (patrón CDL) -->
           <ul v-if="entry.children.length" class="site-sidebar__children">
             <li v-for="child in entry.children" :key="child.id">
-              <RouterLink class="site-header__link" :to="child.to!">
+              <RouterLink class="site-header__link" :to="child.to">
                 {{ child.label }}
                 <span
                   v-if="child.routeKey === 'downloads' && collection.count"

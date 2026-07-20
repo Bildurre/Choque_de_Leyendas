@@ -7,6 +7,7 @@ import {
   ArrowLeft,
   ArrowRight,
   ArrowUp,
+  CornerUpLeft,
   Eye,
   House as HomeIcon,
   Plus,
@@ -19,6 +20,7 @@ import { useCardDeselect, useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 import ListToolbar from '@/components/ListToolbar.vue'
 import PageFormModal, { type PageRow } from '@/components/pages/PageFormModal.vue'
+import { useLocalesStore } from '@/stores/locales'
 
 // Listado de páginas del CRM. TODA la tarjeta selecciona (salvo controles):
 // el panel derecho trae las acciones (patrón kontuan, arriba del todo) y las
@@ -26,11 +28,18 @@ import PageFormModal, { type PageRow } from '@/components/pages/PageFormModal.vu
 // entran al single (bloques). Los filtros del listado viven en el propio
 // panel derecho: sin card seleccionada se muestran los selects; con
 // selección, el botón "volver a los filtros" deselecciona (también un click
-// en la zona vacía del contenido).
+// en la zona vacía del contenido). Tarjetas arrastrables (drag & drop
+// nativo, un solo nivel — es la misma jerarquía que deriva el menú): soltar
+// entre cards reordena (persiste al momento, `POST /admin/pages/reorder`);
+// soltar ENCIMA de una card RAÍZ la convierte en madre de la arrastrada
+// (`PUT /admin/pages/{id}`, misma validación que el resto del CRM); soltar
+// en el hueco entre cards raíz saca una hija a la raíz (también el botón
+// "Sacar a la raíz" del panel).
 const { t, te } = useI18n()
 const router = useRouter()
 const toast = useToast()
 const { confirm } = useConfirm()
+const locales = useLocalesStore()
 
 const sidebar = useRightSidebar()
 sidebar.useRegister(t('pages.panelTitle'))
@@ -54,6 +63,22 @@ const statusOptions = computed(() => [
 
 const selected = computed(() => pages.value.find((p) => p.id === selectedId.value) ?? null)
 
+/** Texto en el locale actual del admin, con fallback al primer valor no vacío. */
+function displayText(map: Record<string, string> | null | undefined): string {
+  if (!map) return ''
+  return map[locales.current] || Object.values(map).find(Boolean) || ''
+}
+
+function pageTitle(page: PageRow): string {
+  return displayText(page.title)
+}
+
+/** Etiqueta de la madre de una página hija (indicador de jerarquía). */
+function parentTitle(page: PageRow): string {
+  const parent = pages.value.find((p) => p.id === page.parent_id)
+  return parent ? pageTitle(parent) : ''
+}
+
 // Bloques de la página seleccionada (solo tipo + resumen de una línea).
 interface BlockTypeInfo {
   key: string
@@ -75,7 +100,7 @@ function blockSummary(block: { type: string; settings: Record<string, unknown> }
     if (!['text', 'textarea', 'richtext'].includes(field.type)) continue
     const value = block.settings?.[field.key]
     if (field.translatable && value && typeof value === 'object') {
-      const text = Object.values(value as Record<string, string>).find(Boolean)
+      const text = displayText(value as Record<string, string>)
       if (text) return text.replace(/<[^>]*>/g, '').slice(0, 90)
     }
   }
@@ -190,6 +215,130 @@ async function move(direction: 'up' | 'down') {
   }
 }
 
+/** Saca una hija a la raíz (botón del panel; también lo hace soltarla entre
+ *  cards raíz al arrastrar). Va al final de las páginas raíz. */
+async function moveToRoot(page: PageRow) {
+  try {
+    await api.put(`/admin/pages/${page.id}`, { parent_id: null })
+    const ids = [
+      ...pages.value.filter((p) => !p.parent_id && p.id !== page.id).map((p) => p.id),
+      page.id,
+    ]
+    await api.post('/admin/pages/reorder', { ids })
+    toast.success(t('pages.toast.saved'))
+    await load()
+  } catch {
+    toast.danger(t('common.errors.action'))
+  }
+}
+
+// --- Drag & drop nativo (HTML5, sin dependencias) --------------------------
+// Un solo nivel (misma jerarquía que deriva el menú): soltar en el tercio
+// superior/inferior de otra card reordena como hermana; soltar en el
+// tercio central de una card RAÍZ la convierte en madre de la arrastrada
+// (si es válida: una página CON hijas no puede meterse dentro de otra, y
+// solo se anida bajo páginas raíz). Arrastrar una hija hasta el hueco entre
+// cards raíz la saca a la raíz.
+const dragged = ref<PageRow | null>(null)
+const dropTarget = ref<{ id: number; position: 'before' | 'after' | 'inside' } | null>(null)
+const dragging = ref(false)
+
+function hasChildren(id: number): boolean {
+  return pages.value.some((p) => p.parent_id === id)
+}
+
+function canNestInside(target: PageRow): boolean {
+  if (!dragged.value) return false
+  if (target.parent_id || target.id === dragged.value.id) return false
+  return !hasChildren(dragged.value.id)
+}
+
+function canPlaceSibling(target: PageRow): boolean {
+  if (!dragged.value) return false
+  if (target.id === dragged.value.id) return false
+  if (target.parent_id && hasChildren(dragged.value.id)) return false
+  return true
+}
+
+function onDragStart(page: PageRow, event: DragEvent) {
+  dragged.value = page
+  event.dataTransfer?.setData('text/plain', String(page.id))
+  if (event.dataTransfer) event.dataTransfer.effectAllowed = 'move'
+}
+
+function onDragOver(page: PageRow, event: DragEvent) {
+  if (!dragged.value || dragged.value.id === page.id) {
+    dropTarget.value = null
+    return
+  }
+  const rect = (event.currentTarget as HTMLElement).getBoundingClientRect()
+  const ratio = (event.clientY - rect.top) / rect.height
+  const nestable = canNestInside(page)
+
+  let position: 'before' | 'after' | 'inside'
+  if (nestable && ratio > 0.3 && ratio < 0.7) {
+    position = 'inside'
+  } else {
+    if (!canPlaceSibling(page)) {
+      dropTarget.value = null
+      return
+    }
+    position = ratio < 0.5 ? 'before' : 'after'
+  }
+  dropTarget.value = { id: page.id, position }
+}
+
+function onDragLeave(page: PageRow, event: DragEvent) {
+  const related = event.relatedTarget as Node | null
+  const current = event.currentTarget as HTMLElement
+  if (related && current.contains(related)) return
+  if (dropTarget.value?.id === page.id) dropTarget.value = null
+}
+
+function onDragEnd() {
+  dragged.value = null
+  dropTarget.value = null
+}
+
+async function onDrop(page: PageRow, event: DragEvent) {
+  event.preventDefault()
+  const target = dropTarget.value
+  const source = dragged.value
+  dragged.value = null
+  dropTarget.value = null
+  if (!target || !source || target.id !== page.id || dragging.value) return
+
+  const oldParentId = source.parent_id
+  const newParentId =
+    target.position === 'inside'
+      ? target.id
+      : (pages.value.find((p) => p.id === target.id)?.parent_id ?? null)
+
+  // Hermanas del padre DESTINO (sin la arrastrada), con ella insertada en
+  // su nueva posición: es la lista completa que persiste el reorder.
+  const siblings = pages.value.filter((p) => p.parent_id === newParentId && p.id !== source.id)
+  let insertAt = siblings.length
+  if (target.position !== 'inside') {
+    const idx = siblings.findIndex((p) => p.id === target.id)
+    insertAt = idx < 0 ? siblings.length : target.position === 'after' ? idx + 1 : idx
+  }
+  siblings.splice(insertAt, 0, source)
+
+  dragging.value = true
+  try {
+    if (newParentId !== oldParentId) {
+      await api.put(`/admin/pages/${source.id}`, { parent_id: newParentId })
+    }
+    await api.post('/admin/pages/reorder', { ids: siblings.map((p) => p.id) })
+    await load()
+  } catch {
+    toast.danger(t('common.errors.action'))
+    await load()
+  } finally {
+    dragging.value = false
+  }
+}
+
 async function setHome(page: PageRow) {
   try {
     await api.post(`/admin/pages/${page.id}/set-home`)
@@ -202,7 +351,7 @@ async function setHome(page: PageRow) {
 
 async function remove(page: PageRow) {
   const ok = await confirm({
-    message: t('pages.confirmDelete', { name: page.title.es ?? '' }),
+    message: t('pages.confirmDelete', { name: pageTitle(page) }),
     confirmLabel: t('common.actions.delete'),
     cancelLabel: t('common.cancel'),
     variant: 'danger',
@@ -241,13 +390,31 @@ onMounted(load)
         v-for="page in pages"
         :key="page.id"
         class="pages-view__item"
-        :class="{ 'is-child': page.parent_id, 'is-active': selectedId === page.id }"
+        draggable="true"
+        :class="{
+          'is-child': page.parent_id,
+          'is-active': selectedId === page.id,
+          'is-dragging': dragged?.id === page.id,
+          'drop-before': dropTarget?.id === page.id && dropTarget.position === 'before',
+          'drop-after': dropTarget?.id === page.id && dropTarget.position === 'after',
+          'drop-inside': dropTarget?.id === page.id && dropTarget.position === 'inside',
+        }"
         @click="(e) => select(page, e)"
+        @dragstart="onDragStart(page, $event)"
+        @dragover.prevent="onDragOver(page, $event)"
+        @dragleave="onDragLeave(page, $event)"
+        @drop="onDrop(page, $event)"
+        @dragend="onDragEnd"
       >
         <button type="button" class="pages-view__title" @click="open(page)">
-          {{ page.title.es ?? Object.values(page.title)[0] }}
+          {{ pageTitle(page) }}
         </button>
-        <span class="pages-view__slug">/{{ page.slug.es ?? '' }}</span>
+        <span class="pages-view__slug">
+          /{{ page.slug[locales.current] ?? page.slug.es ?? '' }}
+          <em v-if="page.parent_id" class="pages-view__parent">
+            {{ t('pages.childOf', { name: parentTitle(page) }) }}
+          </em>
+        </span>
         <span class="pages-view__chips">
           <span v-if="page.is_home" class="chip is-ok">{{ t('pages.homeChip') }}</span>
           <span :class="['chip', page.is_published ? 'is-ok' : 'is-missing']">
@@ -321,6 +488,10 @@ onMounted(load)
               <template #icon><ArrowDown :size="14" /></template>
               {{ t('pages.moveDown') }}
             </BaseButton>
+            <BaseButton v-if="selected.parent_id" variant="info" @click="moveToRoot(selected)">
+              <template #icon><CornerUpLeft :size="14" /></template>
+              {{ t('pages.moveToRoot') }}
+            </BaseButton>
             <BaseButton @click="open(selected)">
               <template #icon><ArrowRight :size="14" /></template>
               {{ t('pages.open') }}
@@ -342,7 +513,7 @@ onMounted(load)
           <hr class="manager-panel__divider" />
 
           <h3 class="manager-detail__title">
-            {{ selected.title.es ?? Object.values(selected.title)[0] }}
+            {{ pageTitle(selected) }}
           </h3>
 
           <!-- Info: slugs por idioma -->

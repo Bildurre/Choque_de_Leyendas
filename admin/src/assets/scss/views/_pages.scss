@@ -25,8 +25,9 @@
     background: $surface;
     padding: $space-2 $space-3;
     min-width: 0;
+    position: relative;
     cursor: pointer; // toda la tarjeta selecciona (panel derecho)
-    transition: border-color 0.15s ease;
+    transition: border-color 0.15s ease, opacity 0.15s ease;
 
     @container content (min-width: 640px) {
       grid-template-columns: auto minmax(0, 1fr) auto auto;
@@ -36,6 +37,27 @@
     &:hover { border-color: $border-strong; }
     &.is-active { border-color: $accent-500; }
     &.is-child { margin-left: $space-6; }
+    &.is-dragging { opacity: 0.4; }
+
+    // Indicador de inserción (drag & drop nativo) — mismo lenguaje que el
+    // MenuManager y PageBlocks.
+    &.drop-before::before,
+    &.drop-after::after {
+      content: "";
+      position: absolute;
+      left: $space-2;
+      right: $space-2;
+      height: 2px;
+      background: $accent-500;
+      border-radius: $radius-pill;
+    }
+    &.drop-before::before { top: -$space-1; }
+    &.drop-after::after { bottom: -$space-1; }
+
+    &.drop-inside {
+      border-color: $accent-500;
+      background: color-mix(in srgb, $accent-500 10%, $surface);
+    }
   }
 
   &__title {
@@ -59,6 +81,15 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+  }
+
+  // Indicador discreto de jerarquía (hija de X), junto al slug.
+  &__parent {
+    color: $text-3;
+    font-style: normal;
+    margin-left: $space-2;
+
+    &::before { content: "· "; }
   }
 
   &__chips { grid-area: chips; display: flex; gap: $space-1; }

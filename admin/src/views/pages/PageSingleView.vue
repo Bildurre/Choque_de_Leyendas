@@ -30,6 +30,11 @@ const page = ref<PageRow | null>(null)
 const pages = ref<PageRow[]>([])
 const formOpen = ref(false)
 
+/** Título en el locale actual del admin, con fallback al primer valor no vacío. */
+function pageTitle(p: PageRow): string {
+  return p.title[locales.current] || Object.values(p.title).find(Boolean) || ''
+}
+
 // El gancho de localización del editor de bloques: si el juego tiene la
 // clave i18n, se usa; si no, la etiqueta del esquema (castellano).
 function translate(key: string, fallback: string): string {
@@ -93,7 +98,7 @@ const crumb = usePageCrumb()
 watch(
   [page, () => locales.current],
   () => {
-    if (page.value) crumb.set(page.value.title[locales.current] ?? page.value.title.es ?? '')
+    if (page.value) crumb.set(pageTitle(page.value))
   },
   { immediate: true },
 )
@@ -113,12 +118,13 @@ onBeforeUnmount(crumb.clear)
       </BaseButton>
     </div>
 
-    <h1 class="single__title">{{ page.title[locales.current] ?? page.title.es }}</h1>
+    <h1 class="single__title">{{ pageTitle(page) }}</h1>
 
     <PageBlocks
       :api="api"
       :page-id="page.id"
       :locales="locales.locales"
+      :display-locale="locales.current"
       :icons="iconList"
       :rich-labels="richLabels"
       :labels="blockLabels"
@@ -157,7 +163,7 @@ onBeforeUnmount(crumb.clear)
         <hr class="manager-panel__divider" />
 
         <h3 class="manager-detail__title">
-          {{ page.title[locales.current] ?? page.title.es }}
+          {{ pageTitle(page) }}
         </h3>
 
         <p v-for="(slugValue, code) in page.slug" :key="code" class="manager-detail__meta">
