@@ -80,7 +80,9 @@ function firstText(map: Record<string, string> | null | undefined): string {
 
 const downloadsSegment = computed(() => DOWNLOAD_PATHS[locales.current] ?? DOWNLOAD_PATHS.es)
 const toolsSegment = computed(() => TOOLS_PATHS[locales.current] ?? TOOLS_PATHS.es)
-const lifeCounterSegment = computed(() => LIFE_COUNTER_PATHS[locales.current] ?? LIFE_COUNTER_PATHS.es)
+const lifeCounterSegment = computed(
+  () => LIFE_COUNTER_PATHS[locales.current] ?? LIFE_COUNTER_PATHS.es,
+)
 const diceRollerSegment = computed(() => DICE_ROLLER_PATHS[locales.current] ?? DICE_ROLLER_PATHS.es)
 
 // Rutas propias del juego que el menú puede ofrecer (motor.menu.routes, doc
