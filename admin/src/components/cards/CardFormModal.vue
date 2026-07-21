@@ -408,7 +408,7 @@ async function submit() {
   <EditModal
     :model-value="modelValue"
     :title="title"
-    size="lg"
+    size="wide"
     :loading="saving"
     :submit-label="t('common.save')"
     :cancel-label="t('common.cancel')"
