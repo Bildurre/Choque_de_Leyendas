@@ -147,11 +147,7 @@ function abilityTypes(ability: HeroRenderData['abilities'][number]): string {
         <!-- Logo del gestor de iconos (slug "faerie", como el hada del viejo):
              si no está subido no se pinta nada, sin hueco. -->
         <!-- eslint-disable-next-line vue/no-v-html -- SVG del gestor, saneado al subir (el inline hereda currentColor; un <img> lo pintaría negro) -->
-        <span
-          v-if="item.faerie_svg"
-          class="game-card__footer-logo"
-          v-html="item.faerie_svg"
-        />
+        <span v-if="item.faerie_svg" class="game-card__footer-logo" v-html="item.faerie_svg" />
         <img
           v-else-if="item.icons.faerie"
           class="game-card__footer-logo"
