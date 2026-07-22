@@ -5,7 +5,6 @@ import { useRouter } from 'vue-router'
 import {
   ArrowLeft,
   ArrowRight,
-  CornerUpLeft,
   Eye,
   GripVertical,
   House as HomeIcon,
@@ -32,8 +31,8 @@ import { useLocalesStore } from '@/stores/locales'
 // entre cards reordena (persiste al momento, `POST /admin/pages/reorder`);
 // soltar ENCIMA de una card RAÍZ la convierte en madre de la arrastrada
 // (`PUT /admin/pages/{id}`, misma validación que el resto del CRM); soltar
-// en el hueco entre cards raíz saca una hija a la raíz (también el botón
-// "Sacar a la raíz" del panel).
+// en el hueco entre cards raíz saca una hija a la raíz (única forma: el
+// panel ya no repite esa acción, es un caso particular del propio arrastre).
 const { t, te } = useI18n()
 const router = useRouter()
 const toast = useToast()
@@ -178,23 +177,6 @@ async function toggleFlag(flag: 'is_published' | 'is_printable', value: boolean)
     await api.put(`/admin/pages/${selected.value.id}`, { [flag]: value })
     selected.value[flag] = value
     toast.success(t('pages.toast.saved'))
-  } catch {
-    toast.danger(t('common.errors.action'))
-  }
-}
-
-/** Saca una hija a la raíz (botón del panel; también lo hace soltarla entre
- *  cards raíz al arrastrar). Va al final de las páginas raíz. */
-async function moveToRoot(page: PageRow) {
-  try {
-    await api.put(`/admin/pages/${page.id}`, { parent_id: null })
-    const ids = [
-      ...pages.value.filter((p) => !p.parent_id && p.id !== page.id).map((p) => p.id),
-      page.id,
-    ]
-    await api.post('/admin/pages/reorder', { ids })
-    toast.success(t('pages.toast.saved'))
-    await load()
   } catch {
     toast.danger(t('common.errors.action'))
   }
@@ -428,8 +410,31 @@ onMounted(load)
 
           <p class="manager-panel__kicker">{{ t('pages.panelTitle') }}</p>
 
-          <!-- Acciones PRIMERO (los interruptores publicada/imprimible
-               arriba); después, secciones separadas (patrón panel) -->
+          <!-- Acciones de verdad (patrón panel): los interruptores de
+               estado van en su propia sección, debajo -->
+          <div class="manager-detail__actions">
+            <BaseButton @click="open(selected)">
+              <template #icon><ArrowRight :size="14" /></template>
+              {{ t('pages.open') }}
+            </BaseButton>
+            <BaseButton variant="info" @click="openEdit(selected)">
+              <template #icon><SquarePen :size="14" /></template>
+              {{ t('common.actions.edit') }}
+            </BaseButton>
+            <BaseButton v-if="!selected.is_home" variant="warning" @click="setHome(selected)">
+              <template #icon><HomeIcon :size="14" /></template>
+              {{ t('pages.setHome') }}
+            </BaseButton>
+            <BaseButton variant="danger" @click="remove(selected)">
+              <template #icon><Trash2 :size="14" /></template>
+              {{ t('common.actions.delete') }}
+            </BaseButton>
+          </div>
+
+          <!-- Estado: los interruptores (flags), separados de las
+               acciones de verdad -->
+          <hr class="manager-panel__divider" />
+          <p class="manager-panel__kicker">{{ t('common.stateKicker') }}</p>
           <div class="manager-detail__actions">
             <BaseButton
               variant="success"
@@ -448,26 +453,6 @@ onMounted(load)
             >
               <template #icon><Printer :size="14" /></template>
               {{ t('pages.printable') }}
-            </BaseButton>
-            <BaseButton v-if="selected.parent_id" variant="info" @click="moveToRoot(selected)">
-              <template #icon><CornerUpLeft :size="14" /></template>
-              {{ t('pages.moveToRoot') }}
-            </BaseButton>
-            <BaseButton @click="open(selected)">
-              <template #icon><ArrowRight :size="14" /></template>
-              {{ t('pages.open') }}
-            </BaseButton>
-            <BaseButton variant="info" @click="openEdit(selected)">
-              <template #icon><SquarePen :size="14" /></template>
-              {{ t('common.actions.edit') }}
-            </BaseButton>
-            <BaseButton v-if="!selected.is_home" variant="warning" @click="setHome(selected)">
-              <template #icon><HomeIcon :size="14" /></template>
-              {{ t('pages.setHome') }}
-            </BaseButton>
-            <BaseButton variant="danger" @click="remove(selected)">
-              <template #icon><Trash2 :size="14" /></template>
-              {{ t('common.actions.delete') }}
             </BaseButton>
           </div>
 

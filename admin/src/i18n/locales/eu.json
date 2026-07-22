@@ -153,7 +153,8 @@
       "of": "{page} / {pages}"
     },
     "yes": "Bai",
-    "no": "Ez"
+    "no": "Ez",
+    "stateKicker": "Egoera"
   },
   "login": {
     "title": "Panelerako sarrera",
@@ -229,9 +230,27 @@
     "bold": "Lodia",
     "italic": "Etzana",
     "strike": "Marratua",
-    "heading": "Izenburua",
+    "underline": "Azpimarratua",
+    "heading2": "2. izenburua",
+    "heading3": "3. izenburua",
+    "heading4": "4. izenburua",
+    "heading5": "5. izenburua",
     "bulletList": "Zerrenda",
     "orderedList": "Zerrenda zenbakiduna",
+    "blockquote": "Aipua",
+    "indent": "Koskatu",
+    "outdent": "Koska kendu",
+    "link": "Esteka",
+    "unlink": "Esteka kendu",
+    "linkUrl": "Estekaren URLa",
+    "linkApply": "Aplikatu",
+    "insertTable": "Taula txertatu",
+    "addRow": "Errenkada gehitu",
+    "removeRow": "Errenkada kendu",
+    "addColumn": "Zutabea gehitu",
+    "removeColumn": "Zutabea kendu",
+    "toggleHeaderRow": "Goiburu-errenkada txandakatu",
+    "deleteTable": "Taula ezabatu",
     "undo": "Desegin",
     "redo": "Berregin",
     "insertIcon": "Ikonoa txertatu",
@@ -354,8 +373,7 @@
     "printable": "Inprimagarria",
     "moveUp": "Igo",
     "moveDown": "Jaitsi",
-    "childOf": "{name}(r)en alaba",
-    "moveToRoot": "Atera errora"
+    "childOf": "{name}(r)en alaba"
   },
   "blockTypes": {
     "header": "Goiburua",

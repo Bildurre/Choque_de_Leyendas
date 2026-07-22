@@ -62,6 +62,7 @@ const blockLabels = computed<Partial<PageBlocksLabels>>(() => ({
   panelContent: t('pages.blocks.panelContent'),
   parent: t('pages.blocks.parent'),
   parentNone: t('pages.blocks.parentNone'),
+  stateKicker: t('common.stateKicker'),
 }))
 
 /** Acción rápida del panel: alterna un flag de la página sin abrir el modal. */
@@ -134,7 +135,18 @@ onBeforeUnmount(crumb.clear)
       <template #panel-default>
         <p class="manager-panel__kicker">{{ t('pages.panelTitle') }}</p>
 
-        <!-- Interruptores publicada/imprimible ARRIBA, con las acciones -->
+        <!-- Acción de verdad (patrón panel): el interruptor de estado va
+             en su propia sección, debajo -->
+        <div class="manager-detail__actions">
+          <BaseButton variant="info" @click="formOpen = true">
+            <template #icon><SquarePen :size="14" /></template>
+            {{ t('common.actions.edit') }}
+          </BaseButton>
+        </div>
+
+        <!-- Estado: los interruptores (flags), separados de la acción -->
+        <hr class="manager-panel__divider" />
+        <p class="manager-panel__kicker">{{ t('common.stateKicker') }}</p>
         <div class="manager-detail__actions">
           <BaseButton
             variant="success"
@@ -153,10 +165,6 @@ onBeforeUnmount(crumb.clear)
           >
             <template #icon><Printer :size="14" /></template>
             {{ t('pages.printable') }}
-          </BaseButton>
-          <BaseButton variant="info" @click="formOpen = true">
-            <template #icon><SquarePen :size="14" /></template>
-            {{ t('common.actions.edit') }}
           </BaseButton>
         </div>
 

@@ -153,7 +153,8 @@
       "of": "{page} de {pages}"
     },
     "yes": "Sí",
-    "no": "No"
+    "no": "No",
+    "stateKicker": "Estado"
   },
   "login": {
     "title": "Acceso al panel",
@@ -229,9 +230,27 @@
     "bold": "Negrita",
     "italic": "Cursiva",
     "strike": "Tachado",
-    "heading": "Título",
+    "underline": "Subrayado",
+    "heading2": "Título 2",
+    "heading3": "Título 3",
+    "heading4": "Título 4",
+    "heading5": "Título 5",
     "bulletList": "Lista",
     "orderedList": "Lista numerada",
+    "blockquote": "Cita",
+    "indent": "Sangrar",
+    "outdent": "Quitar sangría",
+    "link": "Enlace",
+    "unlink": "Quitar enlace",
+    "linkUrl": "URL del enlace",
+    "linkApply": "Aplicar",
+    "insertTable": "Insertar tabla",
+    "addRow": "Añadir fila",
+    "removeRow": "Quitar fila",
+    "addColumn": "Añadir columna",
+    "removeColumn": "Quitar columna",
+    "toggleHeaderRow": "Alternar cabecera",
+    "deleteTable": "Borrar tabla",
     "undo": "Deshacer",
     "redo": "Rehacer",
     "insertIcon": "Insertar icono",
@@ -354,8 +373,7 @@
     "printable": "Imprimible",
     "moveUp": "Subir",
     "moveDown": "Bajar",
-    "childOf": "Hija de {name}",
-    "moveToRoot": "Sacar a la raíz"
+    "childOf": "Hija de {name}"
   },
   "settings": {
     "title": "Configuración",

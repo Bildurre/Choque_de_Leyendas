@@ -195,8 +195,22 @@ onMounted(load)
         <template v-else>
           <p class="manager-panel__kicker">{{ t('users.panelTitle') }}</p>
 
-          <!-- Acciones PRIMERO (el interruptor de verificado arriba);
-               después, secciones separadas (patrón panel) -->
+          <!-- Acciones de verdad (patrón panel): el interruptor de
+               verificado va en su propia sección, debajo -->
+          <div class="manager-detail__actions">
+            <BaseButton variant="info" @click="openEdit(selected)">
+              <template #icon><SquarePen :size="14" /></template>
+              {{ t('common.actions.edit') }}
+            </BaseButton>
+            <BaseButton v-if="!isSelf" variant="danger" @click="remove(selected)">
+              <template #icon><Trash2 :size="14" /></template>
+              {{ t('common.actions.delete') }}
+            </BaseButton>
+          </div>
+
+          <!-- Estado: el interruptor (flag), separado de las acciones -->
+          <hr class="manager-panel__divider" />
+          <p class="manager-panel__kicker">{{ t('common.stateKicker') }}</p>
           <div class="manager-detail__actions">
             <BaseButton
               variant="success"
@@ -206,14 +220,6 @@ onMounted(load)
             >
               <template #icon><MailCheck :size="14" /></template>
               {{ t('users.verifiedBadge') }}
-            </BaseButton>
-            <BaseButton variant="info" @click="openEdit(selected)">
-              <template #icon><SquarePen :size="14" /></template>
-              {{ t('common.actions.edit') }}
-            </BaseButton>
-            <BaseButton v-if="!isSelf" variant="danger" @click="remove(selected)">
-              <template #icon><Trash2 :size="14" /></template>
-              {{ t('common.actions.delete') }}
             </BaseButton>
           </div>
 

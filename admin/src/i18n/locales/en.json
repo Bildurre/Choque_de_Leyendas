@@ -153,7 +153,8 @@
       "of": "{page} of {pages}"
     },
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "stateKicker": "State"
   },
   "login": {
     "title": "Panel access",
@@ -229,9 +230,27 @@
     "bold": "Bold",
     "italic": "Italic",
     "strike": "Strikethrough",
-    "heading": "Heading",
+    "underline": "Underline",
+    "heading2": "Heading 2",
+    "heading3": "Heading 3",
+    "heading4": "Heading 4",
+    "heading5": "Heading 5",
     "bulletList": "Bullet list",
     "orderedList": "Ordered list",
+    "blockquote": "Quote",
+    "indent": "Indent",
+    "outdent": "Outdent",
+    "link": "Link",
+    "unlink": "Remove link",
+    "linkUrl": "Link URL",
+    "linkApply": "Apply",
+    "insertTable": "Insert table",
+    "addRow": "Add row",
+    "removeRow": "Remove row",
+    "addColumn": "Add column",
+    "removeColumn": "Remove column",
+    "toggleHeaderRow": "Toggle header row",
+    "deleteTable": "Delete table",
     "undo": "Undo",
     "redo": "Redo",
     "insertIcon": "Insert icon",
@@ -354,8 +373,7 @@
     "printable": "Printable",
     "moveUp": "Move up",
     "moveDown": "Move down",
-    "childOf": "Child of {name}",
-    "moveToRoot": "Move to root"
+    "childOf": "Child of {name}"
   },
   "blockTypes": {
     "header": "Header",

@@ -1,0 +1,21 @@
+@use "tokens" as *;
+
+// Clases de FILA para las tablas que pega el usuario en el wysiwyg (p. ej.
+// probabilidades de dados): el motor solo pinta la tabla en sí
+// (_rich-content.scss de @edc-motor/ui), las clases de fila las estila el
+// JUEGO. Semánticos fijos + color-mix sobre transparente: la mezcla deja
+// pasar el fondo real (claro u oscuro) por debajo, así que es legible en
+// los dos temas sin reglas aparte; el texto no se toca.
+.rich-content table {
+  tr.green-bg {
+    background: color-mix(in srgb, $success 22%, transparent);
+  }
+
+  tr.yellow-bg {
+    background: color-mix(in srgb, $warning 22%, transparent);
+  }
+
+  tr.red-bg {
+    background: color-mix(in srgb, $danger 22%, transparent);
+  }
+}
