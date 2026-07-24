@@ -1,7 +1,7 @@
 @use "tokens" as *;
 
 // Cabecera de las páginas no-CRM (IndexHeader.vue): reutiliza las clases del
-// bloque "header" del CRM (tipografía 40/28 de _blocks.scss) pero con menos
+// bloque "header" del CRM (tipografía 28/16 de _blocks.scss) pero con menos
 // aire vertical: el padding-block de `.block` (56px) está pensado para
 // apilar bloques en páginas CRM y aquí la cabecera abre una vista con su
 // propio contenido justo debajo (además el contenedor de cada vista ya

@@ -42,16 +42,20 @@ const name = computed(() => {
   return map[locales.current] || Object.values(map)[0] || ''
 })
 
-/** Subtítulo del banner: la descripción sin HTML, recortada. */
+/** Subtítulo del banner: la descripción sin HTML, ENTERA (sin truncar). */
 const subtitle = computed(() => {
   const map = item.value?.description ?? {}
   const html = map[locales.current] || Object.values(map)[0] || ''
-  const text = html
+  return html
     .replace(/<[^>]*>/g, ' ')
     .replace(/\s+/g, ' ')
     .trim()
-  return text.length > 180 ? `${text.slice(0, 180)}…` : text
 })
+
+/** La meta description SÍ se recorta (solo para el <head>, no se pinta). */
+const metaDescription = computed(() =>
+  subtitle.value.length > 180 ? `${subtitle.value.slice(0, 180)}…` : subtitle.value,
+)
 
 async function load() {
   if (!section.value) return
@@ -80,7 +84,7 @@ async function load() {
   const origin = window.location.origin
   useHead({
     title: site.documentTitle(name.value),
-    description: subtitle.value || site.description || undefined,
+    description: metaDescription.value || site.description || undefined,
     canonical: `${origin}/${locales.current}/${canonicalSection}/${canonicalSlug}`,
     alternates: Object.fromEntries(
       Object.entries(current.paths)
