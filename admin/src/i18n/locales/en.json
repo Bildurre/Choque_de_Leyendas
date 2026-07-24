@@ -460,7 +460,8 @@
       "decks": "Decks",
       "downloads": "Downloads",
       "lifeCounter": "Life counter",
-      "diceRoller": "Dice roller"
+      "diceRoller": "Dice roller",
+      "errors": "Errors (404)"
     },
     "fields": {
       "title": "Site title",

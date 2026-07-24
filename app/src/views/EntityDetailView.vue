@@ -95,7 +95,12 @@ watch([segment, slug, () => locales.current], load, { immediate: true })
 
 <template>
   <div v-if="section" class="entity-single">
-    <p v-if="failed" class="entity-single__missing">{{ t('page.notFound') }}</p>
+    <template v-if="failed">
+      <!-- Fondo configurable de la página de error (clave `errors` del mapa
+           index_backgrounds): sustituye al de la entidad, que aquí no hay. -->
+      <PageBackground :image="site.indexBackground('errors')" />
+      <p class="entity-single__missing">{{ t('page.notFound') }}</p>
+    </template>
     <template v-else-if="item">
       <!-- La imagen de la entidad, de fondo de página (patrón CDL) -->
       <PageBackground :image="(item.image as string) ?? null" />

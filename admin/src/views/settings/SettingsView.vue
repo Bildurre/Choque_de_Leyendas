@@ -61,6 +61,7 @@ const INDEX_BACKGROUND_KEYS = {
   downloads: 'downloads',
   'life-counter': 'lifeCounter',
   'dice-roller': 'diceRoller',
+  errors: 'errors',
 } as const
 const indexBackgrounds = ref<Record<string, string | File | null>>({})
 const originalIndexBackgrounds = ref<Record<string, string | null>>({})
@@ -406,18 +407,6 @@ onMounted(async () => {
             />
           </div>
         </section>
-
-        <!-- Pie -->
-        <section class="settings-view__section">
-          <h2>{{ t('settings.sections.footer') }}</h2>
-          <TranslatableInput
-            v-model="footerText"
-            :locales="locales.locales"
-            :label="t('settings.fields.footerText')"
-            type="wysiwyg"
-            :rich-labels="richLabels"
-          />
-        </section>
       </div>
 
       <div class="settings-view__col">
@@ -543,6 +532,18 @@ onMounted(async () => {
               </BaseButton>
             </div>
           </div>
+        </section>
+
+        <!-- Pie -->
+        <section class="settings-view__section">
+          <h2>{{ t('settings.sections.footer') }}</h2>
+          <TranslatableInput
+            v-model="footerText"
+            :locales="locales.locales"
+            :label="t('settings.fields.footerText')"
+            type="wysiwyg"
+            :rich-labels="richLabels"
+          />
         </section>
       </div>
     </div>

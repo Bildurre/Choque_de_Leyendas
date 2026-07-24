@@ -7,6 +7,7 @@ import { useHead } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { DOWNLOAD_PATHS } from '@/router/downloads'
 import CollectionManager from '@/components/CollectionManager.vue'
+import IndexHeader from '@/components/IndexHeader.vue'
 import { useLocalesStore } from '@/stores/locales'
 import { useSiteStore } from '@/stores/site'
 
@@ -102,8 +103,7 @@ function formatSize(bytes: number | null): string {
 
 <template>
   <main class="downloads">
-    <h1 class="downloads__title">{{ t('downloads.title') }}</h1>
-    <p class="downloads__intro">{{ t('downloads.intro') }}</p>
+    <IndexHeader :title="t('downloads.title')" :subtitle="t('downloads.intro')" />
 
     <!-- Selector del idioma de los PDF (solo se listan los del elegido) -->
     <div class="downloads__filter" role="group" :aria-label="t('downloads.language')">

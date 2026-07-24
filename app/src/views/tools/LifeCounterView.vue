@@ -13,6 +13,7 @@ import {
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import DiceRoller from '@/components/tools/DiceRoller.vue'
+import IndexHeader from '@/components/IndexHeader.vue'
 import { LIFE_COUNTER_PATHS, TOOLS_PATHS } from '@/router/tools'
 import { useAuthStore } from '@/stores/auth'
 import { useLocalesStore } from '@/stores/locales'
@@ -536,12 +537,10 @@ onUnmounted(() => {
 
 <template>
   <main class="life-counter">
-    <h1 class="life-counter__title">{{ t('tools.lifeCounter.title') }}</h1>
+    <IndexHeader :title="t('tools.lifeCounter.title')" :subtitle="t('tools.lifeCounter.intro')" />
 
     <!-- Preparación: nº de héroes + dos equipos (facciones y héroes) -->
     <template v-if="phase === 'setup'">
-      <p class="life-counter__intro">{{ t('tools.lifeCounter.intro') }}</p>
-
       <div class="life-counter__config">
         <NumericInput
           v-model="heroCount"

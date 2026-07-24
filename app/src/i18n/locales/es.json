@@ -211,6 +211,12 @@
     "factions": "Facciones",
     "decks": "Mazos"
   },
+  "entitiesIntro": {
+    "cards": "Todas las cartas del juego, con búsqueda y filtros.",
+    "heroes": "Todos los héroes del juego, con búsqueda y filtros.",
+    "factions": "Las facciones en pugna por el trono.",
+    "decks": "Los mazos preconstruidos de cada facción."
+  },
   "catalog": {
     "searchPlaceholder": "Buscar…",
     "results": "1 resultado | {count} resultados",

@@ -14,6 +14,7 @@ import {
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
+import IndexHeader from '@/components/IndexHeader.vue'
 import { useIndexPage } from '@/entities/indexPage'
 import { useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
@@ -224,9 +225,7 @@ watch(() => locales.current, loadFilters, { immediate: true })
 
 <template>
   <main v-if="section" class="catalog-index heroes-index">
-    <header class="catalog-index__header">
-      <h1 class="catalog-index__title">{{ t(section.titleKey) }}</h1>
-    </header>
+    <IndexHeader :title="t(section.titleKey)" :subtitle="t('entitiesIntro.heroes')" />
 
     <IndexToolbar
       v-model="search"

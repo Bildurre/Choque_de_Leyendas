@@ -243,12 +243,4 @@
   @media (min-width: $bp-md) {
     padding: $space-6;
   }
-
-  &__title { margin: 0; }
-
-  &__intro {
-    margin: 0;
-    color: $text-3;
-    font-size: $fs-14;
-  }
 }

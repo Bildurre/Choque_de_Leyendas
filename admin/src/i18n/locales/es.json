@@ -391,7 +391,8 @@
       "decks": "Mazos",
       "downloads": "Descargas",
       "lifeCounter": "Contador de vidas",
-      "diceRoller": "Lanzador de dados"
+      "diceRoller": "Lanzador de dados",
+      "errors": "Errores (404)"
     },
     "fields": {
       "title": "Título del sitio",

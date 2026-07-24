@@ -460,7 +460,8 @@
       "decks": "Sortak",
       "downloads": "Deskargak",
       "lifeCounter": "Bizitza-kontagailua",
-      "diceRoller": "Dado-jaurtitzailea"
+      "diceRoller": "Dado-jaurtitzailea",
+      "errors": "Erroreak (404)"
     },
     "fields": {
       "title": "Gunearen izenburua",

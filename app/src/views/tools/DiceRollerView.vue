@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ConfirmDialog, useHead } from '@edc-motor/ui'
 import DiceRoller from '@/components/tools/DiceRoller.vue'
+import IndexHeader from '@/components/IndexHeader.vue'
 import { DICE_ROLLER_PATHS, TOOLS_PATHS } from '@/router/tools'
 import { useLocalesStore } from '@/stores/locales'
 import { useSiteStore } from '@/stores/site'
@@ -58,8 +59,7 @@ watch(
 
 <template>
   <main class="dice-roller-view">
-    <h1 class="dice-roller-view__title">{{ t('tools.diceRoller.title') }}</h1>
-    <p class="dice-roller-view__intro">{{ t('tools.diceRoller.intro') }}</p>
+    <IndexHeader :title="t('tools.diceRoller.title')" :subtitle="t('tools.diceRoller.intro')" />
 
     <DiceRoller />
 

@@ -5,6 +5,7 @@ import { FunnelX } from '@lucide/vue'
 import { BaseButton, BaseSelect, BaseTabs, IndexToolbar, useAppRightSidebar } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
+import IndexHeader from '@/components/IndexHeader.vue'
 import { useIndexPage } from '@/entities/indexPage'
 import { useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
@@ -152,9 +153,7 @@ watch(() => locales.current, loadFilters, { immediate: true })
 
 <template>
   <main v-if="section" class="decks-index">
-    <header class="decks-index__header">
-      <h1 class="decks-index__title">{{ t(section.titleKey) }}</h1>
-    </header>
+    <IndexHeader :title="t(section.titleKey)" :subtitle="t('entitiesIntro.decks')" />
 
     <IndexToolbar
       v-model="search"

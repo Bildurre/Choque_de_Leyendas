@@ -13,8 +13,6 @@
   display: grid;
   gap: $space-4;
 
-  &__title { margin: 0; }
-
   // El hueco bajo la barra ya lo mete el gap del grid padre.
   .index-toolbar { margin-bottom: 0; }
 
@@ -58,8 +56,6 @@
   padding: $space-6;
   display: grid;
   gap: $space-4;
-
-  &__title { margin: 0; }
 
   // El hueco bajo la barra ya lo mete el gap del grid padre.
   .index-toolbar { margin-bottom: 0; }

@@ -79,6 +79,10 @@ watch([slug, () => locales.current], load, { immediate: true })
 
 <template>
   <main v-if="failed" class="page-view">
+    <!-- Fondo configurable de la página de error (clave `errors` del mapa
+         index_backgrounds del sitio); aquí no hay página, así que no puede
+         haber doble PageBackground con el de abajo. -->
+    <PageBackground :image="site.indexBackground('errors')" />
     <p class="page-view__missing">{{ t('page.notFound') }}</p>
   </main>
   <template v-else-if="page">

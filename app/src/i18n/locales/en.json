@@ -211,6 +211,12 @@
     "factions": "Factions",
     "decks": "Decks"
   },
+  "entitiesIntro": {
+    "cards": "Every card in the game, with search and filters.",
+    "heroes": "Every hero in the game, with search and filters.",
+    "factions": "The factions vying for the throne.",
+    "decks": "Each faction's preconstructed decks."
+  },
   "catalog": {
     "searchPlaceholder": "Search…",
     "results": "1 result | {count} results",

@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import { IndexToolbar } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import FactionCard from '@/components/FactionCard.vue'
+import IndexHeader from '@/components/IndexHeader.vue'
 import { useIndexPage } from '@/entities/indexPage'
 import { useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
@@ -88,9 +89,7 @@ watch(
 
 <template>
   <main v-if="section" class="factions-index">
-    <header class="factions-index__header">
-      <h1 class="factions-index__title">{{ t(section.titleKey) }}</h1>
-    </header>
+    <IndexHeader :title="t(section.titleKey)" :subtitle="t('entitiesIntro.factions')" />
 
     <!-- Sin filtros que registrar: facciones solo busca y ordena -->
     <IndexToolbar
