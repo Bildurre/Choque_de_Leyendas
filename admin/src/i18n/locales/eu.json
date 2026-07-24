@@ -449,7 +449,18 @@
     "sections": {
       "identity": "Identitatea",
       "appearance": "Itxura",
+      "indexBackgrounds": "Indize-orrien atzeko planoak",
       "footer": "Orri-oina"
+    },
+    "indexBackgrounds": {
+      "hint": "Web publikoko indize-orri bakoitzaren atzeko planoko irudia (hutsik = atzeko planorik ez).",
+      "cards": "Kartak",
+      "heroes": "Heroiak",
+      "factions": "Fakzioak",
+      "decks": "Sortak",
+      "downloads": "Deskargak",
+      "lifeCounter": "Bizitza-kontagailua",
+      "diceRoller": "Dado-jaurtitzailea"
     },
     "fields": {
       "title": "Gunearen izenburua",

@@ -29,6 +29,10 @@ export interface SiteSettings {
   fonts: Record<string, SiteFont>
   /** SVG de cada logo inlineado por la API (currentColor hereda el acento). */
   logo_inline: Record<string, string>
+  /** Fondo (URL) de cada página índice: cards/heroes/factions/decks/
+   *  downloads/life-counter/dice-roller. Opcional: el motor del vendor
+   *  actual aún no lo devuelve (llega en la próxima versión del core). */
+  index_backgrounds?: Record<string, string | null>
 }
 
 /** CSS @font-face de un catálogo de fuentes (los navegadores solo descargan las usadas). */
@@ -80,6 +84,11 @@ export const useSiteStore = defineStore('site', () => {
   /** Título del documento: "página · sitio" (o solo una de las partes). */
   function documentTitle(pageTitle?: string): string {
     return [pageTitle, title.value].filter(Boolean).join(' · ')
+  }
+
+  /** Fondo configurado para una página índice (o null si no hay). */
+  function indexBackground(key: string): string | null {
+    return settings.value?.index_backgrounds?.[key] ?? null
   }
 
   /** Deriva los tonos del acento a partir de un HEX (via color-mix del navegador). */
@@ -169,6 +178,7 @@ export const useSiteStore = defineStore('site', () => {
     logoUrl,
     logoInline,
     documentTitle,
+    indexBackground,
     load,
     onNavigate,
   }

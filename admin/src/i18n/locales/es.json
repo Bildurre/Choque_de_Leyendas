@@ -380,7 +380,18 @@
     "sections": {
       "identity": "Identidad",
       "appearance": "Apariencia",
+      "indexBackgrounds": "Fondos de los índices",
       "footer": "Pie de página"
+    },
+    "indexBackgrounds": {
+      "hint": "Imagen de fondo de cada página índice de la web pública (vacío = sin fondo).",
+      "cards": "Cartas",
+      "heroes": "Héroes",
+      "factions": "Facciones",
+      "decks": "Mazos",
+      "downloads": "Descargas",
+      "lifeCounter": "Contador de vidas",
+      "diceRoller": "Lanzador de dados"
     },
     "fields": {
       "title": "Título del sitio",

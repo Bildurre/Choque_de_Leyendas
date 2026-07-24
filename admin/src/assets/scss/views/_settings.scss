@@ -58,6 +58,13 @@
     font-size: $fs-13;
   }
 
+  // Fondos de los índices: los 7 uploads en rejilla fluida (auto-fill).
+  &__index-bgs {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: $space-4;
+  }
+
   // Candidatos del modo aleatorio: etiquetas compactas en fila con wrap.
   &__colors {
     list-style: none;

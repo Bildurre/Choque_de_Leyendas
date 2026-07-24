@@ -449,7 +449,18 @@
     "sections": {
       "identity": "Identity",
       "appearance": "Appearance",
+      "indexBackgrounds": "Index page backgrounds",
       "footer": "Footer"
+    },
+    "indexBackgrounds": {
+      "hint": "Background image for each index page of the public site (empty = no background).",
+      "cards": "Cards",
+      "heroes": "Heroes",
+      "factions": "Factions",
+      "decks": "Decks",
+      "downloads": "Downloads",
+      "lifeCounter": "Life counter",
+      "diceRoller": "Dice roller"
     },
     "fields": {
       "title": "Site title",

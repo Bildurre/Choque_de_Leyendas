@@ -46,6 +46,24 @@ const removeFavicon = ref(false)
 watch(faviconFile, (file) => {
   if (file) removeFavicon.value = false
 })
+// Fondos de las páginas índice de la web pública, DIFERIDOS con la misma
+// mecánica que el favicon pero por clave: el mapa mezcla URLs guardadas
+// (string), ficheros pendientes (File) y "sin fondo" (null); nada se sube
+// hasta el GUARDAR. `originalIndexBackgrounds` es el snapshot cargado (solo
+// URLs) para sustituir (`replaces`) o borrar del disco lo que cambie.
+// Las claves casan con `index_backgrounds` del site settings del motor;
+// el valor de cada entrada es su clave i18n (settings.indexBackgrounds.*).
+const INDEX_BACKGROUND_KEYS = {
+  cards: 'cards',
+  heroes: 'heroes',
+  factions: 'factions',
+  decks: 'decks',
+  downloads: 'downloads',
+  'life-counter': 'lifeCounter',
+  'dice-roller': 'diceRoller',
+} as const
+const indexBackgrounds = ref<Record<string, string | File | null>>({})
+const originalIndexBackgrounds = ref<Record<string, string | null>>({})
 const accentMode = ref<'fixed' | 'random'>('fixed')
 const accentColor = ref('#6c5ce7')
 const accentColors = ref<string[]>([])
@@ -199,6 +217,49 @@ function onRemoveFavicon() {
   currentFavicon.value = null
 }
 
+/** Resuelve los fondos de los índices al guardar (misma mecánica que el
+ *  favicon, por clave): sube los ficheros pendientes (sustituyendo el
+ *  anterior), borra del disco los que se hayan quitado y deja igual los que
+ *  no cambiaron. Devuelve SIEMPRE el mapa completo (el merge del servidor
+ *  es superficial: un mapa parcial pisaría el resto de claves). */
+async function resolveIndexBackgrounds(): Promise<Record<string, string | null>> {
+  const result: Record<string, string | null> = {}
+  for (const key of Object.keys(INDEX_BACKGROUND_KEYS)) {
+    const original = originalIndexBackgrounds.value[key] ?? null
+    const current = indexBackgrounds.value[key] ?? null
+    if (current instanceof File) {
+      result[key] = await upload(current, original)
+    } else if (typeof current === 'string') {
+      result[key] = current
+    } else {
+      if (original) await removeUpload(original)
+      result[key] = null
+    }
+  }
+  return result
+}
+
+function onIndexBackgroundFile(key: string, file: File | null) {
+  // El null del "quitar" llega por @remove; aquí solo interesan los File.
+  if (file) indexBackgrounds.value[key] = file
+}
+
+function onRemoveIndexBackground(key: string) {
+  indexBackgrounds.value[key] = null
+}
+
+/** El File pendiente de la clave (para el v-model del ImageUpload). */
+function indexBackgroundFile(key: string): File | null {
+  const value = indexBackgrounds.value[key]
+  return value instanceof File ? value : null
+}
+
+/** La URL guardada de la clave (para el `current-url` del ImageUpload). */
+function indexBackgroundUrl(key: string): string | null {
+  const value = indexBackgrounds.value[key]
+  return typeof value === 'string' ? value : null
+}
+
 async function load() {
   loading.value = true
   try {
@@ -212,6 +273,8 @@ async function load() {
     currentFavicon.value = s.favicon ?? null
     originalFavicon.value = s.favicon ?? null
     removeFavicon.value = false
+    indexBackgrounds.value = { ...(s.index_backgrounds ?? {}) }
+    originalIndexBackgrounds.value = { ...(s.index_backgrounds ?? {}) }
     accentMode.value = s.accent_mode
     accentColor.value = s.accent_color
     accentColors.value = s.accent_colors ?? []
@@ -231,13 +294,18 @@ async function load() {
 async function save() {
   saving.value = true
   try {
-    // Logo y favicon se suben/borran aquí, solo al guardar (patrón diferido).
-    const [resolvedLogo, resolvedFavicon] = await Promise.all([resolveLogo(), resolveFavicon()])
+    // Logo, favicon y fondos se suben/borran aquí, solo al guardar (patrón diferido).
+    const [resolvedLogo, resolvedFavicon, resolvedIndexBackgrounds] = await Promise.all([
+      resolveLogo(),
+      resolveFavicon(),
+      resolveIndexBackgrounds(),
+    ])
     await api.put('/admin/settings/site', {
       title: title.value,
       description: description.value,
       logo: resolvedLogo,
       favicon: resolvedFavicon,
+      index_backgrounds: resolvedIndexBackgrounds,
       accent_mode: accentMode.value,
       accent_color: accentColor.value,
       accent_colors: accentColors.value,
@@ -255,6 +323,8 @@ async function save() {
     currentFavicon.value = resolvedFavicon
     originalFavicon.value = resolvedFavicon
     removeFavicon.value = false
+    indexBackgrounds.value = { ...resolvedIndexBackgrounds }
+    originalIndexBackgrounds.value = { ...resolvedIndexBackgrounds }
     toast.success(t('settings.toast.saved'))
   } catch {
     toast.danger(t('settings.toast.saveError'))
@@ -313,6 +383,26 @@ onMounted(async () => {
               :drag-text="t('common.imageDrag')"
               :hint-text="t('settings.fields.faviconHint')"
               @remove="onRemoveFavicon"
+            />
+          </div>
+        </section>
+
+        <!-- Fondos de los índices: una imagen (opcional) por página índice de
+             la web pública. DIFERIDO como el favicon: nada se sube ni se
+             borra hasta el guardar. -->
+        <section class="settings-view__section">
+          <h2>{{ t('settings.sections.indexBackgrounds') }}</h2>
+          <p class="settings-view__hint">{{ t('settings.indexBackgrounds.hint') }}</p>
+          <div class="settings-view__index-bgs">
+            <ImageUpload
+              v-for="(labelKey, key) in INDEX_BACKGROUND_KEYS"
+              :key="key"
+              :model-value="indexBackgroundFile(key)"
+              :current-url="indexBackgroundUrl(key)"
+              :label="t(`settings.indexBackgrounds.${labelKey}`)"
+              :drag-text="t('common.imageDrag')"
+              @update:model-value="onIndexBackgroundFile(key, $event)"
+              @remove="onRemoveIndexBackground(key)"
             />
           </div>
         </section>
