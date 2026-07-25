@@ -45,6 +45,10 @@
   &__factions-empty { color: $text-3; margin: 0; }
   &__factions-error { color: $danger; font-size: $fs-13; margin: $space-2 0 0; }
 
+  // Pista del modal de creación: el mazo nace en borrador (las cartas y los
+  // héroes, y el publicar, viven en el editor del mazo).
+  &__draft-hint { color: $text-3; font-size: $fs-13; margin: 0; }
+
   // Errores de publicación (límites del modo) dentro del modal
   &__publish-errors {
     margin: 0 0 $space-4;

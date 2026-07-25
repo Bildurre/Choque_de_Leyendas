@@ -85,6 +85,13 @@ async function togglePublishDeck(item: FactionDeck) {
   }
 }
 
+/** Tras guardar el modal: refresca y, si es un mazo RECIÉN CREADO, directo
+ *  a su editor — ahí se añaden las cartas y los héroes (y se publica). */
+function onDeckSaved(created?: FactionDeck) {
+  onSaved()
+  if (created) goSingle(created)
+}
+
 onMounted(init)
 </script>
 
@@ -167,7 +174,7 @@ onMounted(init)
       v-model="formOpen"
       :mode="formMode"
       :target-slug="formSlug"
-      @saved="onSaved"
+      @saved="onDeckSaved"
     />
 
     <EntityPanel

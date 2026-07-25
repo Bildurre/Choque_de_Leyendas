@@ -25,7 +25,9 @@ const props = defineProps<{
   targetSlug?: string | null
 }>()
 
-const emit = defineEmits<{ 'update:modelValue': [boolean]; saved: [] }>()
+// `saved` lleva el mazo al CREAR: el listado salta directo a su editor
+// (ahí viven los buscadores de cartas y héroes).
+const emit = defineEmits<{ 'update:modelValue': [boolean]; saved: [created?: FactionDeck] }>()
 
 const { t } = useI18n()
 const toast = useToast()
@@ -203,11 +205,12 @@ async function submit() {
     if (props.mode === 'edit' && props.targetSlug) {
       await updateForm(props.targetSlug, toFormData())
       toast.success(t('factionDecks.toast.updated'))
+      emit('saved')
     } else {
-      await createForm(toFormData())
+      const created = await createForm(toFormData())
       toast.success(t('factionDecks.toast.created'))
+      emit('saved', created)
     }
-    emit('saved')
     emit('update:modelValue', false)
   } catch (e) {
     // Errores de validación por campo + aviso genérico. Nunca el volcado crudo.
@@ -305,6 +308,14 @@ async function submit() {
       @remove="onRemoveImage"
     />
 
-    <BaseCheckbox v-model="form.is_published" :label="t('factionDecks.fields.published')" />
+    <!-- Publicado solo en EDICIÓN: un mazo recién creado no puede cumplir
+         los límites del modo (sus cartas y héroes se añaden después, en el
+         editor del mazo) — ofrecer el check aquí era un callejón sin salida. -->
+    <BaseCheckbox
+      v-if="mode === 'edit'"
+      v-model="form.is_published"
+      :label="t('factionDecks.fields.published')"
+    />
+    <p v-else class="faction-decks__draft-hint">{{ t('factionDecks.fields.draftHint') }}</p>
   </EditModal>
 </template>

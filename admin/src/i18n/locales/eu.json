@@ -1005,7 +1005,8 @@
       "description": "Deskribapena",
       "epicQuote": "Aipu epikoa",
       "image": "Ikonoa",
-      "published": "Argitaratuta"
+      "published": "Argitaratuta",
+      "draftHint": "Sorta zirriborro gisa sortzen da: kartak eta heroiak bere editorean gehitzen dira, eta handik argitaratzen da."
     },
     "counts": {
       "cards": "{count} karta",

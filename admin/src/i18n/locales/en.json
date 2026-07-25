@@ -1005,7 +1005,8 @@
       "description": "Description",
       "epicQuote": "Epic quote",
       "image": "Icon",
-      "published": "Published"
+      "published": "Published",
+      "draftHint": "The deck is created as a draft: cards and heroes are added in its editor, where it can be published."
     },
     "counts": {
       "cards": "{count} cards",
