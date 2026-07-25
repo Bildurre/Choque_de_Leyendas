@@ -936,7 +936,8 @@
       "description": "Descripción",
       "epicQuote": "Cita épica",
       "image": "Icono",
-      "published": "Publicado"
+      "published": "Publicado",
+      "draftHint": "El mazo se crea en borrador: las cartas y los héroes se añaden en su editor, y desde allí se publica."
     },
     "counts": {
       "cards": "{count} cartas",
