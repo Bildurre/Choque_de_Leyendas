@@ -23,11 +23,14 @@ class HeroRaceController extends Controller
         return HeroRaceResource::collection($races);
     }
 
-    /** Lista ligera (id + nombre traducible) para selectores. */
+    /**
+     * Lista ligera (id + nombre traducible) para selectores,
+     * ordenada por nombre en el locale activo.
+     */
     public function options()
     {
         return response()->json([
-            'data' => HeroRace::orderByDesc('id')->get()->map(fn (HeroRace $r) => [
+            'data' => $this->orderByName(HeroRace::query())->get()->map(fn (HeroRace $r) => [
                 'id' => $r->id,
                 'name' => $r->getTranslations('name'),
             ]),

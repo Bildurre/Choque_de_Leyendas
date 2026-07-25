@@ -59,11 +59,14 @@ class FactionDeckController extends Controller
     /** El mazo con todo cargado (cartas con copias, héroes, facciones). */
     public function show(string $slug)
     {
+        // Cartas y héroes en alfabético del locale activo, como el resto de listas.
+        $locale = app()->getLocale();
+
         $deck = FactionDeck::with([
             'gameMode',
             'factions',
-            'heroes' => fn ($q) => $q->orderBy('id'),
-            'cards' => fn ($q) => $q->orderBy('id'),
+            'heroes' => fn ($q) => $q->orderBy("name->{$locale}"),
+            'cards' => fn ($q) => $q->orderBy("name->{$locale}"),
         ])->whereSlug($slug)->firstOrFail();
 
         return new FactionDeckResource($deck);

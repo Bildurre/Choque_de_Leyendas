@@ -77,7 +77,8 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
   const status = ref(tabKeys[0] ?? 'published')
   const search = ref('')
   // Ordenación del contrato compartido con la API (toggles del IndexToolbar).
-  const sort = ref<SortValue>('latest')
+  // Por defecto alfabético por el nombre en el locale activo.
+  const sort = ref<SortValue>('name')
   // Filtros genéricos de la vista (clave → valor; '' = sin filtrar). La vista
   // hace v-model sobre sus claves (selects en el panel derecho, slot
   // `filters` del EntityPanel) y el listado se relanza solo al cambiar.
@@ -141,6 +142,13 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     selectedId.value = null
     load(1)
   })
+
+  // Cambiar el idioma del admin cambia el orden (y la búsqueda) en servidor:
+  // se recarga la lista para verla en el alfabético del nuevo locale.
+  watch(
+    () => locales.current,
+    () => load(1),
+  )
 
   // Búsqueda, orden y filtros comparten debounce y vuelven a la página 1.
   let timer: ReturnType<typeof setTimeout> | null = null

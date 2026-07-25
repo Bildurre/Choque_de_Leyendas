@@ -26,11 +26,11 @@ class PublicHeroController extends Controller
     /**
      * Índice filtrable. Parámetros: page, per_page (24, tope 48), search
      * (multi-campo vía scopeFilter del motor: LIKE sobre el json de cada
-     * columna de $searchable — nombre y pasiva; lore y cita fuera — en cualquier
-     * locale), faction_id, hero_class_id, hero_superclass_id
+     * columna de $searchable — nombre y pasiva; lore y cita fuera — en el
+     * locale activo), faction_id, hero_class_id, hero_superclass_id
      * (héroes cuya clase pertenece a esa superclase), hero_race_id y sort
-     * (name|name_desc|latest|oldest; por defecto id desc). Ítems
-     * {id, name, slug, preview}.
+     * (name|name_desc|latest|oldest; por defecto nombre asc del locale
+     * activo). Ítems {id, name, slug, preview}.
      */
     public function index(Request $request)
     {

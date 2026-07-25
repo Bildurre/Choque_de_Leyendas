@@ -29,7 +29,7 @@ class EquipmentTypeController extends Controller
     public function options()
     {
         return response()->json([
-            'data' => EquipmentType::orderByDesc('id')->get()->map(fn (EquipmentType $type) => [
+            'data' => $this->orderByName(EquipmentType::query())->get()->map(fn (EquipmentType $type) => [
                 'id' => $type->id,
                 'name' => $type->getTranslations('name'),
                 'uses_hands' => (bool) $type->uses_hands,

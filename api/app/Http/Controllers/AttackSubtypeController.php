@@ -23,11 +23,14 @@ class AttackSubtypeController extends Controller
         return AttackSubtypeResource::collection($subtypes);
     }
 
-    /** Lista ligera (id + nombre traducible) para selectores. */
+    /**
+     * Lista ligera (id + nombre traducible) para selectores,
+     * ordenada por nombre en el locale activo.
+     */
     public function options()
     {
         return response()->json([
-            'data' => AttackSubtype::orderByDesc('id')->get()->map(fn (AttackSubtype $s) => [
+            'data' => $this->orderByName(AttackSubtype::query())->get()->map(fn (AttackSubtype $s) => [
                 'id' => $s->id,
                 'name' => $s->getTranslations('name'),
             ]),

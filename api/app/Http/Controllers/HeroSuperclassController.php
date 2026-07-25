@@ -27,11 +27,14 @@ class HeroSuperclassController extends Controller
         return HeroSuperclassResource::collection($superclasses);
     }
 
-    /** Lista ligera (id + nombre traducible) para selectores. */
+    /**
+     * Lista ligera (id + nombre traducible) para selectores,
+     * ordenada por nombre en el locale activo.
+     */
     public function options()
     {
         return response()->json([
-            'data' => HeroSuperclass::orderByDesc('id')->get()->map(fn (HeroSuperclass $s) => [
+            'data' => $this->orderByName(HeroSuperclass::query())->get()->map(fn (HeroSuperclass $s) => [
                 'id' => $s->id,
                 'name' => $s->getTranslations('name'),
             ]),

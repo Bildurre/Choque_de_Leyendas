@@ -60,12 +60,13 @@ const superclassId = ref('')
 const classId = ref('')
 const raceId = ref('')
 
-// Orden: 'latest' es el default del índice (fuera de la URL).
+// Orden: 'name' (alfabético del locale activo) es el default del índice
+// (fuera de la URL).
 const sortRaw = ref('')
 const sort = computed<SortOption>({
   get: () => parseSort(sortRaw.value),
   set: (value) => {
-    sortRaw.value = value === 'latest' ? '' : value
+    sortRaw.value = value === 'name' ? '' : value
   },
 })
 
@@ -174,7 +175,7 @@ async function load() {
         hero_superclass_id: superclassId.value || undefined,
         hero_class_id: classId.value || undefined,
         hero_race_id: raceId.value || undefined,
-        sort: sort.value === 'latest' ? undefined : sort.value,
+        sort: sort.value === 'name' ? undefined : sort.value,
       },
     })
     items.value = (data.data as CatalogItem[]).map((item) => ({ ...item, to: itemRoute(item) }))

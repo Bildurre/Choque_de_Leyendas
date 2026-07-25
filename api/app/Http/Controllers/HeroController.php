@@ -55,11 +55,14 @@ class HeroController extends Controller
         return HeroResource::collection($heroes);
     }
 
-    /** Lista ligera (id + nombre + slug traducibles) para selectores. */
+    /**
+     * Lista ligera (id + nombre + slug traducibles) para selectores,
+     * ordenada por nombre en el locale activo.
+     */
     public function options()
     {
         return response()->json([
-            'data' => Hero::orderByDesc('id')->get()->map(fn (Hero $h) => [
+            'data' => $this->orderByName(Hero::query())->get()->map(fn (Hero $h) => [
                 'id' => $h->id,
                 'name' => $h->getTranslations('name'),
                 'slug' => $h->getTranslations('slug'),

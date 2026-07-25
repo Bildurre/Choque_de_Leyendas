@@ -31,11 +31,14 @@ class FactionController extends Controller
         return FactionResource::collection($factions);
     }
 
-    /** Lista ligera (id + nombre traducible + color) para selectores. */
+    /**
+     * Lista ligera (id + nombre traducible + color) para selectores,
+     * ordenada por nombre en el locale activo.
+     */
     public function options()
     {
         return response()->json([
-            'data' => Faction::orderByDesc('id')->get()->map(fn (Faction $faction) => [
+            'data' => $this->orderByName(Faction::query())->get()->map(fn (Faction $faction) => [
                 'id' => $faction->id,
                 'name' => $faction->getTranslations('name'),
                 'color' => $faction->color,

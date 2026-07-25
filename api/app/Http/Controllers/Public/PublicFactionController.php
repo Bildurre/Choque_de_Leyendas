@@ -21,11 +21,10 @@ class PublicFactionController extends Controller
      * Índice: tarjetas de facción con contadores de publicados. `search`
      * es multi-campo vía scopeFilter del motor: LIKE sobre el json de cada
      * columna de $searchable (solo el nombre; el lore y la cita quedan
-     * fuera) en cualquier locale.
+     * fuera) en el locale activo.
      */
     public function index(Request $request)
     {
-        $locale = app()->getLocale();
         $sort = $request->query('sort');
 
         $query = Faction::published()
@@ -37,12 +36,8 @@ class PublicFactionController extends Controller
             ]);
 
         // Contrato de `sort` (name|name_desc|latest|oldest); sin él (o con un
-        // valor desconocido) se conserva el orden histórico: nombre asc del locale.
-        if (in_array($sort, self::SORTS, true)) {
-            $this->applySort($query, $sort);
-        } else {
-            $query->orderBy("name->{$locale}");
-        }
+        // valor desconocido) cae al default del contrato: nombre asc del locale.
+        $this->applySort($query, $sort);
 
         return PublicFactionItemResource::collection($query->get());
     }
