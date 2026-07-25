@@ -49,11 +49,14 @@ class CardController extends Controller
         return CardResource::collection($cards);
     }
 
-    /** Lista ligera (id + nombre + slug traducibles) para selectores. */
+    /**
+     * Lista ligera (id + nombre + slug traducibles) para selectores,
+     * ordenada por nombre en el locale activo.
+     */
     public function options()
     {
         return response()->json([
-            'data' => Card::orderByDesc('id')->get()->map(fn (Card $card) => [
+            'data' => $this->orderByName(Card::query())->get()->map(fn (Card $card) => [
                 'id' => $card->id,
                 'name' => $card->getTranslations('name'),
                 'slug' => $card->getTranslations('slug'),

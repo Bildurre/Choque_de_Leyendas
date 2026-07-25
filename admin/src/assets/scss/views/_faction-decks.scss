@@ -1,4 +1,4 @@
-@use "tokens" as *;
+@use 'tokens' as *;
 
 // Listado de mazos de facción: emblema (icono del mazo o inicial), etiqueta
 // de facción con su color y modal de datos básicos.
@@ -11,7 +11,11 @@
     justify-content: center;
     background: $surface-2;
 
-    img { width: 100%; height: 100%; object-fit: contain; }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
 
   &__mono {
@@ -32,7 +36,11 @@
     border-radius: $radius-md;
     padding: $space-3;
 
-    legend { padding: 0 $space-2; font-size: $fs-13; color: $text-2; }
+    legend {
+      padding: 0 $space-2;
+      font-size: $fs-13;
+      color: $text-2;
+    }
   }
 
   &__faction-option {
@@ -42,12 +50,23 @@
     gap: $space-3;
   }
 
-  &__factions-empty { color: $text-3; margin: 0; }
-  &__factions-error { color: $danger; font-size: $fs-13; margin: $space-2 0 0; }
+  &__factions-empty {
+    color: $text-3;
+    margin: 0;
+  }
+  &__factions-error {
+    color: $danger;
+    font-size: $fs-13;
+    margin: $space-2 0 0;
+  }
 
   // Pista del modal de creación: el mazo nace en borrador (las cartas y los
   // héroes, y el publicar, viven en el editor del mazo).
-  &__draft-hint { color: $text-3; font-size: $fs-13; margin: 0; }
+  &__draft-hint {
+    color: $text-3;
+    font-size: $fs-13;
+    margin: 0;
+  }
 
   // Errores de publicación (límites del modo) dentro del modal
   &__publish-errors {
@@ -59,7 +78,9 @@
     color: $danger;
     list-style: none;
 
-    li + li { margin-top: $space-1; }
+    li + li {
+      margin-top: $space-1;
+    }
   }
 }
 
@@ -105,9 +126,13 @@
 }
 
 // Single editora del mazo: cabecera con límites y contadores en vivo + dos
-// paneles (cartas con copias; héroes solo asignar/quitar) con buscador para
-// añadir.
+// secciones (cartas con copias; héroes solo asignar/quitar), cada una con
+// dos columnas de alto fijo: disponibles con buscador y scroll infinito a
+// la izquierda, seleccionadas a la derecha.
 .deck-editor {
+  // Alto fijo compartido por las dos columnas: al añadir/quitar nada se mueve.
+  $list-height: 400px;
+
   &__bar-actions {
     display: flex;
     gap: $space-2;
@@ -128,7 +153,10 @@
     align-items: center;
     gap: $space-4;
 
-    h1 { margin: 0 0 $space-2; font-size: $fs-24; }
+    h1 {
+      margin: 0 0 $space-2;
+      font-size: $fs-24;
+    }
   }
 
   &__emblem {
@@ -143,7 +171,11 @@
     background: $surface-2;
     overflow: hidden;
 
-    img { width: 100%; height: 100%; object-fit: contain; }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
 
   &__mono {
@@ -164,7 +196,7 @@
     color: $text-2;
 
     > span + span::before {
-      content: "· ";
+      content: '· ';
       color: $text-3;
     }
   }
@@ -172,7 +204,9 @@
   &__state {
     font-weight: $k-fw-semibold;
 
-    &.is-published { color: $success; }
+    &.is-published {
+      color: $success;
+    }
   }
 
   // Límites del modo + contadores en vivo
@@ -182,12 +216,18 @@
     flex-wrap: wrap;
     margin: 0;
 
-    dt { color: $text-3; font-size: $fs-13; }
+    dt {
+      color: $text-3;
+      font-size: $fs-13;
+    }
     dd {
       margin: $space-1 0 0;
       font-weight: $k-fw-bold;
 
-      small { color: $text-3; font-weight: $k-fw-regular; }
+      small {
+        color: $text-3;
+        font-weight: $k-fw-regular;
+      }
     }
   }
 
@@ -199,7 +239,9 @@
     border-radius: $radius-md;
     list-style: none;
 
-    li + li { margin-top: $space-1; }
+    li + li {
+      margin-top: $space-1;
+    }
   }
 
   &__errors {
@@ -214,18 +256,54 @@
     color: $text-1;
   }
 
+  // Las secciones (cartas, héroes) se apilan: cada una ya ocupa el ancho
+  // con su par de columnas disponibles/seleccionadas.
   &__panels {
     display: grid;
     grid-template-columns: 1fr;
     gap: $space-6;
     align-items: start;
+  }
+
+  &__panel {
+    min-width: 0;
+  }
+
+  // Par de columnas de la sección: disponibles (izq.) y seleccionadas (dcha.).
+  // En estrecho se apilan (disponibles encima) conservando alturas y scrolls.
+  &__columns {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-4;
+    align-items: end;
 
     @container content (min-width: #{$bp-md}) {
-      grid-template-columns: 3fr 2fr;
+      grid-template-columns: 1fr 1fr;
     }
   }
 
-  &__panel { min-width: 0; }
+  &__col {
+    min-width: 0;
+  }
+
+  // Título de la columna de seleccionadas (casa con el label del buscador).
+  &__col-title {
+    margin: 0 0 $space-2;
+    font-size: $fs-13;
+    font-weight: $k-fw-semibold;
+    color: $text-2;
+  }
+
+  // Lista de alto fijo con scroll interno (disponibles y seleccionadas).
+  &__list {
+    height: $list-height;
+    margin-top: $space-2;
+    padding: $space-2;
+    overflow-y: auto;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    background: $surface;
+  }
 
   // Filas del mazo (carta con copias / héroe)
   &__rows {
@@ -254,7 +332,11 @@
     background: $surface-2;
     overflow: hidden;
 
-    img { width: 100%; height: 100%; object-fit: cover; }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
   &__row-name {
@@ -272,35 +354,6 @@
     letter-spacing: 0.08em;
   }
 
-  // Control de copias (+/- e input numérico), marcado si supera el máximo
-  &__copies {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-1;
-
-    &.is-over &-input { color: $danger; border-color: $danger; }
-  }
-
-  &__copies-input {
-    width: 2.6rem;
-    padding: 0.1rem 0.2rem;
-    text-align: center;
-    font-weight: $k-fw-bold;
-    font-size: $fs-13;
-    color: $text-1;
-    border: 1px solid $border;
-    border-radius: $radius-sm;
-    background: $surface;
-    appearance: textfield;
-    -moz-appearance: textfield;
-
-    &::-webkit-outer-spin-button,
-    &::-webkit-inner-spin-button {
-      appearance: none;
-      margin: 0;
-    }
-  }
-
   // Asignados de una facción que ya no está en el mazo: marcados
   &__row.is-foreign {
     border-color: $warning;
@@ -316,7 +369,6 @@
     text-overflow: ellipsis;
   }
 
-  &__step,
   &__remove {
     display: inline-flex;
     align-items: center;
@@ -330,17 +382,19 @@
     color: $text-2;
     cursor: pointer;
 
-    &:hover:not(:disabled) { color: $text-1; border-color: $text-3; }
-    &:disabled { opacity: 0.4; cursor: default; }
+    &:hover:not(:disabled) {
+      color: $danger;
+      border-color: $danger;
+    }
+    &:disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
   }
 
-  &__remove:hover:not(:disabled) { color: $danger; border-color: $danger; }
-
-  // Buscador para añadir (resultados paginados en servidor)
-  &__search { margin-top: $space-4; }
-
+  // Resultados de disponibles (dentro de la lista de alto fijo)
   &__results {
-    margin: $space-3 0 0;
+    margin: 0;
     padding: 0;
     list-style: none;
     display: grid;
@@ -353,21 +407,14 @@
       padding: $space-1 $space-2;
       border-radius: $radius-sm;
 
-      &:hover { background: $surface-2; }
+      &:hover {
+        background: $surface-2;
+      }
     }
   }
 
   &__no-results {
-    margin: $space-3 0 0;
+    margin: $space-2;
     color: $text-3;
-  }
-
-  &__pager {
-    display: flex;
-    align-items: center;
-    gap: $space-2;
-    margin-top: $space-2;
-    color: $text-3;
-    font-size: $fs-13;
   }
 }

@@ -23,11 +23,14 @@ class AttackRangeController extends Controller
         return AttackRangeResource::collection($ranges);
     }
 
-    /** Lista ligera (id + nombre traducible) para selectores. */
+    /**
+     * Lista ligera (id + nombre traducible) para selectores,
+     * ordenada por nombre en el locale activo.
+     */
     public function options()
     {
         return response()->json([
-            'data' => AttackRange::orderByDesc('id')->get()->map(fn (AttackRange $r) => [
+            'data' => $this->orderByName(AttackRange::query())->get()->map(fn (AttackRange $r) => [
                 'id' => $r->id,
                 'name' => $r->getTranslations('name'),
             ]),

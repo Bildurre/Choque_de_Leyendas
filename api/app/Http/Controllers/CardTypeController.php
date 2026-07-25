@@ -29,7 +29,7 @@ class CardTypeController extends Controller
     public function options()
     {
         return response()->json([
-            'data' => CardType::orderByDesc('id')->get()->map(fn (CardType $type) => [
+            'data' => $this->orderByName(CardType::query())->get()->map(fn (CardType $type) => [
                 'id' => $type->id,
                 'name' => $type->getTranslations('name'),
                 'hero_superclass_id' => $type->hero_superclass_id,

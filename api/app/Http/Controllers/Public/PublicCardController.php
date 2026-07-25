@@ -31,13 +31,14 @@ class PublicCardController extends Controller
      * Índice filtrable. Parámetros: page, per_page (24, tope 48), search
      * (multi-campo vía scopeFilter del motor: LIKE sobre el json de cada
      * columna de $searchable — nombre, efecto y restricción; lore y cita
-     * fuera — en cualquier locale), faction_id, card_type_id, card_subtype_id,
+     * fuera — en el locale activo), faction_id, card_type_id, card_subtype_id,
      * equipment_type_id, equipment_subtype_id, attack_range_id,
      * attack_subtype_id, attack_type
      * (physical|magical), area ('1'/'0'; ausente = no filtra), cost_total
      * (0..5; 0 = cartas sin coste), cost_colors (subconjunto de "RGB": la
      * carta debe contener al menos esos dados) y sort (name|name_desc|
-     * latest|oldest; por defecto id desc). Ítems {id, name, slug, preview}.
+     * latest|oldest; por defecto nombre asc del locale activo). Ítems
+     * {id, name, slug, preview}.
      */
     public function index(Request $request)
     {

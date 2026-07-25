@@ -33,7 +33,7 @@ class HeroClassController extends Controller
     public function options()
     {
         return response()->json([
-            'data' => HeroClass::orderByDesc('id')->get()->map(fn (HeroClass $c) => [
+            'data' => $this->orderByName(HeroClass::query())->get()->map(fn (HeroClass $c) => [
                 'id' => $c->id,
                 'name' => $c->getTranslations('name'),
                 'hero_superclass_id' => $c->hero_superclass_id,

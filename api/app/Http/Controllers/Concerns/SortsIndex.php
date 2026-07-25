@@ -7,9 +7,9 @@ use Illuminate\Database\Eloquent\Builder;
 /**
  * Contrato de ordenación de listados (compartido con la web pública):
  * `sort=name` ordena por nombre asc en el locale activo, `name_desc` al
- * revés y `oldest` por id asc (lo más antiguo primero). Cualquier otro
- * valor (ausente, `latest` o desconocido) cae al orden por defecto:
- * id desc (lo más reciente primero).
+ * revés, `latest` por id desc (lo más reciente primero) y `oldest` por id
+ * asc. Cualquier otro valor (ausente o desconocido) cae al orden por
+ * defecto: alfabético por el nombre en el locale activo.
  */
 trait SortsIndex
 {
@@ -19,13 +19,24 @@ trait SortsIndex
     /** Aplica el contrato de `sort` a la query de un index. */
     protected function applySort(Builder $query, mixed $sort): Builder
     {
-        $locale = app()->getLocale();
-
         return match ($sort) {
-            'name' => $query->orderBy("name->{$locale}"),
-            'name_desc' => $query->orderByDesc("name->{$locale}"),
+            'name_desc' => $this->orderByName($query, desc: true),
+            'latest' => $query->orderByDesc('id'),
             'oldest' => $query->orderBy('id'),
-            default => $query->orderByDesc('id'),
+            default => $this->orderByName($query),
         };
+    }
+
+    /**
+     * Alfabético por el nombre en el locale activo, insensible a mayúsculas:
+     * con collation binaria (SQLite) "Zarpazo" ordenaría antes que "amuleto";
+     * en MySQL la collation ci ya es insensible y el lower() no estorba.
+     */
+    protected function orderByName(Builder $query, bool $desc = false): Builder
+    {
+        $locale = app()->getLocale();
+        $column = $query->getQuery()->getGrammar()->wrap("name->{$locale}");
+
+        return $query->orderByRaw('lower('.$column.')'.($desc ? ' desc' : ''));
     }
 }

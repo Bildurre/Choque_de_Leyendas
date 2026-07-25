@@ -30,11 +30,14 @@ class GameModeController extends Controller
         return GameModeResource::collection($modes);
     }
 
-    /** Lista ligera (id + nombre traducible + is_default) para selectores. */
+    /**
+     * Lista ligera (id + nombre traducible + is_default) para selectores,
+     * ordenada por nombre en el locale activo.
+     */
     public function options()
     {
         return response()->json([
-            'data' => GameMode::orderByDesc('id')->get()->map(fn (GameMode $mode) => [
+            'data' => $this->orderByName(GameMode::query())->get()->map(fn (GameMode $mode) => [
                 'id' => $mode->id,
                 'name' => $mode->getTranslations('name'),
                 'is_default' => $mode->is_default,

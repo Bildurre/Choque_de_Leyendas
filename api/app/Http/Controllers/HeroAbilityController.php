@@ -61,11 +61,8 @@ class HeroAbilityController extends Controller
      */
     public function options()
     {
-        $locale = app()->getLocale();
-
         return response()->json([
-            'data' => HeroAbility::with(['attackRange', 'attackSubtype'])
-                ->orderBy("name->{$locale}")
+            'data' => $this->orderByName(HeroAbility::with(['attackRange', 'attackSubtype']))
                 ->get()
                 ->map(fn (HeroAbility $a) => [
                     'id' => $a->id,

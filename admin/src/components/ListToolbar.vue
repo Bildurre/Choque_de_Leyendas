@@ -15,7 +15,7 @@ withDefaults(
 )
 
 const search = defineModel<string>({ default: '' })
-const sort = defineModel<SortValue>('sort', { default: 'latest' })
+const sort = defineModel<SortValue>('sort', { default: 'name' })
 
 const { t } = useI18n()
 </script>

@@ -33,7 +33,7 @@ class EquipmentSubtypeController extends Controller
     public function options()
     {
         return response()->json([
-            'data' => EquipmentSubtype::orderByDesc('id')->get()->map(fn (EquipmentSubtype $subtype) => [
+            'data' => $this->orderByName(EquipmentSubtype::query())->get()->map(fn (EquipmentSubtype $subtype) => [
                 'id' => $subtype->id,
                 'name' => $subtype->getTranslations('name'),
                 'equipment_type_id' => $subtype->equipment_type_id,

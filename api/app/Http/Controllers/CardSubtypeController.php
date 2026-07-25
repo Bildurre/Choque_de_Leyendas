@@ -23,11 +23,14 @@ class CardSubtypeController extends Controller
         return CardSubtypeResource::collection($subtypes);
     }
 
-    /** Lista ligera (id + nombre traducible) para selectores. */
+    /**
+     * Lista ligera (id + nombre traducible) para selectores,
+     * ordenada por nombre en el locale activo.
+     */
     public function options()
     {
         return response()->json([
-            'data' => CardSubtype::orderByDesc('id')->get()->map(fn (CardSubtype $subtype) => [
+            'data' => $this->orderByName(CardSubtype::query())->get()->map(fn (CardSubtype $subtype) => [
                 'id' => $subtype->id,
                 'name' => $subtype->getTranslations('name'),
             ]),
