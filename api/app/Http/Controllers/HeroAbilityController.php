@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SanitizesRichText;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\HeroAbilityResource;
