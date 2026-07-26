@@ -584,9 +584,12 @@ async function submit() {
       </p>
       <ol v-else class="hero-form__abilities">
         <li v-for="(ability, index) in form.abilities" :key="ability.id" class="ability-row">
-          <span class="ability-row__name" :title="optionLabel(ability)">{{
-            optionLabel(ability)
-          }}</span>
+          <!-- Numeral por template (index + 1): el counter CSS vivía dentro
+               del container-type del ol y el style containment lo dejaba
+               SIEMPRE en "1" (cada fila contaba en su propio ámbito). -->
+          <span class="ability-row__name" :title="optionLabel(ability)"
+            ><span class="ability-row__num">{{ index + 1 }}.</span> {{ optionLabel(ability) }}</span
+          >
           <span v-if="abilityMetaParts(ability).length" class="ability-row__meta">
             <span
               v-for="(part, i) in abilityMetaParts(ability)"

@@ -112,9 +112,14 @@ function factionSlug(hero: Hero): string {
 /**
  * Click en raza/clase/superclase de la línea de identidad del panel: aplica
  * el filtro correspondiente de este mismo index (la lista se recarga sola).
+ * SIN acumular: estando en "elfos", clicar "vanguardia" muestra TODOS los
+ * vanguardia — los demás filtros de identidad se limpian antes.
  */
 function applyFilter(key: string, id: number | null | undefined) {
   if (!id) return
+  for (const k of ['faction_id', 'hero_superclass_id', 'hero_class_id', 'hero_race_id']) {
+    if (k !== key) filters[k] = ''
+  }
   filters[key] = String(id)
 }
 
@@ -275,60 +280,59 @@ onMounted(async () => {
       </template>
 
       <template #meta>
-        <!-- Identidad: facción · raza · clase · superclase como enlaces
-             discretos (la facción navega a su single; el resto aplican el
-             filtro correspondiente de este mismo index) -->
-        <p v-if="selected" class="manager-detail__meta heroes__identity">
-          <RouterLink
-            v-if="selected.faction && factionSlug(selected)"
-            class="hero-link"
-            :title="t('heroes.fields.faction')"
-            :to="{ name: 'faction-single', params: { slug: factionSlug(selected) } }"
-          >
-            <span
-              v-if="selected.faction.color"
-              class="swatch"
-              :style="{ background: selected.faction.color }"
-            />{{ tr(selected.faction.name) }}
-          </RouterLink>
-          <span v-else>{{
-            selected.faction ? tr(selected.faction.name) : t('heroes.fields.noFaction')
-          }}</span>
+        <!-- Identidad en DOS filas: la facción (enlace a su single, sin caja
+             de color) y debajo raza · clase · superclase (aplican su filtro
+             de este mismo index, limpiando los demás) -->
+        <div v-if="selected" class="heroes__identity">
+          <p class="manager-detail__meta">
+            <RouterLink
+              v-if="selected.faction && factionSlug(selected)"
+              class="hero-link"
+              :title="t('heroes.fields.faction')"
+              :to="{ name: 'faction-single', params: { slug: factionSlug(selected) } }"
+            >
+              {{ tr(selected.faction.name) }}
+            </RouterLink>
+            <span v-else>{{
+              selected.faction ? tr(selected.faction.name) : t('heroes.fields.noFaction')
+            }}</span>
+          </p>
           <!-- Raza, clase y superclase con el género del héroe (·_display) -->
-          <template v-if="selected.hero_race">
-            <span>·</span>
-            <button
-              type="button"
-              class="hero-link"
-              :title="t('heroes.fields.race')"
-              @click="applyFilter('hero_race_id', selected.hero_race_id)"
-            >
-              {{ tr(selected.race_display ?? selected.hero_race.name) }}
-            </button>
-          </template>
-          <template v-if="selected.hero_class">
-            <span>·</span>
-            <button
-              type="button"
-              class="hero-link"
-              :title="t('heroes.fields.class')"
-              @click="applyFilter('hero_class_id', selected.hero_class_id)"
-            >
-              {{ tr(selected.class_display ?? selected.hero_class.name) }}
-            </button>
-          </template>
-          <template v-if="selected.hero_class?.hero_superclass">
-            <span>·</span>
-            <button
-              type="button"
-              class="hero-link"
-              :title="t('heroes.fields.superclass')"
-              @click="applyFilter('hero_superclass_id', selected.hero_class.hero_superclass_id)"
-            >
-              {{ tr(selected.superclass_display ?? selected.hero_class.hero_superclass.name) }}
-            </button>
-          </template>
-        </p>
+          <p class="manager-detail__meta">
+            <template v-if="selected.hero_race">
+              <button
+                type="button"
+                class="hero-link"
+                :title="t('heroes.fields.race')"
+                @click="applyFilter('hero_race_id', selected.hero_race_id)"
+              >
+                {{ tr(selected.race_display ?? selected.hero_race.name) }}
+              </button>
+            </template>
+            <template v-if="selected.hero_class">
+              <span>·</span>
+              <button
+                type="button"
+                class="hero-link"
+                :title="t('heroes.fields.class')"
+                @click="applyFilter('hero_class_id', selected.hero_class_id)"
+              >
+                {{ tr(selected.class_display ?? selected.hero_class.name) }}
+              </button>
+            </template>
+            <template v-if="selected.hero_class?.hero_superclass">
+              <span>·</span>
+              <button
+                type="button"
+                class="hero-link"
+                :title="t('heroes.fields.superclass')"
+                @click="applyFilter('hero_superclass_id', selected.hero_class.hero_superclass_id)"
+              >
+                {{ tr(selected.superclass_display ?? selected.hero_class.hero_superclass.name) }}
+              </button>
+            </template>
+          </p>
+        </div>
 
         <!-- Atributos, separados con el lenguaje divisoria + kicker del panel -->
         <template v-if="selected">
@@ -377,11 +381,22 @@ onMounted(async () => {
           </ul>
         </template>
 
-        <!-- Pasiva DEL HÉROE: solo su nombre (el texto, en el single) -->
+        <!-- Pasiva DEL HÉROE: nombre + texto (el nombre solo no decía nada) -->
         <template v-if="selected && heroPassive(selected)">
           <hr class="manager-panel__divider" />
           <p class="manager-panel__kicker">{{ t('heroes.sections.passive') }}</p>
-          <p class="heroes__panel-passive-name">{{ tr(selected.passive_name) }}</p>
+          <p class="heroes__panel-passive">
+            <strong v-if="tr(selected.passive_name) !== '—'"
+              >{{ tr(selected.passive_name) }}:</strong
+            >
+            <!-- eslint-disable vue/no-v-html -- wysiwyg propio, saneado en servidor (DC-09) -->
+            <span
+              v-if="tr(selected.passive_description) !== '—'"
+              class="heroes__panel-passive-text"
+              v-html="tr(selected.passive_description)"
+            />
+            <!-- eslint-enable vue/no-v-html -->
+          </p>
         </template>
       </template>
     </EntityPanel>
