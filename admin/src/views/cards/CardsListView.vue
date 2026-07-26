@@ -165,33 +165,13 @@ function factionSlug(item: Card): string {
   return slug?.[locales.current] || Object.values(slug ?? {})[0] || ''
 }
 
-// Todas las claves de filtro de la vista (para limpiar al aplicar uno).
-const FILTER_KEYS = [
-  'faction_id',
-  'card_type_id',
-  'card_subtype_id',
-  'equipment_type_id',
-  'equipment_subtype_id',
-  'attack_range_id',
-  'attack_type',
-  'attack_subtype_id',
-  'area',
-]
-
 /**
- * Click en un término del tipado del panel: aplica el filtro correspondiente
- * de este mismo index (la lista se recarga sola). SIN acumular: los demás
- * filtros se limpian antes, como applyFilter de héroes. Los términos de
- * EQUIPO son filtros condicionales: se marca también el tipo de la carta
- * (`withTypeId`, que es equipo) para que sigan visibles y aplicando.
+ * Enlace a la DEFINICIÓN de un término de taxonomía del tipado: el index de
+ * esa taxonomía con el elemento seleccionado (selected lo marca y search lo
+ * deja en la primera página), mismo patrón que las habilidades.
  */
-function applyFilter(key: string, id: number | null | undefined, withTypeId?: number | null) {
-  if (!id) return
-  for (const k of FILTER_KEYS) {
-    if (k !== key) filters[k] = []
-  }
-  filters[key] = [String(id)]
-  if (withTypeId) filters.card_type_id = [String(withTypeId)]
+function definitionLink(routeName: string, term: { id: number; name: Translations }) {
+  return { name: routeName, query: { selected: String(term.id), search: tr(term.name) } }
 }
 
 async function loadFilterOptions() {
@@ -393,8 +373,8 @@ onMounted(async () => {
 
       <template #meta>
         <!-- Identidad en DOS filas, como en héroes: la facción (enlace a su
-             single) y debajo el coste + tipado (cada término aplica su
-             filtro de este mismo index, limpiando los demás) -->
+             single) y debajo el coste + tipado (cada término enlaza a su
+             definición: el index de su taxonomía con el término seleccionado) -->
         <div v-if="selected" class="cards__identity">
           <p class="manager-detail__meta">
             <RouterLink
@@ -414,59 +394,43 @@ onMounted(async () => {
           <p class="manager-detail__meta cards__typing">
             <CostDice v-if="selected.cost" :cost="selected.cost" />
             <template v-if="selected.card_type">
-              <button
-                type="button"
+              <RouterLink
                 class="hero-link"
                 :title="t('cards.fields.type')"
-                @click="applyFilter('card_type_id', selected.card_type_id)"
+                :to="definitionLink('card-types', selected.card_type)"
               >
                 {{ tr(selected.card_type.name) }}
-              </button>
+              </RouterLink>
             </template>
             <template v-if="selected.card_subtype">
               <span>·</span>
-              <button
-                type="button"
+              <RouterLink
                 class="hero-link"
                 :title="t('cards.fields.subtype')"
-                @click="applyFilter('card_subtype_id', selected.card_subtype_id)"
+                :to="definitionLink('card-subtypes', selected.card_subtype)"
               >
                 {{ tr(selected.card_subtype.name) }}
-              </button>
+              </RouterLink>
             </template>
             <template v-if="selected.equipment_type">
               <span>·</span>
-              <button
-                type="button"
+              <RouterLink
                 class="hero-link"
                 :title="t('cards.fields.equipmentType')"
-                @click="
-                  applyFilter(
-                    'equipment_type_id',
-                    selected.equipment_type_id,
-                    selected.card_type_id,
-                  )
-                "
+                :to="definitionLink('equipment-types', selected.equipment_type)"
               >
                 {{ tr(selected.equipment_type.name) }}
-              </button>
+              </RouterLink>
             </template>
             <template v-if="selected.equipment_subtype">
               <span>·</span>
-              <button
-                type="button"
+              <RouterLink
                 class="hero-link"
                 :title="t('cards.fields.equipmentSubtype')"
-                @click="
-                  applyFilter(
-                    'equipment_subtype_id',
-                    selected.equipment_subtype_id,
-                    selected.card_type_id,
-                  )
-                "
+                :to="definitionLink('equipment-subtypes', selected.equipment_subtype)"
               >
                 {{ tr(selected.equipment_subtype.name) }}
-              </button>
+              </RouterLink>
             </template>
             <span v-if="selected.hands">{{
               t(selected.hands > 1 ? 'cards.fields.twoHands' : 'cards.fields.oneHand')
@@ -477,12 +441,14 @@ onMounted(async () => {
           </p>
         </div>
 
-        <!-- Ataque, con el lenguaje divisoria + kicker del panel -->
+        <!-- Ataque, con el lenguaje divisoria + kicker del panel; rango y
+             subtipo enlazan a su definición -->
         <template v-if="selected && hasAttack(selected)">
           <hr class="manager-panel__divider" />
           <p class="manager-panel__kicker">{{ t('cards.sections.attack') }}</p>
           <p class="manager-detail__meta">
             <AttackLine
+              linked
               :range="selected.attack_range"
               :type="selected.attack_type"
               :subtype="selected.attack_subtype"

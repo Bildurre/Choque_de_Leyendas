@@ -244,7 +244,8 @@ onMounted(() => {
 
       <template #meta>
         <!-- Tipado completo en orden canónico rango-tipo-subtipo (+ área),
-             con el tipo coloreado (AttackLine, sin chips en el panel) -->
+             con el tipo coloreado (AttackLine, sin chips en el panel); rango
+             y subtipo enlazan a su definición -->
         <p v-if="selected" class="manager-detail__meta hero-abilities__panel-meta">
           <CostDice v-if="selected.cost" :cost="selected.cost" />
           <AttackLine
@@ -254,6 +255,7 @@ onMounted(() => {
               selected.attack_subtype ||
               selected.area
             "
+            linked
             :range="selected.attack_range"
             :type="selected.attack_type"
             :subtype="selected.attack_subtype"

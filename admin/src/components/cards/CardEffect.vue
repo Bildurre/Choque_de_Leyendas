@@ -64,6 +64,7 @@ const hasEffect = computed(() => tr(props.card.effect) !== '—')
             ></strong
           >
           <CostDice v-if="card.hero_ability.cost" :cost="card.hero_ability.cost" />
+          <!-- Rango y subtipo de ataque enlazan a su definición (linked) -->
           <AttackLine
             v-if="
               card.hero_ability.attack_range ||
@@ -71,6 +72,7 @@ const hasEffect = computed(() => tr(props.card.effect) !== '—')
               card.hero_ability.attack_subtype ||
               card.hero_ability.area
             "
+            linked
             class="card-effect__ability-typing"
             :range="card.hero_ability.attack_range"
             :type="card.hero_ability.attack_type"

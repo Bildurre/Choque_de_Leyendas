@@ -9,7 +9,7 @@ import { BaseButton } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useLocalesStore } from '@/stores/locales'
 import { usePageCrumb } from '@/composables/usePageCrumb'
-import type { Card } from '@juego/shared'
+import type { Card, Translations } from '@juego/shared'
 import CardFormModal from '@/components/cards/CardFormModal.vue'
 import CardEffect from '@/components/cards/CardEffect.vue'
 import PreviewPanel from '@/components/previews/PreviewPanel.vue'
@@ -19,9 +19,9 @@ import CostDice from '@/components/game/CostDice.vue'
 // Single de carta en secciones info-block (borde sin fondo): detalles de la
 // carta y, si corresponde, del ataque (a su derecha mientras quepan) — texto
 // plano o coloreado, sin chips (regla transversal). La facción enlaza a su
-// single y el tipado al index de cartas filtrado, como en el panel del
-// listado. El efecto integra la habilidad de héroe otorgada, como en la
-// preview (CardEffect).
+// single y cada término del tipado a su DEFINICIÓN (el index de su taxonomía
+// con el término seleccionado), como en el panel del listado. El efecto
+// integra la habilidad de héroe otorgada, como en la preview (CardEffect).
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -63,15 +63,12 @@ const factionSlug = computed(() => {
 })
 
 /**
- * Enlace al index de cartas con un filtro aplicado (mismas claves que los
- * queryFilters del listado, como los heroesFilterLink de héroes). Los
- * términos de EQUIPO son filtros condicionales del index: viaja también el
- * tipo de la carta (que es equipo) para que sigan visibles y aplicando.
+ * Enlace a la DEFINICIÓN de un término de taxonomía del tipado: el index de
+ * esa taxonomía con el elemento seleccionado (selected lo marca y search lo
+ * deja en la primera página), mismo patrón que las habilidades.
  */
-function cardsFilterLink(key: string, id: number | null | undefined, withTypeId?: number | null) {
-  const query: Record<string, string> = { [key]: String(id ?? '') }
-  if (withTypeId) query.card_type_id = String(withTypeId)
-  return { name: 'cards', query }
+function definitionLink(routeName: string, term: { id: number; name: Translations }) {
+  return { name: routeName, query: { selected: String(term.id), search: tr(term.name) } }
 }
 
 async function load() {
@@ -143,8 +140,8 @@ onBeforeUnmount(() => {
         <h1>{{ tr(item.name) }}</h1>
 
         <!-- Sin chips: texto plano y la única en ámbar. La facción enlaza a
-             su single (sin muestra de color) y el tipado al index de cartas
-             filtrado, como en el panel del listado. Detalles y Ataque
+             su single (sin muestra de color) y cada término del tipado a su
+             definición, como en el panel del listado. Detalles y Ataque
              comparten fila mientras quepan (rejilla auto-fit). -->
         <div class="card-single__cards">
           <InfoBlock :title="t('cards.sections.details')">
@@ -173,7 +170,7 @@ onBeforeUnmount(() => {
                 <dd>
                   <RouterLink
                     class="hero-link"
-                    :to="cardsFilterLink('card_type_id', item.card_type_id)"
+                    :to="definitionLink('card-types', item.card_type)"
                     >{{ tr(item.card_type.name) }}</RouterLink
                   >
                 </dd>
@@ -184,7 +181,7 @@ onBeforeUnmount(() => {
                 <dd>
                   <RouterLink
                     class="hero-link"
-                    :to="cardsFilterLink('card_subtype_id', item.card_subtype_id)"
+                    :to="definitionLink('card-subtypes', item.card_subtype)"
                     >{{ tr(item.card_subtype.name) }}</RouterLink
                   >
                 </dd>
@@ -195,13 +192,7 @@ onBeforeUnmount(() => {
                 <dd>
                   <RouterLink
                     class="hero-link"
-                    :to="
-                      cardsFilterLink(
-                        'equipment_type_id',
-                        item.equipment_type_id,
-                        item.card_type_id,
-                      )
-                    "
+                    :to="definitionLink('equipment-types', item.equipment_type)"
                     >{{ tr(item.equipment_type.name) }}</RouterLink
                   >
                 </dd>
@@ -212,13 +203,7 @@ onBeforeUnmount(() => {
                 <dd>
                   <RouterLink
                     class="hero-link"
-                    :to="
-                      cardsFilterLink(
-                        'equipment_subtype_id',
-                        item.equipment_subtype_id,
-                        item.card_type_id,
-                      )
-                    "
+                    :to="definitionLink('equipment-subtypes', item.equipment_subtype)"
                     >{{ tr(item.equipment_subtype.name) }}</RouterLink
                   >
                 </dd>
@@ -241,12 +226,19 @@ onBeforeUnmount(() => {
           </InfoBlock>
 
           <!-- Detalles del ataque, si corresponde, en el mismo formato
-               etiqueta→valor: rango, tipo (coloreado), subtipo y área -->
+               etiqueta→valor: rango y subtipo enlazan a su definición; el
+               tipo es un enum sin entidad (texto coloreado) -->
           <InfoBlock v-if="hasAttack" :title="t('cards.sections.attack')">
             <dl class="info-list">
               <template v-if="item.attack_range">
                 <dt>{{ t('cards.fields.attackRange') }}</dt>
-                <dd>{{ tr(item.attack_range.name) }}</dd>
+                <dd>
+                  <RouterLink
+                    class="hero-link"
+                    :to="definitionLink('attack-ranges', item.attack_range)"
+                    >{{ tr(item.attack_range.name) }}</RouterLink
+                  >
+                </dd>
               </template>
 
               <template v-if="item.attack_type">
@@ -260,7 +252,13 @@ onBeforeUnmount(() => {
 
               <template v-if="item.attack_subtype">
                 <dt>{{ t('cards.fields.attackSubtype') }}</dt>
-                <dd>{{ tr(item.attack_subtype.name) }}</dd>
+                <dd>
+                  <RouterLink
+                    class="hero-link"
+                    :to="definitionLink('attack-subtypes', item.attack_subtype)"
+                    >{{ tr(item.attack_subtype.name) }}</RouterLink
+                  >
+                </dd>
               </template>
 
               <template v-if="item.area">

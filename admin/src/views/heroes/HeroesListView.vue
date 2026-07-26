@@ -112,17 +112,13 @@ function factionSlug(hero: Hero): string {
 }
 
 /**
- * Click en raza/clase/superclase de la línea de identidad del panel: aplica
- * el filtro correspondiente de este mismo index (la lista se recarga sola).
- * SIN acumular: estando en "elfos", clicar "vanguardia" muestra TODOS los
- * vanguardia — los demás filtros de identidad se limpian antes.
+ * Enlace a la DEFINICIÓN de un término de taxonomía: el index de esa
+ * taxonomía con el elemento seleccionado (selected lo marca y search — el
+ * nombre NEUTRO, que es el que muestra ese index — lo deja en la primera
+ * página), mismo patrón que las habilidades.
  */
-function applyFilter(key: string, id: number | null | undefined) {
-  if (!id) return
-  for (const k of ['faction_id', 'hero_superclass_id', 'hero_class_id', 'hero_race_id']) {
-    if (k !== key) filters[k] = []
-  }
-  filters[key] = [String(id)]
+function definitionLink(routeName: string, term: { id: number; name: Translations }) {
+  return { name: routeName, query: { selected: String(term.id), search: tr(term.name) } }
 }
 
 /**
@@ -291,8 +287,8 @@ onMounted(async () => {
 
       <template #meta>
         <!-- Identidad en DOS filas: la facción (enlace a su single, sin caja
-             de color) y debajo raza · clase · superclase (aplican su filtro
-             de este mismo index, limpiando los demás) -->
+             de color) y debajo raza · clase · superclase (enlazan a su
+             definición: el index de su taxonomía con el término seleccionado) -->
         <div v-if="selected" class="heroes__identity">
           <p class="manager-detail__meta">
             <RouterLink
@@ -307,39 +303,38 @@ onMounted(async () => {
               selected.faction ? tr(selected.faction.name) : t('heroes.fields.noFaction')
             }}</span>
           </p>
-          <!-- Raza, clase y superclase con el género del héroe (·_display) -->
+          <!-- Raza, clase y superclase con el género del héroe (·_display);
+               cada término enlaza a SU DEFINICIÓN (el index de su taxonomía
+               con el elemento seleccionado) -->
           <p class="manager-detail__meta">
             <template v-if="selected.hero_race">
-              <button
-                type="button"
+              <RouterLink
                 class="hero-link"
                 :title="t('heroes.fields.race')"
-                @click="applyFilter('hero_race_id', selected.hero_race_id)"
+                :to="definitionLink('hero-races', selected.hero_race)"
               >
                 {{ tr(selected.race_display ?? selected.hero_race.name) }}
-              </button>
+              </RouterLink>
             </template>
             <template v-if="selected.hero_class">
               <span>·</span>
-              <button
-                type="button"
+              <RouterLink
                 class="hero-link"
                 :title="t('heroes.fields.class')"
-                @click="applyFilter('hero_class_id', selected.hero_class_id)"
+                :to="definitionLink('hero-classes', selected.hero_class)"
               >
                 {{ tr(selected.class_display ?? selected.hero_class.name) }}
-              </button>
+              </RouterLink>
             </template>
             <template v-if="selected.hero_class?.hero_superclass">
               <span>·</span>
-              <button
-                type="button"
+              <RouterLink
                 class="hero-link"
                 :title="t('heroes.fields.superclass')"
-                @click="applyFilter('hero_superclass_id', selected.hero_class.hero_superclass_id)"
+                :to="definitionLink('hero-superclasses', selected.hero_class.hero_superclass)"
               >
                 {{ tr(selected.superclass_display ?? selected.hero_class.hero_superclass.name) }}
-              </button>
+              </RouterLink>
             </template>
           </p>
         </div>

@@ -9,7 +9,7 @@ import { BaseButton } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useLocalesStore } from '@/stores/locales'
 import { usePageCrumb } from '@/composables/usePageCrumb'
-import type { Hero, HeroAbilityRef } from '@juego/shared'
+import type { Hero, HeroAbilityRef, Translations } from '@juego/shared'
 import HeroFormModal from '@/components/heroes/HeroFormModal.vue'
 import InfoBlock from '@/components/InfoBlock.vue'
 import PreviewPanel from '@/components/previews/PreviewPanel.vue'
@@ -79,11 +79,13 @@ const factionSlug = computed(() => {
 })
 
 /**
- * Enlace al index de héroes con un filtro aplicado (raza/clase/superclase):
- * mismas claves que los queryFilters del listado.
+ * Enlace a la DEFINICIÓN de un término de taxonomía (raza/clase/superclase):
+ * el index de esa taxonomía con el elemento seleccionado (selected lo marca
+ * y search — el nombre NEUTRO, el que muestra ese index — lo deja en la
+ * primera página), mismo patrón que las habilidades.
  */
-function heroesFilterLink(key: string, id: number | null | undefined) {
-  return { name: 'heroes', query: { [key]: String(id ?? '') } }
+function definitionLink(routeName: string, term: { id: number; name: Translations }) {
+  return { name: routeName, query: { selected: String(term.id), search: tr(term.name) } }
 }
 
 /**
@@ -188,13 +190,14 @@ onBeforeUnmount(() => {
               </dd>
 
               <!-- Raza, clase y superclase con el género del héroe (·_display);
-                   enlaces discretos al index de héroes con ese filtro aplicado -->
+                   enlaces discretos a su definición (el index de su taxonomía
+                   con el término seleccionado) -->
               <template v-if="item.hero_race">
                 <dt>{{ t('heroes.fields.race') }}</dt>
                 <dd>
                   <RouterLink
                     class="hero-link"
-                    :to="heroesFilterLink('hero_race_id', item.hero_race_id)"
+                    :to="definitionLink('hero-races', item.hero_race)"
                     >{{ tr(item.race_display ?? item.hero_race.name) }}</RouterLink
                   >
                 </dd>
@@ -205,7 +208,7 @@ onBeforeUnmount(() => {
                 <dd>
                   <RouterLink
                     class="hero-link"
-                    :to="heroesFilterLink('hero_class_id', item.hero_class_id)"
+                    :to="definitionLink('hero-classes', item.hero_class)"
                     >{{ tr(item.class_display ?? item.hero_class.name) }}</RouterLink
                   >
                 </dd>
@@ -215,9 +218,9 @@ onBeforeUnmount(() => {
                 <dt>{{ t('heroes.fields.superclass') }}</dt>
                 <dd>
                   <RouterLink
-                    v-if="item.hero_class?.hero_superclass_id"
+                    v-if="item.hero_class?.hero_superclass"
                     class="hero-link"
-                    :to="heroesFilterLink('hero_superclass_id', item.hero_class.hero_superclass_id)"
+                    :to="definitionLink('hero-superclasses', item.hero_class.hero_superclass)"
                     >{{ superclassName }}</RouterLink
                   >
                   <template v-else>{{ superclassName }}</template>
@@ -278,8 +281,10 @@ onBeforeUnmount(() => {
               }}</RouterLink></strong
             >
             <CostDice v-if="ability.cost" :cost="ability.cost" />
-            <!-- Línea de ataque, SIEMPRE rango-tipo-subtipo (texto coloreado) -->
+            <!-- Línea de ataque, SIEMPRE rango-tipo-subtipo (texto coloreado);
+                 rango y subtipo enlazan a su definición -->
             <AttackLine
+              linked
               :range="ability.attack_range"
               :type="ability.attack_type"
               :subtype="ability.attack_subtype"
