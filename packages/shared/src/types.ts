@@ -129,6 +129,8 @@ export interface Faction extends EntityBase {
 export interface FactionOption {
   id: number
   name: Translations
+  /** Solo en la facción embebida del héroe: enlaza a su single. */
+  slug?: Translations
   color: string
 }
 
