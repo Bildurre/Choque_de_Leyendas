@@ -31,12 +31,17 @@ const hasEffect = computed(() => tr(props.card.effect) !== '—')
       class="card-effect__restriction rich-content"
       v-html="tr(card.restriction)"
     />
-    <hr v-if="hasRestriction && hasEffect" class="card-effect__rule" />
+    <!-- El separador bajo la restricción va corto y centrado (80%) -->
+    <hr v-if="hasRestriction && hasEffect" class="card-effect__rule card-effect__rule--short" />
     <div v-if="hasEffect" class="rich-content" v-html="tr(card.effect)" />
 
     <!-- Habilidad de héroe otorgada, integrada como en el render -->
     <template v-if="card.hero_ability">
-      <hr v-if="hasRestriction || hasEffect" class="card-effect__rule" />
+      <hr
+        v-if="hasRestriction || hasEffect"
+        class="card-effect__rule"
+        :class="{ 'card-effect__rule--short': hasRestriction && !hasEffect }"
+      />
       <div class="card-effect__ability">
         <p class="card-effect__ability-header">
           <span class="card-effect__ability-info">

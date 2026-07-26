@@ -61,6 +61,19 @@
     color: $text-2;
   }
 
+  // Detalles y Ataque comparten fila mientras quepan (auto-fit, como
+  // hero-single__cards); en estrecho se apilan. El margen de las cards lo
+  // pone la rejilla (gap), no cada info-block.
+  &__cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: $space-4;
+    align-items: start;
+    margin: 0 0 $space-4;
+
+    .info-block { margin: 0; }
+  }
+
   &__quote {
     margin: $space-4 0 0;
     padding-left: $space-4;

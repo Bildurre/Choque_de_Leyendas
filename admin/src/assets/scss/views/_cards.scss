@@ -28,14 +28,28 @@
   border-color: color-mix(in srgb, $warning 45%, transparent);
 }
 
-// Meta del panel derecho de cartas (el EntityPanel se teletransporta fuera
-// de la vista: clase propia): coste + tipado + única en fila con aire (Vue
-// condensa el whitespace entre spans; sin flex quedarían pegados).
-.card-panel-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: $space-1 $space-2;
+// Panel derecho de cartas (el EntityPanel se teletransporta fuera de la
+// vista: clases propias), calcado del de héroes: identidad en dos filas
+// (facción enlazada y coste + tipado con enlaces-filtro) y el efecto en
+// letra pequeña (patrón heroes__panel-passive).
+.cards {
+  &__identity {
+    display: grid;
+    gap: 2px;
+  }
+
+  // Coste + tipado + manos + única en fila con aire (Vue condensa el
+  // whitespace entre spans; sin flex quedarían pegados).
+  &__typing {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-1 $space-2;
+  }
+
+  &__panel-effect {
+    font-size: 0.85rem;
+  }
 }
 
 // Efecto de una carta como en la preview (CardEffect.vue): restricción,
@@ -50,6 +64,13 @@
     border: 0;
     border-top: 1px solid $border;
     margin: $space-3 0;
+
+    // Separador corto y centrado (80%) bajo la restricción, análogo al
+    // hero-single__ability-sep del single de héroe.
+    &--short {
+      width: 80%;
+      margin-inline: auto;
+    }
   }
 
   &__ability-header {
@@ -68,14 +89,6 @@
     flex-wrap: wrap;
     min-width: 0;
   }
-}
-
-// Título de sección del panel derecho de cartas (efecto sobre las previews).
-.cards__panel-title {
-  margin: $space-4 0 $space-2;
-  font-size: $fs-13;
-  font-weight: $k-fw-bold;
-  color: $text-2;
 }
 
 // Botón "entrar" de las tarjetas con panel derecho: texto + flecha, la única

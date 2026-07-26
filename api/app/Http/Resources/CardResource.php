@@ -33,10 +33,12 @@ class CardResource extends JsonResource
             'area' => (bool) $this->area,
             'is_unique' => (bool) $this->is_unique,
             // Relaciones en mínimo (id + nombre + extras del selector): sus
-            // Resources completos son de otros clusters.
+            // Resources completos son de otros clusters. El slug de la facción
+            // permite enlazar a su single desde el panel/single de carta.
             'faction' => $this->whenLoaded('faction', fn () => [
                 'id' => $this->faction->id,
                 'name' => $this->faction->getTranslations('name'),
+                'slug' => $this->faction->getTranslations('slug'),
                 'color' => $this->faction->color,
             ]),
             'card_type' => $this->whenLoaded('cardType', fn () => [
