@@ -1019,7 +1019,15 @@
       "epicQuote": "Aipu epikoa",
       "image": "Ikonoa",
       "published": "Argitaratuta",
-      "draftHint": "Sorta zirriborro gisa sortzen da: kartak eta heroiak bere editorean gehitzen dira, eta handik argitaratzen da."
+      "draftHint": "Sorta zirriborro gisa sortzen da: kartak eta heroiak bere editorean gehitzen dira, eta handik argitaratzen da.",
+      "heroes": "Heroiak",
+      "cards": "Kartak"
+    },
+    "filters": {
+      "allModes": "Joko modu guztiak",
+      "allFactions": "Fakzio guztiak",
+      "allHeroes": "Heroi guztiak",
+      "allCards": "Karta guztiak"
     },
     "counts": {
       "cards": "{count} karta",

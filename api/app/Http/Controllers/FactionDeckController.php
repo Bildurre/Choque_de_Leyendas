@@ -11,6 +11,8 @@ use App\Models\CardType;
 use App\Models\FactionDeck;
 use App\Models\GameMode;
 use App\Models\HeroClass;
+use Edc\Core\Support\SqlFold;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -28,24 +30,69 @@ class FactionDeckController extends Controller
 
     public function index(Request $request)
     {
-        // Filtro multivalor (escalar o array, contrato de FiltersByIds).
+        // Filtros multivalor (escalar o array, contrato de FiltersByIds).
         $factionIds = $this->idsFrom($request, 'faction_id');
+        $gameModeIds = $this->idsFrom($request, 'game_mode_id');
+        $heroIds = $this->idsFrom($request, 'hero_id');
+        $cardIds = $this->idsFrom($request, 'card_id');
+        $search = trim((string) $request->input('search', ''));
 
         $decks = FactionDeck::query()
             ->with(['gameMode', 'factions'])
             ->withSum('cards as total_cards', 'card_faction_deck.copies')
             ->withCount('heroes as total_heroes')
-            ->filter($request->only('search', 'status'))
-            // Filtro por facción (pivot): lo usan los enlaces del panel y el
-            // single de facción ("mazos de esta facción").
+            // La búsqueda va aparte (ver applySearch: también por el nombre
+            // del contenido); a filter() solo llega el estado de las tabs.
+            ->filter($request->only('status'))
+            ->when($search !== '', fn ($query) => $this->applySearch($query, $search))
+            // Filtro por facción (pivot): lo usan el multiselect del panel y
+            // el single de facción ("mazos de esta facción").
             ->when($factionIds !== [], fn ($query) => $query->whereHas(
                 'factions',
                 fn ($q) => $q->whereIn('factions.id', $factionIds),
+            ))
+            ->when($gameModeIds !== [], fn ($query) => $query->whereIn('game_mode_id', $gameModeIds))
+            // Filtros de contenido: mazos que contengan CUALQUIERA de los
+            // héroes/cartas marcados en los multiselects del panel.
+            ->when($heroIds !== [], fn ($query) => $query->whereHas(
+                'heroes',
+                fn ($q) => $q->whereIn('heroes.id', $heroIds),
+            ))
+            ->when($cardIds !== [], fn ($query) => $query->whereHas(
+                'cards',
+                fn ($q) => $q->whereIn('cards.id', $cardIds),
             ))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 
         return FactionDeckResource::collection($decks);
+    }
+
+    /**
+     * Búsqueda del index: además de las columnas buscables del propio mazo
+     * ($searchable del modelo: name y description, traducibles), el término
+     * casa por NOMBRE de carta o de héroe contenidos en el mazo. Mismo
+     * plegado que HasFilters (SqlFold en columna Y término, en el json del
+     * locale activo: "aMuLeTo" encuentra "Amuleto").
+     */
+    protected function applySearch(Builder $query, string $search): void
+    {
+        $locale = app()->getLocale();
+        $term = '%'.SqlFold::term($search).'%';
+
+        // LIKE plegado sobre el json del locale activo de una columna
+        // traducible, con el grammar del builder que la va a ejecutar.
+        $fold = fn (Builder $q, string $column): string => SqlFold::expression(
+            $q->getQuery()->getGrammar()->wrap("{$column}->{$locale}"),
+        ).' like ?';
+
+        // Agrupado para no romper los demás wheres del listado (status, filtros).
+        $query->where(function (Builder $group) use ($fold, $term) {
+            $group->whereRaw($fold($group, 'name'), [$term])
+                ->orWhereRaw($fold($group, 'description'), [$term])
+                ->orWhereHas('cards', fn (Builder $q) => $q->whereRaw($fold($q, 'name'), [$term]))
+                ->orWhereHas('heroes', fn (Builder $q) => $q->whereRaw($fold($q, 'name'), [$term]));
+        });
     }
 
     public function store(Request $request)

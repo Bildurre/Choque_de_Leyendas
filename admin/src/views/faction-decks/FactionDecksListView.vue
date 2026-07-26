@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
-import { ArrowRight, Plus } from '@lucide/vue'
+import { computed, onMounted, ref, watch } from 'vue'
+import { ArrowRight, FunnelX, Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BasePagination, BaseTabs, useToast } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseTabs, MultiSelect, useToast } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useEntityList } from '@/composables/useEntityList'
 import type { DeckPublishError, FactionDeck, Translations } from '@juego/shared'
@@ -12,6 +12,10 @@ import ListToolbar from '@/components/ListToolbar.vue'
 
 // Listado de mazos de facción. La tarjeta selecciona (panel derecho con las
 // acciones); "entrar" abre la single con el editor de cartas y héroes.
+// Filtra con multiselects en el panel derecho (slot `filters` del
+// EntityPanel, como héroes y cartas): modo de juego y facción del mazo, y
+// CONTENIDO (mazos con cualquiera de los héroes/cartas marcados). Cada
+// filtro admite varios valores (unión) y viaja como `clave[]=`.
 const {
   t,
   locales,
@@ -23,6 +27,8 @@ const {
   status,
   search,
   sort,
+  filters,
+  clearFilters,
   tabs,
   tr,
   slugFor,
@@ -47,10 +53,49 @@ const {
   singleRoute: 'faction-deck-single',
   nameOf: (item) => item.name,
   // Enlaces entrantes por query (p. ej. desde el panel/single de facción).
-  queryFilters: ['faction_id'],
+  // Mismos nombres que los selects del panel.
+  queryFilters: ['faction_id', 'game_mode_id', 'hero_id', 'card_id'],
 })
 
 const toast = useToast()
+
+// Opciones de los selects de filtro del panel (endpoints options, nombres
+// traducibles en el locale actual).
+interface FilterOption {
+  id: number
+  name: Translations
+}
+const gameModes = ref<FilterOption[]>([])
+const factions = ref<FilterOption[]>([])
+const heroes = ref<FilterOption[]>([])
+const cards = ref<FilterOption[]>([])
+
+// Sin opción "Todas" en la lista: sin nada marcado, el placeholder del
+// MultiSelect ya dice "Todos los …".
+function toOptions(options: FilterOption[]) {
+  return options.map((option) => ({ value: String(option.id), label: tr(option.name) }))
+}
+const gameModeOptions = computed(() => toOptions(gameModes.value))
+const factionOptions = computed(() => toOptions(factions.value))
+const heroOptions = computed(() => toOptions(heroes.value))
+const cardOptions = computed(() => toOptions(cards.value))
+
+async function loadFilterOptions() {
+  try {
+    const [gameModesRes, factionsRes, heroesRes, cardsRes] = await Promise.all([
+      api.get('/admin/game-modes/options'),
+      api.get('/admin/factions/options'),
+      api.get('/admin/heroes/options'),
+      api.get('/admin/cards/options'),
+    ])
+    gameModes.value = gameModesRes.data.data
+    factions.value = factionsRes.data.data
+    heroes.value = heroesRes.data.data
+    cards.value = cardsRes.data.data
+  } catch {
+    // Sin opciones no hay filtro, pero el listado sigue funcionando.
+  }
+}
 
 // Contenido del mazo seleccionado (héroes sin copias, cartas con copias)
 // para el panel derecho: se carga bajo demanda con el show al seleccionar.
@@ -100,7 +145,9 @@ function onDeckSaved(created?: FactionDeck) {
   if (created) goSingle(created)
 }
 
-onMounted(init)
+onMounted(async () => {
+  await Promise.all([init(), loadFilterOptions()])
+})
 </script>
 
 <template>
@@ -193,6 +240,39 @@ onMounted(init)
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
+      <!-- Filtros del listado: aplican en vivo (sin guardar), multivalor.
+           Modo y facción del mazo + contenido (héroes/cartas contenidos) -->
+      <template #filters>
+        <MultiSelect
+          v-model="filters.game_mode_id"
+          :label="t('factionDecks.fields.gameMode')"
+          :placeholder="t('factionDecks.filters.allModes')"
+          :options="gameModeOptions"
+        />
+        <MultiSelect
+          v-model="filters.faction_id"
+          :label="t('factionDecks.fields.factions')"
+          :placeholder="t('factionDecks.filters.allFactions')"
+          :options="factionOptions"
+        />
+        <MultiSelect
+          v-model="filters.hero_id"
+          :label="t('factionDecks.fields.heroes')"
+          :placeholder="t('factionDecks.filters.allHeroes')"
+          :options="heroOptions"
+        />
+        <MultiSelect
+          v-model="filters.card_id"
+          :label="t('factionDecks.fields.cards')"
+          :placeholder="t('factionDecks.filters.allCards')"
+          :options="cardOptions"
+        />
+        <BaseButton variant="text" type="button" @click="clearFilters">
+          <template #icon><FunnelX :size="14" /></template>
+          {{ t('common.filters.clear') }}
+        </BaseButton>
+      </template>
+
       <template #meta>
         <!-- Contenido asignado, en secciones con divisoria + kicker (patrón
              de héroes/cartas/facciones), cada sección con su total entre

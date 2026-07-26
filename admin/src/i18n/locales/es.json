@@ -950,7 +950,15 @@
       "epicQuote": "Cita épica",
       "image": "Icono",
       "published": "Publicado",
-      "draftHint": "El mazo se crea en borrador: las cartas y los héroes se añaden en su editor, y desde allí se publica."
+      "draftHint": "El mazo se crea en borrador: las cartas y los héroes se añaden en su editor, y desde allí se publica.",
+      "heroes": "Héroes",
+      "cards": "Cartas"
+    },
+    "filters": {
+      "allModes": "Todos los modos de juego",
+      "allFactions": "Todas las facciones",
+      "allHeroes": "Todos los héroes",
+      "allCards": "Todas las cartas"
     },
     "counts": {
       "cards": "{count} cartas",

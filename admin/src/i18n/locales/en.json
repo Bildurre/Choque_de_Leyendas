@@ -1019,7 +1019,15 @@
       "epicQuote": "Epic quote",
       "image": "Icon",
       "published": "Published",
-      "draftHint": "The deck is created as a draft: cards and heroes are added in its editor, where it can be published."
+      "draftHint": "The deck is created as a draft: cards and heroes are added in its editor, where it can be published.",
+      "heroes": "Heroes",
+      "cards": "Cards"
+    },
+    "filters": {
+      "allModes": "All game modes",
+      "allFactions": "All factions",
+      "allHeroes": "All heroes",
+      "allCards": "All cards"
     },
     "counts": {
       "cards": "{count} cards",
