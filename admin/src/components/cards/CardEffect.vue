@@ -42,33 +42,41 @@ const hasEffect = computed(() => tr(props.card.effect) !== '—')
         class="card-effect__rule"
         :class="{ 'card-effect__rule--short': hasRestriction && !hasEffect }"
       />
+      <!-- Mismo formato que las habilidades del single de héroe: cabecera
+           nombre (enlace) + coste + tipado y el efecto debajo. En el panel
+           derecho (compacto) el tipado salta a su propia fila por CSS. -->
       <div class="card-effect__ability">
-        <p class="card-effect__ability-header">
-          <span class="card-effect__ability-info">
-            <!-- El nombre enlaza al index de habilidades con esta
-                 seleccionada (mismo patrón que en héroes: el search la deja
-                 en la primera página y selected la marca) -->
-            <strong
-              ><RouterLink
-                class="hero-link"
-                :to="{
-                  name: 'hero-abilities',
-                  query: {
-                    selected: String(card.hero_ability.id),
-                    search: tr(card.hero_ability.name),
-                  },
-                }"
-                >{{ tr(card.hero_ability.name) }}</RouterLink
-              ></strong
-            >
-            <AttackLine
-              :range="card.hero_ability.attack_range"
-              :type="card.hero_ability.attack_type"
-              :subtype="card.hero_ability.attack_subtype"
-              :area="card.hero_ability.area"
-            />
-          </span>
+        <p class="card-effect__ability-head">
+          <!-- El nombre enlaza al index de habilidades con esta seleccionada
+               (mismo patrón que en héroes: el search la deja en la primera
+               página y selected la marca) -->
+          <strong
+            ><RouterLink
+              class="hero-link"
+              :to="{
+                name: 'hero-abilities',
+                query: {
+                  selected: String(card.hero_ability.id),
+                  search: tr(card.hero_ability.name),
+                },
+              }"
+              >{{ tr(card.hero_ability.name) }}</RouterLink
+            ></strong
+          >
           <CostDice v-if="card.hero_ability.cost" :cost="card.hero_ability.cost" />
+          <AttackLine
+            v-if="
+              card.hero_ability.attack_range ||
+              card.hero_ability.attack_type ||
+              card.hero_ability.attack_subtype ||
+              card.hero_ability.area
+            "
+            class="card-effect__ability-typing"
+            :range="card.hero_ability.attack_range"
+            :type="card.hero_ability.attack_type"
+            :subtype="card.hero_ability.attack_subtype"
+            :area="card.hero_ability.area"
+          />
         </p>
         <div
           v-if="tr(card.hero_ability.description) !== '—'"

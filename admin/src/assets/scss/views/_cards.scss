@@ -78,22 +78,21 @@
     }
   }
 
-  &__ability-header {
+  // Cabecera de la habilidad otorgada: nombre + coste + tipado en fila, como
+  // hero-single__ability-head (el efecto va debajo, en su rich-content).
+  &__ability-head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: $space-2;
     flex-wrap: wrap;
     margin: 0 0 $space-2;
   }
+}
 
-  &__ability-info {
-    display: inline-flex;
-    align-items: center;
-    gap: $space-2;
-    flex-wrap: wrap;
-    min-width: 0;
-  }
+// En el panel derecho (efecto compacto), la habilidad va en TRES filas:
+// nombre - coste / tipado / efecto — el tipado ocupa su propia fila.
+.cards__panel-effect .card-effect__ability-typing {
+  flex-basis: 100%;
 }
 
 // Botón "entrar" de las tarjetas con panel derecho: texto + flecha, la única
