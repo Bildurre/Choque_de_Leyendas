@@ -172,7 +172,7 @@ onBeforeUnmount(() => {
              se leía con colores claros/oscuros según el tema). Las dos cards
              comparten fila mientras quepan (rejilla auto-fit). -->
         <div class="hero-single__cards">
-          <InfoBlock :title="t('heroes.sections.basic')">
+          <InfoBlock :title="t('common.sections.details')">
             <dl class="info-list">
               <dt>{{ t('heroes.fields.faction') }}</dt>
               <dd>

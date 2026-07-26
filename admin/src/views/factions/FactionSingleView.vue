@@ -173,7 +173,7 @@ onBeforeUnmount(() => {
         <h1>{{ tr(item.name) }}</h1>
 
         <!-- Sin chips: texto plano, el color con su muestra -->
-        <InfoBlock :title="t('factions.sections.basic')">
+        <InfoBlock :title="t('common.sections.details')">
           <dl class="info-list">
             <dt>{{ t('factions.fields.color') }}</dt>
             <dd>

@@ -157,7 +157,10 @@
     },
     "yes": "Bai",
     "no": "Ez",
-    "stateKicker": "Egoera"
+    "stateKicker": "Egoera",
+    "sections": {
+      "details": "Xehetasunak"
+    }
   },
   "login": {
     "title": "Panelerako sarrera",
@@ -642,7 +645,6 @@
       "saveError": "Ezin izan da gorde."
     },
     "sections": {
-      "basic": "Informazioa",
       "lore": "Kondaira",
       "stats": "Estatistikak"
     },
@@ -914,7 +916,6 @@
       "basic": "Oinarrizko informazioa",
       "effects": "Efektuak",
       "lore": "Kondaira",
-      "details": "Xehetasunak",
       "attack": "Erasoa"
     },
     "fields": {
@@ -1038,6 +1039,7 @@
       "stats": "Estatistikak"
     },
     "single": {
+      "formatTitle": "Formatua",
       "modeLimits": "Moduaren mugak",
       "limitsLine": "{min}–{max} karta · gehienez {copies} kopia · {heroes} heroi",
       "cardsCount": "Kartak (kopiak)",

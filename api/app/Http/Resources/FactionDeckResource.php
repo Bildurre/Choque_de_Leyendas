@@ -36,6 +36,8 @@ class FactionDeckResource extends JsonResource
                 fn (Faction $faction) => [
                     'id' => $faction->id,
                     'name' => $faction->getTranslations('name'),
+                    // Slug: el single del mazo enlaza cada facción a su single.
+                    'slug' => $faction->getTranslations('slug'),
                     'color' => $faction->color,
                 ],
             )),

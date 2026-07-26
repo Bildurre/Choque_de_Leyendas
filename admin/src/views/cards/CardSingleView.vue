@@ -144,7 +144,7 @@ onBeforeUnmount(() => {
              definición, como en el panel del listado. Detalles y Ataque
              comparten fila mientras quepan (rejilla auto-fit). -->
         <div class="card-single__cards">
-          <InfoBlock :title="t('cards.sections.details')">
+          <InfoBlock :title="t('common.sections.details')">
             <dl class="info-list">
               <dt>{{ t('cards.fields.faction') }}</dt>
               <dd>

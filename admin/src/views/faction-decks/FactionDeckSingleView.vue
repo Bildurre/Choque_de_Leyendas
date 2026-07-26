@@ -16,8 +16,10 @@ import DeckCardsModal from '@/components/faction-decks/DeckCardsModal.vue'
 import InfoBlock from '@/components/InfoBlock.vue'
 import DashBarPanel, { type BarRow } from '@/components/dashboard/DashBarPanel.vue'
 
-// Single de mazo como FICHA (patrón del single de facción): cabecera con
-// límites del modo y contadores en vivo + avisos, cards de HÉROES y CARTAS
+// Single de mazo con el patrón de los otros singles (carta/héroe/facción):
+// preview a la izquierda en marco a proporción de carta, cards Detalles
+// (estado, modo y facciones enlazadas) y Formato (límites del modo +
+// contadores en vivo) a la derecha, avisos debajo, cards de HÉROES y CARTAS
 // (cada elemento enlazado a su single; la edición vive en modales que
 // guardan ellos), trasfondo (descripción + cita épica) y ESTADÍSTICAS del
 // contenido (cartas por tipo y curva de coste ponderadas por copias, héroes
@@ -262,59 +264,86 @@ onBeforeUnmount(() => {
       </div>
     </div>
 
-    <!-- Cabecera: nombre + límites del modo + contadores en vivo -->
-    <header class="deck-single__header">
-      <div class="deck-single__identity">
-        <div class="deck-single__emblem">
+    <div class="single__layout">
+      <div class="single__preview">
+        <!-- Emblema del mazo en marco a proporción de carta (o la inicial) -->
+        <div class="deck-single__art">
           <img v-if="deck.image" :src="deck.image" alt="" />
           <span v-else class="deck-single__mono">{{ tr(deck.name).charAt(0) }}</span>
         </div>
-        <div>
-          <h1>{{ tr(deck.name) }}</h1>
-          <!-- Sin chips en los singles (regla transversal): texto coloreado -->
-          <p class="deck-single__meta-line">
-            <span v-if="deck.is_published" class="deck-single__state is-published">{{
-              t('factionDecks.state.published')
-            }}</span>
-            <span v-else class="deck-single__state">{{ t('factionDecks.state.draft') }}</span>
-            <span v-if="deck.game_mode">{{ tr(deck.game_mode.name) }}</span>
-            <!-- Texto en el color del tema; la identidad, en la muestra. -->
-            <span v-for="faction in deck.factions ?? []" :key="faction.id">
-              <span v-if="faction.color" class="swatch" :style="{ background: faction.color }" />{{
-                tr(faction.name)
-              }}
-            </span>
-          </p>
-        </div>
       </div>
 
-      <dl class="deck-single__stats">
-        <div v-if="config">
-          <dt>{{ t('factionDecks.single.modeLimits') }}</dt>
-          <dd>
-            {{
-              t('factionDecks.single.limitsLine', {
-                min: config.min_cards,
-                max: config.max_cards,
-                copies: config.max_copies_per_card,
-                heroes: config.required_heroes,
-              })
-            }}
-          </dd>
+      <div class="single__info">
+        <h1>{{ tr(deck.name) }}</h1>
+
+        <!-- Sin chips en los singles (regla transversal): texto y enlaces.
+             Detalles y Formato comparten fila mientras quepan (auto-fit). -->
+        <div class="deck-single__cards">
+          <InfoBlock :title="t('common.sections.details')">
+            <dl class="info-list">
+              <dt>{{ t('common.stateKicker') }}</dt>
+              <dd>
+                <span v-if="deck.is_published" class="deck-single__state is-published">{{
+                  t('factionDecks.state.published')
+                }}</span>
+                <span v-else class="deck-single__state">{{ t('factionDecks.state.draft') }}</span>
+              </dd>
+
+              <template v-if="deck.game_mode">
+                <dt>{{ t('factionDecks.fields.gameMode') }}</dt>
+                <dd>{{ tr(deck.game_mode.name) }}</dd>
+              </template>
+
+              <dt>{{ t('factionDecks.fields.factions') }}</dt>
+              <dd>
+                <template v-if="deck.factions?.length">
+                  <!-- Enlaces discretos al single de cada facción -->
+                  <template v-for="(faction, index) in deck.factions" :key="faction.id">
+                    <span v-if="index > 0" class="deck-single__sep">·</span>
+                    <RouterLink
+                      v-if="slugOf(faction)"
+                      class="hero-link"
+                      :to="{ name: 'faction-single', params: { slug: slugOf(faction) } }"
+                      >{{ tr(faction.name) }}</RouterLink
+                    >
+                    <template v-else>{{ tr(faction.name) }}</template>
+                  </template>
+                </template>
+                <template v-else>—</template>
+              </dd>
+            </dl>
+          </InfoBlock>
+
+          <!-- Límites del modo + contadores en vivo (las cartas suman copias) -->
+          <InfoBlock :title="t('factionDecks.single.formatTitle')">
+            <dl class="info-list">
+              <template v-if="config">
+                <dt>{{ t('factionDecks.single.modeLimits') }}</dt>
+                <dd>
+                  {{
+                    t('factionDecks.single.limitsLine', {
+                      min: config.min_cards,
+                      max: config.max_cards,
+                      copies: config.max_copies_per_card,
+                      heroes: config.required_heroes,
+                    })
+                  }}
+                </dd>
+              </template>
+
+              <dt>{{ t('factionDecks.single.cardsCount') }}</dt>
+              <dd>
+                {{ totalCopies }}
+                <small>({{ t('factionDecks.single.uniqueCards', { count: uniqueCards }) }})</small>
+              </dd>
+
+              <dt>{{ t('factionDecks.single.heroesCount') }}</dt>
+              <dd>{{ totalHeroes }}</dd>
+            </dl>
+          </InfoBlock>
         </div>
-        <div>
-          <dt>{{ t('factionDecks.single.cardsCount') }}</dt>
-          <dd>
-            {{ totalCopies }}
-            <small>({{ t('factionDecks.single.uniqueCards', { count: uniqueCards }) }})</small>
-          </dd>
-        </div>
-        <div>
-          <dt>{{ t('factionDecks.single.heroesCount') }}</dt>
-          <dd>{{ totalHeroes }}</dd>
-        </div>
-      </dl>
-    </header>
+      </div>
+    </div>
 
     <!-- Errores de publicación del servidor (bloquean publicar, no guardar) -->
     <ul v-if="publishErrors.length" class="deck-single__errors">
@@ -332,7 +361,7 @@ onBeforeUnmount(() => {
 
     <!-- Cards de contenido: héroes y cartas del mazo, cada elemento enlazado
          a su single; el botón Editar de cada card abre su modal -->
-    <div class="deck-single__cards">
+    <div class="deck-single__cards deck-single__cards--content">
       <InfoBlock :title="`${t('factionDecks.single.heroesTitle')} (${totalHeroes})`">
         <template #actions>
           <BaseButton variant="info" @click="heroesOpen = true">
@@ -364,7 +393,8 @@ onBeforeUnmount(() => {
         <p v-if="!cards.length" class="deck-single__empty">
           {{ t('factionDecks.single.noCards') }}
         </p>
-        <ul v-else class="deck-single__list">
+        <!-- A dos columnas mientras quepan (multicol con máximo de 2) -->
+        <ul v-else class="deck-single__list deck-single__list--columns">
           <li v-for="card in cards" :key="card.id">
             <RouterLink
               class="hero-link deck-single__item-name"

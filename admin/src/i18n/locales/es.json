@@ -157,7 +157,10 @@
     },
     "yes": "Sí",
     "no": "No",
-    "stateKicker": "Estado"
+    "stateKicker": "Estado",
+    "sections": {
+      "details": "Detalles"
+    }
   },
   "login": {
     "title": "Acceso al panel",
@@ -573,7 +576,6 @@
       "saveError": "No se pudo guardar."
     },
     "sections": {
-      "basic": "Información",
       "lore": "Trasfondo",
       "stats": "Estadísticas"
     },
@@ -845,7 +847,6 @@
       "basic": "Información básica",
       "effects": "Efectos",
       "lore": "Trasfondo",
-      "details": "Detalles",
       "attack": "Ataque"
     },
     "fields": {
@@ -969,6 +970,7 @@
       "stats": "Estadísticas"
     },
     "single": {
+      "formatTitle": "Formato",
       "modeLimits": "Límites del modo",
       "limitsLine": "{min}–{max} cartas · máx. {copies} copias · {heroes} héroes",
       "cardsCount": "Cartas (copias)",

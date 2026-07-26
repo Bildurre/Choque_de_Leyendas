@@ -89,9 +89,11 @@
   }
 }
 
-// Single de mazo (ficha): cabecera con límites del modo y contadores en
-// vivo + avisos, cards de héroes y cartas (elementos enlazados a su single;
-// la edición vive en los modales), trasfondo y estadísticas.
+// Single de mazo (ficha, patrón de los otros singles): preview a la
+// izquierda en marco a proporción de carta, cards Detalles y Formato a la
+// derecha, avisos a todo el ancho y cards de héroes y cartas (elementos
+// enlazados a su single; la edición vive en los modales), trasfondo y
+// estadísticas.
 .deck-single {
   &__bar-actions {
     display: flex;
@@ -99,66 +101,31 @@
     flex-wrap: wrap;
   }
 
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: $space-5;
-    flex-wrap: wrap;
-    margin-bottom: $space-5;
-  }
-
-  &__identity {
-    display: flex;
-    align-items: center;
-    gap: $space-4;
-
-    h1 {
-      margin: 0 0 $space-2;
-      font-size: $fs-24;
-    }
-  }
-
-  &__emblem {
-    width: 64px;
-    height: 64px;
-    flex: none;
+  // El emblema del mazo en un marco a proporción de carta (como el single
+  // de carta); contain porque es un icono, no una ilustración a sangre.
+  &__art {
+    width: 250px;
+    max-width: 100%;
+    border-radius: $radius-md;
+    overflow: hidden;
+    background: $surface-2;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    background: $surface-2;
-    overflow: hidden;
+    aspect-ratio: 5 / 7;
 
     img {
       width: 100%;
       height: 100%;
       object-fit: contain;
+      padding: $space-4;
     }
   }
 
   &__mono {
-    font-size: 1.8rem;
+    font-size: 3rem;
     font-weight: $k-fw-bold;
     color: $text-2;
-  }
-
-  // Línea de meta bajo el nombre (sin chips en los singles, regla
-  // transversal): estado + modo + facciones como texto, con separadores.
-  &__meta-line {
-    display: flex;
-    align-items: center;
-    gap: $space-2;
-    flex-wrap: wrap;
-    margin: 0;
-    font-size: $fs-13;
-    color: $text-2;
-
-    > span + span::before {
-      content: '· ';
-      color: $text-3;
-    }
   }
 
   &__state {
@@ -169,32 +136,20 @@
     }
   }
 
-  // Límites del modo + contadores en vivo
-  &__stats {
-    display: flex;
-    gap: $space-5;
-    flex-wrap: wrap;
-    margin: 0;
-
-    dt {
-      color: $text-3;
-      font-size: $fs-13;
-    }
-    dd {
-      margin: $space-1 0 0;
-      font-weight: $k-fw-bold;
-
-      small {
-        color: $text-3;
-        font-weight: $k-fw-regular;
-      }
-    }
+  // Separador entre facciones del dl de Detalles (varias, como texto).
+  &__sep {
+    color: $text-3;
+    margin: 0 $space-1;
   }
 
-  // Errores de publicación (servidor) y avisos de límite (cliente)
+  // El desglose de cartas únicas junto al total de copias, atenuado.
+  .info-list dd small { color: $text-3; }
+
+  // Errores de publicación (servidor) y avisos de límite (cliente), a todo
+  // el ancho entre la rejilla superior y las cards de contenido.
   &__errors,
   &__warnings {
-    margin: 0 0 $space-4;
+    margin: $space-6 0 0;
     padding: $space-3 $space-4;
     border-radius: $radius-md;
     list-style: none;
@@ -203,6 +158,8 @@
       margin-top: $space-1;
     }
   }
+
+  &__errors + &__warnings { margin-top: $space-4; }
 
   &__errors {
     border: 1px solid $danger;
@@ -216,19 +173,25 @@
     color: $text-1;
   }
 
-  // Cards de héroes y cartas del mazo: comparten fila mientras quepan
-  // (auto-fit, como hero-single__cards); el margen lo pone la rejilla.
+  // Pares de cards (Detalles/Formato arriba, héroes/cartas abajo): comparten
+  // fila mientras quepan (auto-fit, como hero-single__cards pero con mínimo
+  // mayor: los dl de límites no caben legibles por debajo); el margen lo
+  // pone la rejilla.
   &__cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(360px, 100%), 1fr));
     gap: $space-4;
     align-items: start;
-    margin: 0 0 $space-4;
+    margin: 0;
 
     .info-block { margin: 0; }
   }
 
-  // Lista de contenido de cada card (nombre enlazado + ×copias en cartas).
+  // Las cards de contenido respiran tras la rejilla superior o los avisos.
+  &__cards--content { margin-top: $space-6; }
+
+  // Lista de contenido de cada card (nombre enlazado + ×copias en cartas,
+  // pegadas al nombre: el hueco lo pone el gap, sin empujar al borde).
   &__list {
     margin: 0;
     padding: 0;
@@ -239,9 +202,23 @@
     li {
       display: flex;
       align-items: baseline;
-      justify-content: space-between;
       gap: $space-2;
       font-size: $fs-13;
+    }
+  }
+
+  // La lista de cartas a dos columnas mientras quepan (multicol; en el
+  // tramo estrecho del área de contenido vuelve a una).
+  &__list--columns {
+    @container content (min-width: #{$bp-lg}) {
+      display: block;
+      columns: 2;
+      column-gap: $space-5;
+
+      li {
+        break-inside: avoid;
+        padding-bottom: 2px;
+      }
     }
   }
 

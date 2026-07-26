@@ -157,7 +157,10 @@
     },
     "yes": "Yes",
     "no": "No",
-    "stateKicker": "State"
+    "stateKicker": "State",
+    "sections": {
+      "details": "Details"
+    }
   },
   "login": {
     "title": "Panel access",
@@ -642,7 +645,6 @@
       "saveError": "Could not save."
     },
     "sections": {
-      "basic": "Information",
       "lore": "Lore",
       "stats": "Statistics"
     },
@@ -914,7 +916,6 @@
       "basic": "Basic information",
       "effects": "Effects",
       "lore": "Lore",
-      "details": "Details",
       "attack": "Attack"
     },
     "fields": {
@@ -1038,6 +1039,7 @@
       "stats": "Statistics"
     },
     "single": {
+      "formatTitle": "Format",
       "modeLimits": "Mode limits",
       "limitsLine": "{min}–{max} cards · max {copies} copies · {heroes} heroes",
       "cardsCount": "Cards (copies)",
