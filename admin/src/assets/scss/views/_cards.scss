@@ -47,8 +47,13 @@
     gap: $space-1 $space-2;
   }
 
+  // Efecto compacto en el panel, como la pasiva del panel de héroe: el
+  // .rich-content interior fija su propio font-size (16px) y hay que
+  // pisarlo aquí — el tamaño del contenedor solo no basta.
   &__panel-effect {
     font-size: 0.85rem;
+
+    .rich-content { font-size: 0.85rem; }
   }
 }
 
