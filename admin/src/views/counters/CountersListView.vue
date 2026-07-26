@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
-import { Plus } from '@lucide/vue'
+import { FunnelX, Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseTabs, MultiSelect } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import { useIconsStore } from '@/stores/icons'
 import type { Counter } from '@juego/shared'
@@ -11,8 +11,9 @@ import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
 
 // Sin single: se edita en modal y la API resuelve por id. Además de las tabs
-// de estado, el listado filtra por tipo (boon|bane) con un select en el
-// panel derecho (el viejo usaba pestañas beneficio/perjuicio).
+// de estado, el listado filtra por tipo (boon|bane) con un multiselect en el
+// panel derecho (el viejo usaba pestañas beneficio/perjuicio); el filtro
+// viaja como `type[]=`.
 const icons = useIconsStore()
 
 const {
@@ -25,6 +26,7 @@ const {
   search,
   sort,
   filters,
+  clearFilters,
   tabs,
   tr,
   init,
@@ -51,8 +53,9 @@ const {
   nameOf: (item) => item.name,
 })
 
+// Sin opción "Todos" en la lista: sin nada marcado, el placeholder del
+// MultiSelect ya dice "Todos los tipos".
 const typeOptions = computed(() => [
-  { value: '', label: t('counters.filters.allTypes') },
   { value: 'boon', label: t('counters.types.boon') },
   { value: 'bane', label: t('counters.types.bane') },
 ])
@@ -165,13 +168,18 @@ onMounted(async () => {
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
-      <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+      <!-- Filtros del listado: aplican en vivo (sin guardar), multivalor -->
       <template #filters>
-        <BaseSelect
+        <MultiSelect
           v-model="filters.type"
           :label="t('counters.fields.type')"
+          :placeholder="t('counters.filters.allTypes')"
           :options="typeOptions"
         />
+        <BaseButton variant="text" type="button" @click="clearFilters">
+          <template #icon><FunnelX :size="14" /></template>
+          {{ t('common.filters.clear') }}
+        </BaseButton>
       </template>
 
       <template #meta>

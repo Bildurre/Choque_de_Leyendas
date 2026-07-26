@@ -393,7 +393,7 @@ onMounted(load)
 
           <hr class="manager-panel__divider" />
 
-          <p class="manager-panel__kicker">{{ t('common.filters') }}</p>
+          <p class="manager-panel__kicker">{{ t('common.filters.title') }}</p>
           <BaseSelect
             v-model="statusFilter"
             :label="t('pages.filters.status')"

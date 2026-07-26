@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SanitizesRichText;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\CounterResource;
@@ -13,20 +14,19 @@ use Illuminate\Validation\Rule;
 /** CRUD de admin para Counter (contador; sin slug, por id). */
 class CounterController extends Controller
 {
+    use FiltersByIds;
     use SanitizesRichText;
     use SortsIndex;
 
     public function index(Request $request)
     {
-        $type = $request->query('type');
+        // Filtro multivalor (escalar o array, contrato de FiltersByIds).
+        $types = $this->valuesFrom($request, 'type', Counter::TYPES);
 
         $counters = Counter::query()
             ->filter($request->only('search', 'status'))
-            // Filtro por tipo del listado (select junto a la búsqueda).
-            ->when(
-                in_array($type, Counter::TYPES, true),
-                fn ($query) => $query->where('type', $type),
-            )
+            // Filtro por tipo del listado (multiselect junto a la búsqueda).
+            ->when($types !== [], fn ($query) => $query->whereIn('type', $types))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 

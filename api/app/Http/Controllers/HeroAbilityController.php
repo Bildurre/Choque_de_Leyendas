@@ -12,42 +12,43 @@ use Illuminate\Support\Facades\Validator;
 /** CRUD de admin para HeroAbility (habilidad activa, resuelta por id). */
 class HeroAbilityController extends Controller
 {
+    use FiltersByIds;
     use SanitizesRichText;
     use SortsIndex;
 
     public function index(Request $request)
     {
-        $attackType = $request->query('attack_type');
-        $area = $request->query('area');
-        $costTotal = $request->query('cost_total');
+        // Filtros multivalor (escalar o array, contrato de FiltersByIds).
+        // Los valores desconocidos o ausentes se ignoran (no filtran).
+        $attackTypes = $this->valuesFrom($request, 'attack_type', HeroAbility::ATTACK_TYPES);
+        $rangeIds = $this->idsFrom($request, 'attack_range_id');
+        $subtypeIds = $this->idsFrom($request, 'attack_subtype_id');
+        // area llega como '1'/'0' (ambos marcados = no acota nada).
+        $areas = $this->valuesFrom($request, 'area', ['1', '0']);
+        // cost_total = longitud del cost canónico (0..5).
+        $costTotals = array_values(array_map('intval', array_filter(
+            $this->valuesFrom($request, 'cost_total'),
+            fn (string $total) => ctype_digit($total) && (int) $total <= HeroAbility::COST_MAX,
+        )));
 
         $abilities = HeroAbility::query()
             ->with(['attackRange', 'attackSubtype'])
             ->filter($request->only('search', 'status'))
-            // Filtros del listado (selects junto a la búsqueda). Los valores
-            // desconocidos o ausentes se ignoran (no filtran).
-            ->when(
-                in_array($attackType, HeroAbility::ATTACK_TYPES, true),
-                fn ($query) => $query->where('attack_type', $attackType),
-            )
-            ->when(
-                $request->filled('attack_range_id'),
-                fn ($query) => $query->where('attack_range_id', $request->integer('attack_range_id')),
-            )
-            ->when(
-                $request->filled('attack_subtype_id'),
-                fn ($query) => $query->where('attack_subtype_id', $request->integer('attack_subtype_id')),
-            )
-            // area llega como '1'/'0'; ausente = no filtra.
-            ->when(
-                in_array($area, ['1', '0'], true),
-                fn ($query) => $query->where('area', $area === '1'),
-            )
-            // cost_total = longitud del cost canónico (0..5).
-            ->when(
-                is_string($costTotal) && ctype_digit($costTotal) && (int) $costTotal <= HeroAbility::COST_MAX,
-                fn ($query) => $query->costTotal((int) $costTotal),
-            )
+            // Filtros del listado (multiselects junto a la búsqueda).
+            ->when($attackTypes !== [], fn ($query) => $query->whereIn('attack_type', $attackTypes))
+            ->when($rangeIds !== [], fn ($query) => $query->whereIn('attack_range_id', $rangeIds))
+            ->when($subtypeIds !== [], fn ($query) => $query->whereIn('attack_subtype_id', $subtypeIds))
+            ->when($areas !== [], fn ($query) => $query->whereIn(
+                'area',
+                array_map(fn (string $area) => $area === '1', $areas),
+            ))
+            // Cualquiera de los totales marcados (OR de scopes costTotal,
+            // porque 0 significa "sin coste": cost NULL, no length 0).
+            ->when($costTotals !== [], fn ($query) => $query->where(function ($group) use ($costTotals) {
+                foreach ($costTotals as $total) {
+                    $group->orWhere(fn ($sub) => $sub->costTotal($total));
+                }
+            }))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 

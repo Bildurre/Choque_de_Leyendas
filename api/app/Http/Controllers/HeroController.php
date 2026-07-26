@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SanitizesRichText;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\HeroResource;
@@ -13,42 +14,35 @@ use Illuminate\Support\Facades\Validator;
 /** CRUD de admin para Hero (resuelto por slug; renderizable a carta PNG). */
 class HeroController extends Controller
 {
+    use FiltersByIds;
     use SanitizesRichText;
     use SortsIndex;
 
     public function index(Request $request)
     {
+        // Filtros multivalor (escalar o array, contrato de FiltersByIds).
+        $factionIds = $this->idsFrom($request, 'faction_id');
+        // Varias facciones a la vez (el editor de mazos acota los
+        // disponibles a las facciones del mazo).
+        $deckFactionIds = $this->idsFrom($request, 'faction_ids');
+        $classIds = $this->idsFrom($request, 'hero_class_id');
+        $raceIds = $this->idsFrom($request, 'hero_race_id');
+        $superclassIds = $this->idsFrom($request, 'hero_superclass_id');
+
         $heroes = Hero::query()
             // Con habilidades: el panel derecho las pinta junto a la pasiva.
             ->with($this->relations())
             ->filter($request->only('search', 'status'))
-            // Filtros del listado (selects junto a la búsqueda).
-            ->when(
-                $request->filled('faction_id'),
-                fn ($q) => $q->where('faction_id', $request->integer('faction_id'))
-            )
-            // Varias facciones a la vez (el editor de mazos acota los
-            // disponibles a las facciones del mazo).
-            ->when(
-                is_array($request->input('faction_ids')),
-                fn ($q) => $q->whereIn('faction_id', array_map('intval', $request->input('faction_ids', [])))
-            )
-            ->when(
-                $request->filled('hero_class_id'),
-                fn ($q) => $q->where('hero_class_id', $request->integer('hero_class_id'))
-            )
-            ->when(
-                $request->filled('hero_race_id'),
-                fn ($q) => $q->where('hero_race_id', $request->integer('hero_race_id'))
-            )
+            // Filtros del listado (multiselects junto a la búsqueda).
+            ->when($factionIds !== [], fn ($q) => $q->whereIn('faction_id', $factionIds))
+            ->when($deckFactionIds !== [], fn ($q) => $q->whereIn('faction_id', $deckFactionIds))
+            ->when($classIds !== [], fn ($q) => $q->whereIn('hero_class_id', $classIds))
+            ->when($raceIds !== [], fn ($q) => $q->whereIn('hero_race_id', $raceIds))
             // La superclase llega a través de la clase (el héroe no la guarda).
-            ->when(
-                $request->filled('hero_superclass_id'),
-                fn ($q) => $q->whereHas(
-                    'heroClass',
-                    fn ($cq) => $cq->where('hero_superclass_id', $request->integer('hero_superclass_id'))
-                )
-            )
+            ->when($superclassIds !== [], fn ($q) => $q->whereHas(
+                'heroClass',
+                fn ($cq) => $cq->whereIn('hero_superclass_id', $superclassIds)
+            ))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 

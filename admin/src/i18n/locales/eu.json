@@ -132,7 +132,10 @@
     },
     "imageDrag": "Arrastatu irudi bat edo egin klik",
     "close": "Itxi",
-    "filters": "Iragazkiak",
+    "filters": {
+      "title": "Iragazkiak",
+      "clear": "Iragazkiak garbitu"
+    },
     "backToFilters": "Itzuli iragazkietara",
     "imageHint": "Geh. 4 MB",
     "confirm": "Berretsi",

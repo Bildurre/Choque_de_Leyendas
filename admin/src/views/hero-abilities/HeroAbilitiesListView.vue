@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { Plus } from '@lucide/vue'
+import { FunnelX, Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseTabs, MultiSelect } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useEntityList } from '@/composables/useEntityList'
 import type { HeroAbility, TaxonomyOption } from '@juego/shared'
@@ -14,8 +14,9 @@ import AttackLine from '@/components/game/AttackLine.vue'
 
 // Habilidades activas: sin single ni publicación (tabs all/trashed); la API
 // resuelve por id y la edición rellena desde el ítem del listado. El listado
-// filtra por tipo/rango/subtipo de ataque, área y coste total con selects en
-// el panel derecho (mecanismo `filters` de useEntityList).
+// filtra por tipo/rango/subtipo de ataque, área y coste total con
+// multiselects en el panel derecho (mecanismo `filters` de useEntityList):
+// varios valores por filtro (unión), viajan como `clave[]=`.
 const {
   t,
   items,
@@ -26,6 +27,7 @@ const {
   search,
   sort,
   filters,
+  clearFilters,
   tabs,
   tr,
   init,
@@ -49,8 +51,9 @@ const {
   tabKeys: ['all', 'trashed'],
 })
 
+// Sin opción "Todos" en las listas: sin nada marcado, el placeholder del
+// MultiSelect ya dice "Todos los …".
 const attackTypeOptions = computed(() => [
-  { value: '', label: t('heroAbilities.filters.allAttackTypes') },
   { value: 'physical', label: t('heroAbilities.attackTypes.physical') },
   { value: 'magical', label: t('heroAbilities.attackTypes.magical') },
 ])
@@ -73,31 +76,27 @@ async function loadFilterOptions() {
   }
 }
 
-const attackRangeOptions = computed(() => [
-  { value: '', label: t('heroAbilities.filters.allAttackRanges') },
-  ...attackRanges.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
-])
+const attackRangeOptions = computed(() =>
+  attackRanges.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
+)
 
-const attackSubtypeOptions = computed(() => [
-  { value: '', label: t('heroAbilities.filters.allAttackSubtypes') },
-  ...attackSubtypes.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
-])
+const attackSubtypeOptions = computed(() =>
+  attackSubtypes.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
+)
 
-// area viaja como '1'/'0' ('' = no filtra), contrato del endpoint.
+// area viaja como '1'/'0' (sin nada marcado = no filtra), contrato del endpoint.
 const areaOptions = computed(() => [
-  { value: '', label: t('heroAbilities.filters.allAreas') },
   { value: '1', label: t('heroAbilities.filters.areaYes') },
   { value: '0', label: t('heroAbilities.filters.areaNo') },
 ])
 
 // cost_total 1..5: el coste de una habilidad es obligatorio, 0 no existe.
-const costOptions = computed(() => [
-  { value: '', label: t('heroAbilities.filters.allCosts') },
-  ...[1, 2, 3, 4, 5].map((n) => ({
+const costOptions = computed(() =>
+  [1, 2, 3, 4, 5].map((n) => ({
     value: String(n),
     label: t('heroAbilities.filters.dice', { n }, n),
   })),
-])
+)
 
 /**
  * Extracto del efecto para el meta de la card: el HTML del WYSIWYG pasa a
@@ -204,34 +203,43 @@ onMounted(() => {
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
-      <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+      <!-- Filtros del listado: aplican en vivo (sin guardar), multivalor -->
       <template #filters>
         <!-- Orden canónico del tipado: rango · tipo · subtipo · área -->
-        <BaseSelect
+        <MultiSelect
           v-model="filters.attack_range_id"
           :label="t('heroAbilities.fields.attackRange')"
+          :placeholder="t('heroAbilities.filters.allAttackRanges')"
           :options="attackRangeOptions"
         />
-        <BaseSelect
+        <MultiSelect
           v-model="filters.attack_type"
           :label="t('heroAbilities.fields.attackType')"
+          :placeholder="t('heroAbilities.filters.allAttackTypes')"
           :options="attackTypeOptions"
         />
-        <BaseSelect
+        <MultiSelect
           v-model="filters.attack_subtype_id"
           :label="t('heroAbilities.fields.attackSubtype')"
+          :placeholder="t('heroAbilities.filters.allAttackSubtypes')"
           :options="attackSubtypeOptions"
         />
-        <BaseSelect
+        <MultiSelect
           v-model="filters.area"
           :label="t('heroAbilities.fields.area')"
+          :placeholder="t('heroAbilities.filters.allAreas')"
           :options="areaOptions"
         />
-        <BaseSelect
+        <MultiSelect
           v-model="filters.cost_total"
           :label="t('heroAbilities.fields.cost')"
+          :placeholder="t('heroAbilities.filters.allCosts')"
           :options="costOptions"
         />
+        <BaseButton variant="text" type="button" @click="clearFilters">
+          <template #icon><FunnelX :size="14" /></template>
+          {{ t('common.filters.clear') }}
+        </BaseButton>
       </template>
 
       <template #meta>

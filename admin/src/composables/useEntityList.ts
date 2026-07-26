@@ -34,10 +34,12 @@ export interface EntityListOptions<T> {
   extraParams?: () => Record<string, string | undefined>
   /**
    * Claves de filtro que pueden llegar en la query de la ruta (enlaces
-   * entrantes desde otros índices/singles, p. ej. ?hero_race_id=3): en
-   * init() se copian a `filters` ANTES de la primera carga. Además, toda
-   * vista acepta `?search=` (inicializa la búsqueda) y `?selected=<id>`
-   * (selecciona ese ítem tras la primera carga, si está en la página).
+   * entrantes desde otros índices/singles): en init() se copian a
+   * `filters` ANTES de la primera carga. Cada clave acepta un valor único
+   * (?faction_id=3) o una lista separada por comas (?faction_id=3,5).
+   * Además, toda vista acepta `?search=` (inicializa la búsqueda) y
+   * `?selected=<id>` (selecciona ese ítem tras la primera carga, si está
+   * en la página).
    */
   queryFilters?: string[]
 }
@@ -88,10 +90,12 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
   // Ordenación del contrato compartido con la API (toggles del IndexToolbar).
   // Por defecto alfabético por el nombre en el locale activo.
   const sort = ref<SortValue>('name')
-  // Filtros genéricos de la vista (clave → valor; '' = sin filtrar). La vista
-  // hace v-model sobre sus claves (selects en el panel derecho, slot
-  // `filters` del EntityPanel) y el listado se relanza solo al cambiar.
-  const filters = reactive<Record<string, string>>({})
+  // Filtros genéricos de la vista (clave → valores marcados; [] = sin
+  // filtrar). La vista hace v-model sobre sus claves (MultiSelect en el
+  // panel derecho, slot `filters` del EntityPanel) y el listado se relanza
+  // solo al cambiar. En la petición cada array viaja como `clave[]=` (la
+  // serialización por defecto de axios) y el servidor filtra con whereIn.
+  const filters = reactive<Record<string, string[]>>({})
 
   const tabs = computed(() =>
     tabKeys.map((key) => ({ key, label: t(`${options.ns}.tabs.${key}`), icon: TAB_ICONS[key] })),
@@ -113,9 +117,14 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     return options.resolveBy === 'id' ? String(item.id) : slugFor(item)
   }
 
-  /** Filtros con valor (los vacíos no viajan en la query). */
-  function activeFilters(): Record<string, string> {
-    return Object.fromEntries(Object.entries(filters).filter(([, value]) => value !== ''))
+  /** Filtros con algún valor marcado (los vacíos no viajan en la query). */
+  function activeFilters(): Record<string, string[]> {
+    return Object.fromEntries(Object.entries(filters).filter(([, value]) => value.length > 0))
+  }
+
+  /** Vacía TODOS los filtros de la vista (botón "Limpiar filtros"). */
+  function clearFilters() {
+    for (const key of Object.keys(filters)) filters[key] = []
   }
 
   async function load(page = 1) {
@@ -282,7 +291,13 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     const query = route.query
     for (const key of options.queryFilters ?? []) {
       const value = query[key]
-      if (typeof value === 'string' && value !== '') filters[key] = value
+      // Valor único o lista separada por comas (?faction_id=3,5).
+      if (typeof value === 'string' && value !== '') {
+        filters[key] = value
+          .split(',')
+          .map((part) => part.trim())
+          .filter(Boolean)
+      }
     }
     if (typeof query.search === 'string' && query.search !== '') search.value = query.search
   }
@@ -317,6 +332,7 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     search,
     sort,
     filters,
+    clearFilters,
     tabs,
     tr,
     slugFor,

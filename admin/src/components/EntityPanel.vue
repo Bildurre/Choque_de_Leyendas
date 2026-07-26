@@ -79,7 +79,7 @@ const hasFilters = !!slots.filters
         <template v-if="hasFilters">
           <hr class="manager-panel__divider" />
 
-          <p class="manager-panel__kicker">{{ t('common.filters') }}</p>
+          <p class="manager-panel__kicker">{{ t('common.filters.title') }}</p>
           <slot name="filters" />
         </template>
       </template>

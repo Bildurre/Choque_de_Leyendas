@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SanitizesRichText;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\CardResource;
@@ -15,31 +16,28 @@ use Illuminate\Validation\Rule;
 /** CRUD de admin para Card (resuelta por slug; renderizable a carta PNG). */
 class CardController extends Controller
 {
+    use FiltersByIds;
     use SanitizesRichText;
     use SortsIndex;
 
     public function index(Request $request)
     {
+        // Filtros multivalor (escalar o array, contrato de FiltersByIds).
+        $factionIds = $this->idsFrom($request, 'faction_id');
+        // Varias facciones a la vez (el editor de mazos acota los
+        // disponibles a las facciones del mazo).
+        $deckFactionIds = $this->idsFrom($request, 'faction_ids');
+        $typeIds = $this->idsFrom($request, 'card_type_id');
+
         $cards = Card::query()
             // El listado pinta el tipado completo (tipo, subtipo, equipo,
             // ataque) y el panel derecho el efecto con su habilidad otorgada.
             ->with($this->relations())
             ->filter($request->only('search', 'status'))
-            // Filtros del listado (selects junto a la búsqueda).
-            ->when(
-                $request->filled('faction_id'),
-                fn ($q) => $q->where('faction_id', $request->integer('faction_id'))
-            )
-            // Varias facciones a la vez (el editor de mazos acota los
-            // disponibles a las facciones del mazo).
-            ->when(
-                is_array($request->input('faction_ids')),
-                fn ($q) => $q->whereIn('faction_id', array_map('intval', $request->input('faction_ids', [])))
-            )
-            ->when(
-                $request->filled('card_type_id'),
-                fn ($q) => $q->where('card_type_id', $request->integer('card_type_id'))
-            )
+            // Filtros del listado (multiselects junto a la búsqueda).
+            ->when($factionIds !== [], fn ($q) => $q->whereIn('faction_id', $factionIds))
+            ->when($deckFactionIds !== [], fn ($q) => $q->whereIn('faction_id', $deckFactionIds))
+            ->when($typeIds !== [], fn ($q) => $q->whereIn('card_type_id', $typeIds))
             // TODO filtro por coste (lo pedirá la vista como en el viejo):
             // ->when($request->filled('cost'),
             //     fn ($q) => $q->where('cost', Card::normalizeCost($request->string('cost'))))

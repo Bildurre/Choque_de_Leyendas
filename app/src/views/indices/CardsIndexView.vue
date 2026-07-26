@@ -5,8 +5,8 @@ import { FunnelX } from '@lucide/vue'
 import {
   BaseButton,
   BasePagination,
-  BaseSelect,
   IndexToolbar,
+  MultiSelect,
   PreviewGrid,
   useAppRightSidebar,
   type CatalogItem,
@@ -16,7 +16,7 @@ import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
 import IndexHeader from '@/components/IndexHeader.vue'
 import { useIndexPage } from '@/entities/indexPage'
-import { useFiltersQuery } from '@/entities/filtersQuery'
+import { csvField, useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
 
 // Índice público de cartas: rejilla de previews sobre GET /api/cards con el
@@ -24,13 +24,15 @@ import { parseSort, type SortOption } from '@/entities/catalogSort'
 // multi-campo con debounce y toggles de orden) y los filtros de juego en la
 // barra derecha contextual (AppRightSidebar: registro + Teleport; el botón
 // Funnel del header la despliega). Opciones ya localizadas de
-// GET /api/cards/filters, aplican en vivo. Facción, tipo, subtipo, dados
-// del coste (0..5, 0 = sin coste) y colores (toggles R/G/B con los iconos
-// de los dados del gestor) siempre; según los flags del tipo elegido se
-// añaden tipo y subtipo de equipo (is_equipment) y rango/tipo/subtipo de
-// ataque + área (allows_subtypes). Todo vive en la query string (useFiltersQuery):
-// la UI empuja el estado a la URL y ES el cambio de query el que dispara
-// la recarga.
+// GET /api/cards/filters, aplican en vivo y son MULTISELECT: cada filtro
+// admite varios valores (unión; la API filtra con whereIn y recibe
+// `clave[]=`). Facción, tipo, subtipo, dados del coste (0..5, 0 = sin
+// coste) y colores (toggles R/G/B con los iconos de los dados del gestor)
+// siempre; según los flags de los tipos elegidos se añaden tipo y subtipo
+// de equipo (is_equipment) y rango/tipo/subtipo de ataque + área
+// (allows_subtypes). Todo vive en la query string (useFiltersQuery, listas
+// separadas por comas): la UI empuja el estado a la URL y ES el cambio de
+// query el que dispara la recarga.
 const COLORS = ['R', 'G', 'B'] as const
 type CostColor = (typeof COLORS)[number]
 
@@ -69,42 +71,22 @@ const total = ref(0)
 // vista (el token evita pisar el registro de la vista entrante).
 useAppRightSidebar().useRegister()
 
-// Estado de los filtros (los selects usan string: '' = todos).
+// Estado de los filtros: arrays de strings ([] = todos), lo que edita cada
+// MultiSelect. En la URL viajan como listas separadas por comas (csvField),
+// con saneo en los dominios cerrados (un valor inválido pegado en la URL
+// se descarta y el watcher limpia la query).
 const search = ref('')
-const factionId = ref('')
-const typeId = ref('')
-const subtypeId = ref('')
-const equipmentTypeId = ref('')
-const equipmentSubtypeId = ref('')
-const attackRangeId = ref('')
-const attackSubtypeId = ref('')
+const factionIds = ref<string[]>([])
+const typeIds = ref<string[]>([])
+const subtypeIds = ref<string[]>([])
+const equipmentTypeIds = ref<string[]>([])
+const equipmentSubtypeIds = ref<string[]>([])
+const attackRangeIds = ref<string[]>([])
+const attackSubtypeIds = ref<string[]>([])
+const attackTypes = ref<string[]>([])
+const areas = ref<string[]>([])
+const dice = ref<string[]>([])
 const colors = ref<CostColor[]>([])
-
-// Campos con dominio cerrado: computed con setter que sanea (un valor
-// inválido pegado en la URL cae al canónico y el watcher limpia la query).
-const diceRaw = ref('')
-const dice = computed({
-  get: () => diceRaw.value,
-  set: (value: string) => {
-    diceRaw.value = /^[0-5]$/.test(value) ? value : ''
-  },
-})
-
-const attackTypeRaw = ref('')
-const attackType = computed({
-  get: () => attackTypeRaw.value,
-  set: (value: string) => {
-    attackTypeRaw.value = ['physical', 'magical'].includes(value) ? value : ''
-  },
-})
-
-const areaRaw = ref('')
-const area = computed({
-  get: () => areaRaw.value,
-  set: (value: string) => {
-    areaRaw.value = ['1', '0'].includes(value) ? value : ''
-  },
-})
 
 const colorsParam = computed({
   get: () => colors.value.join(''),
@@ -131,16 +113,16 @@ const { queryToState, pushQuery } = useFiltersQuery({
   search,
   page,
   fields: {
-    faction: factionId,
-    type: typeId,
-    subtype: subtypeId,
-    equip: equipmentTypeId,
-    esub: equipmentSubtypeId,
-    range: attackRangeId,
-    atk: attackType,
-    asub: attackSubtypeId,
-    area,
-    dice,
+    faction: csvField(factionIds),
+    type: csvField(typeIds),
+    subtype: csvField(subtypeIds),
+    equip: csvField(equipmentTypeIds),
+    esub: csvField(equipmentSubtypeIds),
+    range: csvField(attackRangeIds),
+    atk: csvField(attackTypes, (value) => ['physical', 'magical'].includes(value)),
+    asub: csvField(attackSubtypeIds),
+    area: csvField(areas, (value) => ['1', '0'].includes(value)),
+    dice: csvField(dice, (value) => /^[0-5]$/.test(value)),
     colors: colorsParam,
     sort: sortRaw,
   },
@@ -156,56 +138,41 @@ const attackRangeOptions = ref<FilterOption[]>([])
 const attackSubtypeOptions = ref<FilterOption[]>([])
 const diceIcons = ref<Record<string, string | null>>({})
 
-/** Opciones de BaseSelect con el "todos" delante. */
-function withAll(options: FilterOption[], allLabel: string) {
-  return [
-    { value: '', label: allLabel },
-    ...options.map((option) => ({ value: String(option.id), label: option.name })),
-  ]
+// Opciones de MultiSelect: sin opción "todos" en la lista (sin nada
+// marcado, el placeholder ya dice "Todos los …").
+function toSelect(options: FilterOption[]) {
+  return options.map((option) => ({ value: String(option.id), label: option.name }))
 }
 
-const factionSelect = computed(() =>
-  withAll(factionOptions.value, t('catalog.filters.allFactions')),
-)
-const typeSelect = computed(() => withAll(typeOptions.value, t('catalog.filters.allTypes')))
-const subtypeSelect = computed(() =>
-  withAll(subtypeOptions.value, t('catalog.filters.allSubtypes')),
-)
-const equipmentTypeSelect = computed(() =>
-  withAll(equipmentTypeOptions.value, t('catalog.filters.allEquipmentTypes')),
-)
-// Subtipos de equipo acotados al tipo de equipo elegido (todos si no hay).
+const factionSelect = computed(() => toSelect(factionOptions.value))
+const typeSelect = computed(() => toSelect(typeOptions.value))
+const subtypeSelect = computed(() => toSelect(subtypeOptions.value))
+const equipmentTypeSelect = computed(() => toSelect(equipmentTypeOptions.value))
+// Subtipos de equipo acotados a los tipos de equipo marcados (todos si no hay).
 const equipmentSubtypeSelect = computed(() =>
-  withAll(
+  toSelect(
     equipmentSubtypeOptions.value.filter(
       (option) =>
-        !equipmentTypeId.value || String(option.equipment_type_id) === equipmentTypeId.value,
+        !equipmentTypeIds.value.length ||
+        equipmentTypeIds.value.includes(String(option.equipment_type_id)),
     ),
-    t('catalog.filters.allEquipmentSubtypes'),
   ),
 )
-const attackRangeSelect = computed(() =>
-  withAll(attackRangeOptions.value, t('catalog.filters.allAttackRanges')),
-)
-const attackSubtypeSelect = computed(() =>
-  withAll(attackSubtypeOptions.value, t('catalog.filters.allAttackSubtypes')),
-)
+const attackRangeSelect = computed(() => toSelect(attackRangeOptions.value))
+const attackSubtypeSelect = computed(() => toSelect(attackSubtypeOptions.value))
 
 const attackTypeSelect = computed(() => [
-  { value: '', label: t('catalog.filters.allAttackTypes') },
   { value: 'physical', label: t('catalog.filters.attackPhysical') },
   { value: 'magical', label: t('catalog.filters.attackMagical') },
 ])
 
 const areaSelect = computed(() => [
-  { value: '', label: t('catalog.filters.areaAll') },
   { value: '1', label: t('catalog.filters.areaYes') },
   { value: '0', label: t('catalog.filters.areaNo') },
 ])
 
 // Dados del coste: 0 (sin coste) también filtra.
 const diceSelect = computed(() => [
-  { value: '', label: t('catalog.filters.anyDice') },
   { value: '0', label: t('catalog.filters.noCost') },
   ...[1, 2, 3, 4, 5].map((n) => ({
     value: String(n),
@@ -213,38 +180,43 @@ const diceSelect = computed(() => [
   })),
 ])
 
-// Filtros condicionales según los flags del tipo elegido.
-const selectedType = computed(
-  () => typeOptions.value.find((option) => String(option.id) === typeId.value) ?? null,
+// Filtros condicionales según los flags de los tipos marcados (basta con
+// que UN tipo marcado los aplique).
+const selectedTypes = computed(() =>
+  typeOptions.value.filter((option) => typeIds.value.includes(String(option.id))),
 )
-const showEquipment = computed(() => !!selectedType.value?.is_equipment)
-const showAttack = computed(() => !!selectedType.value?.allows_subtypes)
+const showEquipment = computed(() => selectedTypes.value.some((option) => option.is_equipment))
+const showAttack = computed(() => selectedTypes.value.some((option) => option.allows_subtypes))
 
-// Al cambiar de tipo se limpian los condicionales que dejen de aplicar
+// Al cambiar los tipos se limpian los condicionales que dejen de aplicar
 // (también al cargar las opciones, para sanear URLs pegadas).
-watch([selectedType, typeOptions], () => {
+watch([selectedTypes, typeOptions], () => {
   if (!typeOptions.value.length) return
   if (!showEquipment.value) {
-    equipmentTypeId.value = ''
-    equipmentSubtypeId.value = ''
+    if (equipmentTypeIds.value.length) equipmentTypeIds.value = []
+    if (equipmentSubtypeIds.value.length) equipmentSubtypeIds.value = []
   }
   if (!showAttack.value) {
-    attackRangeId.value = ''
-    attackType.value = ''
-    attackSubtypeId.value = ''
-    area.value = ''
+    if (attackRangeIds.value.length) attackRangeIds.value = []
+    if (attackTypes.value.length) attackTypes.value = []
+    if (attackSubtypeIds.value.length) attackSubtypeIds.value = []
+    if (areas.value.length) areas.value = []
   }
 })
 
-// Al cambiar el tipo de equipo se limpia el subtipo que no le pertenezca.
-watch([equipmentTypeId, equipmentSubtypeOptions], () => {
-  if (!equipmentSubtypeId.value || !equipmentSubtypeOptions.value.length) return
-  const valid = equipmentSubtypeOptions.value.some(
-    (option) =>
-      String(option.id) === equipmentSubtypeId.value &&
-      (!equipmentTypeId.value || String(option.equipment_type_id) === equipmentTypeId.value),
+// Al cambiar los tipos de equipo se limpian los subtipos marcados que no
+// pertenezcan a ninguno (los demás se quedan).
+watch([equipmentTypeIds, equipmentSubtypeOptions], () => {
+  if (!equipmentSubtypeIds.value.length || !equipmentSubtypeOptions.value.length) return
+  const valid = equipmentSubtypeIds.value.filter((id) =>
+    equipmentSubtypeOptions.value.some(
+      (option) =>
+        String(option.id) === id &&
+        (!equipmentTypeIds.value.length ||
+          equipmentTypeIds.value.includes(String(option.equipment_type_id))),
+    ),
   )
-  if (!valid) equipmentSubtypeId.value = ''
+  if (valid.length !== equipmentSubtypeIds.value.length) equipmentSubtypeIds.value = valid
 })
 
 // Nº de filtros activos (enseña el "Quitar filtros" de la barra derecha;
@@ -252,18 +224,18 @@ watch([equipmentTypeId, equipmentSubtypeOptions], () => {
 const activeFilters = computed(
   () =>
     [
-      factionId.value,
-      typeId.value,
-      subtypeId.value,
-      equipmentTypeId.value,
-      equipmentSubtypeId.value,
-      attackRangeId.value,
-      attackType.value,
-      attackSubtypeId.value,
-      area.value,
+      factionIds.value,
+      typeIds.value,
+      subtypeIds.value,
+      equipmentTypeIds.value,
+      equipmentSubtypeIds.value,
+      attackRangeIds.value,
+      attackTypes.value,
+      attackSubtypeIds.value,
+      areas.value,
       dice.value,
-      colorsParam.value,
-    ].filter((value) => value !== '').length,
+      colors.value,
+    ].filter((values) => values.length > 0).length,
 )
 
 function itemRoute(item: CatalogItem) {
@@ -315,21 +287,23 @@ async function load() {
   loading.value = true
   try {
     await site.load() // el head usa documentTitle: sin carreras en el prerender
+    // Cada filtro viaja como array (`clave[]=`, serialización de axios);
+    // vacío = no viaja (no filtra).
+    const listParam = (values: string[]) => (values.length ? values : undefined)
     const { data } = await api.get('/cards', {
       params: {
         page: page.value,
         search: search.value.trim() || undefined,
-        faction_id: factionId.value || undefined,
-        card_type_id: typeId.value || undefined,
-        card_subtype_id: subtypeId.value || undefined,
-        equipment_type_id: equipmentTypeId.value || undefined,
-        equipment_subtype_id: equipmentSubtypeId.value || undefined,
-        attack_range_id: attackRangeId.value || undefined,
-        attack_type: attackType.value || undefined,
-        attack_subtype_id: attackSubtypeId.value || undefined,
-        area: area.value || undefined,
-        // cost_total admite 0 (cartas sin coste): '' es el único "no filtra".
-        cost_total: dice.value === '' ? undefined : dice.value,
+        faction_id: listParam(factionIds.value),
+        card_type_id: listParam(typeIds.value),
+        card_subtype_id: listParam(subtypeIds.value),
+        equipment_type_id: listParam(equipmentTypeIds.value),
+        equipment_subtype_id: listParam(equipmentSubtypeIds.value),
+        attack_range_id: listParam(attackRangeIds.value),
+        attack_type: listParam(attackTypes.value),
+        attack_subtype_id: listParam(attackSubtypeIds.value),
+        area: listParam(areas.value),
+        cost_total: listParam(dice.value),
         cost_colors: colorsParam.value || undefined,
         sort: sort.value === 'name' ? undefined : sort.value,
       },
@@ -358,16 +332,16 @@ function toggleColor(color: CostColor) {
 
 // "Quitar filtros" limpia SOLO los filtros (la búsqueda y el orden quedan).
 function clearFilters() {
-  factionId.value = ''
-  typeId.value = ''
-  subtypeId.value = ''
-  equipmentTypeId.value = ''
-  equipmentSubtypeId.value = ''
-  attackRangeId.value = ''
-  attackType.value = ''
-  attackSubtypeId.value = ''
-  area.value = ''
-  dice.value = ''
+  factionIds.value = []
+  typeIds.value = []
+  subtypeIds.value = []
+  equipmentTypeIds.value = []
+  equipmentSubtypeIds.value = []
+  attackRangeIds.value = []
+  attackTypes.value = []
+  attackSubtypeIds.value = []
+  areas.value = []
+  dice.value = []
   colors.value = []
 }
 
@@ -407,54 +381,76 @@ watch(() => locales.current, loadFilters, { immediate: true })
       :name-desc-label="t('catalog.sort.nameDesc')"
     />
 
-    <!-- Filtros en la barra derecha contextual (aplican en vivo) -->
+    <!-- Filtros en la barra derecha contextual (aplican en vivo, multivalor) -->
     <Teleport defer to="#app-right-sidebar-target">
-      <BaseSelect
-        v-model="factionId"
+      <MultiSelect
+        v-model="factionIds"
         :label="t('catalog.filters.faction')"
+        :placeholder="t('catalog.filters.allFactions')"
         :options="factionSelect"
       />
-      <BaseSelect v-model="typeId" :label="t('catalog.filters.type')" :options="typeSelect" />
-      <BaseSelect
-        v-model="subtypeId"
+      <MultiSelect
+        v-model="typeIds"
+        :label="t('catalog.filters.type')"
+        :placeholder="t('catalog.filters.allTypes')"
+        :options="typeSelect"
+      />
+      <MultiSelect
+        v-model="subtypeIds"
         :label="t('catalog.filters.subtype')"
+        :placeholder="t('catalog.filters.allSubtypes')"
         :options="subtypeSelect"
       />
 
-      <!-- Condicionales del tipo elegido (flags del endpoint de filtros) -->
+      <!-- Condicionales de los tipos elegidos (flags del endpoint de filtros) -->
       <template v-if="showEquipment">
-        <BaseSelect
-          v-model="equipmentTypeId"
+        <MultiSelect
+          v-model="equipmentTypeIds"
           :label="t('catalog.filters.equipmentType')"
+          :placeholder="t('catalog.filters.allEquipmentTypes')"
           :options="equipmentTypeSelect"
         />
-        <BaseSelect
-          v-model="equipmentSubtypeId"
+        <MultiSelect
+          v-model="equipmentSubtypeIds"
           :label="t('catalog.filters.equipmentSubtype')"
+          :placeholder="t('catalog.filters.allEquipmentSubtypes')"
           :options="equipmentSubtypeSelect"
         />
       </template>
       <template v-if="showAttack">
         <!-- Orden canónico: rango · tipo · subtipo · área -->
-        <BaseSelect
-          v-model="attackRangeId"
+        <MultiSelect
+          v-model="attackRangeIds"
           :label="t('catalog.filters.attackRange')"
+          :placeholder="t('catalog.filters.allAttackRanges')"
           :options="attackRangeSelect"
         />
-        <BaseSelect
-          v-model="attackType"
+        <MultiSelect
+          v-model="attackTypes"
           :label="t('catalog.filters.attackType')"
+          :placeholder="t('catalog.filters.allAttackTypes')"
           :options="attackTypeSelect"
         />
-        <BaseSelect
-          v-model="attackSubtypeId"
+        <MultiSelect
+          v-model="attackSubtypeIds"
           :label="t('catalog.filters.attackSubtype')"
+          :placeholder="t('catalog.filters.allAttackSubtypes')"
           :options="attackSubtypeSelect"
         />
-        <BaseSelect v-model="area" :label="t('catalog.filters.area')" :options="areaSelect" />
+        <MultiSelect
+          v-model="areas"
+          :label="t('catalog.filters.area')"
+          :placeholder="t('catalog.filters.areaAll')"
+          :options="areaSelect"
+        />
       </template>
 
-      <BaseSelect v-model="dice" :label="t('catalog.filters.dice')" :options="diceSelect" />
+      <MultiSelect
+        v-model="dice"
+        :label="t('catalog.filters.dice')"
+        :placeholder="t('catalog.filters.anyDice')"
+        :options="diceSelect"
+      />
 
       <!-- Colores del coste: toggles con el icono del dado (o punto de color) -->
       <div class="form-field cost-colors">

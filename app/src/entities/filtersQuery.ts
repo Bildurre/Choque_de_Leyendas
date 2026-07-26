@@ -1,4 +1,4 @@
-import { onBeforeUnmount, watch, type Ref } from 'vue'
+import { computed, onBeforeUnmount, watch, type Ref, type WritableComputedRef } from 'vue'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 
 // Sincronización estado <-> query string de los filtros de los índices
@@ -20,6 +20,30 @@ export interface FiltersQueryOptions {
   search?: Ref<string>
   /** Página actual (viaja como ?page a partir de la 2). */
   page?: Ref<number>
+}
+
+/**
+ * Ref string para `fields` que representa un filtro MULTISELECT: el estado
+ * real vive en `list` (array de strings, lo que edita el MultiSelect) y en
+ * la URL viaja como lista separada por comas (?faction=3,5; '' = sin
+ * filtro). `valid` (opcional) sanea cada valor al volcar la URL al estado,
+ * para dominios cerrados (dados 0..5, área '1'/'0'…): lo inválido pegado
+ * en la URL se descarta y el watcher de useFiltersQuery limpia la query.
+ */
+export function csvField(
+  list: Ref<string[]>,
+  valid?: (value: string) => boolean,
+): WritableComputedRef<string> {
+  return computed({
+    get: () => list.value.join(','),
+    set: (value: string) => {
+      const parts = value
+        .split(',')
+        .map((part) => part.trim())
+        .filter(Boolean)
+      list.value = valid ? parts.filter(valid) : parts
+    },
+  })
 }
 
 export function useFiltersQuery(options: FiltersQueryOptions) {
