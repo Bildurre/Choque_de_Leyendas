@@ -50,6 +50,8 @@ const {
   singleRoute: 'card-single',
   nameOf: (item) => item.name,
   previewKey: 'card',
+  // Enlaces entrantes por query (p. ej. desde el panel/single de facción).
+  queryFilters: ['faction_id', 'card_type_id'],
 })
 
 // Opciones de los selects de filtro del panel (endpoints options,
