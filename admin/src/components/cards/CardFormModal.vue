@@ -547,18 +547,9 @@ async function submit() {
       />
     </fieldset>
 
-    <!-- Efectos -->
+    <!-- Efectos: la restricción PRIMERO (así se pinta en la carta) -->
     <fieldset class="card-form__fieldset">
       <legend>{{ t('cards.sections.effects') }}</legend>
-      <TranslatableInput
-        v-model="form.effect"
-        :locales="locales.locales"
-        :label="t('cards.fields.effect')"
-        type="wysiwyg"
-        :icons="iconList"
-        :rich-labels="editorLabels"
-        :error="errors.effect"
-      />
       <TranslatableInput
         v-model="form.restriction"
         :locales="locales.locales"
@@ -567,6 +558,15 @@ async function submit() {
         :icons="iconList"
         :rich-labels="editorLabels"
         :error="errors.restriction"
+      />
+      <TranslatableInput
+        v-model="form.effect"
+        :locales="locales.locales"
+        :label="t('cards.fields.effect')"
+        type="wysiwyg"
+        :icons="iconList"
+        :rich-labels="editorLabels"
+        :error="errors.effect"
       />
     </fieldset>
 

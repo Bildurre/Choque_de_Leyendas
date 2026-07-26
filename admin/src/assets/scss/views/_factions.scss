@@ -30,14 +30,8 @@
   &.is-dark-text { color: #1a1a1a; }
 }
 
-// Panel derecho del listado: lore + cantidades (texto plano, sin chips).
+// Panel derecho del listado: cantidades (texto plano, sin chips).
 .factions {
-  &__panel-lore {
-    margin: $space-3 0 0;
-    font-size: 0.85rem;
-    color: $text-2;
-  }
-
   &__panel-counts {
     list-style: none;
     margin: $space-3 0 0;

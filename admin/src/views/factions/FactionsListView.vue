@@ -47,7 +47,6 @@ const {
 onMounted(init)
 </script>
 
-<!-- eslint-disable vue/no-v-html -- HTML del WYSIWYG propio (sanitización en servidor) -->
 <template>
   <div class="factions">
     <div class="list-view__top">
@@ -137,14 +136,9 @@ onMounted(init)
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
-      <!-- Lore + cantidades de héroes, cartas y mazos (texto plano) -->
+      <!-- Cantidades de héroes, cartas y mazos (texto plano) -->
       <template #meta>
         <template v-if="selected">
-          <div
-            v-if="tr(selected.lore_text) !== '—'"
-            class="rich-content factions__panel-lore"
-            v-html="tr(selected.lore_text)"
-          ></div>
           <!-- Cantidades como ENLACES a cada index filtrado por esta facción -->
           <ul class="factions__panel-counts">
             <li>
