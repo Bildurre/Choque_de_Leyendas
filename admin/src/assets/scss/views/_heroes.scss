@@ -1,5 +1,23 @@
 @use "tokens" as *;
 
+// Enlace discreto de las vistas de héroe (línea de identidad del panel,
+// info básica y habilidades del single): texto en el color normal, acento
+// solo al hover — que no parezca un botón. Sirve para RouterLink y button.
+.hero-link {
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover,
+  &:focus-visible { color: $accent-500; }
+}
+
 // Héroes: listado (arte + stats del panel), formulario por fieldsets y single.
 .heroes {
   &__art {
@@ -24,10 +42,22 @@
     color: $text-2;
   }
 
-  // Atributos en el panel derecho (teleportado; selector plano).
+  // Línea de identidad del panel derecho: facción · raza · clase ·
+  // superclase como enlaces discretos, con separadores tenues.
+  &__identity {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-1;
+
+    > span { color: $text-3; }
+  }
+
+  // Atributos en el panel derecho (teleportado; selector plano). Sin margen
+  // propio: el kicker de su sección ya separa (rejilla del panel).
   &__stats {
     list-style: none;
-    margin: $space-3 0 0;
+    margin: 0;
     padding: 0;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -44,15 +74,9 @@
     }
   }
 
-  // Secciones del panel bajo los atributos: habilidades y pasiva del héroe
-  // (texto plano; sin chips en el panel, regla transversal).
-  &__panel-title {
-    margin: $space-4 0 $space-2;
-    font-size: $fs-13;
-    font-weight: $k-fw-bold;
-    color: $text-2;
-  }
-
+  // Secciones del panel bajo los atributos (cada una con su divisoria +
+  // kicker): habilidades LIGERAS (nombre-enlace + coste) y nombre de la
+  // pasiva (texto plano; sin chips en el panel, regla transversal).
   &__panel-abilities {
     list-style: none;
     margin: 0;
@@ -71,14 +95,9 @@
   }
 
   &__panel-passive-name {
-    margin: 0 0 $space-1;
+    margin: 0;
     font-size: 0.85rem;
     font-weight: $k-fw-semibold;
-  }
-
-  &__panel-passive {
-    font-size: 0.85rem;
-    color: $text-2;
   }
 }
 
@@ -191,45 +210,29 @@
     color: $text-2;
   }
 
-  &__attributes {
-    list-style: none;
-    margin: 0 0 $space-2;
-    padding: 0;
+  // Información básica y Atributos comparten fila mientras quepan
+  // (auto-fit); en estrecho se apilan. El margen de las cards lo pone la
+  // rejilla (gap), no cada info-block.
+  &__cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
-    gap: $space-2;
-
-    li {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      padding: $space-2 $space-3;
-      border: 1px solid $border;
-      border-radius: $radius-md;
-      background: $surface-2;
-
-      strong {
-        font-size: 0.75rem;
-        font-weight: $k-fw-medium;
-        color: $text-2;
-      }
-
-      span {
-        font-size: $fs-18;
-        font-weight: $k-fw-bold;
-      }
-    }
-  }
-
-  &__total {
+    grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr));
+    gap: $space-4;
+    align-items: start;
     margin: 0 0 $space-4;
-    font-size: 0.85rem;
-    color: $text-2;
+
+    .info-block { margin: 0; }
   }
 
-  &__passive-name {
-    margin: 0 0 $space-2;
-    font-size: $fs-16;
+  // Pasiva "nombre: texto": el nombre en negrita y el primer párrafo del
+  // WYSIWYG en la misma línea (los siguientes, en bloque normal). El margen
+  // pone el espacio tras los dos puntos (el hueco entre nodos no cuenta).
+  &__passive-line {
+    strong {
+      font-weight: $k-fw-semibold;
+      margin-right: 0.35em;
+    }
+
+    span > p:first-child { display: inline; }
   }
 
   &__abilities {

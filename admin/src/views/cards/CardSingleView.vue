@@ -123,12 +123,17 @@ onBeforeUnmount(() => {
       <div class="single__info">
         <h1>{{ tr(item.name) }}</h1>
 
-        <!-- Sin chips: texto plano, la facción coloreada y la única en ámbar -->
+        <!-- Sin chips: texto plano (la identidad de la facción, en una
+             muestra de color al lado) y la única en ámbar -->
         <InfoBlock :title="t('cards.sections.details')">
           <dl class="info-list">
             <dt>{{ t('cards.fields.faction') }}</dt>
-            <dd :style="item.faction?.color ? { color: item.faction.color } : undefined">
-              {{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}
+            <dd>
+              <span
+                v-if="item.faction?.color"
+                class="swatch"
+                :style="{ background: item.faction.color }"
+              />{{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}
             </dd>
 
             <template v-if="item.cost">

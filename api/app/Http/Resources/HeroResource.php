@@ -23,11 +23,13 @@ class HeroResource extends JsonResource
             'faction_id' => $this->faction_id,
             'hero_race_id' => $this->hero_race_id,
             'hero_class_id' => $this->hero_class_id,
-            // Facción en mínimo (id + nombre + color): su Resource es de
-            // otro cluster. El color tiñe la tarjeta del listado.
+            // Facción en mínimo (id + nombre + slug + color): su Resource es
+            // de otro cluster. El color tiñe la tarjeta del listado y el slug
+            // permite enlazar a su single desde el panel/single de héroe.
             'faction' => $this->whenLoaded('faction', fn () => [
                 'id' => $this->faction->id,
                 'name' => $this->faction->getTranslations('name'),
+                'slug' => $this->faction->getTranslations('slug'),
                 'color' => $this->faction->color,
             ]),
             'hero_race' => new HeroRaceResource($this->whenLoaded('heroRace')),

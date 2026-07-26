@@ -1,6 +1,6 @@
-import { computed, onBeforeUnmount, reactive, ref, watch, type Component } from 'vue'
+import { computed, nextTick, onBeforeUnmount, reactive, ref, watch, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { CircleCheck, FilePen, LayoutGrid, Trash } from '@lucide/vue'
 import { useCardDeselect, useResource, useRightSidebar } from '@edc-motor/admin-kit'
 import { useConfirm, useToast, type SortValue } from '@edc-motor/ui'
@@ -32,6 +32,14 @@ export interface EntityListOptions<T> {
    * p. ej. `type` en contadores). La vista relanza load(1) cuando cambien.
    */
   extraParams?: () => Record<string, string | undefined>
+  /**
+   * Claves de filtro que pueden llegar en la query de la ruta (enlaces
+   * entrantes desde otros índices/singles, p. ej. ?hero_race_id=3): en
+   * init() se copian a `filters` ANTES de la primera carga. Además, toda
+   * vista acepta `?search=` (inicializa la búsqueda) y `?selected=<id>`
+   * (selecciona ese ítem tras la primera carga, si está en la página).
+   */
+  queryFilters?: string[]
 }
 
 /** Icono de cada tab de estado conocida. */
@@ -51,6 +59,7 @@ const TAB_ICONS: Record<string, Component> = {
 export function useEntityList<T extends EntityListItem>(options: EntityListOptions<T>) {
   const { t } = useI18n()
   const router = useRouter()
+  const route = useRoute()
   const locales = useLocalesStore()
   const toast = useToast()
   const { confirm } = useConfirm()
@@ -151,8 +160,12 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
   )
 
   // Búsqueda, orden y filtros comparten debounce y vuelven a la página 1.
+  // El flag silencia el watcher mientras init() copia el estado inicial de
+  // la query (si no, la primera carga se duplicaría 250ms después).
   let timer: ReturnType<typeof setTimeout> | null = null
+  let applyingQuery = false
   watch([search, sort, filters], () => {
+    if (applyingQuery) return
     if (timer) clearTimeout(timer)
     timer = setTimeout(() => load(1), 250)
   })
@@ -260,9 +273,36 @@ export function useEntityList<T extends EntityListItem>(options: EntityListOptio
     }
   }
 
+  /**
+   * Copia a `filters`/`search` el estado que llegue en la query de la ruta
+   * (solo las claves permitidas en queryFilters, más `search`). Se llama con
+   * el watcher silenciado: la primera carga ya sale con estos valores.
+   */
+  function applyQueryState() {
+    const query = route.query
+    for (const key of options.queryFilters ?? []) {
+      const value = query[key]
+      if (typeof value === 'string' && value !== '') filters[key] = value
+    }
+    if (typeof query.search === 'string' && query.search !== '') search.value = query.search
+  }
+
   async function init() {
     await locales.load()
+    applyingQuery = true
+    applyQueryState()
+    // nextTick: deja pasar el flush de los watchers (pre) antes de soltarlos.
+    await nextTick()
+    applyingQuery = false
     await load()
+    // ?selected=<id>: si el ítem cayó en la primera página, se selecciona
+    // (abre el panel derecho, como un click en su card).
+    const selectedQuery = Number(route.query.selected)
+    if (Number.isInteger(selectedQuery) && selectedQuery > 0) {
+      // Cast: useResource desenvuelve T en el ref (UnwrapRefSimple).
+      const found = items.value.find((i) => i.id === selectedQuery) as T | undefined
+      if (found) select(found)
+    }
   }
 
   return {

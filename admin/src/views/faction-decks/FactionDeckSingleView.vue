@@ -378,12 +378,11 @@ onBeforeUnmount(() => {
             }}</span>
             <span v-else class="deck-editor__state">{{ t('factionDecks.state.draft') }}</span>
             <span v-if="deck.game_mode">{{ tr(deck.game_mode.name) }}</span>
-            <span
-              v-for="faction in deck.factions ?? []"
-              :key="faction.id"
-              :style="faction.color ? { color: faction.color } : undefined"
-            >
-              {{ tr(faction.name) }}
+            <!-- Texto en el color del tema; la identidad, en la muestra. -->
+            <span v-for="faction in deck.factions ?? []" :key="faction.id">
+              <span v-if="faction.color" class="swatch" :style="{ background: faction.color }" />{{
+                tr(faction.name)
+              }}
             </span>
           </p>
         </div>
