@@ -157,12 +157,14 @@ onMounted(async () => {
         </template>
 
         <!-- Sin badge de estado (los tabs ya separan): el tipado completo en
-             badges — facción (teñida con su color), tipo, subtipo, equipo,
-             manos y única (ámbar) -->
+             badges — facción (chip TEÑIDO: fondo de su color y texto en
+             blanco/negro automático, is-tinted del motor), tipo, subtipo,
+             equipo, manos y única (ámbar) -->
         <template #badges>
           <span
             class="chip"
-            :style="item.faction?.color ? { color: item.faction.color } : undefined"
+            :class="{ 'is-tinted': !!item.faction?.color }"
+            :style="item.faction?.color ? { '--chip-tint': item.faction.color } : undefined"
             >{{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}</span
           >
           <span v-if="item.card_type" class="chip">{{ tr(item.card_type.name) }}</span>

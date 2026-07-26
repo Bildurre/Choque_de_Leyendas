@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Concerns;
 
+use Edc\Core\Support\SqlFold;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
@@ -28,15 +29,16 @@ trait SortsIndex
     }
 
     /**
-     * Alfabético por el nombre en el locale activo, insensible a mayúsculas:
-     * con collation binaria (SQLite) "Zarpazo" ordenaría antes que "amuleto";
-     * en MySQL la collation ci ya es insensible y el lower() no estorba.
+     * Alfabético por el nombre en el locale activo, plegado como la búsqueda
+     * (SqlFold del motor): sin distinguir mayúsculas ni acentos — con
+     * collation binaria (SQLite) "Zarpazo" ordenaría antes que "amuleto" y
+     * "Ámbito" después de la zeta.
      */
     protected function orderByName(Builder $query, bool $desc = false): Builder
     {
         $locale = app()->getLocale();
-        $column = $query->getQuery()->getGrammar()->wrap("name->{$locale}");
+        $column = SqlFold::expression($query->getQuery()->getGrammar()->wrap("name->{$locale}"));
 
-        return $query->orderByRaw('lower('.$column.')'.($desc ? ' desc' : ''));
+        return $query->orderByRaw($column.($desc ? ' desc' : ''));
     }
 }

@@ -140,12 +140,18 @@ onBeforeUnmount(() => {
       <div class="single__info">
         <h1>{{ tr(item.name) }}</h1>
 
-        <!-- Sin chips: texto plano, la facción coloreada con su color -->
+        <!-- Sin chips: texto plano en el color del tema; la identidad de la
+             facción va en una muestra de color al lado (el texto teñido no
+             se leía con colores claros/oscuros según el tema). -->
         <InfoBlock :title="t('heroes.sections.basic')">
           <dl class="info-list">
             <dt>{{ t('heroes.fields.faction') }}</dt>
-            <dd :style="item.faction?.color ? { color: item.faction.color } : undefined">
-              {{ item.faction ? tr(item.faction.name) : t('heroes.fields.noFaction') }}
+            <dd>
+              <span
+                v-if="item.faction?.color"
+                class="swatch"
+                :style="{ background: item.faction.color }"
+              />{{ item.faction ? tr(item.faction.name) : t('heroes.fields.noFaction') }}
             </dd>
 
             <!-- Raza, clase y superclase con el género del héroe (·_display) -->

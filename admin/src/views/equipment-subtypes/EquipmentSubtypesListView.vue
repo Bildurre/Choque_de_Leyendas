@@ -115,12 +115,13 @@ onMounted(async () => {
         @edit="edit(item)"
       >
         <!-- Sin badge de estado (los tabs ya separan): el tipo de equipo,
-             teñido con su color estable de la paleta (determinista por id) -->
+             chip TEÑIDO con su color estable de la paleta (determinista por
+             id; fondo + texto de contraste automático, is-tinted del motor) -->
         <template #badges>
           <span
             v-if="item.equipment_type"
-            class="chip"
-            :style="{ color: typeColor(item.equipment_type_id) }"
+            class="chip is-tinted"
+            :style="{ '--chip-tint': typeColor(item.equipment_type_id) }"
             >{{ tr(item.equipment_type.name) }}</span
           >
         </template>

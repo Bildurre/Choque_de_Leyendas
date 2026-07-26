@@ -171,11 +171,14 @@ onMounted(async () => {
         </template>
 
         <!-- Sin badge de estado (los tabs ya separan): facción, raza y clase.
-             La de facción va teñida con su color identitario. -->
+             La de facción, chip TEÑIDO: su color de fondo y el texto en
+             blanco/negro automático (is-tinted del motor) — el texto teñido
+             sobre el fondo del chip no se leía con colores claros/oscuros. -->
         <template #badges>
           <span
             class="chip"
-            :style="item.faction?.color ? { color: item.faction.color } : undefined"
+            :class="{ 'is-tinted': !!item.faction?.color }"
+            :style="item.faction?.color ? { '--chip-tint': item.faction.color } : undefined"
             >{{ item.faction ? tr(item.faction.name) : t('heroes.fields.noFaction') }}</span
           >
           <!-- Raza y clase con el género del héroe (·_display) -->
