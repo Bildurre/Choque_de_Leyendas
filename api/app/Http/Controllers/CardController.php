@@ -63,8 +63,10 @@ class CardController extends Controller
     }
 
     /**
-     * Lista ligera (id + nombre + slug traducibles) para selectores,
-     * ordenada por nombre en el locale activo.
+     * Lista ligera (id + nombre + slug traducibles + facción y coste) para
+     * selectores, ordenada por nombre en el locale activo. La facción
+     * permite acotar en cliente (p. ej. a las facciones de un mazo) y el
+     * coste se pinta con sus dados en las opciones.
      */
     public function options()
     {
@@ -73,6 +75,8 @@ class CardController extends Controller
                 'id' => $card->id,
                 'name' => $card->getTranslations('name'),
                 'slug' => $card->getTranslations('slug'),
+                'faction_id' => $card->faction_id,
+                'cost' => $card->cost,
             ]),
         ]);
     }

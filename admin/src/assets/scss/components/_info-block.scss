@@ -15,6 +15,18 @@
     line-height: $k-lh-tight;
     color: $accent-500;
   }
+
+  // Cabecera con acciones (slot opcional): título a la izquierda y las
+  // acciones a la derecha; el margen inferior lo pone la cabecera.
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-3;
+    margin: 0 0 $space-3;
+
+    .info-block__title { margin: 0; }
+  }
 }
 
 // Lista etiqueta/valor dentro de un info-block (texto plano o coloreado;

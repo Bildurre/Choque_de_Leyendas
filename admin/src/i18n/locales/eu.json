@@ -1013,6 +1013,7 @@
       "gameMode": "Joko modua",
       "selectGameMode": "Aukeratu joko modua",
       "factions": "Fakzioak",
+      "selectFactions": "Aukeratu fakzioak",
       "noFactions": "Ez dago fakziorik eskuragarri.",
       "description": "Deskribapena",
       "epicQuote": "Aipu epikoa",
@@ -1024,8 +1025,11 @@
       "cards": "{count} karta",
       "heroes": "{count} heroi"
     },
+    "sections": {
+      "lore": "Kondaira",
+      "stats": "Estatistikak"
+    },
     "single": {
-      "save": "Gorde sorta",
       "modeLimits": "Moduaren mugak",
       "limitsLine": "{min}–{max} karta · gehienez {copies} kopia · {heroes} heroi",
       "cardsCount": "Kartak (kopiak)",
@@ -1039,9 +1043,6 @@
       "searchCards": "Bilatu kartak…",
       "addHeroes": "Gehitu heroiak",
       "searchHeroes": "Bilatu heroiak…",
-      "selectedCards": "Hautatutakoak",
-      "selectedHeroes": "Hautatutakoak",
-      "add": "Gehitu",
       "removeCard": "Kendu karta",
       "removeHero": "Kendu heroia",
       "moreCopies": "Kopia bat gehiago",
@@ -1073,7 +1074,8 @@
       "restored": "Sorta berreskuratu da",
       "forceDeleted": "Sorta betiko ezabatu da",
       "saveError": "Ezin izan da gorde.",
-      "deckSaved": "Sortako kartak eta heroiak gorde dira.",
+      "heroesSaved": "Sortako heroiak gorde dira.",
+      "cardsSaved": "Sortako kartak gorde dira.",
       "publishInvalid": "Sortak ez ditu joko moduaren mugak betetzen."
     }
   },

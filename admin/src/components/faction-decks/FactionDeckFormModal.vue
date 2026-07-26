@@ -6,6 +6,7 @@ import {
   BaseSelect,
   EditModal,
   ImageUpload,
+  MultiSelect,
   TranslatableInput,
   useToast,
 } from '@edc-motor/ui'
@@ -62,7 +63,7 @@ const form = reactive<{
   description: Record<string, string>
   epic_quote: Record<string, string>
   game_mode_id: number | ''
-  faction_ids: number[]
+  faction_ids: string[]
   is_published: boolean
 }>({
   name: {},
@@ -90,11 +91,10 @@ const gameModeOptions = computed(() =>
   gameModes.value.map((o) => ({ value: o.id, label: optionLabel(o) })),
 )
 
-function toggleFaction(id: number, on: boolean) {
-  form.faction_ids = on
-    ? [...new Set([...form.faction_ids, id])]
-    : form.faction_ids.filter((f) => f !== id)
-}
+// Opciones del multiselect de facciones (varias por mazo).
+const factionOptions = computed(() =>
+  factions.value.map((f) => ({ value: String(f.id), label: optionLabel(f) })),
+)
 
 function clearErrors() {
   for (const k of Object.keys(errors)) delete errors[k]
@@ -156,7 +156,7 @@ watch(
         form.description = d.description ?? {}
         form.epic_quote = d.epic_quote ?? {}
         form.game_mode_id = d.game_mode_id ?? ''
-        form.faction_ids = (d.factions ?? []).map((f) => f.id)
+        form.faction_ids = (d.factions ?? []).map((f) => String(f.id))
         form.is_published = !!d.is_published
         currentImage.value = d.image ?? null
       } catch {
@@ -258,25 +258,14 @@ async function submit() {
       :error="errors.game_mode_id"
     />
 
-    <fieldset class="faction-decks__factions">
-      <legend>
-        {{ t('factionDecks.fields.factions') }}<span class="form-field__required">*</span>
-      </legend>
-      <p v-if="!factions.length" class="faction-decks__factions-empty">
-        {{ t('factionDecks.fields.noFactions') }}
-      </p>
-      <div v-for="faction in factions" :key="faction.id" class="faction-decks__faction-option">
-        <BaseCheckbox
-          :model-value="form.faction_ids.includes(faction.id)"
-          :label="optionLabel(faction)"
-          @update:model-value="(v: boolean) => toggleFaction(faction.id, v)"
-        />
-        <span class="swatch" :style="{ background: faction.color || 'transparent' }" />
-      </div>
-      <p v-if="errors.faction_ids" class="faction-decks__factions-error">
-        {{ errors.faction_ids }}
-      </p>
-    </fieldset>
+    <!-- Facciones del mazo: MULTISELECT (varias a la vez), como los filtros -->
+    <MultiSelect
+      v-model="form.faction_ids"
+      :label="t('factionDecks.fields.factions')"
+      :options="factionOptions"
+      :placeholder="t('factionDecks.fields.selectFactions')"
+      :error="errors.faction_ids"
+    />
 
     <TranslatableInput
       v-model="form.description"

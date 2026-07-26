@@ -164,6 +164,7 @@ Route::middleware(['auth:sanctum', 'motor.admin', 'can:manage-game'])
         // Faction decks (+ editor de cartas y héroes de la single)
         Route::get('faction-decks', [FactionDeckController::class, 'index']);
         Route::post('faction-decks', [FactionDeckController::class, 'store']);
+        Route::get('faction-decks/{slug}/stats', [FactionDeckController::class, 'stats']);
         Route::get('faction-decks/{slug}', [FactionDeckController::class, 'show']);
         Route::put('faction-decks/{slug}', [FactionDeckController::class, 'update']);
         Route::put('faction-decks/{slug}/cards', [FactionDeckController::class, 'updateCards']);

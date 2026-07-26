@@ -6,8 +6,11 @@ use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SanitizesRichText;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\FactionDeckResource;
+use App\Models\Card;
+use App\Models\CardType;
 use App\Models\FactionDeck;
 use App\Models\GameMode;
+use App\Models\HeroClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -81,6 +84,94 @@ class FactionDeckController extends Controller
         ])->whereSlug($slug)->firstOrFail();
 
         return new FactionDeckResource($deck);
+    }
+
+    /**
+     * Estadísticas del single de mazo (como FactionController@stats pero
+     * acotadas al contenido del mazo): cartas (total, por tipo y curva de
+     * coste, AMBAS ponderadas por copias del pivot) y héroes (total, por
+     * clase y por superclase; sin copias: cada héroe cuenta 1). Agregados
+     * en BBDD y nombres localizados al locale de la petición.
+     */
+    public function stats(string $slug)
+    {
+        $deck = FactionDeck::whereSlug($slug)->firstOrFail();
+        $locale = app()->getLocale();
+
+        // Cartas por tipo, sumando las copias (solo tipos con cartas del mazo).
+        $cardTypeCounts = $deck->cards()
+            ->selectRaw('cards.card_type_id, sum(card_faction_deck.copies) as total')
+            ->groupBy('cards.card_type_id')
+            ->pluck('total', 'card_type_id');
+
+        $cardsByType = CardType::whereIn('id', $cardTypeCounts->keys())->get()
+            ->map(fn (CardType $type) => [
+                'id' => $type->id,
+                'name' => $type->getTranslation('name', $locale),
+                'count' => (int) $cardTypeCounts[$type->id],
+            ])
+            ->sortByDesc('count')
+            ->values()
+            ->all();
+
+        // Curva de coste por nº de dados (cost canónico ⇒ length = dados),
+        // también en copias: cada copia de la carta cuenta en su columna.
+        $byDice = $deck->cards()
+            ->selectRaw('coalesce(length(cards.cost), 0) as dice, sum(card_faction_deck.copies) as total')
+            ->groupBy('dice')
+            ->pluck('total', 'dice');
+
+        $costCurve = [];
+        for ($dice = 0; $dice <= Card::COST_MAX; $dice++) {
+            $costCurve[] = ['dice' => $dice, 'count' => (int) ($byDice[$dice] ?? 0)];
+        }
+
+        // Héroes por clase (y su superclase, agregada después en PHP).
+        $classCounts = $deck->heroes()
+            ->selectRaw('heroes.hero_class_id, count(*) as total')
+            ->groupBy('heroes.hero_class_id')
+            ->pluck('total', 'hero_class_id');
+
+        $classes = HeroClass::with('heroSuperclass')
+            ->whereIn('id', $classCounts->keys())
+            ->get();
+
+        $heroesByClass = $classes
+            ->map(fn (HeroClass $class) => [
+                'id' => $class->id,
+                'name' => $class->getTranslation('name', $locale),
+                'count' => (int) $classCounts[$class->id],
+            ])
+            ->sortByDesc('count')
+            ->values()
+            ->all();
+
+        $heroesBySuperclass = $classes
+            ->filter(fn (HeroClass $class) => $class->heroSuperclass !== null)
+            ->groupBy('hero_superclass_id')
+            ->map(fn ($group) => [
+                'id' => $group->first()->heroSuperclass->id,
+                'name' => $group->first()->heroSuperclass->getTranslation('name', $locale),
+                'count' => $group->sum(fn (HeroClass $class) => (int) $classCounts[$class->id]),
+            ])
+            ->sortByDesc('count')
+            ->values()
+            ->all();
+
+        return response()->json([
+            'data' => [
+                'cards' => [
+                    'total' => (int) $cardTypeCounts->sum(),
+                    'by_type' => $cardsByType,
+                    'cost_curve' => $costCurve,
+                ],
+                'heroes' => [
+                    'total' => (int) $classCounts->sum(),
+                    'by_class' => $heroesByClass,
+                    'by_superclass' => $heroesBySuperclass,
+                ],
+            ],
+        ]);
     }
 
     public function update(Request $request, string $slug)

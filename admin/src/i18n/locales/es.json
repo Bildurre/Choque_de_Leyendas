@@ -944,6 +944,7 @@
       "gameMode": "Modo de juego",
       "selectGameMode": "Seleccionar modo de juego",
       "factions": "Facciones",
+      "selectFactions": "Seleccionar facciones",
       "noFactions": "No hay facciones disponibles.",
       "description": "Descripción",
       "epicQuote": "Cita épica",
@@ -955,8 +956,11 @@
       "cards": "{count} cartas",
       "heroes": "{count} héroes"
     },
+    "sections": {
+      "lore": "Trasfondo",
+      "stats": "Estadísticas"
+    },
     "single": {
-      "save": "Guardar mazo",
       "modeLimits": "Límites del modo",
       "limitsLine": "{min}–{max} cartas · máx. {copies} copias · {heroes} héroes",
       "cardsCount": "Cartas (copias)",
@@ -970,9 +974,6 @@
       "searchCards": "Buscar cartas…",
       "addHeroes": "Añadir héroes",
       "searchHeroes": "Buscar héroes…",
-      "selectedCards": "Seleccionadas",
-      "selectedHeroes": "Seleccionados",
-      "add": "Añadir",
       "removeCard": "Quitar carta",
       "removeHero": "Quitar héroe",
       "moreCopies": "Una copia más",
@@ -1004,7 +1005,8 @@
       "restored": "Mazo restaurado",
       "forceDeleted": "Mazo borrado definitivamente",
       "saveError": "No se pudo guardar.",
-      "deckSaved": "Cartas y héroes del mazo guardados.",
+      "heroesSaved": "Héroes del mazo guardados.",
+      "cardsSaved": "Cartas del mazo guardadas.",
       "publishInvalid": "El mazo no cumple los límites del modo de juego."
     }
   },

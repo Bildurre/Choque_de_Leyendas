@@ -50,8 +50,9 @@ class HeroController extends Controller
     }
 
     /**
-     * Lista ligera (id + nombre + slug traducibles) para selectores,
-     * ordenada por nombre en el locale activo.
+     * Lista ligera (id + nombre + slug traducibles + facción) para
+     * selectores, ordenada por nombre en el locale activo. La facción
+     * permite acotar en cliente (p. ej. a las facciones de un mazo).
      */
     public function options()
     {
@@ -60,6 +61,7 @@ class HeroController extends Controller
                 'id' => $h->id,
                 'name' => $h->getTranslations('name'),
                 'slug' => $h->getTranslations('slug'),
+                'faction_id' => $h->faction_id,
             ]),
         ]);
     }

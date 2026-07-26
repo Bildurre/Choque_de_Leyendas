@@ -1013,6 +1013,7 @@
       "gameMode": "Game mode",
       "selectGameMode": "Select a game mode",
       "factions": "Factions",
+      "selectFactions": "Select factions",
       "noFactions": "No factions available.",
       "description": "Description",
       "epicQuote": "Epic quote",
@@ -1024,8 +1025,11 @@
       "cards": "{count} cards",
       "heroes": "{count} heroes"
     },
+    "sections": {
+      "lore": "Lore",
+      "stats": "Statistics"
+    },
     "single": {
-      "save": "Save deck",
       "modeLimits": "Mode limits",
       "limitsLine": "{min}–{max} cards · max {copies} copies · {heroes} heroes",
       "cardsCount": "Cards (copies)",
@@ -1039,9 +1043,6 @@
       "searchCards": "Search cards…",
       "addHeroes": "Add heroes",
       "searchHeroes": "Search heroes…",
-      "selectedCards": "Selected",
-      "selectedHeroes": "Selected",
-      "add": "Add",
       "removeCard": "Remove card",
       "removeHero": "Remove hero",
       "moreCopies": "One more copy",
@@ -1073,7 +1074,8 @@
       "restored": "Deck restored",
       "forceDeleted": "Deck permanently deleted",
       "saveError": "Could not save.",
-      "deckSaved": "Deck cards and heroes saved.",
+      "heroesSaved": "Deck heroes saved.",
+      "cardsSaved": "Deck cards saved.",
       "publishInvalid": "The deck does not meet the game mode limits."
     }
   },
