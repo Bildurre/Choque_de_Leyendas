@@ -986,11 +986,8 @@
       "searchHeroes": "Buscar héroes…",
       "removeCard": "Quitar carta",
       "removeHero": "Quitar héroe",
-      "moreCopies": "Una copia más",
-      "fewerCopies": "Una copia menos",
       "notInFactions": "No pertenece a las facciones del mazo",
-      "factionMismatch": "Hay {count} elementos asignados de facciones que ya no están en el mazo.",
-      "copies": "Copias"
+      "factionMismatch": "Hay {count} elementos asignados de facciones que ya no están en el mazo."
     },
     "validation": {
       "minCards": "El mazo debe tener al menos {min} cartas (tiene {total}).",

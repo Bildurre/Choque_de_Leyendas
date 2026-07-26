@@ -2,7 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { X } from '@lucide/vue'
-import { EditModal, NumberInput, useToast } from '@edc-motor/ui'
+import { EditModal, NumericInput, useToast } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useLocalesStore } from '@/stores/locales'
 import SearchCombobox from '@/components/SearchCombobox.vue'
@@ -12,8 +12,8 @@ import type { DeckCardItem, FactionDeck, Translations } from '@juego/shared'
 // Modal de edición de las cartas del mazo: estado LOCAL copiado al abrir
 // (nada se persiste hasta Guardar), combobox con búsqueda para añadir
 // (opciones de /admin/cards/options acotadas a las facciones del mazo) y
-// filas al estilo ability-row con las copias en NumberInput (mín. 1, sin
-// máximo: el borrador es libre; `invalid` marca las que superan el límite
+// filas al estilo ability-row con las copias en NumericInput (mín. 1, sin
+// máximo: el borrador es libre; `is-over` marca las que superan el límite
 // del modo). Guardar hace el PUT de updateCards y emite `saved`.
 const props = defineProps<{
   modelValue: boolean
@@ -181,14 +181,12 @@ async function submit() {
           </span>
           <CostDice v-if="card.cost" class="ability-row__cost" :cost="card.cost" />
           <span class="ability-row__actions deck-modal__actions">
-            <!-- Copias libres en borrador: sin máximo, `invalid` si se pasa -->
-            <NumberInput
+            <!-- Copias libres en borrador: sin máximo, `is-over` si se pasa -->
+            <NumericInput
+              class="deck-modal__copies"
+              :class="{ 'is-over': !!config && card.copies > config.max_copies_per_card }"
               :model-value="card.copies"
               :min="1"
-              :invalid="!!config && card.copies > config.max_copies_per_card"
-              :label="t('factionDecks.single.copies')"
-              :decrease-label="t('factionDecks.single.fewerCopies')"
-              :increase-label="t('factionDecks.single.moreCopies')"
               @update:model-value="card.copies = $event"
             />
             <button

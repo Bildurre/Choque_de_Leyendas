@@ -101,28 +101,27 @@
     flex-wrap: wrap;
   }
 
-  // El emblema del mazo en un marco a proporción de carta (como el single
-  // de carta); contain porque es un icono, no una ilustración a sangre.
+  // El emblema del mazo como en el single de facción: la imagen tal cual
+  // con las esquinas redondeadas (o la inicial en caja cuadrada).
   &__art {
     width: 250px;
     max-width: 100%;
-    border-radius: $radius-md;
-    overflow: hidden;
-    background: $surface-2;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    aspect-ratio: 5 / 7;
 
     img {
+      display: block;
       width: 100%;
-      height: 100%;
-      object-fit: contain;
-      padding: $space-4;
+      height: auto;
+      border-radius: $radius-lg;
     }
   }
 
   &__mono {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    border: 1px solid $border;
+    border-radius: $radius-lg;
     font-size: 3rem;
     font-weight: $k-fw-bold;
     color: $text-2;
@@ -289,6 +288,27 @@
     display: inline-flex;
     align-items: center;
     gap: $space-2;
+  }
+
+  // Copias en NumericInput (el campo numérico del motor), compactado para
+  // la fila; `is-over` avisa de que se supera el límite de copias del modo
+  // (el borrador es libre: no se bloquea, solo se marca).
+  &__copies {
+    width: 116px;
+    flex: none;
+
+    .numeric-input__field {
+      font-weight: $k-fw-bold;
+      font-size: $fs-13;
+    }
+
+    &.is-over .numeric-input {
+      border-color: $danger;
+
+      .numeric-input__field {
+        color: $danger;
+      }
+    }
   }
 
   &__remove {

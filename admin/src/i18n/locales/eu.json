@@ -1055,11 +1055,8 @@
       "searchHeroes": "Bilatu heroiak…",
       "removeCard": "Kendu karta",
       "removeHero": "Kendu heroia",
-      "moreCopies": "Kopia bat gehiago",
-      "fewerCopies": "Kopia bat gutxiago",
       "notInFactions": "Ez dago sortaren fakzioetan",
-      "factionMismatch": "Sortan jada ez dauden fakzioetako {count} elementu daude esleituta.",
-      "copies": "Kopiak"
+      "factionMismatch": "Sortan jada ez dauden fakzioetako {count} elementu daude esleituta."
     },
     "validation": {
       "minCards": "Sortak gutxienez {min} karta izan behar ditu ({total} ditu).",

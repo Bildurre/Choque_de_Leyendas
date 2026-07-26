@@ -17,7 +17,7 @@ import InfoBlock from '@/components/InfoBlock.vue'
 import DashBarPanel, { type BarRow } from '@/components/dashboard/DashBarPanel.vue'
 
 // Single de mazo con el patrón de los otros singles (carta/héroe/facción):
-// preview a la izquierda en marco a proporción de carta, cards Detalles
+// emblema a la izquierda como en el de facción, cards Detalles
 // (estado, modo y facciones enlazadas) y Formato (límites del modo +
 // contadores en vivo) a la derecha, avisos debajo, cards de HÉROES y CARTAS
 // (cada elemento enlazado a su single; la edición vive en modales que
@@ -266,7 +266,7 @@ onBeforeUnmount(() => {
 
     <div class="single__layout">
       <div class="single__preview">
-        <!-- Emblema del mazo en marco a proporción de carta (o la inicial) -->
+        <!-- El emblema tal cual, esquinas redondeadas (o la inicial) -->
         <div class="deck-single__art">
           <img v-if="deck.image" :src="deck.image" alt="" />
           <span v-else class="deck-single__mono">{{ tr(deck.name).charAt(0) }}</span>

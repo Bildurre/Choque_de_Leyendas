@@ -1055,11 +1055,8 @@
       "searchHeroes": "Search heroes…",
       "removeCard": "Remove card",
       "removeHero": "Remove hero",
-      "moreCopies": "One more copy",
-      "fewerCopies": "One less copy",
       "notInFactions": "Not in the deck factions",
-      "factionMismatch": "There are {count} assigned items from factions no longer in the deck.",
-      "copies": "Copies"
+      "factionMismatch": "There are {count} assigned items from factions no longer in the deck."
     },
     "validation": {
       "minCards": "The deck must have at least {min} cards (it has {total}).",
