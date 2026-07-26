@@ -5,8 +5,8 @@ import { FunnelX } from '@lucide/vue'
 import {
   BaseButton,
   BasePagination,
-  BaseSelect,
   IndexToolbar,
+  MultiSelect,
   PreviewGrid,
   useAppRightSidebar,
   type CatalogItem,
@@ -16,7 +16,7 @@ import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
 import IndexHeader from '@/components/IndexHeader.vue'
 import { useIndexPage } from '@/entities/indexPage'
-import { useFiltersQuery } from '@/entities/filtersQuery'
+import { csvField, useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
 
 // Índice público de héroes: rejilla de previews sobre GET /api/heroes con el
@@ -25,11 +25,12 @@ import { parseSort, type SortOption } from '@/entities/catalogSort'
 // facción/superclase/clase/raza en la barra derecha contextual
 // (AppRightSidebar: registro + Teleport; el botón Funnel del header la
 // despliega). Opciones ya localizadas de GET /api/heroes/filters, aplican
-// en vivo. Elegir
-// superclase acota el select de clases a las suyas (client-side con el
+// en vivo y son MULTISELECT: cada filtro admite varios valores (unión; la
+// API filtra con whereIn y recibe `clave[]=`). Marcar superclases acota el
+// select de clases a las de CUALQUIERA de ellas (client-side con el
 // superclass_id que trae cada clase). Todo vive en la query string
-// (useFiltersQuery): la UI empuja el estado a la URL y ES el cambio de
-// query el que dispara la recarga.
+// (useFiltersQuery, listas separadas por comas): la UI empuja el estado a
+// la URL y ES el cambio de query el que dispara la recarga.
 interface FilterOption {
   id: number
   name: string
@@ -53,12 +54,13 @@ const total = ref(0)
 // vista (el token evita pisar el registro de la vista entrante).
 useAppRightSidebar().useRegister()
 
-// Estado de los filtros (los selects usan string: '' = todos).
+// Estado de los filtros: arrays de strings ([] = todos), lo que edita cada
+// MultiSelect; en la URL viajan como listas separadas por comas (csvField).
 const search = ref('')
-const factionId = ref('')
-const superclassId = ref('')
-const classId = ref('')
-const raceId = ref('')
+const factionIds = ref<string[]>([])
+const superclassIds = ref<string[]>([])
+const classIds = ref<string[]>([])
+const raceIds = ref<string[]>([])
 
 // Orden: 'name' (alfabético del locale activo) es el default del índice
 // (fuera de la URL).
@@ -77,10 +79,10 @@ const { queryToState, pushQuery } = useFiltersQuery({
   search,
   page,
   fields: {
-    faction: factionId,
-    superclass: superclassId,
-    class: classId,
-    race: raceId,
+    faction: csvField(factionIds),
+    superclass: csvField(superclassIds),
+    class: csvField(classIds),
+    race: csvField(raceIds),
     sort: sortRaw,
   },
 })
@@ -91,44 +93,43 @@ const classOptions = ref<ClassOption[]>([])
 const superclassOptions = ref<FilterOption[]>([])
 const raceOptions = ref<FilterOption[]>([])
 
-/** Opciones de BaseSelect con el "todos" delante. */
-function withAll(options: FilterOption[], allLabel: string) {
-  return [
-    { value: '', label: allLabel },
-    ...options.map((option) => ({ value: String(option.id), label: option.name })),
-  ]
+// Opciones de MultiSelect: sin opción "todos" en la lista (sin nada
+// marcado, el placeholder ya dice "Todas las …").
+function toSelect(options: FilterOption[]) {
+  return options.map((option) => ({ value: String(option.id), label: option.name }))
 }
 
-const factionSelect = computed(() =>
-  withAll(factionOptions.value, t('catalog.filters.allFactions')),
-)
-const superclassSelect = computed(() =>
-  withAll(superclassOptions.value, t('catalog.filters.allSuperclasses')),
-)
-const raceSelect = computed(() => withAll(raceOptions.value, t('catalog.filters.allRaces')))
+const factionSelect = computed(() => toSelect(factionOptions.value))
+const superclassSelect = computed(() => toSelect(superclassOptions.value))
+const raceSelect = computed(() => toSelect(raceOptions.value))
 
-// Con superclase elegida, el select de clases se acota a las suyas.
+// Con superclases marcadas, el select de clases se acota a las de
+// CUALQUIERA de ellas.
 const visibleClasses = computed(() =>
-  superclassId.value
-    ? classOptions.value.filter((option) => String(option.superclass_id) === superclassId.value)
+  superclassIds.value.length
+    ? classOptions.value.filter((option) =>
+        superclassIds.value.includes(String(option.superclass_id)),
+      )
     : classOptions.value,
 )
-const classSelect = computed(() => withAll(visibleClasses.value, t('catalog.filters.allClasses')))
+const classSelect = computed(() => toSelect(visibleClasses.value))
 
-// Si la clase elegida deja de pertenecer a la superclase, se limpia.
-watch([superclassId, classOptions], () => {
-  if (!classOptions.value.length || !classId.value) return
-  if (!visibleClasses.value.some((option) => String(option.id) === classId.value)) {
-    classId.value = ''
-  }
+// Las clases marcadas que dejen de pertenecer a alguna superclase marcada
+// se limpian (las demás se quedan).
+watch([superclassIds, classOptions], () => {
+  if (!classOptions.value.length || !classIds.value.length) return
+  const valid = classIds.value.filter((id) =>
+    visibleClasses.value.some((option) => String(option.id) === id),
+  )
+  if (valid.length !== classIds.value.length) classIds.value = valid
 })
 
 // Nº de filtros activos (enseña el "Quitar filtros" de la barra derecha;
 // la búsqueda y el orden no cuentan).
 const activeFilters = computed(
   () =>
-    [factionId.value, superclassId.value, classId.value, raceId.value].filter(
-      (value) => value !== '',
+    [factionIds.value, superclassIds.value, classIds.value, raceIds.value].filter(
+      (values) => values.length > 0,
     ).length,
 )
 
@@ -167,14 +168,17 @@ async function load() {
   loading.value = true
   try {
     await site.load() // el head usa documentTitle: sin carreras en el prerender
+    // Cada filtro viaja como array (`clave[]=`, serialización de axios);
+    // vacío = no viaja (no filtra).
+    const listParam = (values: string[]) => (values.length ? values : undefined)
     const { data } = await api.get('/heroes', {
       params: {
         page: page.value,
         search: search.value.trim() || undefined,
-        faction_id: factionId.value || undefined,
-        hero_superclass_id: superclassId.value || undefined,
-        hero_class_id: classId.value || undefined,
-        hero_race_id: raceId.value || undefined,
+        faction_id: listParam(factionIds.value),
+        hero_superclass_id: listParam(superclassIds.value),
+        hero_class_id: listParam(classIds.value),
+        hero_race_id: listParam(raceIds.value),
         sort: sort.value === 'name' ? undefined : sort.value,
       },
     })
@@ -196,10 +200,10 @@ async function load() {
 
 // "Quitar filtros" limpia SOLO los filtros (la búsqueda y el orden quedan).
 function clearFilters() {
-  factionId.value = ''
-  superclassId.value = ''
-  classId.value = ''
-  raceId.value = ''
+  factionIds.value = []
+  superclassIds.value = []
+  classIds.value = []
+  raceIds.value = []
 }
 
 function onPage(n: number) {
@@ -238,20 +242,32 @@ watch(() => locales.current, loadFilters, { immediate: true })
       :name-desc-label="t('catalog.sort.nameDesc')"
     />
 
-    <!-- Filtros en la barra derecha contextual (aplican en vivo) -->
+    <!-- Filtros en la barra derecha contextual (aplican en vivo, multivalor) -->
     <Teleport defer to="#app-right-sidebar-target">
-      <BaseSelect
-        v-model="factionId"
+      <MultiSelect
+        v-model="factionIds"
         :label="t('catalog.filters.faction')"
+        :placeholder="t('catalog.filters.allFactions')"
         :options="factionSelect"
       />
-      <BaseSelect
-        v-model="superclassId"
+      <MultiSelect
+        v-model="superclassIds"
         :label="t('catalog.filters.superclass')"
+        :placeholder="t('catalog.filters.allSuperclasses')"
         :options="superclassSelect"
       />
-      <BaseSelect v-model="classId" :label="t('catalog.filters.class')" :options="classSelect" />
-      <BaseSelect v-model="raceId" :label="t('catalog.filters.race')" :options="raceSelect" />
+      <MultiSelect
+        v-model="classIds"
+        :label="t('catalog.filters.class')"
+        :placeholder="t('catalog.filters.allClasses')"
+        :options="classSelect"
+      />
+      <MultiSelect
+        v-model="raceIds"
+        :label="t('catalog.filters.race')"
+        :placeholder="t('catalog.filters.allRaces')"
+        :options="raceSelect"
+      />
 
       <!-- "Quitar filtros" (solo con filtros activos), como el pie del
            antiguo modal: la búsqueda y el orden se quedan como están -->

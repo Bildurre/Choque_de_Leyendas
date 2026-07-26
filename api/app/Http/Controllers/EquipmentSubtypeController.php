@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\EquipmentSubtypeResource;
 use App\Models\EquipmentSubtype;
@@ -11,18 +12,19 @@ use Illuminate\Support\Facades\Validator;
 /** CRUD de admin para los subtipos de equipo (taxonomía sin slug: por id). */
 class EquipmentSubtypeController extends Controller
 {
+    use FiltersByIds;
     use SortsIndex;
 
     public function index(Request $request)
     {
+        // Filtro multivalor (escalar o array, contrato de FiltersByIds).
+        $typeIds = $this->idsFrom($request, 'equipment_type_id');
+
         $subtypes = EquipmentSubtype::query()
             ->with('equipmentType')
             ->filter($request->only('search', 'status'))
-            // Filtro del listado (select en el panel derecho).
-            ->when(
-                $request->filled('equipment_type_id'),
-                fn ($query) => $query->where('equipment_type_id', $request->integer('equipment_type_id')),
-            )
+            // Filtro del listado (multiselect en el panel derecho).
+            ->when($typeIds !== [], fn ($query) => $query->whereIn('equipment_type_id', $typeIds))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 

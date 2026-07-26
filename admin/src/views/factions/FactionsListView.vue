@@ -145,17 +145,27 @@ onMounted(init)
             class="rich-content factions__panel-lore"
             v-html="tr(selected.lore_text)"
           ></div>
+          <!-- Cantidades como ENLACES a cada index filtrado por esta facción -->
           <ul class="factions__panel-counts">
             <li>
-              <strong>{{ t('factions.counts.heroes') }}</strong
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'heroes', query: { faction_id: String(selected.id) } }"
+                ><strong>{{ t('factions.counts.heroes') }}</strong></RouterLink
               ><span>{{ selected.heroes_count ?? 0 }}</span>
             </li>
             <li>
-              <strong>{{ t('factions.counts.cards') }}</strong
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'cards', query: { faction_id: String(selected.id) } }"
+                ><strong>{{ t('factions.counts.cards') }}</strong></RouterLink
               ><span>{{ selected.cards_count ?? 0 }}</span>
             </li>
             <li>
-              <strong>{{ t('factions.counts.decks') }}</strong
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'faction-decks', query: { faction_id: String(selected.id) } }"
+                ><strong>{{ t('factions.counts.decks') }}</strong></RouterLink
               ><span>{{ selected.faction_decks_count ?? 0 }}</span>
             </li>
           </ul>

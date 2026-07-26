@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { ArrowRight, Plus } from '@lucide/vue'
+import { ArrowRight, FunnelX, Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseTabs, MultiSelect } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import { api } from '@/lib/api'
 import type { Card, Translations } from '@juego/shared'
@@ -14,8 +14,9 @@ import AttackLine from '@/components/game/AttackLine.vue'
 import CardEffect from '@/components/cards/CardEffect.vue'
 
 // Cartas: entidad completa con slug, single, publicación y previews PNG.
-// El listado filtra por facción y tipo con selects en el panel derecho
-// (slot `filters` del EntityPanel).
+// El listado filtra por facción y tipo con multiselects en el panel derecho
+// (slot `filters` del EntityPanel): cada filtro admite varios valores
+// (unión) y viaja como `clave[]=`.
 const {
   t,
   items,
@@ -26,6 +27,7 @@ const {
   search,
   sort,
   filters,
+  clearFilters,
   tabs,
   tr,
   init,
@@ -50,6 +52,8 @@ const {
   singleRoute: 'card-single',
   nameOf: (item) => item.name,
   previewKey: 'card',
+  // Enlaces entrantes por query (p. ej. desde el panel/single de facción).
+  queryFilters: ['faction_id', 'card_type_id'],
 })
 
 // Opciones de los selects de filtro del panel (endpoints options,
@@ -61,10 +65,11 @@ interface FilterOption {
 const factions = ref<FilterOption[]>([])
 const cardTypes = ref<FilterOption[]>([])
 
-const factionOptions = computed(() => [
-  { value: '', label: t('cards.filters.allFactions') },
-  ...factions.value.map((f) => ({ value: String(f.id), label: tr(f.name) })),
-])
+// Sin opción "Todas" en la lista: sin nada marcado, el placeholder del
+// MultiSelect ya dice "Todas las …".
+const factionOptions = computed(() =>
+  factions.value.map((f) => ({ value: String(f.id), label: tr(f.name) })),
+)
 
 /**
  * Línea de tipado de una carta: tipo · subtipo · tipo de equipo · subtipo
@@ -85,10 +90,9 @@ function hasEffectContent(item: Card): boolean {
   return tr(item.effect) !== '—' || tr(item.restriction) !== '—' || !!item.hero_ability
 }
 
-const cardTypeOptions = computed(() => [
-  { value: '', label: t('cards.filters.allTypes') },
-  ...cardTypes.value.map((ct) => ({ value: String(ct.id), label: tr(ct.name) })),
-])
+const cardTypeOptions = computed(() =>
+  cardTypes.value.map((ct) => ({ value: String(ct.id), label: tr(ct.name) })),
+)
 
 async function loadFilterOptions() {
   try {
@@ -220,18 +224,24 @@ onMounted(async () => {
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
-      <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+      <!-- Filtros del listado: aplican en vivo (sin guardar), multivalor -->
       <template #filters>
-        <BaseSelect
+        <MultiSelect
           v-model="filters.faction_id"
           :label="t('cards.fields.faction')"
+          :placeholder="t('cards.filters.allFactions')"
           :options="factionOptions"
         />
-        <BaseSelect
+        <MultiSelect
           v-model="filters.card_type_id"
           :label="t('cards.fields.type')"
+          :placeholder="t('cards.filters.allTypes')"
           :options="cardTypeOptions"
         />
+        <BaseButton variant="text" type="button" @click="clearFilters">
+          <template #icon><FunnelX :size="14" /></template>
+          {{ t('common.filters.clear') }}
+        </BaseButton>
       </template>
 
       <template #meta>

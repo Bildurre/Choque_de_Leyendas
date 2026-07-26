@@ -127,6 +127,9 @@ $icon-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
   &__identity {
     display: grid;
     gap: 2px;
+
+    // Los puntos separadores de raza · clase · superclase, con más aire.
+    .manager-detail__meta > span:not(.hero-link) { margin-inline: $space-1; }
   }
 }
 

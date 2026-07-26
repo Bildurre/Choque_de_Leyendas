@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
-import { ArrowRight, Plus } from '@lucide/vue'
+import { ArrowRight, FunnelX, Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseTabs, MultiSelect } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import { api } from '@/lib/api'
 import type { Hero, HeroAbilityRef, HeroClassOption, Translations } from '@juego/shared'
@@ -12,8 +12,9 @@ import ListToolbar from '@/components/ListToolbar.vue'
 import CostDice from '@/components/game/CostDice.vue'
 
 // Héroes: entidad completa con slug, single, publicación y previews PNG.
-// El listado filtra por facción, superclase, clase y raza con selects en
-// el panel derecho (slot `filters` del EntityPanel), como en Cartas.
+// El listado filtra por facción, superclase, clase y raza con multiselects
+// en el panel derecho (slot `filters` del EntityPanel), como en Cartas:
+// cada filtro admite varios valores (unión) y viaja como `clave[]=`.
 const {
   t,
   locales,
@@ -25,6 +26,7 @@ const {
   search,
   sort,
   filters,
+  clearFilters,
   tabs,
   tr,
   init,
@@ -65,36 +67,36 @@ const superclasses = ref<FilterOption[]>([])
 const classes = ref<HeroClassOption[]>([])
 const races = ref<FilterOption[]>([])
 
-const factionOptions = computed(() => [
-  { value: '', label: t('heroes.filters.allFactions') },
-  ...factions.value.map((f) => ({ value: String(f.id), label: tr(f.name) })),
-])
-const superclassOptions = computed(() => [
-  { value: '', label: t('heroes.filters.allSuperclasses') },
-  ...superclasses.value.map((s) => ({ value: String(s.id), label: tr(s.name) })),
-])
-// Acotada por la superclase elegida (si hay una): solo sus clases.
+// Sin opción "Todas" en la lista: sin nada marcado, el placeholder del
+// MultiSelect ya dice "Todas las …".
+const factionOptions = computed(() =>
+  factions.value.map((f) => ({ value: String(f.id), label: tr(f.name) })),
+)
+const superclassOptions = computed(() =>
+  superclasses.value.map((s) => ({ value: String(s.id), label: tr(s.name) })),
+)
+// Acotada por las superclases marcadas (si hay alguna): las clases de
+// CUALQUIERA de ellas.
 const classOptions = computed(() => {
-  const bySuperclass = filters.hero_superclass_id
-    ? classes.value.filter((c) => String(c.hero_superclass_id) === filters.hero_superclass_id)
+  const chosen = filters.hero_superclass_id ?? []
+  const bySuperclass = chosen.length
+    ? classes.value.filter((c) => chosen.includes(String(c.hero_superclass_id)))
     : classes.value
-  return [
-    { value: '', label: t('heroes.filters.allClasses') },
-    ...bySuperclass.map((c) => ({ value: String(c.id), label: tr(c.name) })),
-  ]
+  return bySuperclass.map((c) => ({ value: String(c.id), label: tr(c.name) }))
 })
-const raceOptions = computed(() => [
-  { value: '', label: t('heroes.filters.allRaces') },
-  ...races.value.map((r) => ({ value: String(r.id), label: tr(r.name) })),
-])
+const raceOptions = computed(() =>
+  races.value.map((r) => ({ value: String(r.id), label: tr(r.name) })),
+)
 
-// Si la clase elegida deja de pertenecer a la superclase elegida, se limpia.
+// Las clases marcadas que dejen de pertenecer a alguna superclase marcada
+// se limpian (las demás se quedan).
 watch(
   () => filters.hero_superclass_id,
   () => {
-    if (!filters.hero_class_id) return
-    const stillValid = classOptions.value.some((o) => o.value === filters.hero_class_id)
-    if (!stillValid) filters.hero_class_id = ''
+    const chosen = filters.hero_class_id ?? []
+    if (!chosen.length) return
+    const valid = chosen.filter((id) => classOptions.value.some((o) => o.value === id))
+    if (valid.length !== chosen.length) filters.hero_class_id = valid
   },
 )
 
@@ -118,9 +120,9 @@ function factionSlug(hero: Hero): string {
 function applyFilter(key: string, id: number | null | undefined) {
   if (!id) return
   for (const k of ['faction_id', 'hero_superclass_id', 'hero_class_id', 'hero_race_id']) {
-    if (k !== key) filters[k] = ''
+    if (k !== key) filters[k] = []
   }
-  filters[key] = String(id)
+  filters[key] = [String(id)]
 }
 
 /**
@@ -255,28 +257,36 @@ onMounted(async () => {
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
-      <!-- Filtros del listado: aplican en vivo (sin guardar) -->
+      <!-- Filtros del listado: aplican en vivo (sin guardar), multivalor -->
       <template #filters>
-        <BaseSelect
+        <MultiSelect
           v-model="filters.faction_id"
           :label="t('heroes.fields.faction')"
+          :placeholder="t('heroes.filters.allFactions')"
           :options="factionOptions"
         />
-        <BaseSelect
+        <MultiSelect
           v-model="filters.hero_superclass_id"
           :label="t('heroes.fields.superclass')"
+          :placeholder="t('heroes.filters.allSuperclasses')"
           :options="superclassOptions"
         />
-        <BaseSelect
+        <MultiSelect
           v-model="filters.hero_class_id"
           :label="t('heroes.fields.class')"
+          :placeholder="t('heroes.filters.allClasses')"
           :options="classOptions"
         />
-        <BaseSelect
+        <MultiSelect
           v-model="filters.hero_race_id"
           :label="t('heroes.fields.race')"
+          :placeholder="t('heroes.filters.allRaces')"
           :options="raceOptions"
         />
+        <BaseButton variant="text" type="button" @click="clearFilters">
+          <template #icon><FunnelX :size="14" /></template>
+          {{ t('common.filters.clear') }}
+        </BaseButton>
       </template>
 
       <template #meta>

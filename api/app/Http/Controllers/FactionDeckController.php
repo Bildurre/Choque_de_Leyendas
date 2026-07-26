@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SanitizesRichText;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Resources\FactionDeckResource;
@@ -18,16 +19,26 @@ use Illuminate\Support\Facades\Validator;
  */
 class FactionDeckController extends Controller
 {
+    use FiltersByIds;
     use SanitizesRichText;
     use SortsIndex;
 
     public function index(Request $request)
     {
+        // Filtro multivalor (escalar o array, contrato de FiltersByIds).
+        $factionIds = $this->idsFrom($request, 'faction_id');
+
         $decks = FactionDeck::query()
             ->with(['gameMode', 'factions'])
             ->withSum('cards as total_cards', 'card_faction_deck.copies')
             ->withCount('heroes as total_heroes')
             ->filter($request->only('search', 'status'))
+            // Filtro por facción (pivot): lo usan los enlaces del panel y el
+            // single de facción ("mazos de esta facción").
+            ->when($factionIds !== [], fn ($query) => $query->whereHas(
+                'factions',
+                fn ($q) => $q->whereIn('factions.id', $factionIds),
+            ))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);
 

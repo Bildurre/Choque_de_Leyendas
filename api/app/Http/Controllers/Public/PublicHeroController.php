@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Public\PublicHeroResource;
@@ -21,6 +22,7 @@ use Illuminate\Http\Request;
  */
 class PublicHeroController extends Controller
 {
+    use FiltersByIds;
     use SortsIndex;
 
     /**
@@ -30,7 +32,8 @@ class PublicHeroController extends Controller
      * locale activo), faction_id, hero_class_id, hero_superclass_id
      * (héroes cuya clase pertenece a esa superclase), hero_race_id y sort
      * (name|name_desc|latest|oldest; por defecto nombre asc del locale
-     * activo). Ítems {id, name, slug, preview}.
+     * activo). Los filtros de id aceptan escalar o array (whereIn,
+     * contrato de FiltersByIds). Ítems {id, name, slug, preview}.
      */
     public function index(Request $request)
     {
@@ -38,17 +41,18 @@ class PublicHeroController extends Controller
         // Búsqueda multi-campo del motor (published ya lo aplica el scope propio)
         $query = Hero::published()->filter($request->only('search'));
 
+        // Filtros multivalor: escalar o array → whereIn.
         foreach (['faction_id', 'hero_class_id', 'hero_race_id'] as $column) {
-            if (($id = (int) $request->query($column)) > 0) {
-                $query->where($column, $id);
+            if (($ids = $this->idsFrom($request, $column)) !== []) {
+                $query->whereIn($column, $ids);
             }
         }
 
         // La superclase llega a través de la clase (el héroe no la guarda).
-        if (($superclassId = (int) $request->query('hero_superclass_id')) > 0) {
+        if (($superclassIds = $this->idsFrom($request, 'hero_superclass_id')) !== []) {
             $query->whereHas(
                 'heroClass',
-                fn ($q) => $q->where('hero_superclass_id', $superclassId),
+                fn ($q) => $q->whereIn('hero_superclass_id', $superclassIds),
             );
         }
 

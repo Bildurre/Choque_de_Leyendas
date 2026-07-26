@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Public\PublicFactionDeckItemResource;
@@ -18,6 +19,7 @@ use Illuminate\Http\Request;
  */
 class PublicFactionDeckController extends Controller
 {
+    use FiltersByIds;
     use SortsIndex;
 
     /**
@@ -26,7 +28,8 @@ class PublicFactionDeckController extends Controller
      * el json de cada columna de $searchable — nombre y descripción; la
      * cita queda fuera — en el locale activo), game_mode_id y faction_id
      * (mazos que incluyan
-     * esa facción, pivot faction_deck_faction).
+     * esa facción, pivot faction_deck_faction). Ambos aceptan escalar o
+     * array (whereIn, contrato de FiltersByIds).
      */
     public function index(Request $request)
     {
@@ -39,12 +42,12 @@ class PublicFactionDeckController extends Controller
             ->withSum(['cards as total_cards' => fn ($q) => $q->published()], 'card_faction_deck.copies')
             ->withCount(['heroes as total_heroes' => fn ($q) => $q->published()]);
 
-        if (($modeId = (int) $request->query('game_mode_id')) > 0) {
-            $query->where('game_mode_id', $modeId);
+        if (($modeIds = $this->idsFrom($request, 'game_mode_id')) !== []) {
+            $query->whereIn('game_mode_id', $modeIds);
         }
 
-        if (($factionId = (int) $request->query('faction_id')) > 0) {
-            $query->whereHas('factions', fn ($q) => $q->where('factions.id', $factionId));
+        if (($factionIds = $this->idsFrom($request, 'faction_id')) !== []) {
+            $query->whereHas('factions', fn ($q) => $q->whereIn('factions.id', $factionIds));
         }
 
         // Contrato de `sort` (name|name_desc|latest|oldest); sin él (o con un

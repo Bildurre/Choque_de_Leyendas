@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
-import { Plus } from '@lucide/vue'
+import { FunnelX, Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
-import { BaseButton, BasePagination, BaseSelect, BaseTabs } from '@edc-motor/ui'
+import { BaseButton, BasePagination, BaseTabs, MultiSelect } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
 import { api } from '@/lib/api'
 import type { EquipmentSubtype, EquipmentTypeOption } from '@juego/shared'
@@ -12,7 +12,8 @@ import ListToolbar from '@/components/ListToolbar.vue'
 
 // Taxonomía sin slug, sin publicación y sin single: CRUD por id. Cada
 // subtipo pertenece a un tipo de equipo; el listado filtra por tipo con un
-// select en el panel derecho (slot `filters` del EntityPanel).
+// multiselect en el panel derecho (slot `filters` del EntityPanel): varios
+// tipos a la vez (unión), viajan como `equipment_type_id[]=`.
 const {
   t,
   items,
@@ -23,6 +24,7 @@ const {
   search,
   sort,
   filters,
+  clearFilters,
   tabs,
   tr,
   init,
@@ -49,10 +51,11 @@ const {
 // Opciones del select de filtro por tipo de equipo (endpoint options).
 const equipmentTypes = ref<EquipmentTypeOption[]>([])
 
-const typeOptions = computed(() => [
-  { value: '', label: t('equipmentSubtypes.filters.allTypes') },
-  ...equipmentTypes.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
-])
+// Sin opción "Todos" en la lista: sin nada marcado, el placeholder del
+// MultiSelect ya dice "Todos los tipos".
+const typeOptions = computed(() =>
+  equipmentTypes.value.map((o) => ({ value: String(o.id), label: tr(o.name) })),
+)
 
 // Paleta del juego (tokens del admin: $danger, $info, $warning, $success +
 // dos acentos más) para teñir el badge del tipo de equipo. Criterio: color
@@ -156,13 +159,18 @@ onMounted(async () => {
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
-      <!-- Filtro del listado: aplica en vivo (sin guardar) -->
+      <!-- Filtro del listado: aplica en vivo (sin guardar), multivalor -->
       <template #filters>
-        <BaseSelect
+        <MultiSelect
           v-model="filters.equipment_type_id"
           :label="t('equipmentSubtypes.fields.type')"
+          :placeholder="t('equipmentSubtypes.filters.allTypes')"
           :options="typeOptions"
         />
+        <BaseButton variant="text" type="button" @click="clearFilters">
+          <template #icon><FunnelX :size="14" /></template>
+          {{ t('common.filters.clear') }}
+        </BaseButton>
       </template>
 
       <template #meta>

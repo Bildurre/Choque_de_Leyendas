@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Public;
 
+use App\Http\Controllers\Concerns\FiltersByIds;
 use App\Http\Controllers\Concerns\SortsIndex;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Public\PublicCardResource;
@@ -25,6 +26,7 @@ use Illuminate\Http\Request;
  */
 class PublicCardController extends Controller
 {
+    use FiltersByIds;
     use SortsIndex;
 
     /**
@@ -37,8 +39,9 @@ class PublicCardController extends Controller
      * (physical|magical), area ('1'/'0'; ausente = no filtra), cost_total
      * (0..5; 0 = cartas sin coste), cost_colors (subconjunto de "RGB": la
      * carta debe contener al menos esos dados) y sort (name|name_desc|
-     * latest|oldest; por defecto nombre asc del locale activo). Ítems
-     * {id, name, slug, preview}.
+     * latest|oldest; por defecto nombre asc del locale activo). Los filtros
+     * de id y de enum aceptan escalar o array (whereIn, contrato de
+     * FiltersByIds). Ítems {id, name, slug, preview}.
      */
     public function index(Request $request)
     {
@@ -46,36 +49,38 @@ class PublicCardController extends Controller
         // Búsqueda multi-campo del motor (published ya lo aplica el scope propio)
         $query = Card::published()->filter($request->only('search'));
 
-        if (($factionId = (int) $request->query('faction_id')) > 0) {
-            $query->ofFaction($factionId);
-        }
-
-        if (($typeId = (int) $request->query('card_type_id')) > 0) {
-            $query->ofType($typeId);
-        }
-
-        // Filtros por columna directa (ids de taxonomías del juego).
-        foreach (['card_subtype_id', 'equipment_type_id', 'equipment_subtype_id', 'attack_range_id', 'attack_subtype_id'] as $column) {
-            if (($id = (int) $request->query($column)) > 0) {
-                $query->where($column, $id);
+        // Filtros por columna directa (ids de taxonomías del juego),
+        // multivalor: escalar o array → whereIn.
+        foreach (['faction_id', 'card_type_id', 'card_subtype_id', 'equipment_type_id', 'equipment_subtype_id', 'attack_range_id', 'attack_subtype_id'] as $column) {
+            if (($ids = $this->idsFrom($request, $column)) !== []) {
+                $query->whereIn($column, $ids);
             }
         }
 
-        $attackType = $request->query('attack_type');
-        if (in_array($attackType, Card::ATTACK_TYPES, true)) {
-            $query->where('attack_type', $attackType);
+        $attackTypes = $this->valuesFrom($request, 'attack_type', Card::ATTACK_TYPES);
+        if ($attackTypes !== []) {
+            $query->whereIn('attack_type', $attackTypes);
         }
 
-        // area llega como '1'/'0'; ausente (o cualquier otra cosa) no filtra.
-        $area = $request->query('area');
-        if (in_array($area, ['1', '0'], true)) {
-            $query->where('area', $area === '1');
+        // area llega como '1'/'0'; ausente (o cualquier otra cosa) no filtra
+        // (ambos marcados = no acota nada).
+        $areas = $this->valuesFrom($request, 'area', ['1', '0']);
+        if ($areas !== []) {
+            $query->whereIn('area', array_map(fn (string $area) => $area === '1', $areas));
         }
 
-        // 0 también vale: cartas sin coste (cost NULL).
-        $costTotal = $request->query('cost_total');
-        if (is_string($costTotal) && ctype_digit($costTotal) && (int) $costTotal <= Card::COST_MAX) {
-            $query->costTotal((int) $costTotal);
+        // 0 también vale: cartas sin coste (cost NULL) — por eso el multi es
+        // un OR de scopes costTotal y no un whereIn sobre length(cost).
+        $costTotals = array_values(array_map('intval', array_filter(
+            $this->valuesFrom($request, 'cost_total'),
+            fn (string $total) => ctype_digit($total) && (int) $total <= Card::COST_MAX,
+        )));
+        if ($costTotals !== []) {
+            $query->where(function ($group) use ($costTotals) {
+                foreach ($costTotals as $total) {
+                    $group->orWhere(fn ($sub) => $sub->costTotal($total));
+                }
+            });
         }
 
         if (($colors = (string) $request->query('cost_colors')) !== '') {

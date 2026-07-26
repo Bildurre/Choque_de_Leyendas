@@ -2,12 +2,12 @@
 import { computed, ref, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { FunnelX } from '@lucide/vue'
-import { BaseButton, BaseSelect, BaseTabs, IndexToolbar, useAppRightSidebar } from '@edc-motor/ui'
+import { BaseButton, BaseTabs, IndexToolbar, MultiSelect, useAppRightSidebar } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
 import IndexHeader from '@/components/IndexHeader.vue'
 import { useIndexPage } from '@/entities/indexPage'
-import { useFiltersQuery } from '@/entities/filtersQuery'
+import { csvField, useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
 
 // Índice público de mazos: patrón unificado de los índices (IndexToolbar
@@ -16,7 +16,10 @@ import { parseSort, type SortOption } from '@/entities/catalogSort'
 // GET /api/faction-decks/filters, + "Todos") que alimenta game_mode_id en
 // el servidor y se QUEDA en la vista; el filtro de facción va en la barra
 // derecha contextual (AppRightSidebar: registro + Teleport; el botón Funnel
-// del header la despliega). 'name' es el default histórico del endpoint.
+// del header la despliega) y es MULTISELECT: varias facciones a la vez
+// (unión; la API filtra con whereIn y recibe `faction_id[]=`, y en la URL
+// viaja como lista separada por comas). 'name' es el default histórico del
+// endpoint.
 // Cada tarjeta ya lleva el nombre de su modo, así que dentro de una pestaña
 // no hace falta agrupar nada. Todo vive en la query string (useFiltersQuery).
 interface DeckRow extends FactionDeckCardData {
@@ -40,10 +43,10 @@ const loading = ref(true)
 // vista (el token evita pisar el registro de la vista entrante).
 useAppRightSidebar().useRegister()
 
-// Estado de los filtros ('' = todos).
+// Estado de los filtros ('' = todos; la facción es array, [] = todas).
 const search = ref('')
 const mode = ref('')
-const factionId = ref('')
+const factionIds = ref<string[]>([])
 
 // Orden: 'name' es el default del índice (fuera de la URL; el endpoint sin
 // ?sort ordena por nombre asc del locale).
@@ -60,7 +63,7 @@ const { queryToState } = useFiltersQuery({
   route,
   router,
   search,
-  fields: { mode, faction: factionId, sort: sortRaw },
+  fields: { mode, faction: csvField(factionIds), sort: sortRaw },
 })
 
 // Opciones (localizadas por el server; se recargan por locale).
@@ -86,14 +89,15 @@ watch([mode, modeOptions], () => {
   if (!modeOptions.value.some((option) => String(option.id) === mode.value)) mode.value = ''
 })
 
-const factionSelect = computed(() => [
-  { value: '', label: t('catalog.filters.allFactions') },
-  ...factionOptions.value.map((option) => ({ value: String(option.id), label: option.name })),
-])
+// Opciones del MultiSelect: sin opción "Todas" en la lista (sin nada
+// marcado, el placeholder ya dice "Todas las facciones").
+const factionSelect = computed(() =>
+  factionOptions.value.map((option) => ({ value: String(option.id), label: option.name })),
+)
 
 // Nº de filtros activos (enseña el "Quitar filtros" de la barra derecha; la
 // pestaña de modo, la búsqueda y el orden no cuentan).
-const activeFilters = computed(() => (factionId.value ? 1 : 0))
+const activeFilters = computed(() => (factionIds.value.length ? 1 : 0))
 
 // --- Cargas ---
 
@@ -118,7 +122,9 @@ async function load() {
       params: {
         search: search.value.trim() || undefined,
         game_mode_id: mode.value || undefined,
-        faction_id: factionId.value || undefined,
+        // La facción viaja como array (`faction_id[]=`, serialización de
+        // axios); vacío = no viaja (no filtra).
+        faction_id: factionIds.value.length ? factionIds.value : undefined,
         sort: sort.value === 'name' ? undefined : sort.value,
       },
     })
@@ -133,7 +139,7 @@ async function load() {
 
 // "Quitar filtros" limpia SOLO los filtros (pestaña, búsqueda y orden quedan).
 function clearFilters() {
-  factionId.value = ''
+  factionIds.value = []
 }
 
 // El cambio de query ES el disparador de la recarga (también el botón atrás
@@ -165,11 +171,13 @@ watch(() => locales.current, loadFilters, { immediate: true })
       :name-desc-label="t('catalog.sort.nameDesc')"
     />
 
-    <!-- Filtro de facción en la barra derecha contextual (aplica en vivo) -->
+    <!-- Filtro de facción en la barra derecha contextual (aplica en vivo,
+         multivalor) -->
     <Teleport defer to="#app-right-sidebar-target">
-      <BaseSelect
-        v-model="factionId"
+      <MultiSelect
+        v-model="factionIds"
         :label="t('catalog.filters.faction')"
+        :placeholder="t('catalog.filters.allFactions')"
         :options="factionSelect"
       />
 

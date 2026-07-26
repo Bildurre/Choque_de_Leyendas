@@ -45,6 +45,8 @@ const {
   ns: 'factionDecks',
   singleRoute: 'faction-deck-single',
   nameOf: (item) => item.name,
+  // Enlaces entrantes por query (p. ej. desde el panel/single de facción).
+  queryFilters: ['faction_id'],
 })
 
 const toast = useToast()

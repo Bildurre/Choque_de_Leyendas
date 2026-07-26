@@ -86,7 +86,8 @@ const statPanels = computed<BarPanel[]>(() => {
   ].filter((p) => p.rows.length)
 })
 
-const costCurve = computed(() => stats.value?.cards.cost_curve ?? [])
+// Sin la columna de 5 dados: el coste real de las cartas llega hasta 4.
+const costCurve = computed(() => (stats.value?.cards.cost_curve ?? []).filter((c) => c.dice <= 4))
 const costCurveMax = computed(() => Math.max(...costCurve.value.map((c) => c.count), 1))
 
 function pct(count: number, max: number): string {
@@ -181,13 +182,32 @@ onBeforeUnmount(() => {
               }}
             </dd>
 
-            <dt>{{ t('factions.counts.heroes') }}</dt>
+            <!-- Etiquetas como ENLACES a cada index filtrado por esta facción -->
+            <dt>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'heroes', query: { faction_id: String(item.id) } }"
+                >{{ t('factions.counts.heroes') }}</RouterLink
+              >
+            </dt>
             <dd>{{ item.heroes_count ?? 0 }}</dd>
 
-            <dt>{{ t('factions.counts.cards') }}</dt>
+            <dt>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'cards', query: { faction_id: String(item.id) } }"
+                >{{ t('factions.counts.cards') }}</RouterLink
+              >
+            </dt>
             <dd>{{ item.cards_count ?? 0 }}</dd>
 
-            <dt>{{ t('factions.counts.decks') }}</dt>
+            <dt>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'faction-decks', query: { faction_id: String(item.id) } }"
+                >{{ t('factions.counts.decks') }}</RouterLink
+              >
+            </dt>
             <dd>{{ item.faction_decks_count ?? 0 }}</dd>
           </dl>
         </InfoBlock>
