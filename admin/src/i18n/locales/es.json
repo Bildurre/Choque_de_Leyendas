@@ -892,7 +892,16 @@
     },
     "filters": {
       "allFactions": "Todas las facciones",
-      "allTypes": "Todos los tipos"
+      "allTypes": "Todos los tipos",
+      "allSubtypes": "Todos los subtipos",
+      "allEquipmentTypes": "Todos los tipos de equipo",
+      "allEquipmentSubtypes": "Todos los subtipos de equipo",
+      "allAttackRanges": "Todos los rangos",
+      "allAttackTypes": "Todos los tipos de ataque",
+      "allAttackSubtypes": "Todos los subtipos de ataque",
+      "areaAll": "Con y sin área",
+      "areaYes": "Con área",
+      "areaNo": "Sin área"
     },
     "confirmDelete": {
       "title": "Enviar a la papelera",

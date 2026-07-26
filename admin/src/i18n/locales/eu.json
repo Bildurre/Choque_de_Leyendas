@@ -961,7 +961,16 @@
     },
     "filters": {
       "allFactions": "Fakzio guztiak",
-      "allTypes": "Mota guztiak"
+      "allTypes": "Mota guztiak",
+      "allSubtypes": "Azpimota guztiak",
+      "allEquipmentTypes": "Ekipamendu mota guztiak",
+      "allEquipmentSubtypes": "Ekipamendu azpimota guztiak",
+      "allAttackRanges": "Irismen guztiak",
+      "allAttackTypes": "Eraso mota guztiak",
+      "allAttackSubtypes": "Eraso-azpimota guztiak",
+      "areaAll": "Eremudunak eta eremurik gabeak",
+      "areaYes": "Eremuduna",
+      "areaNo": "Eremurik gabe"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",

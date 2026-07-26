@@ -22,27 +22,42 @@ class CardController extends Controller
 
     public function index(Request $request)
     {
-        // Filtros multivalor (escalar o array, contrato de FiltersByIds).
-        $factionIds = $this->idsFrom($request, 'faction_id');
         // Varias facciones a la vez (el editor de mazos acota los
         // disponibles a las facciones del mazo).
         $deckFactionIds = $this->idsFrom($request, 'faction_ids');
-        $typeIds = $this->idsFrom($request, 'card_type_id');
 
-        $cards = Card::query()
+        $query = Card::query()
             // El listado pinta el tipado completo (tipo, subtipo, equipo,
             // ataque) y el panel derecho el efecto con su habilidad otorgada.
             ->with($this->relations())
             ->filter($request->only('search', 'status'))
-            // Filtros del listado (multiselects junto a la búsqueda).
-            ->when($factionIds !== [], fn ($q) => $q->whereIn('faction_id', $factionIds))
-            ->when($deckFactionIds !== [], fn ($q) => $q->whereIn('faction_id', $deckFactionIds))
-            ->when($typeIds !== [], fn ($q) => $q->whereIn('card_type_id', $typeIds))
-            // TODO filtro por coste (lo pedirá la vista como en el viejo):
-            // ->when($request->filled('cost'),
-            //     fn ($q) => $q->where('cost', Card::normalizeCost($request->string('cost'))))
-            ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
-            ->paginate(15);
+            ->when($deckFactionIds !== [], fn ($q) => $q->whereIn('faction_id', $deckFactionIds));
+
+        // Filtros del listado (multiselects del panel derecho), multivalor:
+        // escalar o array → whereIn (contrato de FiltersByIds, mismas claves
+        // que el índice público).
+        foreach (['faction_id', 'card_type_id', 'card_subtype_id', 'equipment_type_id', 'equipment_subtype_id', 'attack_range_id', 'attack_subtype_id'] as $column) {
+            if (($ids = $this->idsFrom($request, $column)) !== []) {
+                $query->whereIn($column, $ids);
+            }
+        }
+
+        $attackTypes = $this->valuesFrom($request, 'attack_type', Card::ATTACK_TYPES);
+        if ($attackTypes !== []) {
+            $query->whereIn('attack_type', $attackTypes);
+        }
+
+        // area llega como '1'/'0'; ausente (o cualquier otra cosa) no filtra
+        // (ambos marcados = no acota nada).
+        $areas = $this->valuesFrom($request, 'area', ['1', '0']);
+        if ($areas !== []) {
+            $query->whereIn('area', array_map(fn (string $area) => $area === '1', $areas));
+        }
+
+        // TODO filtro por coste (lo pedirá la vista como en el viejo):
+        // ->when($request->filled('cost'),
+        //     fn ($q) => $q->where('cost', Card::normalizeCost($request->string('cost'))))
+        $cards = $this->applySort($query, $request->query('sort'))->paginate(15);
 
         return CardResource::collection($cards);
     }

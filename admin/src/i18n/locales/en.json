@@ -961,7 +961,16 @@
     },
     "filters": {
       "allFactions": "All factions",
-      "allTypes": "All types"
+      "allTypes": "All types",
+      "allSubtypes": "All subtypes",
+      "allEquipmentTypes": "All equipment types",
+      "allEquipmentSubtypes": "All equipment subtypes",
+      "allAttackRanges": "All ranges",
+      "allAttackTypes": "All attack types",
+      "allAttackSubtypes": "All attack subtypes",
+      "areaAll": "With and without area",
+      "areaYes": "With area",
+      "areaNo": "Without area"
     },
     "confirmDelete": {
       "title": "Send to trash",

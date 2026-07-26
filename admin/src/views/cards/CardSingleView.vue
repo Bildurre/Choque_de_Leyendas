@@ -15,12 +15,13 @@ import CardEffect from '@/components/cards/CardEffect.vue'
 import PreviewPanel from '@/components/previews/PreviewPanel.vue'
 import InfoBlock from '@/components/InfoBlock.vue'
 import CostDice from '@/components/game/CostDice.vue'
-import AttackLine from '@/components/game/AttackLine.vue'
 
 // Single de carta en secciones info-block (borde sin fondo): detalles de la
-// carta y, si corresponde, del ataque — texto plano o coloreado, sin chips
-// (regla transversal). El efecto integra la habilidad de héroe otorgada,
-// como en la preview (CardEffect).
+// carta y, si corresponde, del ataque (a su derecha mientras quepan) — texto
+// plano o coloreado, sin chips (regla transversal). La facción enlaza a su
+// single y el tipado al index de cartas filtrado, como en el panel del
+// listado. El efecto integra la habilidad de héroe otorgada, como en la
+// preview (CardEffect).
 const { t } = useI18n()
 const route = useRoute()
 const router = useRouter()
@@ -54,6 +55,24 @@ const hasEffectContent = computed(
       tr(item.value.restriction) !== '—' ||
       !!item.value.hero_ability),
 )
+
+/** Slug localizado de la facción embebida (enlace a su single). */
+const factionSlug = computed(() => {
+  const slug = item.value?.faction?.slug
+  return slug?.[locales.current] || Object.values(slug ?? {})[0] || ''
+})
+
+/**
+ * Enlace al index de cartas con un filtro aplicado (mismas claves que los
+ * queryFilters del listado, como los heroesFilterLink de héroes). Los
+ * términos de EQUIPO son filtros condicionales del index: viaja también el
+ * tipo de la carta (que es equipo) para que sigan visibles y aplicando.
+ */
+function cardsFilterLink(key: string, id: number | null | undefined, withTypeId?: number | null) {
+  const query: Record<string, string> = { [key]: String(id ?? '') }
+  if (withTypeId) query.card_type_id = String(withTypeId)
+  return { name: 'cards', query }
+}
 
 async function load() {
   loading.value = true
@@ -123,69 +142,134 @@ onBeforeUnmount(() => {
       <div class="single__info">
         <h1>{{ tr(item.name) }}</h1>
 
-        <!-- Sin chips: texto plano (la identidad de la facción, en una
-             muestra de color al lado) y la única en ámbar -->
-        <InfoBlock :title="t('cards.sections.details')">
-          <dl class="info-list">
-            <dt>{{ t('cards.fields.faction') }}</dt>
-            <dd>
-              <span
-                v-if="item.faction?.color"
-                class="swatch"
-                :style="{ background: item.faction.color }"
-              />{{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}
-            </dd>
-
-            <template v-if="item.cost">
-              <dt>{{ t('cards.fields.cost') }}</dt>
-              <dd><CostDice :cost="item.cost" size="medium" /></dd>
-            </template>
-
-            <template v-if="item.card_type">
-              <dt>{{ t('cards.fields.type') }}</dt>
-              <dd>{{ tr(item.card_type.name) }}</dd>
-            </template>
-
-            <template v-if="item.card_subtype">
-              <dt>{{ t('cards.fields.subtype') }}</dt>
-              <dd>{{ tr(item.card_subtype.name) }}</dd>
-            </template>
-
-            <template v-if="item.equipment_type">
-              <dt>{{ t('cards.fields.equipmentType') }}</dt>
-              <dd>{{ tr(item.equipment_type.name) }}</dd>
-            </template>
-
-            <template v-if="item.equipment_subtype">
-              <dt>{{ t('cards.fields.equipmentSubtype') }}</dt>
-              <dd>{{ tr(item.equipment_subtype.name) }}</dd>
-            </template>
-
-            <template v-if="item.hands">
-              <dt>{{ t('cards.fields.hands') }}</dt>
+        <!-- Sin chips: texto plano y la única en ámbar. La facción enlaza a
+             su single (sin muestra de color) y el tipado al index de cartas
+             filtrado, como en el panel del listado. Detalles y Ataque
+             comparten fila mientras quepan (rejilla auto-fit). -->
+        <div class="card-single__cards">
+          <InfoBlock :title="t('cards.sections.details')">
+            <dl class="info-list">
+              <dt>{{ t('cards.fields.faction') }}</dt>
               <dd>
-                {{ t(item.hands > 1 ? 'cards.fields.twoHands' : 'cards.fields.oneHand') }}
+                <RouterLink
+                  v-if="item.faction && factionSlug"
+                  class="hero-link"
+                  :to="{ name: 'faction-single', params: { slug: factionSlug } }"
+                >
+                  {{ tr(item.faction.name) }}
+                </RouterLink>
+                <template v-else>
+                  {{ item.faction ? tr(item.faction.name) : t('cards.fields.noFaction') }}
+                </template>
               </dd>
-            </template>
 
-            <template v-if="item.is_unique">
-              <dt>{{ t('cards.fields.isUnique') }}</dt>
-              <dd>
-                <span class="tinted-unique">{{ t('cards.state.unique') }}</span>
-              </dd>
-            </template>
-          </dl>
-        </InfoBlock>
+              <template v-if="item.cost">
+                <dt>{{ t('cards.fields.cost') }}</dt>
+                <dd><CostDice :cost="item.cost" size="medium" /></dd>
+              </template>
 
-        <!-- Detalles del ataque, si corresponde: rango-tipo-subtipo (+ área) -->
-        <InfoBlock v-if="hasAttack" :title="t('cards.sections.attack')">
-          <AttackLine
-            :range="item.attack_range"
-            :type="item.attack_type"
-            :subtype="item.attack_subtype"
-            :area="item.area"
-          />
-        </InfoBlock>
+              <template v-if="item.card_type">
+                <dt>{{ t('cards.fields.type') }}</dt>
+                <dd>
+                  <RouterLink
+                    class="hero-link"
+                    :to="cardsFilterLink('card_type_id', item.card_type_id)"
+                    >{{ tr(item.card_type.name) }}</RouterLink
+                  >
+                </dd>
+              </template>
+
+              <template v-if="item.card_subtype">
+                <dt>{{ t('cards.fields.subtype') }}</dt>
+                <dd>
+                  <RouterLink
+                    class="hero-link"
+                    :to="cardsFilterLink('card_subtype_id', item.card_subtype_id)"
+                    >{{ tr(item.card_subtype.name) }}</RouterLink
+                  >
+                </dd>
+              </template>
+
+              <template v-if="item.equipment_type">
+                <dt>{{ t('cards.fields.equipmentType') }}</dt>
+                <dd>
+                  <RouterLink
+                    class="hero-link"
+                    :to="
+                      cardsFilterLink(
+                        'equipment_type_id',
+                        item.equipment_type_id,
+                        item.card_type_id,
+                      )
+                    "
+                    >{{ tr(item.equipment_type.name) }}</RouterLink
+                  >
+                </dd>
+              </template>
+
+              <template v-if="item.equipment_subtype">
+                <dt>{{ t('cards.fields.equipmentSubtype') }}</dt>
+                <dd>
+                  <RouterLink
+                    class="hero-link"
+                    :to="
+                      cardsFilterLink(
+                        'equipment_subtype_id',
+                        item.equipment_subtype_id,
+                        item.card_type_id,
+                      )
+                    "
+                    >{{ tr(item.equipment_subtype.name) }}</RouterLink
+                  >
+                </dd>
+              </template>
+
+              <template v-if="item.hands">
+                <dt>{{ t('cards.fields.hands') }}</dt>
+                <dd>
+                  {{ t(item.hands > 1 ? 'cards.fields.twoHands' : 'cards.fields.oneHand') }}
+                </dd>
+              </template>
+
+              <template v-if="item.is_unique">
+                <dt>{{ t('cards.fields.isUnique') }}</dt>
+                <dd>
+                  <span class="tinted-unique">{{ t('cards.state.unique') }}</span>
+                </dd>
+              </template>
+            </dl>
+          </InfoBlock>
+
+          <!-- Detalles del ataque, si corresponde, en el mismo formato
+               etiqueta→valor: rango, tipo (coloreado), subtipo y área -->
+          <InfoBlock v-if="hasAttack" :title="t('cards.sections.attack')">
+            <dl class="info-list">
+              <template v-if="item.attack_range">
+                <dt>{{ t('cards.fields.attackRange') }}</dt>
+                <dd>{{ tr(item.attack_range.name) }}</dd>
+              </template>
+
+              <template v-if="item.attack_type">
+                <dt>{{ t('cards.fields.attackType') }}</dt>
+                <dd>
+                  <span :class="`tinted-${item.attack_type}`">{{
+                    t(`cards.attackTypes.${item.attack_type}`)
+                  }}</span>
+                </dd>
+              </template>
+
+              <template v-if="item.attack_subtype">
+                <dt>{{ t('cards.fields.attackSubtype') }}</dt>
+                <dd>{{ tr(item.attack_subtype.name) }}</dd>
+              </template>
+
+              <template v-if="item.area">
+                <dt>{{ t('cards.fields.areaChip') }}</dt>
+                <dd>{{ t('cards.filters.areaYes') }}</dd>
+              </template>
+            </dl>
+          </InfoBlock>
+        </div>
       </div>
     </div>
 
