@@ -3,6 +3,9 @@
 // Enlace discreto de las vistas de héroe (línea de identidad del panel,
 // info básica y habilidades del single): texto en el color normal, acento
 // solo al hover — que no parezca un botón. Sirve para RouterLink y button.
+// El icono de eslabón delante (mask, hereda el color) SEÑALA que es enlace.
+$icon-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71'/%3E%3Cpath d='M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71'/%3E%3C/svg%3E");
+
 .hero-link {
   background: none;
   border: 0;
@@ -13,6 +16,17 @@
   text-align: inherit;
   text-decoration: none;
   cursor: pointer;
+
+  &::before {
+    content: "";
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    margin-right: 3px;
+    background-color: currentColor;
+    -webkit-mask: $icon-link no-repeat center / contain;
+    mask: $icon-link no-repeat center / contain;
+  }
 
   &:hover,
   &:focus-visible { color: $accent-500; }
@@ -94,10 +108,25 @@
     }
   }
 
-  &__panel-passive-name {
+  // Pasiva del panel: "nombre: texto" en línea, compacta. El texto viene del
+  // wysiwyg: su primer párrafo se pinta inline para seguir a los dos puntos.
+  &__panel-passive {
     margin: 0;
     font-size: 0.85rem;
-    font-weight: $k-fw-semibold;
+
+    strong { margin-right: 2px; }
+  }
+
+  &__panel-passive-text {
+    color: $text-2;
+
+    p { display: inline; margin: 0; }
+    p + p { display: block; margin-top: $space-1; }
+  }
+
+  &__identity {
+    display: grid;
+    gap: 2px;
   }
 }
 
@@ -149,11 +178,12 @@
   }
 
   // Lista ordenable de habilidades activas (subir/bajar/quitar); container
-  // para los tramos responsive de .ability-row. La numeración va por counter
-  // (decimal inside no convive con el grid de la fila).
+  // para los tramos responsive de .ability-row. La numeración va por
+  // TEMPLATE (index + 1 en .ability-row__num): un counter CSS aquí dentro
+  // queda partido por el style containment del container-type (cada fila
+  // contaba en su propio ámbito y siempre pintaba "1").
   &__abilities {
     list-style: none;
-    counter-reset: ability;
     margin: 0;
     padding: 0;
     display: flex;
@@ -252,6 +282,14 @@
     margin: 0 0 $space-2;
   }
 
+  // Separador corto y centrado entre habilidades activas del single.
+  &__ability-sep {
+    width: 80%;
+    margin: 0 auto $space-4;
+    border: 0;
+    border-top: 1px solid $border;
+  }
+
   &__quote {
     margin: $space-4 0 0;
     padding-left: $space-4;
@@ -292,12 +330,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 
-    &::before {
-      counter-increment: ability;
-      content: counter(ability) '. ';
-      color: $text-3;
-    }
   }
+
+  &__num { color: $text-3; }
 
   &__meta {
     grid-area: meta;

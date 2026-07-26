@@ -174,24 +174,16 @@ onBeforeUnmount(() => {
             <dl class="info-list">
               <dt>{{ t('heroes.fields.faction') }}</dt>
               <dd>
-                <!-- Enlace discreto al single de la facción -->
+                <!-- Enlace discreto al single de la facción (sin caja de color) -->
                 <RouterLink
                   v-if="item.faction && factionSlug"
                   class="hero-link"
                   :to="{ name: 'faction-single', params: { slug: factionSlug } }"
                 >
-                  <span
-                    v-if="item.faction.color"
-                    class="swatch"
-                    :style="{ background: item.faction.color }"
-                  />{{ tr(item.faction.name) }}
+                  {{ tr(item.faction.name) }}
                 </RouterLink>
                 <template v-else>
-                  <span
-                    v-if="item.faction?.color"
-                    class="swatch"
-                    :style="{ background: item.faction.color }"
-                  />{{ item.faction ? tr(item.faction.name) : t('heroes.fields.noFaction') }}
+                  {{ item.faction ? tr(item.faction.name) : t('heroes.fields.noFaction') }}
                 </template>
               </dd>
 
@@ -275,7 +267,9 @@ onBeforeUnmount(() => {
         {{ t('heroes.fields.noAbilities') }}
       </p>
       <ol v-else class="hero-single__abilities">
-        <li v-for="ability in item.abilities" :key="ability.id">
+        <li v-for="(ability, index) in item.abilities" :key="ability.id">
+          <!-- Separador corto y centrado entre habilidades -->
+          <hr v-if="index > 0" class="hero-single__ability-sep" />
           <p class="hero-single__ability-head">
             <!-- Enlace discreto al index de habilidades con esta seleccionada -->
             <strong
