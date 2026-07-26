@@ -5,7 +5,7 @@ import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BasePagination, BaseTabs, useToast } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useEntityList } from '@/composables/useEntityList'
-import type { DeckPublishError, FactionDeck } from '@juego/shared'
+import type { DeckPublishError, FactionDeck, Translations } from '@juego/shared'
 import FactionDeckFormModal from '@/components/faction-decks/FactionDeckFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
@@ -14,6 +14,7 @@ import ListToolbar from '@/components/ListToolbar.vue'
 // acciones); "entrar" abre la single con el editor de cartas y héroes.
 const {
   t,
+  locales,
   items,
   meta,
   loading,
@@ -87,6 +88,11 @@ async function togglePublishDeck(item: FactionDeck) {
   }
 }
 
+/** Slug localizado de un héroe/carta embebido (enlace a su single). */
+function slugOf(item: { slug?: Translations }): string {
+  return item.slug?.[locales.current] || Object.values(item.slug ?? {})[0] || ''
+}
+
 /** Tras guardar el modal: refresca y, si es un mazo RECIÉN CREADO, directo
  *  a su editor — ahí se añaden las cartas y los héroes (y se publica). */
 function onDeckSaved(created?: FactionDeck) {
@@ -143,22 +149,18 @@ onMounted(init)
           </button>
         </template>
 
-        <!-- Sin badge de estado (los tabs ya separan): solo el modo de juego -->
+        <!-- Sin badge de estado (los tabs ya separan): el modo de juego y las
+             FACCIONES como chips teñidos (is-tinted, como héroes y cartas) -->
         <template #badges>
           <span v-if="item.game_mode" class="chip">{{ tr(item.game_mode.name) }}</span>
-        </template>
-
-        <template #meta>
-          <span>{{ t('factionDecks.counts.cards', { count: item.total_cards }) }}</span>
-          <span>{{ t('factionDecks.counts.heroes', { count: item.total_heroes }) }}</span>
           <span
             v-for="faction in item.factions ?? []"
             :key="faction.id"
-            class="faction-decks__faction-tag"
+            class="chip"
+            :class="{ 'is-tinted': !!faction.color }"
+            :style="faction.color ? { '--chip-tint': faction.color } : undefined"
+            >{{ tr(faction.name) }}</span
           >
-            <span class="swatch" :style="{ background: faction.color || 'transparent' }" />
-            {{ tr(faction.name) }}
-          </span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -192,25 +194,37 @@ onMounted(init)
       @force-delete="selected && forceDelete(selected)"
     >
       <template #meta>
-        <p v-if="selected" class="manager-detail__meta">
-          {{ t('factionDecks.counts.cards', { count: selected.total_cards }) }} ·
-          {{ t('factionDecks.counts.heroes', { count: selected.total_heroes }) }}
-        </p>
-        <!-- Contenido asignado (cartas con copias), cargado con el show -->
+        <!-- Contenido asignado, en secciones con divisoria + kicker (patrón
+             de héroes/cartas/facciones), cada sección con su total entre
+             paréntesis y cada elemento enlazado a su single -->
         <div v-if="selectedDetail" class="faction-decks__content">
           <template v-if="selectedDetail.heroes?.length">
-            <h4>{{ t('factionDecks.single.heroesTitle') }}</h4>
+            <hr class="manager-panel__divider" />
+            <p class="manager-panel__kicker">
+              {{ t('factionDecks.single.heroesTitle') }} ({{ selected?.total_heroes ?? 0 }})
+            </p>
             <ul>
               <li v-for="hero in selectedDetail.heroes" :key="hero.id">
-                <span class="faction-decks__content-name">{{ tr(hero.name) }}</span>
+                <RouterLink
+                  class="hero-link faction-decks__content-name"
+                  :to="{ name: 'hero-single', params: { slug: slugOf(hero) } }"
+                  >{{ tr(hero.name) }}</RouterLink
+                >
               </li>
             </ul>
           </template>
           <template v-if="selectedDetail.cards?.length">
-            <h4>{{ t('factionDecks.single.cardsTitle') }}</h4>
+            <hr class="manager-panel__divider" />
+            <p class="manager-panel__kicker">
+              {{ t('factionDecks.single.cardsTitle') }} ({{ selected?.total_cards ?? 0 }})
+            </p>
             <ul>
               <li v-for="card in selectedDetail.cards" :key="card.id">
-                <span class="faction-decks__content-name">{{ tr(card.name) }}</span>
+                <RouterLink
+                  class="hero-link faction-decks__content-name"
+                  :to="{ name: 'card-single', params: { slug: slugOf(card) } }"
+                  >{{ tr(card.name) }}</RouterLink
+                >
                 <span v-if="card.copies > 1" class="faction-decks__content-copies"
                   >×{{ card.copies }}</span
                 >

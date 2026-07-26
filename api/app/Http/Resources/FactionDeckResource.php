@@ -46,6 +46,8 @@ class FactionDeckResource extends JsonResource
                 fn (Hero $hero) => [
                     'id' => $hero->id,
                     'name' => $hero->getTranslations('name'),
+                    // Slug: el panel del listado enlaza cada héroe a su single.
+                    'slug' => $hero->getTranslations('slug'),
                     'image' => $hero->imageUrl(),
                     'faction_id' => $hero->faction_id,
                 ],
@@ -54,6 +56,8 @@ class FactionDeckResource extends JsonResource
                 fn (Card $card) => [
                     'id' => $card->id,
                     'name' => $card->getTranslations('name'),
+                    // Slug: el panel del listado enlaza cada carta a su single.
+                    'slug' => $card->getTranslations('slug'),
                     'cost' => $card->cost,
                     'image' => $card->imageUrl(),
                     'faction_id' => $card->faction_id,

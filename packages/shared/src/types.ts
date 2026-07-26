@@ -300,6 +300,8 @@ export interface DeckGameModeRef extends TaxonomyOption, DeckLimits {
 export interface DeckCardItem {
   id: number
   name: Translations
+  /** Solo en el show del mazo: el panel enlaza la carta a su single. */
+  slug?: Translations
   cost: string | null
   image: string | null
   faction_id: number | null
@@ -310,6 +312,8 @@ export interface DeckCardItem {
 export interface DeckHeroItem {
   id: number
   name: Translations
+  /** Solo en el show del mazo: el panel enlaza el héroe a su single. */
+  slug?: Translations
   image: string | null
   faction_id: number | null
 }
