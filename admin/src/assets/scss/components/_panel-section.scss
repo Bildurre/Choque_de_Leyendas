@@ -1,0 +1,16 @@
+@use 'tokens' as *;
+
+// Sección del panel derecho (PanelSection.vue): divisoria + kicker +
+// contenido. El aire entre el kicker y su contenido es MEDIO ($space-2):
+// entre los 12px del grid del panel (que separaban de más) y el 0 de las
+// secciones que se montaban dentro de un div propio (que separaba de menos).
+.panel-section {
+  display: grid;
+  gap: $space-2;
+
+  // Varios bloques dentro de una sección (líneas de meta, listas…), juntitos.
+  &__body {
+    display: grid;
+    gap: $space-1;
+  }
+}

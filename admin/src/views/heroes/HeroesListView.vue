@@ -9,6 +9,7 @@ import type { Hero, HeroAbilityRef, HeroClassOption, Translations } from '@juego
 import HeroFormModal from '@/components/heroes/HeroFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 import CostDice from '@/components/game/CostDice.vue'
 
 // Héroes: entidad completa con slug, single, publicación y previews PNG.
@@ -339,10 +340,8 @@ onMounted(async () => {
           </p>
         </div>
 
-        <!-- Atributos, separados con el lenguaje divisoria + kicker del panel -->
-        <template v-if="selected">
-          <hr class="manager-panel__divider" />
-          <p class="manager-panel__kicker">{{ t('heroes.sections.attributes') }}</p>
+        <!-- Secciones con el lenguaje común del panel (PanelSection) -->
+        <PanelSection v-if="selected" :title="t('heroes.sections.attributes')">
           <ul class="heroes__stats">
             <li>
               <strong>{{ t('heroes.attributes.agility') }}</strong
@@ -369,13 +368,14 @@ onMounted(async () => {
               ><span>{{ selected.health }}</span>
             </li>
           </ul>
-        </template>
+        </PanelSection>
 
         <!-- Habilidades LIGERAS: solo nombre (enlace al index de habilidades
              con esa habilidad seleccionada) + coste; los textos, en el single -->
-        <template v-if="selected && selected.abilities?.length">
-          <hr class="manager-panel__divider" />
-          <p class="manager-panel__kicker">{{ t('heroes.sections.abilities') }}</p>
+        <PanelSection
+          v-if="selected && selected.abilities?.length"
+          :title="t('heroes.sections.abilities')"
+        >
           <ul class="heroes__panel-abilities">
             <li v-for="ability in selected.abilities" :key="ability.id">
               <RouterLink class="hero-link" :to="abilityLink(ability)">{{
@@ -384,12 +384,13 @@ onMounted(async () => {
               <CostDice v-if="ability.cost" :cost="ability.cost" />
             </li>
           </ul>
-        </template>
+        </PanelSection>
 
         <!-- Pasiva DEL HÉROE: nombre + texto (el nombre solo no decía nada) -->
-        <template v-if="selected && heroPassive(selected)">
-          <hr class="manager-panel__divider" />
-          <p class="manager-panel__kicker">{{ t('heroes.sections.passive') }}</p>
+        <PanelSection
+          v-if="selected && heroPassive(selected)"
+          :title="t('heroes.sections.passive')"
+        >
           <p class="heroes__panel-passive">
             <strong v-if="tr(selected.passive_name) !== '—'"
               >{{ tr(selected.passive_name) }}:</strong
@@ -402,7 +403,7 @@ onMounted(async () => {
             />
             <!-- eslint-enable vue/no-v-html -->
           </p>
-        </template>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

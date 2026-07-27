@@ -48,44 +48,57 @@
   }
 }
 
-// Contenido asignado en el panel derecho del listado (cartas con copias)
-.faction-decks__content {
-  margin-top: $space-3;
-
-  h4 {
-    margin: $space-3 0 $space-1;
-    font-size: $fs-13;
-    color: $text-3;
-    font-weight: $k-fw-semibold;
-  }
-
-  ul {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 2px;
-  }
+// Lista del contenido de un mazo (DeckContentList.vue, compartida por el
+// panel derecho del listado y el single): dot del color de la facción +
+// nombre enlazado + ×copias pegado al nombre (el hueco lo pone el gap).
+.deck-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 2px;
 
   li {
     display: flex;
     align-items: baseline;
-    justify-content: space-between;
     gap: $space-2;
     font-size: $fs-13;
   }
 
-  &-name {
+  &__dot {
+    flex: none;
+    align-self: center;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+  }
+
+  &__name {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  &-copies {
+  &__copies {
     flex: none;
     font-weight: $k-fw-bold;
     color: $text-2;
+  }
+
+  // La card de cartas del single, a dos columnas mientras quepan (multicol;
+  // en el tramo estrecho del área de contenido vuelve a una).
+  &--columns {
+    @container content (min-width: #{$bp-lg}) {
+      display: block;
+      columns: 2;
+      column-gap: $space-5;
+
+      li {
+        break-inside: avoid;
+        padding-bottom: 2px;
+      }
+    }
   }
 }
 
@@ -188,51 +201,6 @@
 
   // Las cards de contenido respiran tras la rejilla superior o los avisos.
   &__cards--content { margin-top: $space-6; }
-
-  // Lista de contenido de cada card (nombre enlazado + ×copias en cartas,
-  // pegadas al nombre: el hueco lo pone el gap, sin empujar al borde).
-  &__list {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    display: grid;
-    gap: 2px;
-
-    li {
-      display: flex;
-      align-items: baseline;
-      gap: $space-2;
-      font-size: $fs-13;
-    }
-  }
-
-  // La lista de cartas a dos columnas mientras quepan (multicol; en el
-  // tramo estrecho del área de contenido vuelve a una).
-  &__list--columns {
-    @container content (min-width: #{$bp-lg}) {
-      display: block;
-      columns: 2;
-      column-gap: $space-5;
-
-      li {
-        break-inside: avoid;
-        padding-bottom: 2px;
-      }
-    }
-  }
-
-  &__item-name {
-    min-width: 0;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  &__item-copies {
-    flex: none;
-    font-weight: $k-fw-bold;
-    color: $text-2;
-  }
 
   &__empty {
     margin: 0;

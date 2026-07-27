@@ -645,6 +645,7 @@
       "saveError": "Could not save."
     },
     "sections": {
+      "collection": "Collection",
       "lore": "Lore",
       "stats": "Statistics"
     },

@@ -576,6 +576,7 @@
       "saveError": "No se pudo guardar."
     },
     "sections": {
+      "collection": "Colección",
       "lore": "Trasfondo",
       "stats": "Estadísticas"
     },

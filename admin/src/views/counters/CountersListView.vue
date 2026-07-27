@@ -9,6 +9,7 @@ import type { Counter } from '@juego/shared'
 import CounterFormModal from '@/components/counters/CounterFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Sin single: se edita en modal y la API resuelve por id. Además de las tabs
 // de estado, el listado filtra por tipo (boon|bane) con un multiselect en el
@@ -180,13 +181,15 @@ onMounted(async () => {
             t(`counters.types.${selected.type}`)
           }}</span>
         </p>
-        <!-- eslint-disable vue/no-v-html -- wysiwyg saneado en servidor (DC-09) -->
-        <div
+        <!-- El efecto, en sección con el lenguaje común del panel -->
+        <PanelSection
           v-if="selected && tr(selected.effect) !== '—'"
-          class="manager-detail__meta counters__effect"
-          v-html="tr(selected.effect)"
-        ></div>
-        <!-- eslint-enable vue/no-v-html -->
+          :title="t('counters.fields.effect')"
+        >
+          <!-- eslint-disable vue/no-v-html -- wysiwyg saneado en servidor (DC-09) -->
+          <div class="counters__effect" v-html="tr(selected.effect)"></div>
+          <!-- eslint-enable vue/no-v-html -->
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

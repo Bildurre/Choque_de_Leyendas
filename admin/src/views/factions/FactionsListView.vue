@@ -8,6 +8,7 @@ import type { Faction } from '@juego/shared'
 import FactionFormModal from '@/components/factions/FactionFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // La tarjeta selecciona (panel derecho con TODAS las acciones); en la
 // tarjeta quedan solo las básicas: abrir y editar.
@@ -136,10 +137,10 @@ onMounted(init)
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
     >
-      <!-- Cantidades de héroes, cartas y mazos (texto plano) -->
       <template #meta>
-        <template v-if="selected">
-          <!-- Cantidades como ENLACES a cada index filtrado por esta facción -->
+        <!-- Cantidades como ENLACES a cada index filtrado por esta facción,
+             en una sección con el lenguaje común del panel (PanelSection) -->
+        <PanelSection v-if="selected" :title="t('factions.sections.collection')">
           <ul class="factions__panel-counts">
             <li>
               <RouterLink
@@ -163,7 +164,7 @@ onMounted(init)
               ><span>{{ selected.faction_decks_count ?? 0 }}</span>
             </li>
           </ul>
-        </template>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

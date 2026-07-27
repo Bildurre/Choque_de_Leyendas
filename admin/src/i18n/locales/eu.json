@@ -645,6 +645,7 @@
       "saveError": "Ezin izan da gorde."
     },
     "sections": {
+      "collection": "Bilduma",
       "lore": "Kondaira",
       "stats": "Estatistikak"
     },

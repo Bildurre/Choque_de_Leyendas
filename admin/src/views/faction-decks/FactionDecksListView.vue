@@ -7,8 +7,10 @@ import { api } from '@/lib/api'
 import { useEntityList } from '@/composables/useEntityList'
 import type { DeckPublishError, FactionDeck, Translations } from '@juego/shared'
 import FactionDeckFormModal from '@/components/faction-decks/FactionDeckFormModal.vue'
+import DeckContentList from '@/components/faction-decks/DeckContentList.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Listado de mazos de facción. La tarjeta selecciona (panel derecho con las
 // acciones); "entrar" abre la single con el editor de cartas y héroes.
@@ -274,44 +276,68 @@ onMounted(async () => {
       </template>
 
       <template #meta>
-        <!-- Contenido asignado, en secciones con divisoria + kicker (patrón
-             de héroes/cartas/facciones), cada sección con su total entre
-             paréntesis y cada elemento enlazado a su single -->
-        <div v-if="selectedDetail" class="faction-decks__content">
-          <template v-if="selectedDetail.heroes?.length">
-            <hr class="manager-panel__divider" />
-            <p class="manager-panel__kicker">
-              {{ t('factionDecks.single.heroesTitle') }} ({{ selected?.total_heroes ?? 0 }})
-            </p>
-            <ul>
-              <li v-for="hero in selectedDetail.heroes" :key="hero.id">
+        <!-- Secciones del panel (PanelSection: divisoria + kicker + aire
+             uniforme): facciones enlazadas, formato (modo + límites) y el
+             contenido con su total entre paréntesis, cada elemento enlazado
+             a su single con el dot del color de su facción -->
+        <template v-if="selectedDetail">
+          <PanelSection
+            v-if="selectedDetail.factions?.length"
+            :title="t('factionDecks.fields.factions')"
+          >
+            <p class="manager-detail__meta">
+              <template v-for="(faction, index) in selectedDetail.factions" :key="faction.id">
+                <span v-if="index > 0">·</span>
                 <RouterLink
-                  class="hero-link faction-decks__content-name"
-                  :to="{ name: 'hero-single', params: { slug: slugOf(hero) } }"
-                  >{{ tr(hero.name) }}</RouterLink
+                  v-if="slugOf(faction)"
+                  class="hero-link"
+                  :to="{ name: 'faction-single', params: { slug: slugOf(faction) } }"
+                  >{{ tr(faction.name) }}</RouterLink
                 >
-              </li>
-            </ul>
-          </template>
-          <template v-if="selectedDetail.cards?.length">
-            <hr class="manager-panel__divider" />
-            <p class="manager-panel__kicker">
-              {{ t('factionDecks.single.cardsTitle') }} ({{ selected?.total_cards ?? 0 }})
+                <template v-else>{{ tr(faction.name) }}</template>
+              </template>
             </p>
-            <ul>
-              <li v-for="card in selectedDetail.cards" :key="card.id">
-                <RouterLink
-                  class="hero-link faction-decks__content-name"
-                  :to="{ name: 'card-single', params: { slug: slugOf(card) } }"
-                  >{{ tr(card.name) }}</RouterLink
-                >
-                <span v-if="card.copies > 1" class="faction-decks__content-copies"
-                  >×{{ card.copies }}</span
-                >
-              </li>
-            </ul>
-          </template>
-        </div>
+          </PanelSection>
+
+          <PanelSection
+            v-if="selectedDetail.game_mode"
+            :title="t('factionDecks.single.formatTitle')"
+          >
+            <p class="manager-detail__meta">{{ tr(selectedDetail.game_mode.name) }}</p>
+            <p class="manager-detail__meta">
+              {{
+                t('factionDecks.single.limitsLine', {
+                  min: selectedDetail.game_mode.min_cards,
+                  max: selectedDetail.game_mode.max_cards,
+                  copies: selectedDetail.game_mode.max_copies_per_card,
+                  heroes: selectedDetail.game_mode.required_heroes,
+                })
+              }}
+            </p>
+          </PanelSection>
+
+          <PanelSection
+            v-if="selectedDetail.heroes?.length"
+            :title="`${t('factionDecks.single.heroesTitle')} (${selected?.total_heroes ?? 0})`"
+          >
+            <DeckContentList
+              :items="selectedDetail.heroes"
+              route="hero-single"
+              :factions="selectedDetail.factions"
+            />
+          </PanelSection>
+
+          <PanelSection
+            v-if="selectedDetail.cards?.length"
+            :title="`${t('factionDecks.single.cardsTitle')} (${selected?.total_cards ?? 0})`"
+          >
+            <DeckContentList
+              :items="selectedDetail.cards"
+              route="card-single"
+              :factions="selectedDetail.factions"
+            />
+          </PanelSection>
+        </template>
       </template>
     </EntityPanel>
   </div>

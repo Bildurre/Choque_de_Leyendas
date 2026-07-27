@@ -9,6 +9,7 @@ import type { Card, CardTypeOption, EquipmentSubtypeOption, Translations } from 
 import CardFormModal from '@/components/cards/CardFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 import CostDice from '@/components/game/CostDice.vue'
 import AttackLine from '@/components/game/AttackLine.vue'
 import CardEffect from '@/components/cards/CardEffect.vue'
@@ -441,11 +442,9 @@ onMounted(async () => {
           </p>
         </div>
 
-        <!-- Ataque, con el lenguaje divisoria + kicker del panel; rango y
+        <!-- Ataque, con el lenguaje común del panel (PanelSection); rango y
              subtipo enlazan a su definición -->
-        <template v-if="selected && hasAttack(selected)">
-          <hr class="manager-panel__divider" />
-          <p class="manager-panel__kicker">{{ t('cards.sections.attack') }}</p>
+        <PanelSection v-if="selected && hasAttack(selected)" :title="t('cards.sections.attack')">
           <p class="manager-detail__meta">
             <AttackLine
               linked
@@ -455,15 +454,16 @@ onMounted(async () => {
               :area="selected.area"
             />
           </p>
-        </template>
+        </PanelSection>
 
         <!-- Efecto (con la habilidad de héroe integrada), en letra pequeña
              como la pasiva del panel de héroes, sobre las previews -->
-        <template v-if="selected && hasEffectContent(selected)">
-          <hr class="manager-panel__divider" />
-          <p class="manager-panel__kicker">{{ t('cards.sections.effects') }}</p>
+        <PanelSection
+          v-if="selected && hasEffectContent(selected)"
+          :title="t('cards.sections.effects')"
+        >
           <CardEffect :card="selected" class="cards__panel-effect" />
-        </template>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

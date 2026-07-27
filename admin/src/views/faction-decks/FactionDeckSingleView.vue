@@ -13,6 +13,7 @@ import type { DeckGameModeRef, DeckPublishError, FactionDeck, Translations } fro
 import FactionDeckFormModal from '@/components/faction-decks/FactionDeckFormModal.vue'
 import DeckHeroesModal from '@/components/faction-decks/DeckHeroesModal.vue'
 import DeckCardsModal from '@/components/faction-decks/DeckCardsModal.vue'
+import DeckContentList from '@/components/faction-decks/DeckContentList.vue'
 import InfoBlock from '@/components/InfoBlock.vue'
 import DashBarPanel, { type BarRow } from '@/components/dashboard/DashBarPanel.vue'
 
@@ -372,15 +373,7 @@ onBeforeUnmount(() => {
         <p v-if="!heroes.length" class="deck-single__empty">
           {{ t('factionDecks.single.noHeroes') }}
         </p>
-        <ul v-else class="deck-single__list">
-          <li v-for="hero in heroes" :key="hero.id">
-            <RouterLink
-              class="hero-link deck-single__item-name"
-              :to="{ name: 'hero-single', params: { slug: slugOf(hero) } }"
-              >{{ tr(hero.name) }}</RouterLink
-            >
-          </li>
-        </ul>
+        <DeckContentList v-else :items="heroes" route="hero-single" :factions="deck.factions" />
       </InfoBlock>
 
       <InfoBlock :title="`${t('factionDecks.single.cardsTitle')} (${totalCopies})`">
@@ -394,16 +387,13 @@ onBeforeUnmount(() => {
           {{ t('factionDecks.single.noCards') }}
         </p>
         <!-- A dos columnas mientras quepan (multicol con máximo de 2) -->
-        <ul v-else class="deck-single__list deck-single__list--columns">
-          <li v-for="card in cards" :key="card.id">
-            <RouterLink
-              class="hero-link deck-single__item-name"
-              :to="{ name: 'card-single', params: { slug: slugOf(card) } }"
-              >{{ tr(card.name) }}</RouterLink
-            >
-            <span v-if="card.copies > 1" class="deck-single__item-copies">×{{ card.copies }}</span>
-          </li>
-        </ul>
+        <DeckContentList
+          v-else
+          :items="cards"
+          route="card-single"
+          :factions="deck.factions"
+          columns
+        />
       </InfoBlock>
     </div>
 
