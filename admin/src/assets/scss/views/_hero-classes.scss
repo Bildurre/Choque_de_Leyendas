@@ -2,18 +2,9 @@
 
 // Listado de clases: emblema tipográfico (inicial) + pasiva en el panel.
 .hero-classes {
-  // Título de la sección de pasiva en el panel derecho (mismo patrón que
-  // heroes__panel-title; el panel va teleportado: selector plano).
-  &__panel-title {
-    margin: $space-4 0 $space-2;
-    font-size: $fs-13;
-    font-weight: $k-fw-bold;
-    color: $text-2;
-  }
-
-  // HTML de la pasiva en el panel derecho (va teleportado; selector plano).
+  // HTML de la pasiva en el panel derecho (va teleportado; selector plano;
+  // el título y el aire los pone su PanelSection).
   &__passive {
-    margin-top: $space-2;
     font-size: 0.85rem;
     color: $text-2;
 

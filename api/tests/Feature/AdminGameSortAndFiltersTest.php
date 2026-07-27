@@ -38,15 +38,22 @@ it('ordena un index de admin por nombre asc y desc con sort', function () {
         ->toBe([$zarpazo->id, $bola->id, $aullido->id]);
 });
 
-it('sin sort (o con un valor desconocido) mantiene el orden id desc', function () {
+it('sin sort (o con un valor desconocido) cae al alfabético del locale', function () {
     $admin = motorUser('admin');
     [$bola, $aullido, $zarpazo] = threeAbilities();
 
-    foreach (['/api/admin/hero-abilities', '/api/admin/hero-abilities?sort=latest', '/api/admin/hero-abilities?sort=raro'] as $url) {
+    foreach (['/api/admin/hero-abilities', '/api/admin/hero-abilities?sort=raro'] as $url) {
         $response = $this->actingAs($admin)->getJson($url)->assertOk();
         expect(array_column($response->json('data'), 'id'))
-            ->toBe([$zarpazo->id, $aullido->id, $bola->id]);
+            ->toBe([$aullido->id, $bola->id, $zarpazo->id]);
     }
+
+    // `latest` sí es lo más reciente primero (id desc)
+    $latest = $this->actingAs($admin)
+        ->getJson('/api/admin/hero-abilities?sort=latest')
+        ->assertOk();
+    expect(array_column($latest->json('data'), 'id'))
+        ->toBe([$zarpazo->id, $aullido->id, $bola->id]);
 });
 
 it('filtra las habilidades por attack_type', function () {

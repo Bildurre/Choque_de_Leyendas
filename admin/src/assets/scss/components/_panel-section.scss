@@ -14,3 +14,26 @@
     gap: $space-1;
   }
 }
+
+// Lista de una sección «Colección» (facciones, razas, clases…): etiqueta
+// enlazada a la izquierda y, si lo hay, el número a la derecha.
+.panel-counts {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: $space-1;
+  font-size: 0.85rem;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: $space-2;
+    color: $text-2;
+
+    strong {
+      font-weight: $k-fw-medium;
+    }
+  }
+}

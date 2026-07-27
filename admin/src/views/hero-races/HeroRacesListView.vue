@@ -8,6 +8,7 @@ import type { HeroRace } from '@juego/shared'
 import HeroRaceFormModal from '@/components/hero-races/HeroRaceFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía simple: tabs solo all/trashed, sin single ni publicación;
 // la API resuelve por id.
@@ -112,6 +113,18 @@ onMounted(init)
         <p v-if="selected && tr(selected.name_female) !== '—'" class="manager-detail__meta">
           {{ t('heroRaces.fields.nameFemale') }}: {{ tr(selected.name_female) }}
         </p>
+        <!-- Cuántos héroes llevan la raza, enlazado al index filtrado -->
+        <PanelSection v-if="selected" :title="t('common.sections.collection')">
+          <ul class="panel-counts">
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'heroes', query: { hero_race_id: String(selected.id) } }"
+                ><strong>{{ t('heroRaces.counts.heroes') }}</strong></RouterLink
+              ><span>{{ selected.heroes_count ?? 0 }}</span>
+            </li>
+          </ul>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

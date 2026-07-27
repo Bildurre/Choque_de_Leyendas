@@ -8,6 +8,7 @@ import type { HeroClass } from '@juego/shared'
 import HeroClassFormModal from '@/components/hero-classes/HeroClassFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía con superclase y pasiva: tabs solo all/trashed, sin single ni
 // publicación; la API resuelve por id.
@@ -121,12 +122,27 @@ onMounted(init)
         <p v-if="selected && tr(selected.name_female) !== '—'" class="manager-detail__meta">
           {{ t('heroClasses.fields.nameFemale') }}: {{ tr(selected.name_female) }}
         </p>
-        <!-- Pasiva de la clase, en sección propia -->
-        <template v-if="selected && tr(selected.passive) !== '—'">
-          <h4 class="hero-classes__panel-title">{{ t('heroClasses.fields.passive') }}</h4>
+        <!-- Pasiva de la clase, con el lenguaje común del panel -->
+        <PanelSection
+          v-if="selected && tr(selected.passive) !== '—'"
+          :title="t('heroClasses.fields.passive')"
+        >
           <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg, saneado en servidor (DC-09) -->
           <div class="rich-content hero-classes__passive" v-html="tr(selected.passive)"></div>
-        </template>
+          <!-- eslint-enable vue/no-v-html -->
+        </PanelSection>
+        <!-- Cuántos héroes llevan la clase, enlazado al index filtrado -->
+        <PanelSection v-if="selected" :title="t('common.sections.collection')">
+          <ul class="panel-counts">
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'heroes', query: { hero_class_id: String(selected.id) } }"
+                ><strong>{{ t('heroClasses.counts.heroes') }}</strong></RouterLink
+              ><span>{{ selected.heroes_count ?? 0 }}</span>
+            </li>
+          </ul>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

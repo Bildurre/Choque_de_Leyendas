@@ -45,10 +45,16 @@ export interface GenderedTaxonomy extends TaxonomyBase {
 export interface HeroSuperclass extends GenderedTaxonomy {
   /** Cuántas clases cuelgan de ella (withCount del index). */
   hero_classes_count?: number
+  /** Las clases en mínimo (id + nombre): el panel las lista enlazadas. */
+  hero_classes?: TaxonomyOption[]
   /** Tipo de carta asociado (único por superclase), si lo hay. */
   card_type?: TaxonomyOption | null
 }
-export type HeroRace = GenderedTaxonomy
+
+export interface HeroRace extends GenderedTaxonomy {
+  /** Cuántos héroes llevan la raza (withCount del index). */
+  heroes_count?: number
+}
 export type AttackRange = TaxonomyBase
 export type AttackSubtype = TaxonomyBase
 
@@ -56,6 +62,8 @@ export interface HeroClass extends GenderedTaxonomy {
   passive: Translations
   hero_superclass_id: number | null
   hero_superclass?: HeroSuperclass | null
+  /** Cuántos héroes llevan la clase (withCount del index). */
+  heroes_count?: number
 }
 
 /** Opción de un selector (endpoint options de una taxonomía). */

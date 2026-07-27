@@ -17,6 +17,8 @@ class HeroClassResource extends JsonResource
             'passive' => $this->getTranslations('passive'),
             'hero_superclass_id' => $this->hero_superclass_id,
             'hero_superclass' => new HeroSuperclassResource($this->whenLoaded('heroSuperclass')),
+            // Cuántos héroes llevan la clase (withCount del index)
+            'heroes_count' => $this->whenCounted('heroes'),
             'deleted_at' => $this->deleted_at,
         ];
     }

@@ -10,7 +10,7 @@ beforeEach(function () {
     $this->withHeader('Accept-Language', 'es');
 });
 
-it('lista solo héroes publicados con la forma del catálogo y orden id desc', function () {
+it('lista solo héroes publicados con la forma del catálogo y orden alfabético', function () {
     $first = publicHero(['name' => ['es' => 'Aritz', 'en' => 'Aritz the Bold']]);
     $second = publicHero(['name' => ['es' => 'Beltza', 'en' => 'Beltza']]);
     publicHero(['name' => ['es' => 'Borrador', 'en' => 'Draft'], 'is_published' => false]);
@@ -20,12 +20,12 @@ it('lista solo héroes publicados con la forma del catálogo y orden id desc', f
     $response->assertJsonCount(2, 'data');
     // Misma forma que /api/catalog/hero del motor: {id, name, slug, preview}
     expect($response->json('data.0'))->toBe([
-        'id' => $second->id,
-        'name' => 'Beltza',
-        'slug' => 'beltza',
+        'id' => $first->id,
+        'name' => 'Aritz',
+        'slug' => 'aritz',
         'preview' => null,
     ])
-        ->and($response->json('data.1.id'))->toBe($first->id)
+        ->and($response->json('data.1.id'))->toBe($second->id)
         ->and($response->json('meta'))->toMatchArray([
             'current_page' => 1,
             'last_page' => 1,
@@ -128,12 +128,15 @@ it('ordena con el contrato completo de sort (name|name_desc|latest|oldest)', fun
     expect(collect($oldest->json('data'))->pluck('id')->all())
         ->toBe([$bruma->id, $alfa->id, $cieno->id]);
 
-    // `latest` o un valor desconocido caen al orden por defecto: id desc
-    foreach (['latest', 'raro'] as $sort) {
-        $fallback = $this->getJson("/api/heroes?sort={$sort}")->assertOk();
-        expect(collect($fallback->json('data'))->pluck('id')->all())
-            ->toBe([$cieno->id, $alfa->id, $bruma->id]);
-    }
+    // Un valor desconocido cae al orden por defecto: alfabético del locale
+    $fallback = $this->getJson('/api/heroes?sort=raro')->assertOk();
+    expect(collect($fallback->json('data'))->pluck('id')->all())
+        ->toBe([$alfa->id, $bruma->id, $cieno->id]);
+
+    // `latest` es lo más reciente primero (id desc)
+    $latest = $this->getJson('/api/heroes?sort=latest')->assertOk();
+    expect(collect($latest->json('data'))->pluck('id')->all())
+        ->toBe([$cieno->id, $alfa->id, $bruma->id]);
 });
 
 it('localiza el índice con ?locale', function () {

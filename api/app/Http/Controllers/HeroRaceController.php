@@ -16,6 +16,8 @@ class HeroRaceController extends Controller
     public function index(Request $request)
     {
         $races = HeroRace::query()
+            // Cuántos héroes llevan la raza (el panel enlaza al index filtrado)
+            ->withCount('heroes')
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);

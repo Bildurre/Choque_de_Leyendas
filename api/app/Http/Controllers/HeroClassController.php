@@ -19,6 +19,8 @@ class HeroClassController extends Controller
     {
         $classes = HeroClass::query()
             ->with('heroSuperclass')
+            // Cuántos héroes llevan la clase (el panel enlaza al index filtrado)
+            ->withCount('heroes')
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);

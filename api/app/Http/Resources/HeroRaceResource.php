@@ -14,6 +14,8 @@ class HeroRaceResource extends JsonResource
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
             'name_female' => $this->getTranslations('name_female'),
+            // Cuántos héroes llevan la raza (withCount del index)
+            'heroes_count' => $this->whenCounted('heroes'),
             'deleted_at' => $this->deleted_at,
         ];
     }

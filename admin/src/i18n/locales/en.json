@@ -159,7 +159,8 @@
     "no": "No",
     "stateKicker": "State",
     "sections": {
-      "details": "Details"
+      "details": "Details",
+      "collection": "Collection"
     }
   },
   "login": {
@@ -645,7 +646,6 @@
       "saveError": "Could not save."
     },
     "sections": {
-      "collection": "Collection",
       "lore": "Lore",
       "stats": "Statistics"
     },
@@ -1159,6 +1159,9 @@
       "restored": "Race restored",
       "forceDeleted": "Race permanently deleted",
       "saveError": "Could not save."
+    },
+    "counts": {
+      "heroes": "Heroes"
     }
   },
   "heroClasses": {
@@ -1197,6 +1200,9 @@
       "restored": "Class restored",
       "forceDeleted": "Class permanently deleted",
       "saveError": "Could not save."
+    },
+    "counts": {
+      "heroes": "Heroes"
     }
   },
   "attackRanges": {

@@ -8,6 +8,7 @@ import type { HeroSuperclass } from '@juego/shared'
 import HeroSuperclassFormModal from '@/components/hero-superclasses/HeroSuperclassFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía simple: tabs solo all/trashed, sin single ni publicación;
 // la API resuelve por id.
@@ -123,14 +124,30 @@ onMounted(init)
         <p v-if="selected && tr(selected.name_female) !== '—'" class="manager-detail__meta">
           {{ t('heroSuperclasses.fields.nameFemale') }}: {{ tr(selected.name_female) }}
         </p>
-        <!-- Cuántas clases pertenecen a la superclase (withCount del index) -->
-        <p v-if="selected" class="manager-detail__meta">
-          {{ t('heroSuperclasses.counts.classes') }}: {{ selected.hero_classes_count ?? 0 }}
-        </p>
         <!-- Tipo de carta asociado, solo si lo tiene -->
         <p v-if="selected?.card_type" class="manager-detail__meta">
           {{ t('heroSuperclasses.fields.cardType') }}: {{ tr(selected.card_type.name) }}
         </p>
+        <!-- Las clases de la superclase, cada una enlazada al index de
+             clases con esa clase seleccionada (ahí no hay filtro por
+             superclase; `selected` + `search` la dejan a la vista) -->
+        <PanelSection
+          v-if="selected"
+          :title="`${t('heroSuperclasses.counts.classes')} (${selected.hero_classes_count ?? 0})`"
+        >
+          <ul class="panel-counts">
+            <li v-for="heroClass in selected.hero_classes ?? []" :key="heroClass.id">
+              <RouterLink
+                class="hero-link"
+                :to="{
+                  name: 'hero-classes',
+                  query: { selected: String(heroClass.id), search: tr(heroClass.name) },
+                }"
+                >{{ tr(heroClass.name) }}</RouterLink
+              >
+            </li>
+          </ul>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

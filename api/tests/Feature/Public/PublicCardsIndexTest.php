@@ -10,7 +10,7 @@ beforeEach(function () {
     $this->withHeader('Accept-Language', 'es');
 });
 
-it('lista solo cartas publicadas con la forma del catálogo y orden id desc', function () {
+it('lista solo cartas publicadas con la forma del catálogo y orden alfabético', function () {
     $first = publicCard(['name' => ['es' => 'Alfa', 'en' => 'Alpha']]);
     $second = publicCard(['name' => ['es' => 'Beta', 'en' => 'Beta']]);
     publicCard(['name' => ['es' => 'Borrador', 'en' => 'Draft'], 'is_published' => false]);
@@ -20,12 +20,12 @@ it('lista solo cartas publicadas con la forma del catálogo y orden id desc', fu
     $response->assertJsonCount(2, 'data');
     // Misma forma que /api/catalog/card del motor: {id, name, slug, preview}
     expect($response->json('data.0'))->toBe([
-        'id' => $second->id,
-        'name' => 'Beta',
-        'slug' => 'beta',
+        'id' => $first->id,
+        'name' => 'Alfa',
+        'slug' => 'alfa',
         'preview' => null,
     ])
-        ->and($response->json('data.1.id'))->toBe($first->id)
+        ->and($response->json('data.1.id'))->toBe($second->id)
         ->and($response->json('meta'))->toMatchArray([
             'current_page' => 1,
             'last_page' => 1,
@@ -78,7 +78,7 @@ it('filtra por cost_colors: al menos un dado de cada color pedido', function () 
 
     $response->assertJsonCount(2, 'data');
     expect(collect($response->json('data'))->pluck('id')->all())
-        ->toBe([$rgb->id, $rg->id]); // orden id desc
+        ->toBe([$rg->id, $rgb->id]); // orden alfabético del locale
 });
 
 it('normaliza cost_colors: minúsculas y orden libre valen igual', function () {
@@ -161,12 +161,15 @@ it('ordena por nombre asc y desc con sort (contrato compartido)', function () {
     expect(collect($desc->json('data'))->pluck('id')->all())
         ->toBe([$cieno->id, $bruma->id, $alfa->id]);
 
-    // `latest` o un valor desconocido caen al orden por defecto: id desc
-    foreach (['latest', 'raro'] as $sort) {
-        $fallback = $this->getJson("/api/cards?sort={$sort}")->assertOk();
-        expect(collect($fallback->json('data'))->pluck('id')->all())
-            ->toBe([$cieno->id, $alfa->id, $bruma->id]);
-    }
+    // Un valor desconocido cae al orden por defecto: alfabético del locale
+    $fallback = $this->getJson('/api/cards?sort=raro')->assertOk();
+    expect(collect($fallback->json('data'))->pluck('id')->all())
+        ->toBe([$alfa->id, $bruma->id, $cieno->id]);
+
+    // `latest` es lo más reciente primero (id desc)
+    $latest = $this->getJson('/api/cards?sort=latest')->assertOk();
+    expect(collect($latest->json('data'))->pluck('id')->all())
+        ->toBe([$cieno->id, $alfa->id, $bruma->id]);
 });
 
 it('ordena por id asc con sort=oldest (contrato compartido)', function () {

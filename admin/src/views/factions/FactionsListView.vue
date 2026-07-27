@@ -140,8 +140,8 @@ onMounted(init)
       <template #meta>
         <!-- Cantidades como ENLACES a cada index filtrado por esta facción,
              en una sección con el lenguaje común del panel (PanelSection) -->
-        <PanelSection v-if="selected" :title="t('factions.sections.collection')">
-          <ul class="factions__panel-counts">
+        <PanelSection v-if="selected" :title="t('common.sections.collection')">
+          <ul class="panel-counts">
             <li>
               <RouterLink
                 class="hero-link"
