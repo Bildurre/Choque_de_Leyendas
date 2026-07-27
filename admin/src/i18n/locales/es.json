@@ -516,7 +516,14 @@
       "email": "Email",
       "password": "Contraseña",
       "passwordOptional": "Contraseña (vacía = no cambiar)",
+      "passwordConfirm": "Confirmar contraseña",
       "role": "Rol"
+    },
+    "actions": {
+      "generatePassword": "Generar contraseña"
+    },
+    "errors": {
+      "passwordMismatch": "Las contraseñas no coinciden."
     },
     "roles": {
       "admin": "Admin",

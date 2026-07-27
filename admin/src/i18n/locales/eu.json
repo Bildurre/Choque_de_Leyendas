@@ -585,7 +585,14 @@
       "email": "Email",
       "password": "Pasahitza",
       "passwordOptional": "Pasahitza (hutsik = ez aldatu)",
+      "passwordConfirm": "Berretsi pasahitza",
       "role": "Rola"
+    },
+    "actions": {
+      "generatePassword": "Sortu pasahitza"
+    },
+    "errors": {
+      "passwordMismatch": "Pasahitzak ez datoz bat."
     },
     "roles": {
       "admin": "Admin",

@@ -160,16 +160,19 @@ onMounted(load)
       :cancel-label="t('common.cancel')"
       @submit="save"
     >
-      <NumericInput
-        v-for="field in modalFields"
-        :key="field.key"
-        v-model="form[field.key]"
-        :label="t(`heroAttributesConfig.fields.${field.key}`)"
-        :hint="t(`heroAttributesConfig.hints.${field.key}`)"
-        :min="field.min"
-        :max="field.max"
-        :error="errors[field.key]"
-      />
+      <!-- Campos a dos columnas mientras quepan (en estrecho, una) -->
+      <div class="hero-attributes-config__modal-grid">
+        <NumericInput
+          v-for="field in modalFields"
+          :key="field.key"
+          v-model="form[field.key]"
+          :label="t(`heroAttributesConfig.fields.${field.key}`)"
+          :hint="t(`heroAttributesConfig.hints.${field.key}`)"
+          :min="field.min"
+          :max="field.max"
+          :error="errors[field.key]"
+        />
+      </div>
     </EditModal>
   </div>
 </template>

@@ -1,10 +1,12 @@
 @use "tokens" as *;
 
-// Configuración de la web: dos columnas EXPLÍCITAS (masonry determinista):
-// cada columna apila sus tarjetas pegadas (sin filas alineadas por alturas)
-// y el reparto lo decide la vista (Identidad + Pie | Apariencia), no el
-// navegador. En estrecho las columnas se apilan. Cada tarjeta es su propio
-// contenedor `content` para que sus interiores se adapten a la tarjeta.
+// Configuración de la web, al patrón de la config de atributos: cards de
+// LECTURA (info-block + info-list) en dos columnas EXPLÍCITAS (masonry
+// determinista): la vista decide el reparto (Identidad + Apariencia |
+// Pie + Fondos), no el navegador. En estrecho las columnas se apilan.
+// La edición vive en un modal por sección (los estilos de sus rejillas
+// interiores también van aquí; el modal se teletransporta a <body>, así que
+// nada de container queries dentro de él).
 .settings-view {
   &__columns {
     display: grid;
@@ -21,35 +23,31 @@
     display: grid;
     gap: $space-5;
     min-width: 0;
+
+    .info-block { margin: 0; }
   }
 
-  &__section {
-    background: $surface;
+  // Miniatura de una imagen guardada en las cards de lectura.
+  &__thumb {
+    display: block;
+    max-width: 160px;
+    max-height: 56px;
+    object-fit: contain;
     border: 1px solid $border;
-    border-radius: $radius-lg;
-    padding: $space-5;
-    display: grid;
-    gap: $space-4;
-    min-width: 0;
-    container-name: content;
-    container-type: inline-size;
+    border-radius: $radius-sm;
+    padding: 2px;
 
-    h2 {
-      margin: 0;
-      font-size: $fs-16;
-      color: $text-2;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
+    &--icon {
+      max-width: 32px;
+      max-height: 32px;
     }
   }
 
+  // Logo + favicon del modal de identidad, a dos columnas mientras quepan.
   &__uploads {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
     gap: $space-4;
-
-    @container content (min-width: #{$bp-sm}) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
 
   &__hint {
@@ -58,14 +56,15 @@
     font-size: $fs-13;
   }
 
-  // Fondos de los índices: los 7 uploads en rejilla fluida (auto-fill).
+  // Fondos de los índices (modal): los 8 uploads en rejilla fluida.
   &__index-bgs {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: $space-4;
   }
 
-  // Candidatos del modo aleatorio: etiquetas compactas en fila con wrap.
+  // Candidatos del modo aleatorio: etiquetas compactas en fila con wrap
+  // (también la lista de solo lectura de la card de apariencia).
   &__colors {
     list-style: none;
     margin: 0;
@@ -85,6 +84,13 @@
 
       code { color: $text-2; }
     }
+  }
+
+  // Color fijo en la card de lectura: swatch + código en línea.
+  &__color-value {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
   }
 
   &__swatch {
@@ -113,13 +119,11 @@
     justify-items: start;
   }
 
+  // Selectores de fuente del modal de apariencia, en rejilla fluida.
   &__fonts {
     display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
     gap: $space-4;
-
-    @container content (min-width: #{$bp-sm}) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
 
   &__font-preview {

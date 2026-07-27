@@ -18,4 +18,13 @@
     font-size: 0.85rem;
     color: $text-2;
   }
+
+  // Campos del modal de edición: dos columnas mientras quepan (auto-fit);
+  // en modales estrechos caen solos a una columna.
+  &__modal-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
+    gap: $space-4;
+    align-items: start;
+  }
 }

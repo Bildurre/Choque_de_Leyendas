@@ -585,7 +585,14 @@
       "email": "Email",
       "password": "Password",
       "passwordOptional": "Password (empty = keep)",
+      "passwordConfirm": "Confirm password",
       "role": "Role"
+    },
+    "actions": {
+      "generatePassword": "Generate password"
+    },
+    "errors": {
+      "passwordMismatch": "Passwords do not match."
     },
     "roles": {
       "admin": "Admin",

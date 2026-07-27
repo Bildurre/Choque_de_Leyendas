@@ -158,7 +158,8 @@ onMounted(load)
     <p v-if="!loading && !users.length" class="users-view__empty">{{ t('common.empty') }}</p>
 
     <div class="manager-grid">
-      <!-- Como EntityCard: BADGES (rol + verificado) arriba, meta debajo -->
+      <!-- Como EntityCard: solo BADGES (rol + verificado); el email vive en
+           el panel derecho, no en la tarjeta -->
       <ManagerCard
         v-for="user in users"
         :key="user.id"
@@ -170,9 +171,6 @@ onMounted(load)
           <span class="chip" :class="roleChipClass(user)">{{ roleLabel(user) }}</span>
           <span v-if="user.email_verified" class="chip is-ok">{{ t('users.verifiedBadge') }}</span>
           <span v-else class="chip is-missing">{{ t('users.unverified') }}</span>
-        </template>
-        <template #meta>
-          <span class="users-view__email">{{ user.email }}</span>
         </template>
       </ManagerCard>
     </div>
