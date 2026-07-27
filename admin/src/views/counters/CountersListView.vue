@@ -108,7 +108,8 @@ onMounted(async () => {
         @edit="edit(item)"
       >
         <template #media>
-          <div class="counter-art" :class="`counter-art--${item.type}`">
+          <!-- El tinte azul/rojo del tipo solo cuando NO hay imagen propia -->
+          <div class="counter-art" :class="item.image ? undefined : `counter-art--${item.type}`">
             <img v-if="item.image" :src="item.image" alt="" />
             <img
               v-else-if="typeIconUrl(item.type)"
@@ -128,16 +129,6 @@ onMounted(async () => {
           <span class="chip" :class="item.type === 'boon' ? 'is-info' : 'is-failed'">{{
             t(`counters.types.${item.type}`)
           }}</span>
-        </template>
-
-        <template #meta>
-          <!-- eslint-disable vue/no-v-html -- wysiwyg saneado en servidor (DC-09) -->
-          <span
-            v-if="tr(item.effect) !== '—'"
-            class="counters__effect"
-            v-html="tr(item.effect)"
-          ></span>
-          <!-- eslint-enable vue/no-v-html -->
         </template>
       </EntityCard>
     </BaseGrid>
@@ -183,8 +174,8 @@ onMounted(async () => {
       </template>
 
       <template #meta>
+        <!-- El tipo a pelo (sin label): el tinte ya dice de qué va -->
         <p v-if="selected" class="manager-detail__meta">
-          <strong>{{ t('counters.fields.type') }}:</strong>
           <span class="counters__type" :class="`counters__type--${selected.type}`">{{
             t(`counters.types.${selected.type}`)
           }}</span>
