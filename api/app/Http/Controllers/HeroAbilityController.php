@@ -33,7 +33,17 @@ class HeroAbilityController extends Controller
         )));
 
         $abilities = HeroAbility::query()
-            ->with(['attackRange', 'attackSubtype'])
+            // El panel lista los héroes que tienen la habilidad y las cartas
+            // que la otorgan (enlazados y contados): with/withCount juntos.
+            ->withCount(['heroes', 'cards'])
+            ->with([
+                'attackRange',
+                'attackSubtype',
+                // El closure de with() recibe la Relation: su getQuery() es
+                // el Builder que espera orderByName (alfabético por locale).
+                'heroes' => fn ($relation) => $this->orderByName($relation->getQuery()),
+                'cards' => fn ($relation) => $this->orderByName($relation->getQuery()),
+            ])
             ->filter($request->only('search', 'status'))
             // Filtros del listado (multiselects junto a la búsqueda).
             ->when($attackTypes !== [], fn ($query) => $query->whereIn('attack_type', $attackTypes))

@@ -5,10 +5,11 @@ import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BasePagination, BaseTabs, MultiSelect } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { useEntityList } from '@/composables/useEntityList'
-import type { HeroAbility, TaxonomyOption } from '@juego/shared'
+import type { HeroAbility, SingleLinkRef, TaxonomyOption } from '@juego/shared'
 import HeroAbilityFormModal from '@/components/hero-abilities/HeroAbilityFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 import CostDice from '@/components/game/CostDice.vue'
 import AttackLine from '@/components/game/AttackLine.vue'
 
@@ -19,6 +20,7 @@ import AttackLine from '@/components/game/AttackLine.vue'
 // varios valores por filtro (unión), viajan como `clave[]=`.
 const {
   t,
+  locales,
   items,
   loading,
   page,
@@ -49,6 +51,8 @@ const {
   nameOf: (item) => item.name,
   resolveBy: 'id',
   tabKeys: ['all', 'trashed'],
+  // Enlaces entrantes desde los paneles de rangos/subtipos de ataque.
+  queryFilters: ['attack_range_id', 'attack_subtype_id'],
 })
 
 // Sin opción "Todos" en las listas: sin nada marcado, el placeholder del
@@ -98,22 +102,9 @@ const costOptions = computed(() =>
   })),
 )
 
-/**
- * Extracto del efecto para el meta de la card: el HTML del WYSIWYG pasa a
- * texto plano (DOMParser: no ejecuta ni carga nada) y se trunca a ~90
- * caracteres cortando en límite de palabra (si el corte cae razonablemente
- * cerca) con puntos suspensivos.
- */
-function excerpt(item: HeroAbility, max = 90): string {
-  const html = tr(item.description)
-  if (html === '—') return ''
-  const text = (new DOMParser().parseFromString(html, 'text/html').body.textContent || '')
-    .replace(/\s+/g, ' ')
-    .trim()
-  if (text.length <= max) return text
-  const cut = text.slice(0, max + 1)
-  const lastSpace = cut.lastIndexOf(' ')
-  return `${cut.slice(0, lastSpace > max * 0.6 ? lastSpace : max).trimEnd()}…`
+/** Slug localizado de un héroe/carta embebido (enlace a su single). */
+function slugOf(item: SingleLinkRef): string {
+  return item.slug?.[locales.current] || Object.values(item.slug ?? {})[0] || ''
 }
 
 onMounted(() => {
@@ -159,22 +150,19 @@ onMounted(() => {
         @view="select(item)"
         @edit="edit(item)"
       >
-        <!-- Sin badge de estado (los tabs ya separan): el tipado completo en
-             badges, SIEMPRE en orden rango-tipo-subtipo (+ área); el tipo,
-             coloreado (físico rojo / mágico azul) -->
+        <!-- Sin badge de estado (los tabs ya separan): el coste (dados)
+             DELANTE, abriendo la zona (la EntityCard no tiene slot de
+             título), y el tipado completo en badges, SIEMPRE en orden
+             rango-tipo-subtipo (+ área); el tipo, coloreado (físico rojo /
+             mágico azul) -->
         <template #badges>
+          <CostDice v-if="item.cost" :cost="item.cost" />
           <span v-if="item.attack_range" class="chip">{{ tr(item.attack_range.name) }}</span>
           <span v-if="item.attack_type" class="chip" :class="`is-${item.attack_type}`">{{
             t(`heroAbilities.attackTypes.${item.attack_type}`)
           }}</span>
           <span v-if="item.attack_subtype" class="chip">{{ tr(item.attack_subtype.name) }}</span>
           <span v-if="item.area" class="chip">{{ t('heroAbilities.fields.area') }}</span>
-        </template>
-
-        <!-- Meta: coste (dados) + extracto del efecto en texto plano -->
-        <template #meta>
-          <CostDice v-if="item.cost" :cost="item.cost" />
-          <span v-if="excerpt(item)" class="hero-abilities__excerpt">{{ excerpt(item) }}</span>
         </template>
       </EntityCard>
     </BaseGrid>
@@ -268,6 +256,37 @@ onMounted(() => {
           class="hero-abilities__description"
           v-html="tr(selected.description)"
         ></div>
+        <!-- Los héroes que tienen la habilidad, cada uno enlazado a su
+             single por el slug del locale activo -->
+        <PanelSection
+          v-if="selected"
+          :title="`${t('heroAbilities.counts.heroes')} (${selected.heroes_count ?? selected.heroes?.length ?? 0})`"
+        >
+          <ul class="panel-counts">
+            <li v-for="hero in selected.heroes ?? []" :key="hero.id">
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'hero-single', params: { slug: slugOf(hero) } }"
+                >{{ tr(hero.name) }}</RouterLink
+              >
+            </li>
+          </ul>
+        </PanelSection>
+        <!-- Las cartas que otorgan la habilidad, enlazadas a su single -->
+        <PanelSection
+          v-if="selected"
+          :title="`${t('heroAbilities.counts.cards')} (${selected.cards_count ?? selected.cards?.length ?? 0})`"
+        >
+          <ul class="panel-counts">
+            <li v-for="card in selected.cards ?? []" :key="card.id">
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'card-single', params: { slug: slugOf(card) } }"
+                >{{ tr(card.name) }}</RouterLink
+              >
+            </li>
+          </ul>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

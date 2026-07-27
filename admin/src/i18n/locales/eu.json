@@ -827,6 +827,10 @@
       "noAttackSubtype": "Eraso-azpimotarik gabe",
       "area": "Area"
     },
+    "counts": {
+      "heroes": "Heroiak",
+      "cards": "Kartak"
+    },
     "attackTypes": {
       "physical": "Fisikoa",
       "magical": "Magikoa"
@@ -1241,6 +1245,10 @@
       "restored": "Eraso-irismena berreskuratu da",
       "forceDeleted": "Eraso-irismena betiko ezabatu da",
       "saveError": "Ezin izan da gorde."
+    },
+    "counts": {
+      "cards": "Kartak",
+      "abilities": "Gaitasunak"
     }
   },
   "attackSubtypes": {
@@ -1275,6 +1283,10 @@
       "restored": "Eraso-azpimota berreskuratu da",
       "forceDeleted": "Eraso-azpimota betiko ezabatu da",
       "saveError": "Ezin izan da gorde."
+    },
+    "counts": {
+      "cards": "Kartak",
+      "abilities": "Gaitasunak"
     }
   },
   "cardTypes": {
@@ -1481,6 +1493,9 @@
     },
     "sections": {
       "config": "Sorten konfigurazioa"
+    },
+    "counts": {
+      "decks": "Sortak"
     },
     "badge": {
       "default": "Lehenetsia"

@@ -16,6 +16,9 @@ class AttackRangeController extends Controller
     public function index(Request $request)
     {
         $ranges = AttackRange::query()
+            // El panel enlaza cuántas cartas y habilidades llevan el rango:
+            // withCount (sin N+1).
+            ->withCount(['cards', 'heroAbilities'])
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);

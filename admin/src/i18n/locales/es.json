@@ -758,6 +758,10 @@
       "noAttackSubtype": "Sin subtipo de ataque",
       "area": "Área"
     },
+    "counts": {
+      "heroes": "Héroes",
+      "cards": "Cartas"
+    },
     "attackTypes": {
       "physical": "Físico",
       "magical": "Mágico"
@@ -1172,6 +1176,10 @@
       "restored": "Rango de ataque restaurado",
       "forceDeleted": "Rango de ataque borrado definitivamente",
       "saveError": "No se pudo guardar."
+    },
+    "counts": {
+      "cards": "Cartas",
+      "abilities": "Habilidades"
     }
   },
   "attackSubtypes": {
@@ -1206,6 +1214,10 @@
       "restored": "Subtipo de ataque restaurado",
       "forceDeleted": "Subtipo de ataque borrado definitivamente",
       "saveError": "No se pudo guardar."
+    },
+    "counts": {
+      "cards": "Cartas",
+      "abilities": "Habilidades"
     }
   },
   "cardTypes": {
@@ -1412,6 +1424,9 @@
     },
     "sections": {
       "config": "Configuración de mazos"
+    },
+    "counts": {
+      "decks": "Mazos"
     },
     "badge": {
       "default": "Por defecto"

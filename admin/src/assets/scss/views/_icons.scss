@@ -12,3 +12,15 @@
 
   img { max-width: 64px; max-height: 64px; object-fit: contain; }
 }
+
+// Cabecera de la card de icono al revés que el resto: las ACCIONES arriba
+// (pegadas a la derecha, como estaban) y el NOMBRE debajo, a lo ancho.
+.icons .entity-card__header {
+  flex-direction: column-reverse;
+  align-items: stretch;
+  gap: $space-1;
+
+  .entity-card__actions {
+    justify-content: flex-end;
+  }
+}

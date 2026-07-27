@@ -1,18 +1,8 @@
 @use "tokens" as *;
 
-// Listado de modos de juego: la descripción se recorta a dos líneas en la
-// tarjeta para que la rejilla no baile. Cada modo lleva su configuración de
-// mazos (rejilla de enteros en el modal, ficha de datos en el panel).
+// Listado de modos de juego. Cada modo lleva su configuración de mazos
+// (rejilla de enteros en el modal, ficha de datos en el panel).
 .game-modes {
-  &__description {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    color: $text-3;
-    font-size: $fs-13;
-  }
-
   &__form-section {
     margin: $space-4 0 $space-2;
     font-size: $fs-14;
@@ -38,8 +28,9 @@
     font-size: $fs-13;
   }
 
+  // La ficha vive dentro de una PanelSection: el aire lo pone la sección.
   &__facts {
-    margin: $space-3 0 0;
+    margin: 0;
     display: grid;
     gap: $space-2;
 

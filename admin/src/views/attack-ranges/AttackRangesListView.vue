@@ -8,6 +8,7 @@ import type { AttackRange } from '@juego/shared'
 import AttackRangeFormModal from '@/components/attack-ranges/AttackRangeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía simple: tabs solo all/trashed, sin single ni publicación;
 // la API resuelve por id.
@@ -112,6 +113,28 @@ onMounted(init)
       @del="selected && del(selected)"
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
-    />
+    >
+      <template #meta>
+        <!-- Cantidades como ENLACES a cada index filtrado por este rango -->
+        <PanelSection v-if="selected" :title="t('common.sections.collection')">
+          <ul class="panel-counts">
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'cards', query: { attack_range_id: String(selected.id) } }"
+                ><strong>{{ t('attackRanges.counts.cards') }}</strong></RouterLink
+              ><span>{{ selected.cards_count ?? 0 }}</span>
+            </li>
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'hero-abilities', query: { attack_range_id: String(selected.id) } }"
+                ><strong>{{ t('attackRanges.counts.abilities') }}</strong></RouterLink
+              ><span>{{ selected.hero_abilities_count ?? 0 }}</span>
+            </li>
+          </ul>
+        </PanelSection>
+      </template>
+    </EntityPanel>
   </div>
 </template>

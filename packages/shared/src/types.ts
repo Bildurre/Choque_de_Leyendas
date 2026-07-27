@@ -55,8 +55,19 @@ export interface HeroRace extends GenderedTaxonomy {
   /** Cuántos héroes llevan la raza (withCount del index). */
   heroes_count?: number
 }
-export type AttackRange = TaxonomyBase
-export type AttackSubtype = TaxonomyBase
+export interface AttackRange extends TaxonomyBase {
+  /** Cuántas cartas llevan el rango (withCount del index). */
+  cards_count?: number
+  /** Cuántas habilidades llevan el rango (withCount del index). */
+  hero_abilities_count?: number
+}
+
+export interface AttackSubtype extends TaxonomyBase {
+  /** Cuántas cartas llevan el subtipo (withCount del index). */
+  cards_count?: number
+  /** Cuántas habilidades llevan el subtipo (withCount del index). */
+  hero_abilities_count?: number
+}
 
 export interface HeroClass extends GenderedTaxonomy {
   passive: Translations
@@ -70,6 +81,16 @@ export interface HeroClass extends GenderedTaxonomy {
 export interface TaxonomyOption {
   id: number
   name: Translations
+}
+
+/**
+ * Referencia mínima a una entidad CON single (id + nombre + slug): los
+ * paneles la listan enlazada a su detalle por el slug del locale activo.
+ */
+export interface SingleLinkRef {
+  id: number
+  name: Translations
+  slug: Translations
 }
 
 /** Opción del selector de clases de héroe (con su superclase, para acotar). */
@@ -125,6 +146,10 @@ export interface GameMode extends TaxonomyBase, DeckLimits {
   description: Translations
   /** Exactamente un modo es el por defecto (fallback de los consumidores). */
   is_default: boolean
+  /** Cuántos mazos usan el modo (withCount del index). */
+  faction_decks_count?: number
+  /** Los mazos en mínimo: el panel los lista enlazados a su single. */
+  faction_decks?: SingleLinkRef[]
 }
 
 // --- Facciones y contadores (cluster faction-counter) ---
@@ -174,6 +199,13 @@ export interface HeroAbility extends EntityListItem {
   attack_subtype?: TaxonomyOption | null
   area: boolean
   cost: string
+  /** Cuántos héroes tienen la habilidad (withCount del index). */
+  heroes_count?: number
+  /** Cuántas cartas la otorgan (withCount del index). */
+  cards_count?: number
+  /** Héroes y cartas en mínimo: el panel los lista enlazados a su single. */
+  heroes?: SingleLinkRef[]
+  cards?: SingleLinkRef[]
 }
 
 /** Opción del selector de habilidades (endpoint options: id + name + cost). */

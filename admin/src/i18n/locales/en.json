@@ -827,6 +827,10 @@
       "noAttackSubtype": "No attack subtype",
       "area": "Area"
     },
+    "counts": {
+      "heroes": "Heroes",
+      "cards": "Cards"
+    },
     "attackTypes": {
       "physical": "Physical",
       "magical": "Magical"
@@ -1241,6 +1245,10 @@
       "restored": "Attack range restored",
       "forceDeleted": "Attack range permanently deleted",
       "saveError": "Could not save."
+    },
+    "counts": {
+      "cards": "Cards",
+      "abilities": "Abilities"
     }
   },
   "attackSubtypes": {
@@ -1275,6 +1283,10 @@
       "restored": "Attack subtype restored",
       "forceDeleted": "Attack subtype permanently deleted",
       "saveError": "Could not save."
+    },
+    "counts": {
+      "cards": "Cards",
+      "abilities": "Abilities"
     }
   },
   "cardTypes": {
@@ -1481,6 +1493,9 @@
     },
     "sections": {
       "config": "Deck configuration"
+    },
+    "counts": {
+      "decks": "Decks"
     },
     "badge": {
       "default": "Default"

@@ -13,6 +13,9 @@ class AttackRangeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
+            // Cuántas cartas / habilidades llevan el rango (withCount del index)
+            'cards_count' => $this->whenCounted('cards'),
+            'hero_abilities_count' => $this->whenCounted('heroAbilities'),
             'deleted_at' => $this->deleted_at,
         ];
     }

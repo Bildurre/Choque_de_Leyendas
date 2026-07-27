@@ -20,6 +20,17 @@ class GameModeResource extends JsonResource
             'max_copies_per_card' => $this->max_copies_per_card,
             'required_heroes' => $this->required_heroes,
             'is_default' => $this->is_default,
+            // Cuántos mazos usan el modo (withCount del index)
+            'faction_decks_count' => $this->whenCounted('factionDecks'),
+            // Los mazos en mínimo (id + nombre + slug): el panel los lista
+            // enlazados a su single por el slug del locale activo.
+            'faction_decks' => $this->whenLoaded('factionDecks', fn () => $this->factionDecks->map(
+                fn ($deck) => [
+                    'id' => $deck->id,
+                    'name' => $deck->getTranslations('name'),
+                    'slug' => $deck->getTranslations('slug'),
+                ],
+            )),
             'deleted_at' => $this->deleted_at,
         ];
     }

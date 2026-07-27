@@ -23,6 +23,12 @@ class GameModeController extends Controller
     public function index(Request $request)
     {
         $modes = GameMode::query()
+            // El panel lista los mazos del modo (enlazados y contados):
+            // with/withCount en la misma query.
+            ->withCount('factionDecks')
+            // El closure de with() recibe la Relation: su getQuery() es el
+            // Builder que espera orderByName (alfabético por locale).
+            ->with(['factionDecks' => fn ($relation) => $this->orderByName($relation->getQuery())])
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);

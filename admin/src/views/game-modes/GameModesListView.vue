@@ -4,15 +4,17 @@ import { Plus } from '@lucide/vue'
 import { BaseGrid, EntityCard, EmptyState } from '@edc-motor/admin-kit'
 import { BaseButton, BasePagination, BaseTabs } from '@edc-motor/ui'
 import { useEntityList } from '@/composables/useEntityList'
-import type { GameMode } from '@juego/shared'
+import type { GameMode, SingleLinkRef } from '@juego/shared'
 import GameModeFormModal from '@/components/game-modes/GameModeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía sin slug, sin publicación y sin single: CRUD por id y tabs
 // todos/papelera. Nombre + descripción traducibles.
 const {
   t,
+  locales,
   items,
   loading,
   page,
@@ -42,6 +44,11 @@ const {
   tabKeys: ['all', 'trashed'],
   nameOf: (item) => item.name,
 })
+
+/** Slug localizado de un mazo embebido (enlace a su single). */
+function slugOf(item: SingleLinkRef): string {
+  return item.slug?.[locales.current] || Object.values(item.slug ?? {})[0] || ''
+}
 
 onMounted(init)
 </script>
@@ -89,18 +96,6 @@ onMounted(init)
             t('gameModes.state.trashed')
           }}</span>
         </template>
-
-        <template #meta>
-          <span class="game-modes__description">{{ tr(item.description) }}</span>
-          <!-- Resumen de la configuración de mazos del modo -->
-          <span>
-            {{ t('gameModes.summary.cards', { min: item.min_cards, max: item.max_cards }) }}
-            ·
-            {{ t('gameModes.summary.copies', { max: item.max_copies_per_card }) }}
-            ·
-            {{ t('gameModes.summary.heroes', { count: item.required_heroes }) }}
-          </span>
-        </template>
       </EntityCard>
     </BaseGrid>
 
@@ -128,30 +123,50 @@ onMounted(init)
       @force-delete="selected && forceDelete(selected)"
     >
       <template #meta>
-        <p v-if="selected" class="manager-detail__meta">{{ tr(selected.description) }}</p>
-        <!-- Configuración de mazos del modo (sin chips en paneles) -->
-        <dl v-if="selected" class="game-modes__facts">
-          <div>
-            <dt>{{ t('gameModes.fields.minCards') }}</dt>
-            <dd>{{ selected.min_cards }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('gameModes.fields.maxCards') }}</dt>
-            <dd>{{ selected.max_cards }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('gameModes.fields.maxCopiesPerCard') }}</dt>
-            <dd>{{ selected.max_copies_per_card }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('gameModes.fields.requiredHeroes') }}</dt>
-            <dd>{{ selected.required_heroes }}</dd>
-          </div>
-          <div>
-            <dt>{{ t('gameModes.fields.isDefault') }}</dt>
-            <dd>{{ selected.is_default ? t('common.yes') : t('common.no') }}</dd>
-          </div>
-        </dl>
+        <p v-if="selected && tr(selected.description) !== '—'" class="manager-detail__meta">
+          {{ tr(selected.description) }}
+        </p>
+        <!-- Por defecto solo si LO ES (sin chips ni sí/no en paneles) -->
+        <p v-if="selected?.is_default" class="manager-detail__meta">
+          {{ t('gameModes.fields.isDefault') }}
+        </p>
+        <!-- Configuración de mazos del modo, en su sección -->
+        <PanelSection v-if="selected" :title="t('gameModes.sections.config')">
+          <dl class="game-modes__facts">
+            <div>
+              <dt>{{ t('gameModes.fields.minCards') }}</dt>
+              <dd>{{ selected.min_cards }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('gameModes.fields.maxCards') }}</dt>
+              <dd>{{ selected.max_cards }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('gameModes.fields.maxCopiesPerCard') }}</dt>
+              <dd>{{ selected.max_copies_per_card }}</dd>
+            </div>
+            <div>
+              <dt>{{ t('gameModes.fields.requiredHeroes') }}</dt>
+              <dd>{{ selected.required_heroes }}</dd>
+            </div>
+          </dl>
+        </PanelSection>
+        <!-- Los mazos del modo, cada uno enlazado a su single por el slug
+             del locale activo -->
+        <PanelSection
+          v-if="selected"
+          :title="`${t('gameModes.counts.decks')} (${selected.faction_decks_count ?? selected.faction_decks?.length ?? 0})`"
+        >
+          <ul class="panel-counts">
+            <li v-for="deck in selected.faction_decks ?? []" :key="deck.id">
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'faction-deck-single', params: { slug: slugOf(deck) } }"
+                >{{ tr(deck.name) }}</RouterLink
+              >
+            </li>
+          </ul>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

@@ -21,6 +21,25 @@ class HeroAbilityResource extends JsonResource
             'attack_subtype' => new AttackSubtypeResource($this->whenLoaded('attackSubtype')),
             'area' => (bool) $this->area,
             'cost' => $this->cost,
+            // Cuántos héroes la tienen / cartas la otorgan (withCount del index)
+            'heroes_count' => $this->whenCounted('heroes'),
+            'cards_count' => $this->whenCounted('cards'),
+            // Héroes y cartas en mínimo (id + nombre + slug): el panel los
+            // lista enlazados a su single por el slug del locale activo.
+            'heroes' => $this->whenLoaded('heroes', fn () => $this->heroes->map(
+                fn ($hero) => [
+                    'id' => $hero->id,
+                    'name' => $hero->getTranslations('name'),
+                    'slug' => $hero->getTranslations('slug'),
+                ],
+            )),
+            'cards' => $this->whenLoaded('cards', fn () => $this->cards->map(
+                fn ($card) => [
+                    'id' => $card->id,
+                    'name' => $card->getTranslations('name'),
+                    'slug' => $card->getTranslations('slug'),
+                ],
+            )),
             'deleted_at' => $this->deleted_at,
         ];
     }

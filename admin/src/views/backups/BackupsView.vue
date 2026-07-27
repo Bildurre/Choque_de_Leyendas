@@ -13,6 +13,7 @@ import {
 } from '@edc-motor/ui'
 import { useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Copias de seguridad (doc 06): crear (EN COLA: la petición no espera al
 // zip y la vista sondea el flag `pending`), subir una copia externa,
@@ -390,24 +391,26 @@ onMounted(load)
             </BaseButton>
           </div>
 
-          <hr class="manager-panel__divider" />
+          <!-- Divisorias/kickers con el lenguaje común del panel (PanelSection) -->
+          <PanelSection :title="t('common.sections.details')">
+            <h3 class="manager-detail__title">{{ selected.file }}</h3>
 
-          <h3 class="manager-detail__title">{{ selected.file }}</h3>
-
-          <p class="manager-detail__meta">
-            <strong>{{ t('backups.fields.origin') }}</strong>
-            {{ t(`backups.origin.${selected.origin}`) }}
-          </p>
-          <p class="manager-detail__meta">
-            <strong>{{ t('backups.fields.date') }}</strong> {{ formatDate(selected.date) }}
-          </p>
-          <p class="manager-detail__meta">
-            <strong>{{ t('backups.fields.size') }}</strong> {{ formatSize(selected.size) }}
-          </p>
+            <p class="manager-detail__meta">
+              <strong>{{ t('backups.fields.origin') }}</strong>
+              {{ t(`backups.origin.${selected.origin}`) }}
+            </p>
+            <p class="manager-detail__meta">
+              <strong>{{ t('backups.fields.date') }}</strong> {{ formatDate(selected.date) }}
+            </p>
+            <p class="manager-detail__meta">
+              <strong>{{ t('backups.fields.size') }}</strong> {{ formatSize(selected.size) }}
+            </p>
+          </PanelSection>
 
           <!-- Qué hace (y qué NO hace) restaurar: límites documentados -->
-          <hr class="manager-panel__divider" />
-          <p class="manager-panel__empty">{{ t('backups.restoreHint') }}</p>
+          <PanelSection :title="t('backups.restore')">
+            <p class="manager-panel__empty">{{ t('backups.restoreHint') }}</p>
+          </PanelSection>
         </template>
       </div>
     </Teleport>

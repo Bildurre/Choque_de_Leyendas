@@ -8,6 +8,7 @@ import type { AttackSubtype } from '@juego/shared'
 import AttackSubtypeFormModal from '@/components/attack-subtypes/AttackSubtypeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía simple: tabs solo all/trashed, sin single ni publicación;
 // la API resuelve por id.
@@ -117,6 +118,28 @@ onMounted(init)
       @del="selected && del(selected)"
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
-    />
+    >
+      <template #meta>
+        <!-- Cantidades como ENLACES a cada index filtrado por este subtipo -->
+        <PanelSection v-if="selected" :title="t('common.sections.collection')">
+          <ul class="panel-counts">
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'cards', query: { attack_subtype_id: String(selected.id) } }"
+                ><strong>{{ t('attackSubtypes.counts.cards') }}</strong></RouterLink
+              ><span>{{ selected.cards_count ?? 0 }}</span>
+            </li>
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'hero-abilities', query: { attack_subtype_id: String(selected.id) } }"
+                ><strong>{{ t('attackSubtypes.counts.abilities') }}</strong></RouterLink
+              ><span>{{ selected.hero_abilities_count ?? 0 }}</span>
+            </li>
+          </ul>
+        </PanelSection>
+      </template>
+    </EntityPanel>
   </div>
 </template>
