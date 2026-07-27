@@ -8,6 +8,7 @@ import type { CardType } from '@juego/shared'
 import CardTypeFormModal from '@/components/card-types/CardTypeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía sin slug, sin publicación y sin single: CRUD por id y tabs
 // todos/papelera. Los flags allows_subtypes/is_equipment se muestran como
@@ -118,13 +119,22 @@ onMounted(init)
       @force-delete="selected && forceDelete(selected)"
     >
       <template #meta>
-        <p v-if="selected" class="manager-detail__meta">
+        <!-- Superclase asociada, solo si la tiene: enlazada al index de
+             superclases con ella seleccionada (allí no hay filtro;
+             `selected` + `search` la dejan a la vista) -->
+        <p v-if="selected?.hero_superclass" class="manager-detail__meta">
           {{ t('cardTypes.fields.heroSuperclass') }}:
-          {{
-            selected.hero_superclass
-              ? tr(selected.hero_superclass.name)
-              : t('cardTypes.noSuperclass')
-          }}
+          <RouterLink
+            class="hero-link"
+            :to="{
+              name: 'hero-superclasses',
+              query: {
+                selected: String(selected.hero_superclass.id),
+                search: tr(selected.hero_superclass.name),
+              },
+            }"
+            >{{ tr(selected.hero_superclass.name) }}</RouterLink
+          >
         </p>
         <!-- Solo lo que SÍ tiene, en texto plano (sin chips ni colores de
              sí/no, regla transversal); lo que no tiene, no aparece -->
@@ -134,6 +144,18 @@ onMounted(init)
         <p v-if="selected?.is_equipment" class="manager-detail__meta">
           {{ t('cardTypes.fields.isEquipment') }}
         </p>
+        <!-- Cantidad como ENLACE al index de cartas filtrado por este tipo -->
+        <PanelSection v-if="selected" :title="t('common.sections.collection')">
+          <ul class="panel-counts">
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'cards', query: { card_type_id: String(selected.id) } }"
+                ><strong>{{ t('cardTypes.counts.cards') }}</strong></RouterLink
+              ><span>{{ selected.cards_count ?? 0 }}</span>
+            </li>
+          </ul>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

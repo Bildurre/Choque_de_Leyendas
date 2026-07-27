@@ -79,7 +79,10 @@ export interface HeroClassOption extends TaxonomyOption {
 
 // --- Taxonomías de cartas y modos de juego (cluster taxonomies-b) ---
 
-export type CardSubtype = TaxonomyBase
+export interface CardSubtype extends TaxonomyBase {
+  /** Cuántas cartas llevan el subtipo (withCount del index). */
+  cards_count?: number
+}
 
 export interface CardType extends TaxonomyBase {
   /** Superclase asociada (única por tipo; p. ej. Técnica→Guerrero). */
@@ -89,6 +92,8 @@ export interface CardType extends TaxonomyBase {
   allows_subtypes: boolean
   /** Muestra tipo de equipo y manos en el form de cartas. */
   is_equipment: boolean
+  /** Cuántas cartas llevan el tipo (withCount del index). */
+  cards_count?: number
 }
 
 export interface EquipmentType extends TaxonomyBase {
@@ -96,12 +101,16 @@ export interface EquipmentType extends TaxonomyBase {
   uses_hands: boolean
   /** Cuántos subtipos cuelgan de él (withCount del index). */
   subtypes_count?: number
+  /** Cuántas cartas llevan el tipo (withCount del index). */
+  cards_count?: number
 }
 
 export interface EquipmentSubtype extends TaxonomyBase {
   /** Tipo de equipo al que pertenece (obligatorio). */
   equipment_type_id: number
   equipment_type?: EquipmentTypeOption | null
+  /** Cuántas cartas llevan el subtipo (withCount del index). */
+  cards_count?: number
 }
 
 /** Límites de construcción de mazos (configuración integrada en el modo). */

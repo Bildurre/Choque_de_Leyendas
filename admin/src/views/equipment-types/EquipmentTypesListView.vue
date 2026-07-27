@@ -8,6 +8,7 @@ import type { EquipmentType } from '@juego/shared'
 import EquipmentTypeFormModal from '@/components/equipment-types/EquipmentTypeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía sin slug, sin publicación y sin single: CRUD por id. El chip
 // marca los tipos que llevan manos (armas): sus cartas exigen el campo manos.
@@ -123,10 +124,28 @@ onMounted(init)
         <p v-if="selected?.uses_hands" class="manager-detail__meta">
           {{ t('equipmentTypes.fields.usesHands') }}
         </p>
-        <!-- Cuántos subtipos cuelgan del tipo (withCount del index) -->
-        <p v-if="selected" class="manager-detail__meta">
-          {{ t('equipmentTypes.counts.subtypes') }}: {{ selected.subtypes_count ?? 0 }}
-        </p>
+        <!-- Cantidades como ENLACES a cada index filtrado por este tipo -->
+        <PanelSection v-if="selected" :title="t('common.sections.collection')">
+          <ul class="panel-counts">
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{
+                  name: 'equipment-subtypes',
+                  query: { equipment_type_id: String(selected.id) },
+                }"
+                ><strong>{{ t('equipmentTypes.counts.subtypes') }}</strong></RouterLink
+              ><span>{{ selected.subtypes_count ?? 0 }}</span>
+            </li>
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'cards', query: { equipment_type_id: String(selected.id) } }"
+                ><strong>{{ t('equipmentTypes.counts.cards') }}</strong></RouterLink
+              ><span>{{ selected.cards_count ?? 0 }}</span>
+            </li>
+          </ul>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>

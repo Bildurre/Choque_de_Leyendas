@@ -19,6 +19,8 @@ class EquipmentSubtypeResource extends JsonResource
                 'name' => $this->equipmentType->getTranslations('name'),
                 'uses_hands' => (bool) $this->equipmentType->uses_hands,
             ]),
+            // Cuántas cartas llevan el subtipo (withCount del index)
+            'cards_count' => $this->whenCounted('cards'),
             'deleted_at' => $this->deleted_at,
         ];
     }

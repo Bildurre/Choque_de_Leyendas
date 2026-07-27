@@ -8,6 +8,7 @@ import type { CardSubtype } from '@juego/shared'
 import CardSubtypeFormModal from '@/components/card-subtypes/CardSubtypeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía sin slug, sin publicación y sin single: CRUD por id y tabs
 // todos/papelera. Solo nombre traducible.
@@ -111,6 +112,21 @@ onMounted(init)
       @del="selected && del(selected)"
       @restore="selected && restore(selected)"
       @force-delete="selected && forceDelete(selected)"
-    />
+    >
+      <template #meta>
+        <!-- Cantidad como ENLACE al index de cartas filtrado por este subtipo -->
+        <PanelSection v-if="selected" :title="t('common.sections.collection')">
+          <ul class="panel-counts">
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'cards', query: { card_subtype_id: String(selected.id) } }"
+                ><strong>{{ t('cardSubtypes.counts.cards') }}</strong></RouterLink
+              ><span>{{ selected.cards_count ?? 0 }}</span>
+            </li>
+          </ul>
+        </PanelSection>
+      </template>
+    </EntityPanel>
   </div>
 </template>

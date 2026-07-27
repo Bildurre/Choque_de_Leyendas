@@ -1,0 +1,7 @@
+// Listado de subtipos de equipo. Chip "ribeteado" (CdL): el tinte recibido
+// en --chip-tint colorea SOLO borde y texto (sin fondo teñido) — mismo
+// lenguaje que .chip.is-unique de cartas, pero con el color por variable.
+.chip.is-rimmed {
+  color: var(--chip-tint);
+  border-color: color-mix(in srgb, var(--chip-tint) 45%, transparent);
+}

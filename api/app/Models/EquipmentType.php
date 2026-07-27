@@ -39,4 +39,10 @@ class EquipmentType extends Model
     {
         return $this->hasMany(EquipmentSubtype::class);
     }
+
+    /** Cartas de equipo de este tipo. */
+    public function cards(): HasMany
+    {
+        return $this->hasMany(Card::class);
+    }
 }

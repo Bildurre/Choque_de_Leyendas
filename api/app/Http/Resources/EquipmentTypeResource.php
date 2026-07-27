@@ -14,8 +14,10 @@ class EquipmentTypeResource extends JsonResource
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
             'uses_hands' => (bool) $this->uses_hands,
-            // Cuántos subtipos cuelgan del tipo (withCount del index)
+            // Cuántos subtipos cuelgan del tipo y cuántas cartas lo llevan
+            // (withCount del index)
             'subtypes_count' => $this->whenCounted('subtypes'),
+            'cards_count' => $this->whenCounted('cards'),
             'deleted_at' => $this->deleted_at,
         ];
     }

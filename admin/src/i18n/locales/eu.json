@@ -890,6 +890,10 @@
       "strength_multiplier": "Bizitza-puntuak indar-puntu bakoitzeko (-5–5).",
       "armor_multiplier": "Bizitza-puntuak armadura-puntu bakoitzeko (-5–5)."
     },
+    "modal": {
+      "limits": "Editatu atributuen mugak",
+      "health": "Editatu bizitzaren kalkulua"
+    },
     "toast": {
       "saved": "Konfigurazioa ondo gorde da.",
       "saveError": "Ezin izan da gorde."
@@ -1293,6 +1297,9 @@
       "allowsSubtypes": "Azpimotak onartzen ditu",
       "isEquipment": "Ekipamendua da"
     },
+    "counts": {
+      "cards": "Kartak"
+    },
     "noSuperclass": "Superklaserik gabe",
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
@@ -1327,6 +1334,9 @@
     },
     "fields": {
       "name": "Izena"
+    },
+    "counts": {
+      "cards": "Kartak"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
@@ -1364,7 +1374,8 @@
       "usesHands": "Eskuak behar ditu"
     },
     "counts": {
-      "subtypes": "Azpimotak"
+      "subtypes": "Azpimotak",
+      "cards": "Kartak"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",
@@ -1404,6 +1415,9 @@
     "selectType": "Aukeratu ekipamendu mota",
     "filters": {
       "allTypes": "Mota guztiak"
+    },
+    "counts": {
+      "cards": "Kartak"
     },
     "confirmDelete": {
       "title": "Zakarrontzira bidali",

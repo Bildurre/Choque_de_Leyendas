@@ -16,6 +16,8 @@ class CardSubtypeController extends Controller
     public function index(Request $request)
     {
         $subtypes = CardSubtype::query()
+            // El panel enlaza cuántas cartas llevan el subtipo: withCount (sin N+1).
+            ->withCount('cards')
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);

@@ -821,6 +821,10 @@
       "strength_multiplier": "Puntos de vida por punto de fuerza (-5–5).",
       "armor_multiplier": "Puntos de vida por punto de armadura (-5–5)."
     },
+    "modal": {
+      "limits": "Editar límites de atributos",
+      "health": "Editar cálculo de vida"
+    },
     "toast": {
       "saved": "Configuración guardada correctamente.",
       "saveError": "No se pudo guardar."
@@ -1224,6 +1228,9 @@
       "allowsSubtypes": "Permite subtipos",
       "isEquipment": "Es equipo"
     },
+    "counts": {
+      "cards": "Cartas"
+    },
     "noSuperclass": "Sin superclase",
     "confirmDelete": {
       "title": "Enviar a la papelera",
@@ -1258,6 +1265,9 @@
     },
     "fields": {
       "name": "Nombre"
+    },
+    "counts": {
+      "cards": "Cartas"
     },
     "confirmDelete": {
       "title": "Enviar a la papelera",
@@ -1295,7 +1305,8 @@
       "usesHands": "Lleva manos"
     },
     "counts": {
-      "subtypes": "Subtipos"
+      "subtypes": "Subtipos",
+      "cards": "Cartas"
     },
     "confirmDelete": {
       "title": "Enviar a la papelera",
@@ -1335,6 +1346,9 @@
     "selectType": "Seleccionar tipo de equipo",
     "filters": {
       "allTypes": "Todos los tipos"
+    },
+    "counts": {
+      "cards": "Cartas"
     },
     "confirmDelete": {
       "title": "Enviar a la papelera",

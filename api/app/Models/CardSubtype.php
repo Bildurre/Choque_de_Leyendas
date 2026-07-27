@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Edc\Core\Support\Concerns\HasFilters;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
@@ -21,4 +22,10 @@ class CardSubtype extends Model
     public array $translatable = ['name'];
 
     protected array $searchable = ['name'];
+
+    /** Cartas de este subtipo. */
+    public function cards(): HasMany
+    {
+        return $this->hasMany(Card::class);
+    }
 }

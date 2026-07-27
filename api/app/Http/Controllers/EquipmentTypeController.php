@@ -16,8 +16,9 @@ class EquipmentTypeController extends Controller
     public function index(Request $request)
     {
         $types = EquipmentType::query()
-            // El panel pinta cuántos subtipos cuelgan: withCount (sin N+1).
-            ->withCount('subtypes')
+            // El panel enlaza cuántos subtipos cuelgan y cuántas cartas llevan
+            // el tipo: withCount (sin N+1).
+            ->withCount(['subtypes', 'cards'])
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);

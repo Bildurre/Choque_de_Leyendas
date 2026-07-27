@@ -124,9 +124,15 @@ onMounted(init)
         <p v-if="selected && tr(selected.name_female) !== '—'" class="manager-detail__meta">
           {{ t('heroSuperclasses.fields.nameFemale') }}: {{ tr(selected.name_female) }}
         </p>
-        <!-- Tipo de carta asociado, solo si lo tiene -->
+        <!-- Tipo de carta asociado, solo si lo tiene: enlazado al index de
+             cartas filtrado por ese tipo -->
         <p v-if="selected?.card_type" class="manager-detail__meta">
-          {{ t('heroSuperclasses.fields.cardType') }}: {{ tr(selected.card_type.name) }}
+          {{ t('heroSuperclasses.fields.cardType') }}:
+          <RouterLink
+            class="hero-link"
+            :to="{ name: 'cards', query: { card_type_id: String(selected.card_type.id) } }"
+            >{{ tr(selected.card_type.name) }}</RouterLink
+          >
         </p>
         <!-- Las clases de la superclase, cada una enlazada al index de
              clases con esa clase seleccionada (ahí no hay filtro por

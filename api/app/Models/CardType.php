@@ -5,6 +5,7 @@ namespace App\Models;
 use Edc\Core\Support\Concerns\HasFilters;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
@@ -39,5 +40,11 @@ class CardType extends Model
     public function heroSuperclass(): BelongsTo
     {
         return $this->belongsTo(HeroSuperclass::class);
+    }
+
+    /** Cartas de este tipo. */
+    public function cards(): HasMany
+    {
+        return $this->hasMany(Card::class);
     }
 }

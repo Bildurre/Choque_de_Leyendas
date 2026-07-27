@@ -18,6 +18,8 @@ class CardTypeController extends Controller
     {
         $types = CardType::query()
             ->with('heroSuperclass')
+            // El panel enlaza cuántas cartas llevan el tipo: withCount (sin N+1).
+            ->withCount('cards')
             ->filter($request->only('search', 'status'))
             ->tap(fn ($query) => $this->applySort($query, $request->query('sort')))
             ->paginate(15);

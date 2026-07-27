@@ -21,6 +21,8 @@ class CardTypeResource extends JsonResource
             ] : null),
             'allows_subtypes' => $this->allows_subtypes,
             'is_equipment' => $this->is_equipment,
+            // Cuántas cartas llevan el tipo (withCount del index)
+            'cards_count' => $this->whenCounted('cards'),
             'deleted_at' => $this->deleted_at,
         ];
     }

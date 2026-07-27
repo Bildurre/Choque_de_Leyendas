@@ -13,6 +13,8 @@ class CardSubtypeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->getTranslations('name'),
+            // Cuántas cartas llevan el subtipo (withCount del index)
+            'cards_count' => $this->whenCounted('cards'),
             'deleted_at' => $this->deleted_at,
         ];
     }

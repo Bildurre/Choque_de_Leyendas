@@ -5,6 +5,7 @@ namespace App\Models;
 use Edc\Core\Support\Concerns\HasFilters;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Translatable\HasTranslations;
 
@@ -30,5 +31,11 @@ class EquipmentSubtype extends Model
     public function equipmentType(): BelongsTo
     {
         return $this->belongsTo(EquipmentType::class);
+    }
+
+    /** Cartas de equipo de este subtipo. */
+    public function cards(): HasMany
+    {
+        return $this->hasMany(Card::class);
     }
 }

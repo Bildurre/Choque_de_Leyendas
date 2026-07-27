@@ -22,6 +22,8 @@ class EquipmentSubtypeController extends Controller
 
         $subtypes = EquipmentSubtype::query()
             ->with('equipmentType')
+            // El panel enlaza cuántas cartas llevan el subtipo: withCount (sin N+1).
+            ->withCount('cards')
             ->filter($request->only('search', 'status'))
             // Filtro del listado (multiselect en el panel derecho).
             ->when($typeIds !== [], fn ($query) => $query->whereIn('equipment_type_id', $typeIds))

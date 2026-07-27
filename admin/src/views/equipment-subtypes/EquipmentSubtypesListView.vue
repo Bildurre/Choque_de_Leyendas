@@ -9,6 +9,7 @@ import type { EquipmentSubtype, EquipmentTypeOption } from '@juego/shared'
 import EquipmentSubtypeFormModal from '@/components/equipment-subtypes/EquipmentSubtypeFormModal.vue'
 import EntityPanel from '@/components/EntityPanel.vue'
 import ListToolbar from '@/components/ListToolbar.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Taxonomía sin slug, sin publicación y sin single: CRUD por id. Cada
 // subtipo pertenece a un tipo de equipo; el listado filtra por tipo con un
@@ -46,6 +47,8 @@ const {
   resolveBy: 'id',
   tabKeys: ['all', 'trashed'],
   nameOf: (item) => item.name,
+  // Enlaces entrantes por query (p. ej. desde el panel de tipos de equipo).
+  queryFilters: ['equipment_type_id'],
 })
 
 // Opciones del select de filtro por tipo de equipo (endpoint options).
@@ -118,12 +121,12 @@ onMounted(async () => {
         @edit="edit(item)"
       >
         <!-- Sin badge de estado (los tabs ya separan): el tipo de equipo,
-             chip TEÑIDO con su color estable de la paleta (determinista por
-             id; fondo + texto de contraste automático, is-tinted del motor) -->
+             chip RIBETEADO con su color estable de la paleta (determinista
+             por id; color en borde y texto, sin fondo — is-rimmed, CdL) -->
         <template #badges>
           <span
             v-if="item.equipment_type"
-            class="chip is-tinted"
+            class="chip is-rimmed"
             :style="{ '--chip-tint': typeColor(item.equipment_type_id) }"
             >{{ tr(item.equipment_type.name) }}</span
           >
@@ -174,10 +177,37 @@ onMounted(async () => {
       </template>
 
       <template #meta>
+        <!-- El tipo al que pertenece, enlazado al index de tipos con él
+             seleccionado (allí no hay filtro; `selected` + `search` lo
+             dejan a la vista) -->
         <p v-if="selected" class="manager-detail__meta">
           {{ t('equipmentSubtypes.fields.type') }}:
-          {{ selected.equipment_type ? tr(selected.equipment_type.name) : '—' }}
+          <RouterLink
+            v-if="selected.equipment_type"
+            class="hero-link"
+            :to="{
+              name: 'equipment-types',
+              query: {
+                selected: String(selected.equipment_type.id),
+                search: tr(selected.equipment_type.name),
+              },
+            }"
+            >{{ tr(selected.equipment_type.name) }}</RouterLink
+          >
+          <template v-else>—</template>
         </p>
+        <!-- Cantidad como ENLACE al index de cartas filtrado por este subtipo -->
+        <PanelSection v-if="selected" :title="t('common.sections.collection')">
+          <ul class="panel-counts">
+            <li>
+              <RouterLink
+                class="hero-link"
+                :to="{ name: 'cards', query: { equipment_subtype_id: String(selected.id) } }"
+                ><strong>{{ t('equipmentSubtypes.counts.cards') }}</strong></RouterLink
+              ><span>{{ selected.cards_count ?? 0 }}</span>
+            </li>
+          </ul>
+        </PanelSection>
       </template>
     </EntityPanel>
   </div>
