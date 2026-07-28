@@ -64,7 +64,6 @@ const blockLabels = computed<Partial<PageBlocksLabels>>(() => ({
   parent: t('pages.blocks.parent'),
   parentNone: t('pages.blocks.parentNone'),
   stateKicker: t('common.stateKicker'),
-  details: t('common.sections.details'),
 }))
 
 /** Acción rápida del panel: alterna un flag de la página sin abrir el modal. */
@@ -170,13 +169,15 @@ onBeforeUnmount(crumb.clear)
           </BaseButton>
         </div>
 
-        <!-- Info con el lenguaje de secciones del panel (PanelSection):
-             título + slugs por idioma -->
-        <PanelSection :title="t('common.sections.details')">
-          <h3 class="manager-detail__title">
-            {{ pageTitle(page) }}
-          </h3>
+        <!-- El nombre de la página como título del panel (patrón de
+             héroes/mazos), fuera de las secciones -->
+        <h3 class="manager-detail__title">
+          {{ pageTitle(page) }}
+        </h3>
 
+        <!-- Info con el lenguaje de secciones del panel (PanelSection):
+             slugs por idioma -->
+        <PanelSection :title="t('common.sections.details')">
           <p v-for="(slugValue, code) in page.slug" :key="code" class="manager-detail__meta">
             <strong>{{ String(code).toUpperCase() }}</strong> /{{ slugValue }}
           </p>

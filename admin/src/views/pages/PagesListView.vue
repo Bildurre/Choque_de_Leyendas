@@ -478,13 +478,15 @@ onMounted(load)
             </BaseButton>
           </div>
 
-          <!-- Info con el lenguaje de secciones del panel (PanelSection):
-               título + slugs por idioma -->
-          <PanelSection :title="t('common.sections.details')">
-            <h3 class="manager-detail__title">
-              {{ pageTitle(selected) }}
-            </h3>
+          <!-- El nombre de la página como título del panel (patrón de
+               héroes/mazos), fuera de las secciones -->
+          <h3 class="manager-detail__title">
+            {{ pageTitle(selected) }}
+          </h3>
 
+          <!-- Info con el lenguaje de secciones del panel (PanelSection):
+               slugs por idioma -->
+          <PanelSection :title="t('common.sections.details')">
             <p v-for="(slugValue, code) in selected.slug" :key="code" class="manager-detail__meta">
               <strong>{{ String(code).toUpperCase() }}</strong> /{{ slugValue }}
             </p>
