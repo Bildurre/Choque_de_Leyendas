@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ca224cbe7a838cabfdbd74e55f6a0b8d",
+    "content-hash": "63939a0e7aa2d84866af0cee68ae74f7",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -751,16 +751,16 @@
         },
         {
             "name": "edc-motor/core",
-            "version": "0.4.37",
+            "version": "0.4.38",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Bildurre/edc-core.git",
-                "reference": "de4dacd98c4693f37afe14cd9f3c7f43208904bf"
+                "reference": "870a92264dd9df733bc463da22f06dfab0df2794"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Bildurre/edc-core/zipball/de4dacd98c4693f37afe14cd9f3c7f43208904bf",
-                "reference": "de4dacd98c4693f37afe14cd9f3c7f43208904bf",
+                "url": "https://api.github.com/repos/Bildurre/edc-core/zipball/870a92264dd9df733bc463da22f06dfab0df2794",
+                "reference": "870a92264dd9df733bc463da22f06dfab0df2794",
                 "shasum": ""
             },
             "require": {
@@ -802,7 +802,7 @@
                 "issues": "https://github.com/bildurre/boardgame_motor/issues",
                 "source": "https://github.com/bildurre/edc-core"
             },
-            "time": "2026-07-27T20:08:39+00:00"
+            "time": "2026-07-28T21:25:46+00:00"
         },
         {
             "name": "egulias/email-validator",
@@ -4222,16 +4222,16 @@
         },
         {
             "name": "spatie/laravel-backup",
-            "version": "10.3.0",
+            "version": "10.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "c026344f7e26321d6e1d214cd3e566ce5c54715d"
+                "reference": "1160cf6a6faa262586f47e2bd20c59512bb1a77e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/c026344f7e26321d6e1d214cd3e566ce5c54715d",
-                "reference": "c026344f7e26321d6e1d214cd3e566ce5c54715d",
+                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/1160cf6a6faa262586f47e2bd20c59512bb1a77e",
+                "reference": "1160cf6a6faa262586f47e2bd20c59512bb1a77e",
                 "shasum": ""
             },
             "require": {
@@ -4306,7 +4306,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-backup/issues",
-                "source": "https://github.com/spatie/laravel-backup/tree/10.3.0"
+                "source": "https://github.com/spatie/laravel-backup/tree/10.3.1"
             },
             "funding": [
                 {
@@ -4318,7 +4318,7 @@
                     "type": "other"
                 }
             ],
-            "time": "2026-06-10T08:25:59+00:00"
+            "time": "2026-07-28T13:19:06+00:00"
         },
         {
             "name": "spatie/laravel-medialibrary",
@@ -4656,16 +4656,16 @@
         },
         {
             "name": "spatie/laravel-sluggable",
-            "version": "4.0.2",
+            "version": "4.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-sluggable.git",
-                "reference": "82a69be1ef661ce2ff38242b271457ef0b9611dd"
+                "reference": "572933c61b70103be4b95fe7674070bb60243254"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/82a69be1ef661ce2ff38242b271457ef0b9611dd",
-                "reference": "82a69be1ef661ce2ff38242b271457ef0b9611dd",
+                "url": "https://api.github.com/repos/spatie/laravel-sluggable/zipball/572933c61b70103be4b95fe7674070bb60243254",
+                "reference": "572933c61b70103be4b95fe7674070bb60243254",
                 "shasum": ""
             },
             "require": {
@@ -4722,7 +4722,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/laravel-sluggable/issues",
-                "source": "https://github.com/spatie/laravel-sluggable/tree/4.0.2"
+                "source": "https://github.com/spatie/laravel-sluggable/tree/4.0.3"
             },
             "funding": [
                 {
@@ -4730,7 +4730,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2026-04-30T17:28:09+00:00"
+            "time": "2026-07-28T13:16:49+00:00"
         },
         {
             "name": "spatie/laravel-translatable",
@@ -5949,16 +5949,16 @@
         },
         {
             "name": "symfony/polyfill-intl-grapheme",
-            "version": "v1.38.1",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-intl-grapheme.git",
-                "reference": "e9247d281d694a5120554d9afaf54e070e88a603"
+                "reference": "bb899c1db0aa8127dc3afe8cda4a67eb24915f8d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/e9247d281d694a5120554d9afaf54e070e88a603",
-                "reference": "e9247d281d694a5120554d9afaf54e070e88a603",
+                "url": "https://api.github.com/repos/symfony/polyfill-intl-grapheme/zipball/bb899c1db0aa8127dc3afe8cda4a67eb24915f8d",
+                "reference": "bb899c1db0aa8127dc3afe8cda4a67eb24915f8d",
                 "shasum": ""
             },
             "require": {
@@ -6007,7 +6007,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.38.1"
+                "source": "https://github.com/symfony/polyfill-intl-grapheme/tree/v1.41.0"
             },
             "funding": [
                 {
@@ -6027,7 +6027,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-26T05:58:03+00:00"
+            "time": "2026-07-28T08:25:59+00:00"
         },
         {
             "name": "symfony/polyfill-intl-idn",
@@ -6452,16 +6452,16 @@
         },
         {
             "name": "symfony/polyfill-php85",
-            "version": "v1.38.1",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php85.git",
-                "reference": "ba2ba04f3352cfa2dcbbcb90aee13ed967f505b1"
+                "reference": "255fab485aaa1006ed411040c42aecd7b5302d7a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php85/zipball/ba2ba04f3352cfa2dcbbcb90aee13ed967f505b1",
-                "reference": "ba2ba04f3352cfa2dcbbcb90aee13ed967f505b1",
+                "url": "https://api.github.com/repos/symfony/polyfill-php85/zipball/255fab485aaa1006ed411040c42aecd7b5302d7a",
+                "reference": "255fab485aaa1006ed411040c42aecd7b5302d7a",
                 "shasum": ""
             },
             "require": {
@@ -6508,7 +6508,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php85/tree/v1.38.1"
+                "source": "https://github.com/symfony/polyfill-php85/tree/v1.41.0"
             },
             "funding": [
                 {
@@ -6528,20 +6528,20 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-26T02:25:22+00:00"
+            "time": "2026-07-01T12:47:55+00:00"
         },
         {
             "name": "symfony/polyfill-php86",
-            "version": "v1.38.0",
+            "version": "v1.41.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-php86.git",
-                "reference": "fcec68d64f46dc84e1f6ffcf2c6dda40ff3143ad"
+                "reference": "6bc356ed3d8dbfeea8f0de235e34d670704e880e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-php86/zipball/fcec68d64f46dc84e1f6ffcf2c6dda40ff3143ad",
-                "reference": "fcec68d64f46dc84e1f6ffcf2c6dda40ff3143ad",
+                "url": "https://api.github.com/repos/symfony/polyfill-php86/zipball/6bc356ed3d8dbfeea8f0de235e34d670704e880e",
+                "reference": "6bc356ed3d8dbfeea8f0de235e34d670704e880e",
                 "shasum": ""
             },
             "require": {
@@ -6588,7 +6588,7 @@
                 "shim"
             ],
             "support": {
-                "source": "https://github.com/symfony/polyfill-php86/tree/v1.38.0"
+                "source": "https://github.com/symfony/polyfill-php86/tree/v1.41.0"
             },
             "funding": [
                 {
@@ -6608,7 +6608,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2026-05-25T11:52:35+00:00"
+            "time": "2026-07-02T13:42:24+00:00"
         },
         {
             "name": "symfony/polyfill-uuid",
