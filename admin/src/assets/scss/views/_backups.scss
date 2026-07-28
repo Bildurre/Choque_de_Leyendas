@@ -94,3 +94,40 @@
     white-space: nowrap;
   }
 }
+
+// Fila de copia (piel de .pages-view__item, con SU propio reparto: las áreas
+// de páginas — grip/title/slug — aquí no existen). Tres disposiciones por
+// ancho del contenedor `content`: estrecho, nombre / chips / fecha en tres
+// filas; medio, chips + fecha (pegada a la derecha) en la segunda fila;
+// ancho, todo en una fila con los chips al final.
+.backups-view .backups-view__item {
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "name"
+    "chips"
+    "date";
+
+  .backups-view__name { grid-area: name; }
+  .backups-view__date { grid-area: date; justify-self: start; }
+  .pages-view__chips { grid-area: chips; }
+
+  @container content (min-width: #{$bp-sm}) {
+    grid-template-columns: minmax(0, 1fr) auto;
+    grid-template-areas:
+      "name  name"
+      "chips date";
+
+    .backups-view__date { justify-self: end; }
+  }
+
+  // 700px y no $bp-md: con el panel derecho abierto el contenedor `content`
+  // ronda los ~750px incluso a pantalla completa — con 768 el modo ancho no
+  // llegaba a activarse nunca.
+  @container content (min-width: 700px) {
+    grid-template-columns: auto auto minmax(0, 1fr);
+    grid-template-areas: "name date chips";
+
+    .backups-view__date { justify-self: start; }
+    .pages-view__chips { justify-self: end; }
+  }
+}

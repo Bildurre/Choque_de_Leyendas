@@ -353,7 +353,7 @@ onMounted(load)
       <article
         v-for="backup in backups"
         :key="backup.file"
-        class="pages-view__item"
+        class="pages-view__item backups-view__item"
         :class="{ 'is-active': selectedFile === backup.file }"
         @click="(e) => select(backup, e)"
       >

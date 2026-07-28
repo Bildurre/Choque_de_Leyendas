@@ -14,10 +14,11 @@ import {
   Trash2,
 } from '@lucide/vue'
 import { BaseButton, BaseSelect, useConfirm, useToast } from '@edc-motor/ui'
-import { useCardDeselect, useRightSidebar } from '@edc-motor/admin-kit'
+import { blockPreview, useCardDeselect, useRightSidebar } from '@edc-motor/admin-kit'
 import { api } from '@/lib/api'
 import ListToolbar from '@/components/ListToolbar.vue'
 import PageFormModal, { type PageRow } from '@/components/pages/PageFormModal.vue'
+import PanelSection from '@/components/PanelSection.vue'
 import { useLocalesStore } from '@/stores/locales'
 
 // Listado de páginas del CRM. TODA la tarjeta selecciona (salvo controles):
@@ -61,6 +62,33 @@ const statusOptions = computed(() => [
 
 const selected = computed(() => pages.value.find((p) => p.id === selectedId.value) ?? null)
 
+// ORDEN DE ÁRBOL en cliente (como el index de bloques): cada página seguida
+// de sus hijas indentadas (recursivo, aplanado depth-first), respetando el
+// orden de hermanos que manda el servidor. Las huérfanas (su madre no está
+// en la respuesta, p. ej. filtrada por búsqueda/estado) van al final, en su
+// orden original.
+const orderedPages = computed<PageRow[]>(() => {
+  const byParent = new Map<number | null, PageRow[]>()
+  for (const page of pages.value) {
+    const key = page.parent_id ?? null
+    if (!byParent.has(key)) byParent.set(key, [])
+    byParent.get(key)!.push(page)
+  }
+  const out: PageRow[] = []
+  const seen = new Set<number>()
+  function walk(parentId: number | null) {
+    for (const page of byParent.get(parentId) ?? []) {
+      if (seen.has(page.id)) continue
+      seen.add(page.id)
+      out.push(page)
+      walk(page.id)
+    }
+  }
+  walk(null)
+  out.push(...pages.value.filter((p) => !seen.has(p.id)))
+  return out
+})
+
 /** Texto en el locale actual del admin, con fallback al primer valor no vacío. */
 function displayText(map: Record<string, string> | null | undefined): string {
   if (!map) return ''
@@ -91,18 +119,12 @@ function blockTypeName(key: string): string {
   return te(`blockTypes.${key}`) ? t(`blockTypes.${key}`) : fallback
 }
 
-/** Primer texto traducible con valor, sin HTML (una línea en el panel). */
+/** Preview del bloque (helper transversal del admin-kit): primera frase del
+ *  primer campo con contenido (título > subtítulo > contenido), sin HTML —
+ *  aquí truncada por CSS a una línea. */
 function blockSummary(block: { type: string; settings: Record<string, unknown> }): string {
   const type = blockTypes.value.find((t) => t.key === block.type)
-  for (const field of type?.fields ?? []) {
-    if (!['text', 'textarea', 'richtext'].includes(field.type)) continue
-    const value = block.settings?.[field.key]
-    if (field.translatable && value && typeof value === 'object') {
-      const text = displayText(value as Record<string, string>)
-      if (text) return text.replace(/<[^>]*>/g, '').slice(0, 90)
-    }
-  }
-  return ''
+  return blockPreview(block.settings, type?.fields ?? [], displayText)
 }
 
 watch(selectedId, async (id) => {
@@ -337,7 +359,7 @@ onMounted(load)
 
     <div class="pages-view__list">
       <article
-        v-for="page in pages"
+        v-for="page in orderedPages"
         :key="page.id"
         class="pages-view__item"
         draggable="true"
@@ -456,21 +478,20 @@ onMounted(load)
             </BaseButton>
           </div>
 
-          <hr class="manager-panel__divider" />
+          <!-- Info con el lenguaje de secciones del panel (PanelSection):
+               título + slugs por idioma -->
+          <PanelSection :title="t('common.sections.details')">
+            <h3 class="manager-detail__title">
+              {{ pageTitle(selected) }}
+            </h3>
 
-          <h3 class="manager-detail__title">
-            {{ pageTitle(selected) }}
-          </h3>
-
-          <!-- Info: slugs por idioma -->
-          <p v-for="(slugValue, code) in selected.slug" :key="code" class="manager-detail__meta">
-            <strong>{{ String(code).toUpperCase() }}</strong> /{{ slugValue }}
-          </p>
+            <p v-for="(slugValue, code) in selected.slug" :key="code" class="manager-detail__meta">
+              <strong>{{ String(code).toUpperCase() }}</strong> /{{ slugValue }}
+            </p>
+          </PanelSection>
 
           <!-- Sus bloques: tipo + resumen de una línea -->
-          <hr v-if="selectedBlocks.length" class="manager-panel__divider" />
-          <div v-if="selectedBlocks.length" class="manager-detail">
-            <p class="manager-panel__kicker">{{ t('pages.panelBlocks') }}</p>
+          <PanelSection v-if="selectedBlocks.length" :title="t('pages.panelBlocks')">
             <ul class="manager-detail__rows">
               <li v-for="block in selectedBlocks" :key="block.id" class="manager-detail__row-line">
                 <strong>{{ blockTypeName(block.type) }}</strong>
@@ -479,7 +500,7 @@ onMounted(load)
                 }}</span>
               </li>
             </ul>
-          </div>
+          </PanelSection>
         </template>
       </div>
     </Teleport>

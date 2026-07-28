@@ -1520,7 +1520,6 @@
     "title": "Menu",
     "hint": "Configure the site menu: drag or use the arrows to order and nest pages and sections, and hide what you don't want to show.",
     "empty": "The menu has no items yet.",
-    "hidden": "Hidden",
     "visible": "Visible",
     "discard": "Discard",
     "unsaved": "Unsaved changes",

@@ -107,7 +107,8 @@
     &::before { content: "· "; }
   }
 
-  &__chips { grid-area: chips; display: flex; gap: $space-1; }
+  // Con wrap: en estrecho los chips saltan de línea en vez de desbordar.
+  &__chips { grid-area: chips; display: flex; flex-wrap: wrap; gap: $space-1; min-width: 0; }
 
   &__buttons { grid-area: buttons; margin-left: auto; display: flex; gap: $space-1; }
 }

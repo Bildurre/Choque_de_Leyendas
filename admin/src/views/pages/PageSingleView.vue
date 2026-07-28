@@ -11,6 +11,7 @@ import { useIconsStore } from '@/stores/icons'
 import { usePageCrumb } from '@/composables/usePageCrumb'
 import { useEditorLabels } from '@/lib/editorLabels'
 import PageFormModal, { type PageRow } from '@/components/pages/PageFormModal.vue'
+import PanelSection from '@/components/PanelSection.vue'
 
 // Single de página: datos + gestor de bloques (PageBlocks del admin-kit).
 const { t, te } = useI18n()
@@ -63,6 +64,7 @@ const blockLabels = computed<Partial<PageBlocksLabels>>(() => ({
   parent: t('pages.blocks.parent'),
   parentNone: t('pages.blocks.parentNone'),
   stateKicker: t('common.stateKicker'),
+  details: t('common.sections.details'),
 }))
 
 /** Acción rápida del panel: alterna un flag de la página sin abrir el modal. */
@@ -168,15 +170,17 @@ onBeforeUnmount(crumb.clear)
           </BaseButton>
         </div>
 
-        <hr class="manager-panel__divider" />
+        <!-- Info con el lenguaje de secciones del panel (PanelSection):
+             título + slugs por idioma -->
+        <PanelSection :title="t('common.sections.details')">
+          <h3 class="manager-detail__title">
+            {{ pageTitle(page) }}
+          </h3>
 
-        <h3 class="manager-detail__title">
-          {{ pageTitle(page) }}
-        </h3>
-
-        <p v-for="(slugValue, code) in page.slug" :key="code" class="manager-detail__meta">
-          <strong>{{ String(code).toUpperCase() }}</strong> /{{ slugValue }}
-        </p>
+          <p v-for="(slugValue, code) in page.slug" :key="code" class="manager-detail__meta">
+            <strong>{{ String(code).toUpperCase() }}</strong> /{{ slugValue }}
+          </p>
+        </PanelSection>
       </template>
     </PageBlocks>
 

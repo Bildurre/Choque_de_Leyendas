@@ -1459,7 +1459,6 @@
     "title": "Menú",
     "hint": "Configura el menú de la web: arrastra o usa las flechas para ordenar y anidar páginas y secciones, y oculta lo que no quieras mostrar.",
     "empty": "El menú aún no tiene elementos.",
-    "hidden": "Oculto",
     "visible": "Visible",
     "discard": "Descartar",
     "unsaved": "Cambios sin guardar",

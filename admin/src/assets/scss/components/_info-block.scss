@@ -89,8 +89,11 @@
   font-size: $fs-13;
   color: $text-2;
 
-  &__part + &__part::before {
-    content: "· ";
+  // El «·» va en el ::after del part ANTERIOR (no en el ::before del
+  // siguiente): en los enlazados el ::before de .hero-link ya es el icono
+  // de eslabón y el punto desaparecía delante del subtipo.
+  &__part:not(:last-child)::after {
+    content: " ·";
     color: $text-3;
     font-weight: $k-fw-regular;
   }

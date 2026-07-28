@@ -1520,7 +1520,6 @@
     "title": "Menua",
     "hint": "Konfiguratu webgunearen menua: arrastatu edo erabili geziak orriak eta atalak ordenatu eta habiaratzeko, eta ezkutatu erakutsi nahi ez duzuna.",
     "empty": "Menuak oraindik ez du elementurik.",
-    "hidden": "Ezkutuan",
     "visible": "Ikusgai",
     "discard": "Baztertu",
     "unsaved": "Gorde gabeko aldaketak",

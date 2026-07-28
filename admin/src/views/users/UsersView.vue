@@ -227,15 +227,15 @@ onMounted(load)
 
           <!-- Estado del interruptor, en texto -->
           <p class="manager-detail__meta">
-            <strong>{{ t('users.verified') }}</strong>
+            <strong>{{ t('users.verified') }}:</strong>
             {{ selected.email_verified ? t('common.yes') : t('common.no') }}
           </p>
 
           <p class="manager-detail__meta">
-            <strong>{{ t('users.fields.email') }}</strong> {{ selected.email }}
+            <strong>{{ t('users.fields.email') }}:</strong> {{ selected.email }}
           </p>
           <p class="manager-detail__meta">
-            <strong>{{ t('users.fields.role') }}</strong> {{ roleLabel(selected) }}
+            <strong>{{ t('users.fields.role') }}:</strong> {{ roleLabel(selected) }}
           </p>
           <p v-if="isSelf" class="manager-panel__empty">{{ t('users.selfHint') }}</p>
         </template>

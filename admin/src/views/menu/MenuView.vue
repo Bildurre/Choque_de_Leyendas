@@ -31,7 +31,6 @@ const routeLabels = computed<Record<string, string>>(() => ({
 
 const labels = computed<Partial<MenuManagerLabels>>(() => ({
   empty: t('menu.empty'),
-  hidden: t('menu.hidden'),
   draft: t('pages.draft'),
   moveUp: t('pages.moveUp'),
   moveDown: t('pages.moveDown'),
