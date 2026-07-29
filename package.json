@@ -9,8 +9,8 @@
     "app"
   ],
   "dependencies": {
-    "@edc-motor/admin-kit": "^0.4.38",
-    "@edc-motor/ui": "^0.4.38",
+    "@edc-motor/admin-kit": "^0.4.39",
+    "@edc-motor/ui": "^0.4.39",
     "@tiptap/extension-link": "^2.27.2",
     "@tiptap/extension-table": "^2.27.2",
     "@tiptap/extension-table-cell": "^2.27.2",
