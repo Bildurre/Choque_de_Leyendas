@@ -58,11 +58,18 @@ $header-row2: 46px;
     width: 36px;
     height: 36px;
     background: none;
-    border: 1px solid $border;
+    border: none;
     border-radius: $radius-sm;
     color: $accent-500;
     cursor: pointer;
     flex-shrink: 0;
+
+    // Hamburguesa y X llenan el botón (la X, a mano en el markup, comparte
+    // esquinas con las rayas de la hamburguesa).
+    svg {
+      width: 100%;
+      height: 100%;
+    }
 
     &:hover { background: color-mix(in srgb, $accent-500 10%, transparent); }
 
@@ -271,7 +278,8 @@ $header-row2: 46px;
     padding: $space-1 0;
     background: $surface;
     border: 1px solid $border;
-    border-radius: $radius-md;
+    // Solo las esquinas inferiores: arriba el panel nace pegado al ítem
+    border-radius: 0 0 $radius-md $radius-md;
     box-shadow: $shadow-md;
     visibility: hidden;
     opacity: 0;

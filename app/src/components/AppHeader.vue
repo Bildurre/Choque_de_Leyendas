@@ -3,7 +3,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import type { RouteLocationRaw } from 'vue-router'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ChevronDown, FileDown, LayoutDashboard, LogIn, LogOut, Menu, X } from '@lucide/vue'
+import { ChevronDown, FileDown, LayoutDashboard, LogIn, LogOut, Menu } from '@lucide/vue'
 import { LocaleSelector, MotorBadge, ThemeSelector } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { entitySections } from '@/entities/registry'
@@ -240,8 +240,21 @@ onMounted(async () => {
           :title="t('nav.menu')"
           @click="navOpen = !navOpen"
         >
-          <X v-if="navOpen" :size="22" />
-          <Menu v-else :size="22" />
+          <!-- La X a mano: los palos llegan a las MISMAS esquinas que las
+               rayas de la hamburguesa de lucide (caja 4-20 × 6-18) -->
+          <svg
+            v-if="navOpen"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            aria-hidden="true"
+          >
+            <line x1="4" y1="6" x2="20" y2="18" />
+            <line x1="20" y1="6" x2="4" y2="18" />
+          </svg>
+          <Menu v-else />
         </button>
 
         <RouterLink
