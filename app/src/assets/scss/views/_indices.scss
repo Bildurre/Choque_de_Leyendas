@@ -85,9 +85,9 @@
     }
   }
 
-  // El enlace envuelve la tarjeta: al pasar, SOLO una sombra muy sutil
-  // (sin desplazarse), como el .preview-grid; el foco por teclado conserva
-  // su halo de acento.
+  // El enlace envuelve la tarjeta: al pasar, SOLO un glow sutil del color
+  // de acento por los cuatro lados (sin desplazarse), el MISMO hover que
+  // el .preview-grid; el foco por teclado conserva su halo de acento.
   &__item {
     display: block;
     color: inherit;
@@ -97,7 +97,7 @@
     transition: box-shadow 0.2s ease;
 
     &:hover {
-      box-shadow: $shadow-sm;
+      box-shadow: 0 0 12px 2px color-mix(in srgb, $accent-500 40%, transparent);
     }
 
     &:focus-visible {
@@ -109,12 +109,3 @@
   }
 }
 
-// --- Mazos: BaseTabs por modo de juego ---
-.decks-index {
-  // El .tabs del ui-kit se adapta al contenedor "content" (como en singles).
-  container-type: inline-size;
-  container-name: content;
-
-  // La rejilla del índice ya mete el hueco (gap del grid padre).
-  .tabs { margin-bottom: 0; }
-}

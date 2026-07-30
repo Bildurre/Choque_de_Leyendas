@@ -9,12 +9,12 @@ import {
   IndexToolbar,
   MultiSelect,
   PreviewGrid,
-  useAppRightSidebar,
   type CatalogItem,
   type PreviewGridItem,
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
+import CatalogFilters from '@/components/indices/CatalogFilters.vue'
 import type { EntitySection } from '@/entities/registry'
 import { csvField, useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
@@ -24,9 +24,9 @@ import { useLocalesStore } from '@/stores/locales'
 // cáscara: canónica + SEO + IndexHeader) para que también lo monte el bloque
 // «Índice de entidad» del CRM: rejilla de previews sobre GET /api/cards con
 // el patrón unificado de los índices (IndexToolbar del motor: búsqueda
-// multi-campo con debounce y toggles de orden) y los filtros de juego en la
-// barra derecha contextual (AppRightSidebar: registro + Teleport; el botón
-// Funnel del header la despliega). Opciones ya localizadas de
+// multi-campo con debounce y toggles de orden) y los filtros de juego en
+// CatalogFilters (en ancho, panel plegable bajo la búsqueda; en estrecho,
+// la barra derecha off-canvas del motor). Opciones ya localizadas de
 // GET /api/cards/filters, aplican en vivo y son MULTISELECT: cada filtro
 // admite varios valores (unión; la API filtra con whereIn y recibe
 // `clave[]=`). Facción, tipo, subtipo, dados del coste (0..5, 0 = sin
@@ -72,11 +72,6 @@ const loading = ref(true)
 const page = ref(1)
 const pages = ref(0)
 const total = ref(0)
-
-// Filtros en la barra derecha contextual: se registra sin título (el
-// cascarón pone el suyo, reactivo al locale) y se limpia al desmontar (el
-// token evita pisar el registro de la vista entrante).
-useAppRightSidebar().useRegister()
 
 // Estado de los filtros: arrays de strings ([] = todos), lo que edita cada
 // MultiSelect. En la URL viajan como listas separadas por comas (csvField),
@@ -226,8 +221,8 @@ watch([equipmentTypeIds, equipmentSubtypeOptions], () => {
   if (valid.length !== equipmentSubtypeIds.value.length) equipmentSubtypeIds.value = valid
 })
 
-// Nº de filtros activos (enseña el "Quitar filtros" de la barra derecha;
-// la búsqueda y el orden no cuentan).
+// Nº de filtros activos (badge del botón «Filtros» y visibilidad del
+// "Quitar filtros"; la búsqueda y el orden no cuentan).
 const activeFilters = computed(
   () =>
     [
@@ -379,8 +374,9 @@ watch(() => locales.current, loadFilters, { immediate: true })
     :name-desc-label="t('catalog.sort.nameDesc')"
   />
 
-  <!-- Filtros en la barra derecha contextual (aplican en vivo, multivalor) -->
-  <Teleport defer to="#app-right-sidebar-target">
+  <!-- Filtros bajo la búsqueda en ancho (panel plegable); en estrecho, en
+       la barra derecha off-canvas del motor. Aplican en vivo, multivalor -->
+  <CatalogFilters :active-count="activeFilters">
     <MultiSelect
       v-model="factionIds"
       :label="t('catalog.filters.faction')"
@@ -485,7 +481,7 @@ watch(() => locales.current, loadFilters, { immediate: true })
       <template #icon><FunnelX :size="16" /></template>
       {{ t('catalog.filters.clear') }}
     </BaseButton>
-  </Teleport>
+  </CatalogFilters>
 
   <BasePagination
     class="catalog-index__pagination"

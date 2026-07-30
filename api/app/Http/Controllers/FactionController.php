@@ -53,9 +53,6 @@ class FactionController extends Controller
         $this->fill($faction, $data);
         $faction->save();
         $faction->setImageFromRequest($request);
-        // El icono (MediaLibrary) no es columna: no dispara la invalidación
-        // declarativa. Se regenera a mano.
-        $faction->regeneratePreviews();
 
         return (new FactionResource($faction))->response()->setStatusCode(201);
     }
@@ -182,9 +179,6 @@ class FactionController extends Controller
         $this->fill($faction, $data);
         $faction->save();
         $faction->setImageFromRequest($request);
-        // El icono (MediaLibrary) no es columna: no dispara la invalidación
-        // declarativa. Se regenera a mano.
-        $faction->regeneratePreviews();
 
         return new FactionResource($faction);
     }

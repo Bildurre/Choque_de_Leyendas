@@ -89,8 +89,6 @@ const deckCardData = computed<FactionDeckCardData>(() => ({
   icon: props.item.icon,
   game_mode: props.item.game_mode,
   factions: props.item.factions.map((faction) => ({ ...faction, slug: faction.slug ?? '' })),
-  total_heroes: props.item.total_heroes,
-  total_cards: props.item.total_cards,
 }))
 
 const description = computed(

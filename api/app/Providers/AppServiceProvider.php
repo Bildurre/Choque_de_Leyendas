@@ -47,11 +47,11 @@ class AppServiceProvider extends ServiceProvider
         // Entidades renderizables a PNG (RENDER-SPEC): la clave es el segmento
         // de /_render/:entity y debe casar con el renderRegistry de la app Vue.
         // No hace falta ningún Pdfs::layout: los presets 'card' (63x88) y
-        // 'counter' (25x25) ya los trae el motor.
+        // 'counter' (25x25) ya los trae el motor. Faction NO está: su tarjeta
+        // es CSS en vivo en la web pública y no genera PNG.
         Previews::register('card', Card::class);
         Previews::register('hero', Hero::class);
         Previews::register('counter', Counter::class);
-        Previews::register('faction', Faction::class);
         Previews::register('faction-deck', FactionDeck::class);
 
         // Catálogo de PDF del juego (gestor de PDF del admin).

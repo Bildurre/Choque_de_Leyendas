@@ -1,0 +1,76 @@
+@use "tokens" as *;
+
+// Filtros de los catálogos de índice (CatalogFilters.vue). En ANCHO: botón
+// «Filtros» bajo la barra de búsqueda que pliega/despliega un panel en
+// línea con los selects en rejilla fluida. En ESTRECHO el mismo contenido
+// viaja (Teleport) a la barra derecha off-canvas del motor y el panel se
+// apila a una columna (como el resto del #app-right-sidebar-target).
+.catalog-filters {
+  display: grid;
+  gap: $space-3;
+
+  &__toggle {
+    justify-self: start;
+    display: inline-flex;
+    align-items: center;
+    gap: $space-2;
+    padding: $space-2 $space-3;
+    font-size: $fs-14;
+    font-weight: $k-fw-semibold;
+    color: $text-1;
+    background: color-mix(in srgb, $surface 65%, transparent);
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    cursor: pointer;
+    transition: border-color 0.2s ease, color 0.2s ease;
+
+    &:hover,
+    &[aria-expanded="true"] {
+      border-color: $accent-500;
+    }
+
+    &:hover {
+      color: $accent-500;
+    }
+  }
+
+  // Nº de filtros activos, en píldora de acento.
+  &__count {
+    display: inline-grid;
+    place-items: center;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 $space-1;
+    font-size: $fs-12;
+    background: $accent-500;
+    border-radius: $radius-pill;
+
+    @include contrast-text($accent-500);
+  }
+
+  &__chevron {
+    transition: transform 0.2s ease;
+
+    &.is-open {
+      transform: rotate(180deg);
+    }
+  }
+
+  // Apilado a una columna: es lo que pinta dentro de la barra derecha (el
+  // target ya reparte en grid) y el fallback del panel en línea.
+  &__panel {
+    display: grid;
+    gap: $space-3;
+  }
+
+  // Panel en línea (ancho): los selects en rejilla fluida bajo la búsqueda.
+  &__panel--inline {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: $space-3 $space-4;
+    align-items: start;
+    padding: $space-4;
+    background: color-mix(in srgb, $surface 65%, transparent);
+    border: 1px solid $border;
+    border-radius: $radius-md;
+  }
+}

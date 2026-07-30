@@ -252,7 +252,8 @@
       "allClasses": "Klase guztiak",
       "race": "Arraza",
       "allRaces": "Arraza guztiak",
-      "allModes": "Denak"
+      "mode": "Joko modua",
+      "allModes": "Modu guztiak"
     },
     "sort": {
       "latest": "Berrienak",
@@ -262,8 +263,7 @@
     }
   },
   "decks": {
-    "multiFaction": "Fakzio anitzekoa",
-    "totals": "{heroes} heroi · {cards} karta"
+    "multiFaction": "Fakzio anitzekoa"
   },
   "singles": {
     "yes": "Bai",

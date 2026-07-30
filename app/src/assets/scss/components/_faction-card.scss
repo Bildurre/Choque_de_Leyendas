@@ -12,11 +12,13 @@
   border: 2px solid $border;
   border-radius: $radius-md;
   overflow: hidden;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease;
 
+  // El glow de acento del hover lo pone el enlace que envuelve la tarjeta
+  // (.factions-index__item, el mismo de .preview-grid); aquí solo el marco
+  // se tiñe del color de la facción.
   &:hover {
     border-color: var(--faction-color);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
   }
 
   &__icon {

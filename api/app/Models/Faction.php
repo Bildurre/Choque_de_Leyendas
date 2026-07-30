@@ -3,8 +3,6 @@
 namespace App\Models;
 
 use Edc\Core\Media\Concerns\HasImage;
-use Edc\Core\Previews\Concerns\HasPreviewImage;
-use Edc\Core\Previews\PreviewableContract;
 use Edc\Core\Support\Concerns\HasFilters;
 use Edc\Core\Support\Concerns\HasPublishedState;
 use Edc\Core\Support\Concerns\ResolvesBySlug;
@@ -21,13 +19,14 @@ use Spatie\Translatable\HasTranslations;
  * Facción del juego: color identitario, trasfondo y cita épica. Agrupa
  * héroes y cartas. `text_is_dark` se calcula al guardar por luminancia YIQ
  * del color (portado del viejo HasColorAttribute). El icono vive en
- * MediaLibrary (colección 'image'). Renderizable a tarjeta PNG (750x1050).
+ * MediaLibrary (colección 'image'). SIN previews PNG: la web pública pinta
+ * su tarjeta CSS en vivo (FactionCard) y no las necesita — la columna
+ * preview_image queda sin uso y los PNG viejos, huérfanos en storage.
  */
-class Faction extends Model implements HasMedia, PreviewableContract
+class Faction extends Model implements HasMedia
 {
     use HasFilters;
     use HasImage;
-    use HasPreviewImage;
     use HasPublishedState;
     use HasTranslatableSlug;
     use HasTranslations;
@@ -86,50 +85,6 @@ class Faction extends Model implements HasMedia, PreviewableContract
     public function factionDecks(): BelongsToMany
     {
         return $this->belongsToMany(FactionDeck::class, 'faction_deck_faction');
-    }
-
-    // --- Render a PNG (tarjeta de facción) ---
-
-    /**
-     * Tamaño de la tarjeta en px. El diseño viejo (_faction-preview.scss) es
-     * fluido con aspect-ratio 5/7: mismo formato que las cartas, 750x1050.
-     */
-    public function previewSize(?string $type = null): array
-    {
-        return ['width' => 750, 'height' => 1050];
-    }
-
-    /** Etiqueta para el gestor de previews del admin. */
-    public function previewLabel(string $locale): string
-    {
-        return $this->getTranslation('name', $locale) ?: "#{$this->id}";
-    }
-
-    /**
-     * Cambios que invalidan la preview (declarativo; is_published no). El
-     * icono (MediaLibrary) no es columna: el controller regenera a mano.
-     * text_is_dark se deriva del color, así que color basta como disparador.
-     */
-    public function previewTriggerFields(): array
-    {
-        return ['name', 'lore_text', 'epic_quote', 'color'];
-    }
-
-    /** Payload que consume el componente de tarjeta de facción en /_render. */
-    public function renderData(string $locale, ?string $type = null): array
-    {
-        return [
-            'id' => $this->id,
-            'name' => $this->getTranslation('name', $locale),
-            'color' => $this->color,
-            'text_is_dark' => (bool) $this->text_is_dark,
-            'icon' => $this->imageUrl(),
-            'lore_text' => $this->getTranslation('lore_text', $locale),
-            'epic_quote' => $this->getTranslation('epic_quote', $locale),
-            // Igual que la web pública: solo cuenta el contenido publicado.
-            'heroes_count' => $this->heroes()->published()->count(),
-            'cards_count' => $this->cards()->published()->count(),
-        ];
     }
 
     public function getSlugOptions(): SlugOptions

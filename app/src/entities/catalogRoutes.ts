@@ -5,7 +5,8 @@ import { entitySections } from './registry'
 // resuelve los enlaces del bloque `related` (y de cualquier montaje directo
 // de BlockRelated en singles). Se provee en main.ts con
 // `app.provide(catalogRoutesKey, catalogRoutes)` (lo integra el ensamblaje).
-// `counter` no se mapea: no tiene slug ni single público (se pinta sin enlace).
+// `counter` no se mapea: no tiene slug ni single público (se pinta sin
+// enlace). `faction` tampoco: ya no está en el PreviewRegistry (sin PNG).
 function sectionRoutes(sectionKey: string): CatalogRoutes[string] {
   const section = entitySections.find((s) => s.key === sectionKey)
   if (!section) return {}
@@ -33,6 +34,5 @@ function sectionRoutes(sectionKey: string): CatalogRoutes[string] {
 export const catalogRoutes: CatalogRoutes = {
   card: sectionRoutes('cards'),
   hero: sectionRoutes('heroes'),
-  faction: sectionRoutes('factions'),
   'faction-deck': sectionRoutes('decks'),
 }

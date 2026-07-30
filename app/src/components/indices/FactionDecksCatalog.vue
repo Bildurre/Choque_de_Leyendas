@@ -3,9 +3,10 @@ import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { FunnelX } from '@lucide/vue'
-import { BaseButton, BaseTabs, IndexToolbar, MultiSelect, useAppRightSidebar } from '@edc-motor/ui'
+import { BaseButton, IndexToolbar, MultiSelect } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
+import CatalogFilters from '@/components/indices/CatalogFilters.vue'
 import type { EntitySection } from '@/entities/registry'
 import { csvField, useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
@@ -14,17 +15,15 @@ import { useLocalesStore } from '@/stores/locales'
 // Catálogo público de mazos EXTRAÍDO de la vista índice (que queda como
 // cáscara: canónica + SEO + IndexHeader) para que también lo monte el bloque
 // «Índice de entidad» del CRM: patrón unificado de los índices (IndexToolbar
-// del motor: búsqueda multi-campo con debounce y toggles de orden) +
-// BaseTabs con una pestaña por modo de juego (de
-// GET /api/faction-decks/filters, + "Todos") que alimenta game_mode_id en
-// el servidor y se QUEDA junto al listado; el filtro de facción va en la
-// barra derecha contextual (AppRightSidebar: registro + Teleport; el botón
-// Funnel del header la despliega) y es MULTISELECT: varias facciones a la
-// vez (unión; la API filtra con whereIn y recibe `faction_id[]=`, y en la
-// URL viaja como lista separada por comas). 'name' es el default histórico
-// del endpoint.
-// Cada tarjeta ya lleva el nombre de su modo, así que dentro de una pestaña
-// no hace falta agrupar nada. Todo vive en la query string (useFiltersQuery).
+// del motor: búsqueda multi-campo con debounce y toggles de orden) y los
+// filtros de modo de juego y facción en CatalogFilters (en ancho, panel
+// plegable bajo la búsqueda; en estrecho, la barra derecha off-canvas del
+// motor). Ambos son MULTISELECT (opciones de GET /api/faction-decks/filters;
+// unión: la API filtra con whereIn y recibe `game_mode_id[]=` /
+// `faction_id[]=`, y en la URL viajan como listas separadas por comas).
+// Sin pestañas: salen SIEMPRE todos los mazos y cada tarjeta ya lleva el
+// nombre de su modo. 'name' es el default histórico del endpoint. Todo vive
+// en la query string (useFiltersQuery).
 interface DeckRow extends FactionDeckCardData {
   id: number
   slug: string
@@ -45,14 +44,9 @@ const locales = useLocalesStore()
 const items = ref<DeckRow[]>([])
 const loading = ref(true)
 
-// Filtros en la barra derecha contextual: se registra sin título (el
-// cascarón pone el suyo, reactivo al locale) y se limpia al desmontar (el
-// token evita pisar el registro de la vista entrante).
-useAppRightSidebar().useRegister()
-
-// Estado de los filtros ('' = todos; la facción es array, [] = todas).
+// Estado de los filtros: arrays de strings ([] = todos).
 const search = ref('')
-const mode = ref('')
+const modeIds = ref<string[]>([])
 const factionIds = ref<string[]>([])
 
 // Orden: 'name' es el default del índice (fuera de la URL; el endpoint sin
@@ -70,41 +64,37 @@ const { queryToState } = useFiltersQuery({
   route,
   router,
   search,
-  fields: { mode, faction: csvField(factionIds), sort: sortRaw },
+  fields: { mode: csvField(modeIds), faction: csvField(factionIds), sort: sortRaw },
 })
 
 // Opciones (localizadas por el server; se recargan por locale).
 const modeOptions = ref<FilterOption[]>([])
 const factionOptions = ref<FilterOption[]>([])
 
-// Pestañas: "Todos" + un modo de juego por pestaña.
-const tabs = computed(() => [
-  { key: 'all', label: t('catalog.filters.allModes') },
-  ...modeOptions.value.map((option) => ({ key: String(option.id), label: option.name })),
-])
-
-const activeTab = computed({
-  get: () => mode.value || 'all',
-  set: (value: string) => {
-    mode.value = value === 'all' ? '' : value
-  },
+// Los modos pegados en la URL que ya no existan se limpian (los demás se
+// quedan).
+watch([modeIds, modeOptions], () => {
+  if (!modeOptions.value.length || !modeIds.value.length) return
+  const valid = modeIds.value.filter((id) =>
+    modeOptions.value.some((option) => String(option.id) === id),
+  )
+  if (valid.length !== modeIds.value.length) modeIds.value = valid
 })
 
-// Un modo pegado en la URL que ya no exista cae a "Todos".
-watch([mode, modeOptions], () => {
-  if (!modeOptions.value.length || !mode.value) return
-  if (!modeOptions.value.some((option) => String(option.id) === mode.value)) mode.value = ''
-})
+// Opciones de MultiSelect: sin opción "todos" en la lista (sin nada
+// marcado, el placeholder ya dice "Todos los modos" / "Todas las facciones").
+function toSelect(options: FilterOption[]) {
+  return options.map((option) => ({ value: String(option.id), label: option.name }))
+}
 
-// Opciones del MultiSelect: sin opción "Todas" en la lista (sin nada
-// marcado, el placeholder ya dice "Todas las facciones").
-const factionSelect = computed(() =>
-  factionOptions.value.map((option) => ({ value: String(option.id), label: option.name })),
+const modeSelect = computed(() => toSelect(modeOptions.value))
+const factionSelect = computed(() => toSelect(factionOptions.value))
+
+// Nº de filtros activos (badge del botón «Filtros» y visibilidad del
+// "Quitar filtros"; la búsqueda y el orden no cuentan).
+const activeFilters = computed(
+  () => [modeIds.value, factionIds.value].filter((values) => values.length > 0).length,
 )
-
-// Nº de filtros activos (enseña el "Quitar filtros" de la barra derecha; la
-// pestaña de modo, la búsqueda y el orden no cuentan).
-const activeFilters = computed(() => (factionIds.value.length ? 1 : 0))
 
 // Segmento de la sección en el locale activo (los enlaces a cada single).
 const segment = computed(
@@ -128,13 +118,14 @@ async function loadFilters() {
 async function load() {
   loading.value = true
   try {
+    // Cada filtro viaja como array (`clave[]=`, serialización de axios);
+    // vacío = no viaja (no filtra).
+    const listParam = (values: string[]) => (values.length ? values : undefined)
     const { data } = await api.get('/faction-decks', {
       params: {
         search: search.value.trim() || undefined,
-        game_mode_id: mode.value || undefined,
-        // La facción viaja como array (`faction_id[]=`, serialización de
-        // axios); vacío = no viaja (no filtra).
-        faction_id: factionIds.value.length ? factionIds.value : undefined,
+        game_mode_id: listParam(modeIds.value),
+        faction_id: listParam(factionIds.value),
         sort: sort.value === 'name' ? undefined : sort.value,
       },
     })
@@ -146,8 +137,9 @@ async function load() {
   }
 }
 
-// "Quitar filtros" limpia SOLO los filtros (pestaña, búsqueda y orden quedan).
+// "Quitar filtros" limpia SOLO los filtros (búsqueda y orden quedan).
 function clearFilters() {
+  modeIds.value = []
   factionIds.value = []
 }
 
@@ -178,9 +170,15 @@ watch(() => locales.current, loadFilters, { immediate: true })
     :name-desc-label="t('catalog.sort.nameDesc')"
   />
 
-  <!-- Filtro de facción en la barra derecha contextual (aplica en vivo,
-       multivalor) -->
-  <Teleport defer to="#app-right-sidebar-target">
+  <!-- Filtros bajo la búsqueda en ancho (panel plegable); en estrecho, en
+       la barra derecha off-canvas del motor. Aplican en vivo, multivalor -->
+  <CatalogFilters :active-count="activeFilters">
+    <MultiSelect
+      v-model="modeIds"
+      :label="t('catalog.filters.mode')"
+      :placeholder="t('catalog.filters.allModes')"
+      :options="modeSelect"
+    />
     <MultiSelect
       v-model="factionIds"
       :label="t('catalog.filters.faction')"
@@ -189,15 +187,12 @@ watch(() => locales.current, loadFilters, { immediate: true })
     />
 
     <!-- "Quitar filtros" (solo con filtros activos), como el pie del
-         antiguo modal: pestaña, búsqueda y orden se quedan como están -->
+         antiguo modal: búsqueda y orden se quedan como están -->
     <BaseButton v-if="activeFilters > 0" variant="secondary" type="button" @click="clearFilters">
       <template #icon><FunnelX :size="16" /></template>
       {{ t('catalog.filters.clear') }}
     </BaseButton>
-  </Teleport>
-
-  <!-- Pestañas por modo de juego (server-side: game_mode_id) -->
-  <BaseTabs v-if="modeOptions.length" v-model="activeTab" :tabs="tabs" />
+  </CatalogFilters>
 
   <p v-if="loading" class="decks-index__loading" role="status">{{ t('catalog.loading') }}</p>
   <p v-else-if="!items.length" class="decks-index__empty">{{ t('list.empty') }}</p>

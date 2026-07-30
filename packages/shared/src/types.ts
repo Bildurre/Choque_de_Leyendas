@@ -480,23 +480,10 @@ export interface CounterRenderData {
   effect: string | null
 }
 
-// Payloads de facción y mazo (tarjetas CSS renderizables): forma EXACTA de
-// renderData() en Faction/FactionDeck de la api. Aun así los componentes
-// programan defensivo: cualquier campo puede venir null o faltar.
-
-export interface FactionRenderData {
-  id?: number
-  name: string | null
-  color: string | null
-  text_is_dark: boolean | null
-  icon: string | null
-  lore_text: string | null
-  epic_quote: string | null
-  /** Totales de contenido PUBLICADO (como la web pública). */
-  heroes_count?: number | null
-  cards_count?: number | null
-  decks_count?: number | null
-}
+// Payload de mazo (tarjeta CSS renderizable): forma EXACTA de renderData()
+// en FactionDeck de la api. Aun así los componentes programan defensivo:
+// cualquier campo puede venir null o faltar. (La facción ya no se renderiza
+// a PNG: su tarjeta CSS vive en la app pública.)
 
 /** Facción de un mazo en el render (nombre localizado + su color). */
 export interface DeckRenderFaction {

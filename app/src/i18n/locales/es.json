@@ -252,7 +252,8 @@
       "allClasses": "Todas las clases",
       "race": "Raza",
       "allRaces": "Todas las razas",
-      "allModes": "Todos"
+      "mode": "Modo de juego",
+      "allModes": "Todos los modos"
     },
     "sort": {
       "latest": "Más recientes",
@@ -262,8 +263,7 @@
     }
   },
   "decks": {
-    "multiFaction": "Multifacción",
-    "totals": "{heroes} héroes · {cards} cartas"
+    "multiFaction": "Multifacción"
   },
   "singles": {
     "yes": "Sí",

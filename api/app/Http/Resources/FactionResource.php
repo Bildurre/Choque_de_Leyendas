@@ -19,7 +19,6 @@ class FactionResource extends JsonResource
             'color' => $this->color,
             'text_is_dark' => $this->text_is_dark,
             'image' => $this->imageUrl(),
-            'previews' => $this->previewUrls(),
             'is_published' => $this->is_published,
             // Cantidades (withCount): el panel derecho del listado las pinta.
             'heroes_count' => $this->whenCounted('heroes'),

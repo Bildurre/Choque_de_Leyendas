@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\GameMode;
+
 // GET /api/faction-decks — índice público de mazos.
 
 require_once __DIR__.'/Helpers.php';
@@ -60,6 +62,30 @@ it('filtra por game_mode_id', function () {
 
     $response->assertJsonCount(1, 'data');
     expect($response->json('data.0.id'))->toBe($deck->id);
+});
+
+it('filtra por varios game_mode_id a la vez (array, whereIn)', function () {
+    $escaramuza = publicGameMode();
+
+    $asalto = new GameMode;
+    $asalto->setTranslations('name', ['es' => 'Asalto', 'en' => 'Assault']);
+    $asalto->save();
+
+    $conquista = new GameMode;
+    $conquista->setTranslations('name', ['es' => 'Conquista', 'en' => 'Conquest']);
+    $conquista->save();
+
+    $deEscaramuza = publicDeck(['game_mode_id' => $escaramuza->id]);
+    $deAsalto = publicDeck(['name' => ['es' => 'De asalto', 'en' => 'Assault deck'], 'game_mode_id' => $asalto->id]);
+    publicDeck(['name' => ['es' => 'De conquista', 'en' => 'Conquest deck'], 'game_mode_id' => $conquista->id]);
+
+    $response = $this->getJson(
+        "/api/faction-decks?game_mode_id[]={$escaramuza->id}&game_mode_id[]={$asalto->id}"
+    )->assertOk();
+
+    // Unión de los modos marcados; orden por defecto: nombre asc del locale
+    expect(collect($response->json('data'))->pluck('id')->all())
+        ->toBe([$deAsalto->id, $deEscaramuza->id]);
 });
 
 it('filtra por faction_id: mazos que incluyan esa facción (pivot)', function () {

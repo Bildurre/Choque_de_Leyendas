@@ -5,8 +5,7 @@ import { useI18n } from 'vue-i18n'
 // Tarjeta CSS de mazo (portada del viejo `previews/deck.blade.php` +
 // `_deck-preview.scss`): como la de facción, con el nombre del modo arriba,
 // badge de facción (o "multifacción") abajo y, si es multifacción, marco y
-// vars con GRADIENTE por bandas de los colores de sus facciones. Añade los
-// totales de héroes/cartas del índice nuevo.
+// vars con GRADIENTE por bandas de los colores de sus facciones.
 export interface DeckCardFaction {
   id: number
   name: string
@@ -20,8 +19,6 @@ export interface FactionDeckCardData {
   icon: string | null
   game_mode: { id: number; name: string } | null
   factions: DeckCardFaction[]
-  total_heroes: number
-  total_cards: number
 }
 
 const props = defineProps<{ deck: FactionDeckCardData }>()
@@ -73,9 +70,6 @@ const badge = computed(() =>
 
     <div class="deck-card__content">
       <h3 class="deck-card__name">{{ deck.name }}</h3>
-      <p class="deck-card__totals">
-        {{ t('decks.totals', { heroes: deck.total_heroes, cards: deck.total_cards }) }}
-      </p>
     </div>
 
     <span v-if="badge" class="deck-card__badge">{{ badge }}</span>
