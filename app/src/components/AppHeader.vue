@@ -251,8 +251,10 @@ onMounted(async () => {
             stroke-linecap="round"
             aria-hidden="true"
           >
-            <line x1="4" y1="6" x2="20" y2="18" />
-            <line x1="20" y1="6" x2="4" y2="18" />
+            <!-- Caja CUADRADA (16×16): los palos se cruzan a 90º, con el
+                 mismo ancho que las rayas de la hamburguesa (x 4-20) -->
+            <line x1="4" y1="4" x2="20" y2="20" />
+            <line x1="20" y1="4" x2="4" y2="20" />
           </svg>
           <Menu v-else />
         </button>
