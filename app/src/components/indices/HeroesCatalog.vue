@@ -2,9 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { FunnelX } from '@lucide/vue'
 import {
-  BaseButton,
   BasePagination,
   IndexToolbar,
   MultiSelect,
@@ -14,7 +12,7 @@ import {
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
-import CatalogFilters from '@/components/indices/CatalogFilters.vue'
+import CatalogFilters, { type CatalogSelection } from '@/components/indices/CatalogFilters.vue'
 import type { EntitySection } from '@/entities/registry'
 import { csvField, useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
@@ -135,6 +133,41 @@ const activeFilters = computed(
     ).length,
 )
 
+// --- Chips de selección (CatalogFilters) ---
+// Pares filtro+valor+label del estado vivo; el ORDEN cronológico global lo
+// lleva CatalogFilters (registro de claves).
+type ChipOptions = { value: string | number; label: string | number }[]
+
+const chipSources = computed<Record<string, { values: string[]; options: ChipOptions }>>(() => ({
+  faction: { values: factionIds.value, options: factionSelect.value },
+  superclass: { values: superclassIds.value, options: superclassSelect.value },
+  class: { values: classIds.value, options: classSelect.value },
+  race: { values: raceIds.value, options: raceSelect.value },
+}))
+
+const selections = computed<CatalogSelection[]>(() => {
+  const out: CatalogSelection[] = []
+  for (const [filter, { values, options }] of Object.entries(chipSources.value)) {
+    for (const value of values) {
+      const option = options.find((o) => String(o.value) === value)
+      if (option) out.push({ filter, value, label: String(option.label) })
+    }
+  }
+  return out
+})
+
+/** Quita UNA selección desde su chip (aspa). */
+function removeSelection(filter: string, value: string) {
+  const targets: Record<string, typeof factionIds> = {
+    faction: factionIds,
+    superclass: superclassIds,
+    class: classIds,
+    race: raceIds,
+  }
+  const target = targets[filter]
+  if (target) target.value = target.value.filter((v) => v !== value)
+}
+
 function itemRoute(item: CatalogItem) {
   const segment = props.section.paths[locales.current] ?? Object.values(props.section.paths)[0]
   if (!item.slug || !segment) return null
@@ -225,50 +258,55 @@ watch(() => locales.current, loadFilters, { immediate: true })
 </script>
 
 <template>
-  <IndexToolbar
-    v-model="search"
-    v-model:sort="sort"
-    :search-placeholder="t('catalog.searchPlaceholder')"
-    :latest-label="t('catalog.sort.latest')"
-    :oldest-label="t('catalog.sort.oldest')"
-    :name-label="t('catalog.sort.nameAsc')"
-    :name-desc-label="t('catalog.sort.nameDesc')"
-  />
+  <!-- Chips de las elegidas encima de la búsqueda; el botón «Filtros» a la
+       derecha del orden (misma fila); panel suelto debajo en ancho y barra
+       derecha off-canvas en estrecho. Aplican en vivo, multivalor -->
+  <CatalogFilters
+    :active-count="activeFilters"
+    :selections="selections"
+    @remove="removeSelection"
+    @clear="clearFilters"
+  >
+    <template #toolbar>
+      <IndexToolbar
+        v-model="search"
+        v-model:sort="sort"
+        :search-placeholder="t('catalog.searchPlaceholder')"
+        :latest-label="t('catalog.sort.latest')"
+        :oldest-label="t('catalog.sort.oldest')"
+        :name-label="t('catalog.sort.nameAsc')"
+        :name-desc-label="t('catalog.sort.nameDesc')"
+      />
+    </template>
 
-  <!-- Filtros bajo la búsqueda en ancho (panel plegable); en estrecho, en
-       la barra derecha off-canvas del motor. Aplican en vivo, multivalor -->
-  <CatalogFilters :active-count="activeFilters">
     <MultiSelect
       v-model="factionIds"
+      compact-trigger
       :label="t('catalog.filters.faction')"
       :placeholder="t('catalog.filters.allFactions')"
       :options="factionSelect"
     />
     <MultiSelect
       v-model="superclassIds"
+      compact-trigger
       :label="t('catalog.filters.superclass')"
       :placeholder="t('catalog.filters.allSuperclasses')"
       :options="superclassSelect"
     />
     <MultiSelect
       v-model="classIds"
+      compact-trigger
       :label="t('catalog.filters.class')"
       :placeholder="t('catalog.filters.allClasses')"
       :options="classSelect"
     />
     <MultiSelect
       v-model="raceIds"
+      compact-trigger
       :label="t('catalog.filters.race')"
       :placeholder="t('catalog.filters.allRaces')"
       :options="raceSelect"
     />
-
-    <!-- "Quitar filtros" (solo con filtros activos), como el pie del
-         antiguo modal: la búsqueda y el orden se quedan como están -->
-    <BaseButton v-if="activeFilters > 0" variant="secondary" type="button" @click="clearFilters">
-      <template #icon><FunnelX :size="16" /></template>
-      {{ t('catalog.filters.clear') }}
-    </BaseButton>
   </CatalogFilters>
 
   <BasePagination

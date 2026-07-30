@@ -6,6 +6,7 @@ use App\Blocks\CountersListBlock;
 use App\Blocks\DownloadsBlock;
 use App\Blocks\EntityIndexBlock;
 use App\Blocks\GameModesBlock;
+use App\Blocks\GameRelatedBlock;
 use App\Models\Card;
 use App\Models\Counter;
 use App\Models\Faction;
@@ -64,6 +65,10 @@ class AppServiceProvider extends ServiceProvider
         // Bloques con-datos del juego (portados del CdL viejo).
         Blocks::register(CountersListBlock::class);
         Blocks::register(GameModesBlock::class);
+
+        // `related` del juego: SUSTITUYE al del motor (misma clave) para
+        // ofrecer también `faction` (sin preview PNG: tarjeta CSS del front).
+        Blocks::register(GameRelatedBlock::class);
 
         // Bloques de composición de las páginas índice desde el CRM: el
         // índice completo de una sección de entidades y el apartado de

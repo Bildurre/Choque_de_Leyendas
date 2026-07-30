@@ -1,20 +1,110 @@
 @use "tokens" as *;
 
-// Filtros de los catálogos de índice (CatalogFilters.vue). En ANCHO: botón
-// «Filtros» bajo la barra de búsqueda que pliega/despliega un panel en
-// línea con los selects en rejilla fluida. En ESTRECHO el mismo contenido
-// viaja (Teleport) a la barra derecha off-canvas del motor y el panel se
-// apila a una columna (como el resto del #app-right-sidebar-target).
+// Filtros de los catálogos de índice (CatalogFilters.vue).
+// - Encima de la búsqueda, los CHIPS de las elegidas (todas las anchuras):
+//   texto reducido, una fila con wrap en orden de selección global; cada
+//   chip con su aspa y, delante del primero, el botón-de-texto limpiar-todo.
+// - La fila de búsqueda (slot toolbar, IndexToolbar del motor) lleva el
+//   botón «Filtros» A LA DERECHA de los toggles de orden; el panel
+//   desplegado va SIN card (ni borde ni fondo ni padding), suelto debajo,
+//   en rejilla de 5 columnas que baja a 3 antes del tramo del drawer.
+// - En ESTRECHO (<900px, corte del drawer del motor) el contenido viaja
+//   (Teleport) a la barra derecha off-canvas y se apila a una columna;
+//   la fila de búsqueda mantiene los toggles de orden a la DERECHA del
+//   input (sin envolver), con menos padding y menos gap.
 .catalog-filters {
   display: grid;
   gap: $space-3;
 
+  // --- Chips de las elegidas (encima de la búsqueda) ---
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-1 $space-2;
+    font-size: $fs-12;
+  }
+
+  // Limpiar TODO: botón-de-texto con icono, delante del primer chip.
+  &__clear {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    padding: 0;
+    background: none;
+    border: none;
+    color: $accent-500;
+    font-size: $fs-12;
+    font-weight: $k-fw-semibold;
+    cursor: pointer;
+
+    &:hover {
+      color: $accent-600;
+      text-decoration: underline;
+    }
+  }
+
+  // Chip de UNA selección (el click en el aspa/chip la quita).
+  &__chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    max-width: 100%;
+    padding: 1px $space-1 1px $space-2;
+    background: $surface-2;
+    border: 1px solid $border;
+    border-radius: $radius-pill;
+    color: $text-1;
+    font-size: $fs-12;
+    line-height: 1.5;
+    cursor: pointer;
+    transition: border-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      border-color: $accent-500;
+
+      .catalog-filters__chip-x {
+        color: $danger;
+      }
+    }
+  }
+
+  &__chip-label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__chip-x {
+    flex: none;
+    color: $text-3;
+  }
+
+  // --- Fila de búsqueda: [toolbar (búsqueda+orden)] [botón Filtros] ---
+  &__bar {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+  }
+
+  &__toolbar {
+    flex: 1;
+    min-width: 0;
+
+    // El toolbar del motor pierde su margen inferior: el ritmo vertical lo
+    // pone el grid de .catalog-filters.
+    .index-toolbar {
+      margin-bottom: 0;
+    }
+  }
+
   &__toggle {
-    justify-self: start;
+    flex: none;
     display: inline-flex;
     align-items: center;
     gap: $space-2;
-    padding: $space-2 $space-3;
+    height: $input-height;
+    padding: 0 $space-3;
     font-size: $fs-14;
     font-weight: $k-fw-semibold;
     color: $text-1;
@@ -63,14 +153,49 @@
     gap: $space-3;
   }
 
-  // Panel en línea (ancho): los selects en rejilla fluida bajo la búsqueda.
+  // Panel en línea (ancho): SIN card — suelto bajo la fila de búsqueda.
+  // 5 columnas a ancho máximo; 3 antes de entrar al tramo del drawer
+  // (<900px ya no existe: el contenido vive en la barra derecha).
   &__panel--inline {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: $space-3 $space-4;
     align-items: start;
-    padding: $space-4;
-    background: color-mix(in srgb, $surface 65%, transparent);
-    border: 1px solid $border;
-    border-radius: $radius-md;
+
+    @media (max-width: 1199px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  // ESTRECHO (tramo del drawer): el orden se queda a la DERECHA del input
+  // de búsqueda (nada de envolver debajo, que es lo que hace el container
+  // query del motor), compactado: menos gap con el input y menos padding
+  // en los toggles.
+  @media (max-width: 899px) {
+    .index-toolbar__inner {
+      flex-wrap: nowrap;
+      gap: $space-2;
+    }
+
+    .index-toolbar__search {
+      flex: 1 1 auto;
+    }
+
+    .index-toolbar__actions {
+      flex: 0 0 auto;
+      gap: $space-2;
+
+      > * {
+        flex: 0 0 auto;
+      }
+    }
+
+    .sort-toggles {
+      gap: $space-1;
+    }
+
+    .sort-toggles__btn {
+      min-width: 32px;
+      padding: 0 $space-1;
+    }
   }
 }

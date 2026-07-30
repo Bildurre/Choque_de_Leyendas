@@ -2,11 +2,10 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { FunnelX } from '@lucide/vue'
-import { BaseButton, IndexToolbar, MultiSelect } from '@edc-motor/ui'
+import { IndexToolbar, MultiSelect } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
-import CatalogFilters from '@/components/indices/CatalogFilters.vue'
+import CatalogFilters, { type CatalogSelection } from '@/components/indices/CatalogFilters.vue'
 import type { EntitySection } from '@/entities/registry'
 import { csvField, useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
@@ -96,6 +95,34 @@ const activeFilters = computed(
   () => [modeIds.value, factionIds.value].filter((values) => values.length > 0).length,
 )
 
+// --- Chips de selección (CatalogFilters) ---
+// Pares filtro+valor+label del estado vivo; el ORDEN cronológico global lo
+// lleva CatalogFilters (registro de claves).
+type ChipOptions = { value: string | number; label: string | number }[]
+
+const chipSources = computed<Record<string, { values: string[]; options: ChipOptions }>>(() => ({
+  mode: { values: modeIds.value, options: modeSelect.value },
+  faction: { values: factionIds.value, options: factionSelect.value },
+}))
+
+const selections = computed<CatalogSelection[]>(() => {
+  const out: CatalogSelection[] = []
+  for (const [filter, { values, options }] of Object.entries(chipSources.value)) {
+    for (const value of values) {
+      const option = options.find((o) => String(o.value) === value)
+      if (option) out.push({ filter, value, label: String(option.label) })
+    }
+  }
+  return out
+})
+
+/** Quita UNA selección desde su chip (aspa). */
+function removeSelection(filter: string, value: string) {
+  const targets: Record<string, typeof modeIds> = { mode: modeIds, faction: factionIds }
+  const target = targets[filter]
+  if (target) target.value = target.value.filter((v) => v !== value)
+}
+
 // Segmento de la sección en el locale activo (los enlaces a cada single).
 const segment = computed(
   () => props.section.paths[locales.current] ?? Object.values(props.section.paths)[0] ?? '',
@@ -160,38 +187,41 @@ watch(() => locales.current, loadFilters, { immediate: true })
 </script>
 
 <template>
-  <IndexToolbar
-    v-model="search"
-    v-model:sort="sort"
-    :search-placeholder="t('catalog.searchPlaceholder')"
-    :latest-label="t('catalog.sort.latest')"
-    :oldest-label="t('catalog.sort.oldest')"
-    :name-label="t('catalog.sort.nameAsc')"
-    :name-desc-label="t('catalog.sort.nameDesc')"
-  />
+  <!-- Chips de las elegidas encima de la búsqueda; el botón «Filtros» a la
+       derecha del orden (misma fila); panel suelto debajo en ancho y barra
+       derecha off-canvas en estrecho. Aplican en vivo, multivalor -->
+  <CatalogFilters
+    :active-count="activeFilters"
+    :selections="selections"
+    @remove="removeSelection"
+    @clear="clearFilters"
+  >
+    <template #toolbar>
+      <IndexToolbar
+        v-model="search"
+        v-model:sort="sort"
+        :search-placeholder="t('catalog.searchPlaceholder')"
+        :latest-label="t('catalog.sort.latest')"
+        :oldest-label="t('catalog.sort.oldest')"
+        :name-label="t('catalog.sort.nameAsc')"
+        :name-desc-label="t('catalog.sort.nameDesc')"
+      />
+    </template>
 
-  <!-- Filtros bajo la búsqueda en ancho (panel plegable); en estrecho, en
-       la barra derecha off-canvas del motor. Aplican en vivo, multivalor -->
-  <CatalogFilters :active-count="activeFilters">
     <MultiSelect
       v-model="modeIds"
+      compact-trigger
       :label="t('catalog.filters.mode')"
       :placeholder="t('catalog.filters.allModes')"
       :options="modeSelect"
     />
     <MultiSelect
       v-model="factionIds"
+      compact-trigger
       :label="t('catalog.filters.faction')"
       :placeholder="t('catalog.filters.allFactions')"
       :options="factionSelect"
     />
-
-    <!-- "Quitar filtros" (solo con filtros activos), como el pie del
-         antiguo modal: búsqueda y orden se quedan como están -->
-    <BaseButton v-if="activeFilters > 0" variant="secondary" type="button" @click="clearFilters">
-      <template #icon><FunnelX :size="16" /></template>
-      {{ t('catalog.filters.clear') }}
-    </BaseButton>
   </CatalogFilters>
 
   <p v-if="loading" class="decks-index__loading" role="status">{{ t('catalog.loading') }}</p>

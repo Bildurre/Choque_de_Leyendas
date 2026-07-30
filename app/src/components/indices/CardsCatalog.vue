@@ -2,9 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { FunnelX } from '@lucide/vue'
 import {
-  BaseButton,
   BasePagination,
   IndexToolbar,
   MultiSelect,
@@ -14,7 +12,7 @@ import {
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
-import CatalogFilters from '@/components/indices/CatalogFilters.vue'
+import CatalogFilters, { type CatalogSelection } from '@/components/indices/CatalogFilters.vue'
 import type { EntitySection } from '@/entities/registry'
 import { csvField, useFiltersQuery } from '@/entities/filtersQuery'
 import { parseSort, type SortOption } from '@/entities/catalogSort'
@@ -240,6 +238,62 @@ const activeFilters = computed(
     ].filter((values) => values.length > 0).length,
 )
 
+// --- Chips de selección (CatalogFilters) ---
+// Cada filtro con sus arrays y sus opciones visibles: de aquí salen los
+// pares filtro+valor+label; el ORDEN cronológico global lo lleva
+// CatalogFilters (registro de claves), aquí solo el estado vivo.
+type ChipOptions = { value: string | number; label: string | number }[]
+
+const chipSources = computed<Record<string, { values: string[]; options: ChipOptions }>>(() => ({
+  faction: { values: factionIds.value, options: factionSelect.value },
+  type: { values: typeIds.value, options: typeSelect.value },
+  subtype: { values: subtypeIds.value, options: subtypeSelect.value },
+  equip: { values: equipmentTypeIds.value, options: equipmentTypeSelect.value },
+  esub: { values: equipmentSubtypeIds.value, options: equipmentSubtypeSelect.value },
+  range: { values: attackRangeIds.value, options: attackRangeSelect.value },
+  atk: { values: attackTypes.value, options: attackTypeSelect.value },
+  asub: { values: attackSubtypeIds.value, options: attackSubtypeSelect.value },
+  area: { values: areas.value, options: areaSelect.value },
+  dice: { values: dice.value, options: diceSelect.value },
+  colors: {
+    values: colors.value,
+    options: COLORS.map((color) => ({ value: color, label: t(`catalog.filters.color${color}`) })),
+  },
+}))
+
+const selections = computed<CatalogSelection[]>(() => {
+  const out: CatalogSelection[] = []
+  for (const [filter, { values, options }] of Object.entries(chipSources.value)) {
+    for (const value of values) {
+      const option = options.find((o) => String(o.value) === value)
+      if (option) out.push({ filter, value, label: String(option.label) })
+    }
+  }
+  return out
+})
+
+/** Quita UNA selección desde su chip (aspa). */
+function removeSelection(filter: string, value: string) {
+  if (filter === 'colors') {
+    colors.value = colors.value.filter((color) => color !== value)
+    return
+  }
+  const targets: Record<string, typeof factionIds> = {
+    faction: factionIds,
+    type: typeIds,
+    subtype: subtypeIds,
+    equip: equipmentTypeIds,
+    esub: equipmentSubtypeIds,
+    range: attackRangeIds,
+    atk: attackTypes,
+    asub: attackSubtypeIds,
+    area: areas,
+    dice: dice,
+  }
+  const target = targets[filter]
+  if (target) target.value = target.value.filter((v) => v !== value)
+}
+
 function itemRoute(item: CatalogItem) {
   const segment = props.section.paths[locales.current] ?? Object.values(props.section.paths)[0]
   if (!item.slug || !segment) return null
@@ -364,33 +418,44 @@ watch(() => locales.current, loadFilters, { immediate: true })
 </script>
 
 <template>
-  <IndexToolbar
-    v-model="search"
-    v-model:sort="sort"
-    :search-placeholder="t('catalog.searchPlaceholder')"
-    :latest-label="t('catalog.sort.latest')"
-    :oldest-label="t('catalog.sort.oldest')"
-    :name-label="t('catalog.sort.nameAsc')"
-    :name-desc-label="t('catalog.sort.nameDesc')"
-  />
+  <!-- Chips de las elegidas encima de la búsqueda; el botón «Filtros» a la
+       derecha del orden (misma fila); panel suelto debajo en ancho y barra
+       derecha off-canvas en estrecho. Aplican en vivo, multivalor -->
+  <CatalogFilters
+    :active-count="activeFilters"
+    :selections="selections"
+    @remove="removeSelection"
+    @clear="clearFilters"
+  >
+    <template #toolbar>
+      <IndexToolbar
+        v-model="search"
+        v-model:sort="sort"
+        :search-placeholder="t('catalog.searchPlaceholder')"
+        :latest-label="t('catalog.sort.latest')"
+        :oldest-label="t('catalog.sort.oldest')"
+        :name-label="t('catalog.sort.nameAsc')"
+        :name-desc-label="t('catalog.sort.nameDesc')"
+      />
+    </template>
 
-  <!-- Filtros bajo la búsqueda en ancho (panel plegable); en estrecho, en
-       la barra derecha off-canvas del motor. Aplican en vivo, multivalor -->
-  <CatalogFilters :active-count="activeFilters">
     <MultiSelect
       v-model="factionIds"
+      compact-trigger
       :label="t('catalog.filters.faction')"
       :placeholder="t('catalog.filters.allFactions')"
       :options="factionSelect"
     />
     <MultiSelect
       v-model="typeIds"
+      compact-trigger
       :label="t('catalog.filters.type')"
       :placeholder="t('catalog.filters.allTypes')"
       :options="typeSelect"
     />
     <MultiSelect
       v-model="subtypeIds"
+      compact-trigger
       :label="t('catalog.filters.subtype')"
       :placeholder="t('catalog.filters.allSubtypes')"
       :options="subtypeSelect"
@@ -400,12 +465,14 @@ watch(() => locales.current, loadFilters, { immediate: true })
     <template v-if="showEquipment">
       <MultiSelect
         v-model="equipmentTypeIds"
+        compact-trigger
         :label="t('catalog.filters.equipmentType')"
         :placeholder="t('catalog.filters.allEquipmentTypes')"
         :options="equipmentTypeSelect"
       />
       <MultiSelect
         v-model="equipmentSubtypeIds"
+        compact-trigger
         :label="t('catalog.filters.equipmentSubtype')"
         :placeholder="t('catalog.filters.allEquipmentSubtypes')"
         :options="equipmentSubtypeSelect"
@@ -415,24 +482,28 @@ watch(() => locales.current, loadFilters, { immediate: true })
       <!-- Orden canónico: rango · tipo · subtipo · área -->
       <MultiSelect
         v-model="attackRangeIds"
+        compact-trigger
         :label="t('catalog.filters.attackRange')"
         :placeholder="t('catalog.filters.allAttackRanges')"
         :options="attackRangeSelect"
       />
       <MultiSelect
         v-model="attackTypes"
+        compact-trigger
         :label="t('catalog.filters.attackType')"
         :placeholder="t('catalog.filters.allAttackTypes')"
         :options="attackTypeSelect"
       />
       <MultiSelect
         v-model="attackSubtypeIds"
+        compact-trigger
         :label="t('catalog.filters.attackSubtype')"
         :placeholder="t('catalog.filters.allAttackSubtypes')"
         :options="attackSubtypeSelect"
       />
       <MultiSelect
         v-model="areas"
+        compact-trigger
         :label="t('catalog.filters.area')"
         :placeholder="t('catalog.filters.areaAll')"
         :options="areaSelect"
@@ -441,6 +512,7 @@ watch(() => locales.current, loadFilters, { immediate: true })
 
     <MultiSelect
       v-model="dice"
+      compact-trigger
       :label="t('catalog.filters.dice')"
       :placeholder="t('catalog.filters.anyDice')"
       :options="diceSelect"
@@ -474,13 +546,6 @@ watch(() => locales.current, loadFilters, { immediate: true })
         </button>
       </div>
     </div>
-
-    <!-- "Quitar filtros" (solo con filtros activos), como el pie del
-         antiguo modal: la búsqueda y el orden se quedan como están -->
-    <BaseButton v-if="activeFilters > 0" variant="secondary" type="button" @click="clearFilters">
-      <template #icon><FunnelX :size="16" /></template>
-      {{ t('catalog.filters.clear') }}
-    </BaseButton>
   </CatalogFilters>
 
   <BasePagination
