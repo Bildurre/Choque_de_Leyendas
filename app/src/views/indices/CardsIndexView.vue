@@ -506,21 +506,22 @@ watch(() => locales.current, loadFilters, { immediate: true })
     <p v-if="loading && !items.length" class="catalog-index__loading" role="status">
       {{ t('catalog.loading') }}
     </p>
-    <PreviewGrid
-      v-else
-      :items="items"
-      :loading="loading"
-      :page="page"
-      :pages="pages"
-      :empty-text="t('catalog.empty')"
-      :prev-label="t('catalog.prev')"
-      :next-label="t('catalog.next')"
-      @page="onPage"
-    >
+    <PreviewGrid v-else :items="items" :loading="loading" :empty-text="t('catalog.empty')">
       <!-- Añadir a la colección "para imprimir", flotante sobre la carta -->
       <template v-if="section.collectible" #actions="{ item }">
         <AddToCollection :id="item.id" class="catalog-index__add" :entity="section.collectible" />
       </template>
     </PreviewGrid>
+
+    <!-- Paginación inferior: gemela de la superior (mismas clases/props) -->
+    <BasePagination
+      class="catalog-index__pagination"
+      :page="page"
+      :pages="pages"
+      :prev-label="t('catalog.pagination.prev')"
+      :next-label="t('catalog.pagination.next')"
+      :of-label="t('catalog.pagination.of', { page, pages })"
+      @update:page="onPage"
+    />
   </main>
 </template>
