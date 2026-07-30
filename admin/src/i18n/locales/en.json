@@ -392,7 +392,9 @@
     "houses-schemes": "Houses and schemes",
     "index": "Automatic index",
     "counters-list": "Counters list",
-    "game-modes": "Game modes"
+    "game-modes": "Game modes",
+    "entity-index": "Entity index",
+    "downloads": "Downloads"
   },
   "blockFields": {
     "title": "Title",
@@ -419,7 +421,8 @@
     "answer": "Answer",
     "house_id": "House",
     "show_schemes": "Show its schemes",
-    "counter_type": "Counter type"
+    "counter_type": "Counter type",
+    "section": "Section"
   },
   "blockOptions": {
     "align": {
@@ -449,6 +452,12 @@
     "button_variant": {
       "primary": "Normal (accent background)",
       "secondary": "Inverse (page background)"
+    },
+    "section": {
+      "cards": "Cards",
+      "heroes": "Heroes",
+      "factions": "Factions",
+      "decks": "Decks"
     }
   },
   "settings": {
@@ -456,16 +465,11 @@
     "sections": {
       "identity": "Identity",
       "appearance": "Appearance",
-      "indexBackgrounds": "Index page backgrounds",
+      "indexBackgrounds": "Backgrounds",
       "footer": "Footer"
     },
     "indexBackgrounds": {
-      "hint": "Background image for each index page of the public site (empty = no background).",
-      "cards": "Cards",
-      "heroes": "Heroes",
-      "factions": "Factions",
-      "decks": "Decks",
-      "downloads": "Downloads",
+      "hint": "Background image for the public site tools and error page (empty = no background).",
       "lifeCounter": "Life counter",
       "diceRoller": "Dice roller",
       "errors": "Errors (404)"

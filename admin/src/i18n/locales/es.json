@@ -387,16 +387,11 @@
     "sections": {
       "identity": "Identidad",
       "appearance": "Apariencia",
-      "indexBackgrounds": "Fondos de los índices",
+      "indexBackgrounds": "Fondos",
       "footer": "Pie de página"
     },
     "indexBackgrounds": {
-      "hint": "Imagen de fondo de cada página índice de la web pública (vacío = sin fondo).",
-      "cards": "Cartas",
-      "heroes": "Héroes",
-      "factions": "Facciones",
-      "decks": "Mazos",
-      "downloads": "Descargas",
+      "hint": "Imagen de fondo de las herramientas y de la página de error de la web pública (vacío = sin fondo).",
       "lifeCounter": "Contador de vidas",
       "diceRoller": "Lanzador de dados",
       "errors": "Errores (404)"
@@ -1449,11 +1444,14 @@
   },
   "blockTypes": {
     "counters-list": "Lista de contadores",
-    "game-modes": "Modos de juego"
+    "game-modes": "Modos de juego",
+    "entity-index": "Índice de entidad",
+    "downloads": "Descargas"
   },
   "blockFields": {
     "intro": "Introducción",
-    "counter_type": "Tipo de contador"
+    "counter_type": "Tipo de contador",
+    "section": "Sección"
   },
   "menu": {
     "title": "Menú",

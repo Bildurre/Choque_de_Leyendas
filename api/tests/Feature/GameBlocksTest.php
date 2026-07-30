@@ -38,12 +38,31 @@ function makeCounter(string $type, string $name, bool $published = true): Counte
     return $counter;
 }
 
-it('registra los dos bloques del juego en el registry', function () {
+it('registra los bloques del juego en el registry', function () {
     $registry = app(BlockTypeRegistry::class);
 
     expect($registry->has('counters-list'))->toBeTrue()
         ->and($registry->has('game-modes'))->toBeTrue()
+        ->and($registry->has('entity-index'))->toBeTrue()
+        ->and($registry->has('downloads'))->toBeTrue()
         ->and($registry->get('counters-list')->toArray()['category'])->toBe('data');
+});
+
+it('entity-index ofrece las cuatro secciones de entidades en su select', function () {
+    $schema = app(BlockTypeRegistry::class)->get('entity-index')->toArray();
+    $section = collect($schema['fields'])->firstWhere('key', 'section');
+
+    expect($schema['category'])->toBe('data')
+        ->and($section)->not->toBeNull()
+        ->and($section['type'])->toBe('select')
+        ->and(array_keys($section['options']))->toBe(['cards', 'heroes', 'factions', 'decks']);
+});
+
+it('downloads no tiene campos propios (solo los comunes)', function () {
+    $schema = app(BlockTypeRegistry::class)->get('downloads')->toArray();
+
+    expect($schema['fields'])->toBe([])
+        ->and($schema['category'])->toBe('data');
 });
 
 it('counters-list lista solo los publicados del tipo elegido, por nombre', function () {

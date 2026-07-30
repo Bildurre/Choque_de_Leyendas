@@ -392,7 +392,9 @@
     "houses-schemes": "Etxeak eta argukiak",
     "index": "Aurkibide automatikoa",
     "counters-list": "Kontagailuen zerrenda",
-    "game-modes": "Joko moduak"
+    "game-modes": "Joko moduak",
+    "entity-index": "Entitate-indizea",
+    "downloads": "Deskargak"
   },
   "blockFields": {
     "title": "Izenburua",
@@ -419,7 +421,8 @@
     "answer": "Erantzuna",
     "house_id": "Etxea",
     "show_schemes": "Erakutsi bere amarruak",
-    "counter_type": "Kontagailu mota"
+    "counter_type": "Kontagailu mota",
+    "section": "Atala"
   },
   "blockOptions": {
     "align": {
@@ -449,6 +452,12 @@
     "button_variant": {
       "primary": "Arrunta (azentu-hondoa)",
       "secondary": "Alderantzizkoa (hondoaren kolorea)"
+    },
+    "section": {
+      "cards": "Kartak",
+      "heroes": "Heroiak",
+      "factions": "Fakzioak",
+      "decks": "Sortak"
     }
   },
   "settings": {
@@ -456,16 +465,11 @@
     "sections": {
       "identity": "Identitatea",
       "appearance": "Itxura",
-      "indexBackgrounds": "Indize-orrien atzeko planoak",
+      "indexBackgrounds": "Atzeko planoak",
       "footer": "Orri-oina"
     },
     "indexBackgrounds": {
-      "hint": "Web publikoko indize-orri bakoitzaren atzeko planoko irudia (hutsik = atzeko planorik ez).",
-      "cards": "Kartak",
-      "heroes": "Heroiak",
-      "factions": "Fakzioak",
-      "decks": "Sortak",
-      "downloads": "Deskargak",
+      "hint": "Web publikoko tresnen eta errore-orriaren atzeko planoko irudia (hutsik = atzeko planorik ez).",
       "lifeCounter": "Bizitza-kontagailua",
       "diceRoller": "Dado-jaurtitzailea",
       "errors": "Erroreak (404)"

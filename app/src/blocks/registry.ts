@@ -1,6 +1,8 @@
 import type { Component } from 'vue'
 import { motorBlockComponents } from '@edc-motor/ui'
 import CountersListBlock from './CountersListBlock.vue'
+import DownloadsBlock from './DownloadsBlock.vue'
+import EntityIndexBlock from './EntityIndexBlock.vue'
 import GameModesBlock from './GameModesBlock.vue'
 
 // Registro de componentes de bloque de la web pública (guía §3): los de
@@ -10,4 +12,6 @@ export const blockRegistry: Record<string, Component> = {
   ...motorBlockComponents,
   'counters-list': CountersListBlock,
   'game-modes': GameModesBlock,
+  'entity-index': EntityIndexBlock,
+  downloads: DownloadsBlock,
 }

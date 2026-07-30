@@ -40,15 +40,11 @@ const description = ref<Record<string, string>>({})
 // viven en el formulario del modal (patrón diferido).
 const logo = ref<Record<string, string>>({})
 const favicon = ref<string | null>(null)
-// Fondos de las páginas índice de la web pública. Las claves casan con
+// Fondos de la web pública (herramientas y errores; los índices se componen
+// desde el CRM y toman el fondo de su propia página). Las claves casan con
 // `index_backgrounds` del site settings del motor; el valor de cada entrada
 // es su clave i18n (settings.indexBackgrounds.*).
 const INDEX_BACKGROUND_KEYS = {
-  cards: 'cards',
-  heroes: 'heroes',
-  factions: 'factions',
-  decks: 'decks',
-  downloads: 'downloads',
   'life-counter': 'lifeCounter',
   'dice-roller': 'diceRoller',
   errors: 'errors',
@@ -303,13 +299,14 @@ function onRemoveFavicon() {
   form.faviconCurrent = null
 }
 
-/** Resuelve los fondos de los índices al guardar (misma mecánica que el
- *  favicon, por clave): sube los ficheros pendientes (sustituyendo el
- *  anterior), borra del disco los que se hayan quitado y deja igual los que
- *  no cambiaron. Devuelve SIEMPRE el mapa completo (el merge del servidor
- *  es superficial: un mapa parcial pisaría el resto de claves). */
+/** Resuelve los fondos al guardar (misma mecánica que el favicon, por
+ *  clave): sube los ficheros pendientes (sustituyendo el anterior), borra
+ *  del disco los que se hayan quitado y deja igual los que no cambiaron.
+ *  Devuelve SIEMPRE el mapa completo (el merge del servidor es superficial:
+ *  un mapa parcial pisaría el resto de claves); las claves que esta UI ya
+ *  no edita (los antiguos fondos de índices) pasan intactas. */
 async function resolveIndexBackgrounds(): Promise<Record<string, string | null>> {
-  const result: Record<string, string | null> = {}
+  const result: Record<string, string | null> = { ...indexBackgrounds.value }
   for (const key of Object.keys(INDEX_BACKGROUND_KEYS)) {
     const original = indexBackgrounds.value[key] ?? null
     const current = form.indexBackgrounds[key] ?? null

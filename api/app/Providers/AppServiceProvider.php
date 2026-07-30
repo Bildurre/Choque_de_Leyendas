@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use App\Blocks\CountersListBlock;
+use App\Blocks\DownloadsBlock;
+use App\Blocks\EntityIndexBlock;
 use App\Blocks\GameModesBlock;
 use App\Models\Card;
 use App\Models\Counter;
@@ -62,6 +64,13 @@ class AppServiceProvider extends ServiceProvider
         // Bloques con-datos del juego (portados del CdL viejo).
         Blocks::register(CountersListBlock::class);
         Blocks::register(GameModesBlock::class);
+
+        // Bloques de composición de las páginas índice desde el CRM: el
+        // índice completo de una sección de entidades y el apartado de
+        // Descargas (sus componentes Vue reutilizan los catálogos extraídos
+        // de las vistas índice de la app).
+        Blocks::register(EntityIndexBlock::class);
+        Blocks::register(DownloadsBlock::class);
 
         // Plantillas de página del juego: la clave viaja en el payload público
         // y la SPA elige el layout en su templateRegistry.
