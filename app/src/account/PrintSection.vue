@@ -16,10 +16,11 @@ const locales = useLocalesStore()
     <h2>{{ t('account.sections.print') }}</h2>
     <p class="print-panel__intro">
       {{ t('collection.intro') }}
+      <!-- La página del CRM de Descargas (bloque «Descargas») por su slug -->
       <RouterLink
         :to="{
-          name: 'downloads',
-          params: { locale: locales.current, dl: DOWNLOAD_PATHS[locales.current] ?? 'descargas' },
+          name: 'page',
+          params: { locale: locales.current, slug: DOWNLOAD_PATHS[locales.current] ?? 'descargas' },
         }"
         >{{ t('nav.downloads') }}</RouterLink
       >

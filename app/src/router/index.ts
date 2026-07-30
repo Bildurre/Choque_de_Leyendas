@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { i18n } from '@/i18n'
 import { accountSections } from '@/account/registry'
-import { downloadsPattern } from '@/router/downloads'
 import { diceRollerPattern, lifeCounterPattern, toolsPattern } from '@/router/tools'
 import { sectionPattern } from '@/entities/registry'
 import { useAuthStore } from '@/stores/auth'
@@ -75,13 +74,6 @@ const router = createRouter({
             meta: { auth: true },
           })),
         },
-        // Apartado público de Descargas (doc 10): PDFs permanentes + tu
-        // colección; el segmento es traducible (canónica en la vista).
-        {
-          path: `:dl(${downloadsPattern()})`,
-          name: 'downloads',
-          component: () => import('@/views/DownloadsView.vue'),
-        },
         // Herramientas públicas: el contador de vidas y el lanzador de dados
         // para las partidas físicas. Segmentos traducibles (cada vista
         // redirige a la canónica del locale activo, DC-12); la página índice
@@ -96,13 +88,12 @@ const router = createRouter({
           name: 'dice-roller',
           component: () => import('@/views/tools/DiceRollerView.vue'),
         },
-        // Listados de entidades del juego (doc 10): el segmento (en cualquier
-        // locale) decide la sección; van ANTES que la página por slug.
-        {
-          path: `:section(${sectionPattern()})`,
-          name: 'entity-index',
-          component: () => import('@/views/EntityIndexView.vue'),
-        },
+        // Detalle de las entidades del juego (doc 10): el segmento (en
+        // cualquier locale) decide la sección; va ANTES que la página por
+        // slug. Los ÍNDICES ya no tienen ruta dedicada: son páginas del CRM
+        // (bloques «Índice de entidad» y «Descargas») — /es/cartas cae a la
+        // ruta `page` y resuelve la página cuyo slug sea `cartas` (o el 404
+        // de PageView si no existe).
         {
           path: `:section(${sectionPattern()})/:slug([a-z0-9-]+)`,
           name: 'entity-detail',

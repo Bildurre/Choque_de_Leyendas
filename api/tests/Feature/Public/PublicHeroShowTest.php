@@ -51,13 +51,18 @@ it('muestra el héroe publicado con atributos, pasivas y habilidades', function 
 });
 
 it('expone la URL de la preview grande cuando el PNG está generado', function () {
+    // El disco de previews construye sus URLs con APP_URL, que puede no ser
+    // el host real de la petición (p. ej. :8010 vs :8020): la API debe
+    // reconstruirlas sobre la petición (PublicUrl::onRequestHost, motor).
     $hero = publicHero();
     $hero->preview_image = ['hero' => ['es' => "previews/hero/{$hero->id}-es.png"]];
     $hero->saveQuietly();
 
-    $response = $this->getJson('/api/heroes/aritz')->assertOk();
+    // Petición con host explícito, distinto del APP_URL del disco
+    $response = $this->getJson('http://host-real.test/api/heroes/aritz')->assertOk();
 
-    expect($response->json('data.preview'))->toContain("previews/hero/{$hero->id}-es.png");
+    expect($response->json('data.preview'))->toContain("previews/hero/{$hero->id}-es.png")
+        ->and($response->json('data.preview'))->toStartWith('http://host-real.test/');
 });
 
 it('la facción sin publicar del héroe llega sin slug (sin enlace muerto)', function () {

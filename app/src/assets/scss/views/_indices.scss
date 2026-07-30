@@ -4,12 +4,13 @@
 // facciones y mazos = tarjetas CSS propias). Mobile-first: todo en columna.
 // La barra de búsqueda + orden (IndexToolbar) y la barra derecha de filtros
 // (AppRightSidebar) son del motor; aquí solo lo propio del juego.
+// Los catálogos viven DENTRO del bloque «Índice de entidad» del CRM
+// (EntityIndexBlock > BlockShell): la anchura, el centrado y el aire
+// horizontal los pone .block__inner según los campos comunes del bloque
+// (block--w-*), así que estos contenedores no fijan max-width ni padding.
 
 // --- Catálogo (cartas y héroes) ---
 .catalog-index {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: $space-6;
   display: grid;
   gap: $space-4;
 
@@ -51,9 +52,6 @@
 // --- Base común de los índices de tarjetas CSS (facciones y mazos) ---
 .factions-index,
 .decks-index {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: $space-6;
   display: grid;
   gap: $space-4;
 

@@ -1533,8 +1533,7 @@
     },
     "routes": {
       "lifeCounter": "Life counter",
-      "diceRoller": "Dice roller",
-      "downloads": "Downloads"
+      "diceRoller": "Dice roller"
     }
   }
 }

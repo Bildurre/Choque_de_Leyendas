@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
 // GET /api/factions — índice público de facciones.
 
 require_once __DIR__.'/Helpers.php';
@@ -31,6 +34,23 @@ it('lista solo facciones publicadas con contadores de contenido publicado', func
         'heroes_count' => 1,
         'cards_count' => 1,
     ]);
+});
+
+it('sirve el icono sobre el host de la petición aunque APP_URL apunte a otro', function () {
+    // El disco 'public' construye sus URLs con APP_URL, que puede no ser el
+    // host real de la petición (p. ej. :8010 vs :8020): la API debe
+    // reconstruirlas sobre la petición (PublicUrl::onRequestHost, motor).
+    Storage::fake('public');
+
+    $faction = publicFaction();
+    $faction->addMedia(UploadedFile::fake()->image('emblema.png'))
+        ->toMediaCollection('image');
+
+    // Petición con host explícito, distinto del APP_URL del disco
+    $response = $this->getJson('http://host-real.test/api/factions')->assertOk();
+
+    expect($response->json('data.0.icon'))->toContain('emblema')
+        ->and($response->json('data.0.icon'))->toStartWith('http://host-real.test/');
 });
 
 it('localiza el índice con ?locale', function () {

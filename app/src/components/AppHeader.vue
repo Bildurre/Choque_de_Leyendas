@@ -6,7 +6,6 @@ import { useI18n } from 'vue-i18n'
 import { ChevronDown, FileDown, LayoutDashboard, LogIn, LogOut, Menu } from '@lucide/vue'
 import { LocaleSelector, MotorBadge, ThemeSelector } from '@edc-motor/ui'
 import { api } from '@/lib/api'
-import { entitySections } from '@/entities/registry'
 import { DOWNLOAD_PATHS } from '@/router/downloads'
 import { DICE_ROLLER_PATHS, LIFE_COUNTER_PATHS, TOOLS_PATHS } from '@/router/tools'
 import { useAuthStore } from '@/stores/auth'
@@ -88,20 +87,11 @@ const diceRollerSegment = computed(() => DICE_ROLLER_PATHS[locales.current] ?? D
 // Rutas propias del juego que el menú puede ofrecer (motor.menu.routes, doc
 // 10 ampliado): cada clave se mapea a su destino + etiqueta. Una clave que
 // llegue del backend sin mapa aquí se OMITE sin romper el resto del menú.
+// Los índices de entidades y las Descargas ya NO son rutas: son páginas del
+// CRM (bloques «Índice de entidad»/«Descargas») y entran al menú como
+// páginas; aquí solo quedan las herramientas.
 const routeMap = computed<Record<string, { label: string; to: RouteLocationRaw }>>(() => {
   const map: Record<string, { label: string; to: RouteLocationRaw }> = {}
-  for (const section of entitySections) {
-    map[section.key] = {
-      label: t(section.titleKey),
-      to: {
-        name: 'entity-index',
-        params: {
-          locale: locales.current,
-          section: section.paths[locales.current] || section.paths.es,
-        },
-      },
-    }
-  }
   map['life-counter'] = {
     label: t('tools.lifeCounter.title'),
     to: {
@@ -123,10 +113,6 @@ const routeMap = computed<Record<string, { label: string; to: RouteLocationRaw }
         tool: diceRollerSegment.value,
       },
     },
-  }
-  map.downloads = {
-    label: t('nav.downloads'),
-    to: { name: 'downloads', params: { locale: locales.current, dl: downloadsSegment.value } },
   }
   return map
 })
@@ -158,13 +144,21 @@ function buildEntry(node: MenuNode): NavEntry | null {
 
 const navItems = computed(() => menu.value.map(buildEntry).filter((e): e is NavEntry => e !== null))
 
+/** ¿La entrada es la página de Descargas? (para el contador de la colección
+ *  en la barra lateral: la página del CRM se reconoce por su slug). */
+function isDownloadsEntry(entry: NavEntry): boolean {
+  if (typeof entry.to !== 'object' || !('params' in entry.to)) return false
+  const slug = String((entry.to.params as Record<string, unknown>)?.slug ?? '')
+  return Object.values(DOWNLOAD_PATHS).includes(slug)
+}
+
 /** La página madre se colorea también si la ruta activa es una de sus hijas. */
 function isActive(entry: NavEntry): boolean {
   if (entry.children.length) return entry.children.some(isActive)
   if (typeof entry.to !== 'object' || !('name' in entry.to)) return false
   if (route.name !== entry.to.name) return false
   const params = (entry.to.params ?? {}) as Record<string, unknown>
-  for (const key of ['slug', 'section', 'dl', 'tool']) {
+  for (const key of ['slug', 'tool']) {
     if (key in params) return String(route.params[key] ?? '') === String(params[key])
   }
   return true
@@ -292,9 +286,10 @@ onMounted(async () => {
           >
             <LayoutDashboard :size="20" />
           </a>
+          <!-- Descargas: la página del CRM con el bloque «Descargas» -->
           <RouterLink
             class="site-header__collection"
-            :to="{ name: 'downloads', params: { locale: locales.current, dl: downloadsSegment } }"
+            :to="{ name: 'page', params: { locale: locales.current, slug: downloadsSegment } }"
             :title="t('nav.downloads')"
           >
             <FileDown :size="20" />
@@ -394,7 +389,7 @@ onMounted(async () => {
           <RouterLink class="site-header__link" :to="entry.to">
             {{ entry.label }}
             <span
-              v-if="entry.routeKey === 'downloads' && collection.count"
+              v-if="isDownloadsEntry(entry) && collection.count"
               class="site-header__collection-count"
             >
               {{ collection.count }}
@@ -406,7 +401,7 @@ onMounted(async () => {
               <RouterLink class="site-header__link" :to="child.to">
                 {{ child.label }}
                 <span
-                  v-if="child.routeKey === 'downloads' && collection.count"
+                  v-if="isDownloadsEntry(child) && collection.count"
                   class="site-header__collection-count"
                 >
                   {{ collection.count }}

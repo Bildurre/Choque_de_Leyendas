@@ -113,9 +113,10 @@ watch([segment, slug, () => locales.current], load, { immediate: true })
       <header class="entity-single__banner">
         <div class="entity-single__banner-inner">
           <div class="entity-single__heading">
+            <!-- Volver al índice: la página del CRM cuyo slug es el segmento -->
             <RouterLink
               class="entity-single__back"
-              :to="{ name: 'entity-index', params: { locale: locales.current, section: segment } }"
+              :to="{ name: 'page', params: { locale: locales.current, slug: segment } }"
             >
               <ArrowLeft :size="14" /> {{ t('detail.back') }}
             </RouterLink>

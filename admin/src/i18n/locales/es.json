@@ -1466,8 +1466,7 @@
     },
     "routes": {
       "lifeCounter": "Contador de vidas",
-      "diceRoller": "Lanzador de dados",
-      "downloads": "Descargas"
+      "diceRoller": "Lanzador de dados"
     }
   }
 }

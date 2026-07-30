@@ -86,20 +86,14 @@ class AppServiceProvider extends ServiceProvider
             ...self::webfonts(),
         ]]);
 
-        // El apartado público de Descargas es indexable (solo locales activos:
-        // eu queda listo sin generar URLs muertas mientras esté desactivado).
-        Sitemap::add(fn () => [[
-            'slugs' => array_intersect_key(
-                ['es' => 'descargas', 'eu' => 'deskargak', 'en' => 'downloads'],
-                config('motor.locales', []),
-            ),
-        ]]);
-
-        // Sitemap de las entidades públicas: índice + un detalle por slug de
-        // cada colección publicada. Los segmentos por locale DEBEN casar con
-        // entitySections de la app (app/src/entities/registry.ts); el helper
-        // filtra a los locales activos (motor.locales), así que eu queda
-        // listo sin generar URLs muertas mientras esté desactivado.
+        // Sitemap de las entidades públicas: un detalle por slug de cada
+        // colección publicada. Los índices (y las Descargas) ya NO se
+        // registran aquí: son páginas del CRM (bloques «Índice de entidad» y
+        // «Descargas») y el motor las aporta solo al sitemap como páginas
+        // publicadas. Los segmentos por locale DEBEN casar con entitySections
+        // de la app (app/src/entities/registry.ts); el helper filtra a los
+        // locales activos (motor.locales), así que eu queda listo sin
+        // generar URLs muertas mientras esté desactivado.
         Sitemap::add(fn () => self::sitemapEntries(
             Card::published()->get(),
             ['es' => 'cartas', 'eu' => 'kartak', 'en' => 'cards'],
@@ -119,14 +113,15 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * URLs del sitemap de una colección publicada: índice + un detalle por slug.
-     * Restringe el mapa de secciones a los locales activos (config motor.locales)
-     * para que al activar eu no salgan URLs muertas antes de tiempo.
+     * URLs del sitemap de una colección publicada: un detalle por slug (el
+     * índice es una página del CRM y ya lo aporta el motor). Restringe el
+     * mapa de secciones a los locales activos (config motor.locales) para
+     * que al activar eu no salgan URLs muertas antes de tiempo.
      */
     protected static function sitemapEntries($models, array $sections): array
     {
         $sections = array_intersect_key($sections, config('motor.locales', []));
-        $entries = [['slugs' => $sections]];
+        $entries = [];
 
         foreach ($models as $model) {
             $slugs = collect($model->getTranslations('slug'))

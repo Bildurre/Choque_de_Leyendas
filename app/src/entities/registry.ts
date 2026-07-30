@@ -1,16 +1,5 @@
 import { defineAsyncComponent, type Component } from 'vue'
 
-// Vistas índice propias (cluster app-indices): lazy para no engordar el
-// bundle inicial (el router ya carga EntityIndexView en diferido).
-const CardsIndexView = defineAsyncComponent(() => import('@/views/indices/CardsIndexView.vue'))
-const HeroesIndexView = defineAsyncComponent(() => import('@/views/indices/HeroesIndexView.vue'))
-const FactionsIndexView = defineAsyncComponent(
-  () => import('@/views/indices/FactionsIndexView.vue'),
-)
-const FactionDecksIndexView = defineAsyncComponent(
-  () => import('@/views/indices/FactionDecksIndexView.vue'),
-)
-
 // Vistas single propias (cluster app-singles): las monta EntityDetailView
 // como `section.detail` (props { item, locale }).
 const CardSingleView = defineAsyncComponent(() => import('@/views/singles/CardSingleView.vue'))
@@ -22,23 +11,17 @@ const FactionDeckSingleView = defineAsyncComponent(
   () => import('@/views/singles/FactionDeckSingleView.vue'),
 )
 
-// Listados públicos de entidades de ESTE juego (guía §9): patrón genérico
-// "índice + detalle por slug". Cada sección declara su endpoint público, su
-// segmento de URL por locale (debe casar con el sitemap del backend), la
-// clave i18n del título y los componentes de tarjeta y detalle (reciben
-// { item, locale }). Las vistas EntityIndexView/EntityDetailView hacen el
-// resto: fetch, canónica por locale (DC-12) y SEO (useHead).
+// Entidades públicas de ESTE juego (guía §9). Cada sección declara su
+// endpoint público, su segmento de URL por locale (debe casar con el sitemap
+// del backend y con el SLUG de su página índice del CRM) y el componente de
+// detalle (recibe { item, locale }); el detalle lo
+// monta EntityDetailView (fetch, canónica por locale DC-12 y SEO). El ÍNDICE
+// ya no es una vista con ruta propia: es una página del CRM con el bloque
+// «Índice de entidad» (EntityIndexBlock monta el catálogo de la sección).
 export interface EntitySection {
   key: string
   endpoint: string
   paths: Record<string, string>
-  titleKey: string
-  /** Vista índice PROPIA (búsqueda/paginación/pestañas): EntityIndexView le
-   *  cede el paso. Sin ella se usa el listado genérico (fetch de `endpoint`
-   *  + tarjeta `item`). */
-  index?: Component
-  /** Tarjeta del listado genérico; innecesaria si la sección trae `index`. */
-  item?: Component
   detail: Component
   /** Clave del PreviewRegistry si la entidad puede añadirse a la colección
    *  "para imprimir" (botón ＋ en el índice y el detalle). */
@@ -54,8 +37,6 @@ export const entitySections: EntitySection[] = [
     key: 'cards',
     endpoint: '/cards', // single: GET /api/cards/{slug} (EntityDetailView)
     paths: { es: 'cartas', en: 'cards' }, // eu: 'kartak' al activar el locale
-    titleKey: 'entities.cards',
-    index: CardsIndexView, // índice: GET /api/cards (+ /filters)
     detail: CardSingleView,
     collectible: 'card',
   },
@@ -63,8 +44,6 @@ export const entitySections: EntitySection[] = [
     key: 'heroes',
     endpoint: '/heroes',
     paths: { es: 'heroes', en: 'heroes' }, // eu: 'heroiak'
-    titleKey: 'entities.heroes',
-    index: HeroesIndexView, // índice: GET /api/heroes (+ /filters)
     detail: HeroSingleView,
     collectible: 'hero',
   },
@@ -72,16 +51,12 @@ export const entitySections: EntitySection[] = [
     key: 'factions',
     endpoint: '/factions',
     paths: { es: 'facciones', en: 'factions' }, // eu: 'fakzioak'
-    titleKey: 'entities.factions',
-    index: FactionsIndexView, // índice: GET /api/factions
     detail: FactionSingleView,
   },
   {
     key: 'decks',
     endpoint: '/faction-decks',
     paths: { es: 'mazos', en: 'decks' }, // eu: 'sortak'
-    titleKey: 'entities.decks',
-    index: FactionDecksIndexView, // índice: GET /api/faction-decks
     detail: FactionDeckSingleView,
   },
 ]

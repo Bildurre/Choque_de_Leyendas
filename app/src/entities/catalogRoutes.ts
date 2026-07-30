@@ -10,9 +10,11 @@ function sectionRoutes(sectionKey: string): CatalogRoutes[string] {
   const section = entitySections.find((s) => s.key === sectionKey)
   if (!section) return {}
   return {
+    // El índice es la PÁGINA del CRM cuyo slug coincide con el segmento de
+    // la sección (ya no hay ruta dedicada `entity-index`).
     index: (locale: string) => ({
-      name: 'entity-index',
-      params: { locale, section: section.paths[locale] ?? Object.values(section.paths)[0] },
+      name: 'page',
+      params: { locale, slug: section.paths[locale] ?? Object.values(section.paths)[0] },
     }),
     single: (item: CatalogItem, locale: string) =>
       item.slug

@@ -2,17 +2,19 @@ import type { RouteLocationRaw } from 'vue-router'
 import { entitySections } from './registry'
 
 // Rutas hacia índices y singles desde las fichas (cluster app-singles):
-// resuelven por CLAVE de sección (cards/heroes/factions/decks) sobre las
-// rutas genéricas del router. Devuelven null si la sección aún no está
-// registrada o falta el slug — el llamante pinta texto plano, sin enlace.
+// resuelven por CLAVE de sección (cards/heroes/factions/decks). Devuelven
+// null si la sección aún no está registrada o falta el slug — el llamante
+// pinta texto plano, sin enlace.
 
-/** Ruta al índice de una sección (p. ej. el índice de facciones). */
+/** Ruta al índice de una sección: su PÁGINA del CRM (el slug de la página
+ *  índice coincide con el segmento de la sección en cada locale, p. ej.
+ *  /es/mazos — ya no hay ruta dedicada `entity-index`). */
 export function sectionIndexRoute(sectionKey: string, locale: string): RouteLocationRaw | null {
   const section = entitySections.find((s) => s.key === sectionKey)
   if (!section) return null
   return {
-    name: 'entity-index',
-    params: { locale, section: section.paths[locale] ?? Object.values(section.paths)[0] },
+    name: 'page',
+    params: { locale, slug: section.paths[locale] ?? Object.values(section.paths)[0] },
   }
 }
 

@@ -1533,8 +1533,7 @@
     },
     "routes": {
       "lifeCounter": "Bizitza-kontagailua",
-      "diceRoller": "Dado-jaurtitzailea",
-      "downloads": "Deskargak"
+      "diceRoller": "Dado-jaurtitzailea"
     }
   }
 }

@@ -101,8 +101,6 @@
     }
   },
   "downloads": {
-    "title": "Descargas",
-    "intro": "Todos los PDF listos para imprimir, sin registro: cartas, tokens y documentos del juego.",
     "empty": "Todavía no hay descargas publicadas.",
     "types": {
       "characters": "Personajes",
@@ -204,18 +202,6 @@
     "error": "No se pudo actualizar la colección.",
     "add": "Añadir a tu PDF",
     "inCollection": "En tu colección"
-  },
-  "entities": {
-    "cards": "Cartas",
-    "heroes": "Héroes",
-    "factions": "Facciones",
-    "decks": "Mazos"
-  },
-  "entitiesIntro": {
-    "cards": "Todas las cartas del juego, con búsqueda y filtros.",
-    "heroes": "Todos los héroes del juego, con búsqueda y filtros.",
-    "factions": "Las facciones en pugna por el trono.",
-    "decks": "Los mazos preconstruidos de cada facción."
   },
   "catalog": {
     "searchPlaceholder": "Buscar…",

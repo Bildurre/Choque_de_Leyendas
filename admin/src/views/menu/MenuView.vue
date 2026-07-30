@@ -8,10 +8,10 @@ import { useLocalesStore } from '@/stores/locales'
 
 // Configurador del menú de la web pública (doc 10 ampliado, rediseño sin
 // grupos): mezcla páginas del CRM y las rutas propias de CdL (motor.menu.
-// routes, config del api: cards/heroes/factions/decks — los índices de
-// entidades —, life-counter y dice-roller — las herramientas con ruta
-// pública propia — y downloads). `routeLabels` es la etiqueta visible de
-// cada route_key: debe casar con el mapa de AppHeader.vue (app). La
+// routes, config del api: life-counter y dice-roller — las herramientas con
+// ruta pública propia; los índices de entidades y las Descargas son páginas
+// del CRM y entran al menú como páginas). `routeLabels` es la etiqueta
+// visible de cada route_key: debe casar con el mapa de AppHeader.vue (app). La
 // jerarquía es la de las páginas: "si quieres un grupo, haz una página".
 // El gestor trabaja en local y avisa si hay cambios sin guardar (badge
 // propio + este guard de navegación, patrón confirm simple — no hay otro
@@ -20,13 +20,8 @@ const { t } = useI18n()
 const locales = useLocalesStore()
 
 const routeLabels = computed<Record<string, string>>(() => ({
-  cards: t('nav.cards'),
-  heroes: t('nav.heroes'),
-  factions: t('nav.factions'),
-  decks: t('nav.factionDecks'),
   'life-counter': t('menu.routes.lifeCounter'),
   'dice-roller': t('menu.routes.diceRoller'),
-  downloads: t('menu.routes.downloads'),
 }))
 
 const labels = computed<Partial<MenuManagerLabels>>(() => ({

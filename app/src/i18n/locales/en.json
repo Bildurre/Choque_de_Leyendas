@@ -101,8 +101,6 @@
     }
   },
   "downloads": {
-    "title": "Downloads",
-    "intro": "Every print-ready PDF, no sign-up needed: cards, tokens and game documents.",
     "empty": "No downloads published yet.",
     "types": {
       "characters": "Characters",
@@ -204,18 +202,6 @@
     "error": "Could not update the collection.",
     "add": "Add to your PDF",
     "inCollection": "In your collection"
-  },
-  "entities": {
-    "cards": "Cards",
-    "heroes": "Heroes",
-    "factions": "Factions",
-    "decks": "Decks"
-  },
-  "entitiesIntro": {
-    "cards": "Every card in the game, with search and filters.",
-    "heroes": "Every hero in the game, with search and filters.",
-    "factions": "The factions vying for the throne.",
-    "decks": "Each faction's preconstructed decks."
   },
   "catalog": {
     "searchPlaceholder": "Search…",

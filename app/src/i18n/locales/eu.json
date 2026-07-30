@@ -101,8 +101,6 @@
     }
   },
   "downloads": {
-    "title": "Deskargak",
-    "intro": "Inprimatzeko prest dauden PDF guztiak, izenik eman gabe: kartak, fitxak eta jokoaren dokumentuak.",
     "empty": "Oraindik ez dago deskargarik argitaratuta.",
     "types": {
       "characters": "Pertsonaiak",
@@ -204,12 +202,6 @@
     "error": "Ezin izan da bilduma eguneratu.",
     "add": "Gehitu zure PDFra",
     "inCollection": "Zure bilduman"
-  },
-  "entities": {
-    "cards": "Kartak",
-    "heroes": "Heroiak",
-    "factions": "Fakzioak",
-    "decks": "Sortak"
   },
   "catalog": {
     "searchPlaceholder": "Bilatu…",

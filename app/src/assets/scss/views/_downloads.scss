@@ -1,11 +1,12 @@
 @use "tokens" as *;
 
 // Apartado público de Descargas (doc 10): grupos de PDFs permanentes +
-// "tu colección" debajo (gestor compartido con el panel de usuario).
+// "tu colección" debajo (gestor compartido con el panel de usuario). Vive
+// DENTRO del bloque «Descargas» del CRM (DownloadsBlock > BlockShell): la
+// anchura, el centrado y el aire horizontal los pone .block__inner según
+// los campos comunes del bloque (block--w-*), así que este contenedor no
+// fija max-width ni padding.
 .downloads {
-  max-width: 860px;
-  margin: 0 auto;
-  padding: $space-6;
   display: grid;
   gap: $space-5;
 
@@ -150,31 +151,3 @@
   }
 }
 
-// Slot del índice: el botón flota sobre la esquina de la carta.
-.entity-index__slot {
-  position: relative;
-}
-
-.entity-index__card-link {
-  display: block;
-  border-radius: $radius-lg;
-  color: inherit;
-  text-decoration: none;
-  transition: box-shadow 0.2s ease;
-
-  // Sin moverse: un halo alrededor (el acento marca que es clicable).
-  &:hover {
-    box-shadow:
-      0 0 0 2px color-mix(in srgb, $accent-500 55%, transparent),
-      0 8px 24px color-mix(in srgb, $accent-500 25%, transparent);
-  }
-}
-
-// Flotante FUERA de la carta (encima, a la derecha): sin caja, no pisa los
-// badges de las esquinas. El hueco vertical lo da el row-gap del grid.
-.entity-index__add {
-  position: absolute;
-  top: -38px;
-  right: 0;
-  z-index: 2;
-}

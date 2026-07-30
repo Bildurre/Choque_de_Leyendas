@@ -1,35 +1,9 @@
 @use "tokens" as *;
 
-// Listados públicos de entidades (doc 10): índice en rejilla de tarjetas y
-// SINGLE estándar estilo CDL — imagen de fondo de página, banner con el
-// nombre + acción de añadir, y la ficha en dos columnas. Mobile-first.
-.entity-index {
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: $space-6;
-  display: grid;
-  gap: $space-5;
-
-  &__title { margin: 0; }
-
-  &__empty { color: $text-3; margin: 0; }
-
-  &__grid {
-    display: flex;
-    flex-wrap: wrap;
-    // Hueco VERTICAL generoso: el pdf-add flota encima de cada carta (a
-    // -38px) y así no se monta con la fila anterior — queda claro de quién es.
-    gap: 48px $space-4;
-    justify-content: center;
-    margin-top: $space-7; // que el de la primera fila no pise el título
-  }
-
-  // El slot posiciona el botón de añadir; el hover vive en el enlace
-  // interior (.entity-index__card-link, en _downloads.scss).
-  &__slot {
-    flex: 0 0 auto;
-  }
-}
+// Entidades públicas (doc 10): SINGLE estándar estilo CDL — imagen de fondo
+// de página, banner con el nombre + acción de añadir, y la ficha en dos
+// columnas. Mobile-first. (El índice genérico desapareció: los índices son
+// páginas del CRM con el bloque «Índice de entidad», ver _indices.scss.)
 
 // --- Single estándar (plantilla CDL) ---
 .entity-single {

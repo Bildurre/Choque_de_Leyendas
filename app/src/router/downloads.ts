@@ -1,11 +1,9 @@
-// Segmentos de URL del apartado público de Descargas por locale (doc 10):
-// deben casar con la nav y con la canónica de la vista.
+// Slug por locale de la PÁGINA del CRM de Descargas (con el bloque
+// «Descargas»): ya no hay ruta dedicada — el header y el panel de usuario
+// enlazan a { name: 'page', params: { slug: DOWNLOAD_PATHS[locale] } }. Debe
+// casar con los slugs de esa página en el CRM.
 export const DOWNLOAD_PATHS: Record<string, string> = {
   es: 'descargas',
   eu: 'deskargak',
   en: 'downloads',
-}
-
-export function downloadsPattern(): string {
-  return [...new Set(Object.values(DOWNLOAD_PATHS))].join('|')
 }

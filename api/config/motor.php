@@ -158,10 +158,11 @@ return [
     // del juego que el admin puede añadir al menú junto a las páginas del
     // CRM. Cada clave se mapea a ruta+etiqueta en AppHeader.vue (app) y a su
     // etiqueta en MenuView.vue (admin) — una clave sin mapear en el front se
-    // omite sola. Las claves casan con entitySections (src/entities/registry.ts)
-    // y con los nombres de ruta de las herramientas (src/router/tools.ts) y
-    // descargas (src/router/downloads.ts).
+    // omite sola. Solo quedan las HERRAMIENTAS (src/router/tools.ts): los
+    // índices de entidades y las Descargas ya no tienen ruta propia — son
+    // páginas del CRM (bloques «Índice de entidad» y «Descargas») y entran
+    // al menú como páginas (MenuSync borra los items de las claves retiradas).
     'menu' => [
-        'routes' => ['cards', 'heroes', 'factions', 'decks', 'life-counter', 'dice-roller', 'downloads'],
+        'routes' => ['life-counter', 'dice-roller'],
     ],
 ];
