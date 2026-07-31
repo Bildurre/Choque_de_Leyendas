@@ -149,36 +149,42 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('heroClasses.fields.name')"
-      required
-      :error="errors.name"
-    />
-    <!-- Femenino opcional: se muestra solo junto a heroínas (HasGenderedName) -->
-    <TranslatableInput
-      v-model="form.name_female"
-      :locales="locales.locales"
-      :label="t('heroClasses.fields.nameFemale')"
-      :error="errors.name_female"
-    />
-    <BaseSelect
-      v-model="form.hero_superclass_id"
-      :label="t('heroClasses.fields.superclass')"
-      :options="superclassOptions"
-      :placeholder="t('heroClasses.fields.selectSuperclass')"
-      required
-      :error="errors.hero_superclass_id"
-    />
-    <TranslatableInput
-      v-model="form.passive"
-      :locales="locales.locales"
-      :label="t('heroClasses.fields.passive')"
-      type="wysiwyg"
-      :icons="iconList"
-      :rich-labels="editorLabels"
-      :error="errors.passive"
-    />
+    <!-- Filas del sistema compartido: los dos nombres en columnas; la
+         pasiva (wysiwyg) en la columna ancha con la superclase al lado. -->
+    <div class="form-row">
+      <TranslatableInput
+        v-model="form.name"
+        :locales="locales.locales"
+        :label="t('heroClasses.fields.name')"
+        required
+        :error="errors.name"
+      />
+      <!-- Femenino opcional: se muestra solo junto a heroínas (HasGenderedName) -->
+      <TranslatableInput
+        v-model="form.name_female"
+        :locales="locales.locales"
+        :label="t('heroClasses.fields.nameFemale')"
+        :error="errors.name_female"
+      />
+    </div>
+    <div class="form-row form-row--wide-left">
+      <TranslatableInput
+        v-model="form.passive"
+        :locales="locales.locales"
+        :label="t('heroClasses.fields.passive')"
+        type="wysiwyg"
+        :icons="iconList"
+        :rich-labels="editorLabels"
+        :error="errors.passive"
+      />
+      <BaseSelect
+        v-model="form.hero_superclass_id"
+        :label="t('heroClasses.fields.superclass')"
+        :options="superclassOptions"
+        :placeholder="t('heroClasses.fields.selectSuperclass')"
+        required
+        :error="errors.hero_superclass_id"
+      />
+    </div>
   </EditModal>
 </template>

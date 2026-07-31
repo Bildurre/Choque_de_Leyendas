@@ -136,32 +136,28 @@ $icon-link: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' vi
   }
 }
 
-// Formulario de héroe (modal grande por fieldsets, como el form del viejo).
+// Formulario de héroe (modal grande): los grupos y filas son del sistema
+// compartido del motor (.form-fieldset + .form-row); aquí solo lo propio.
 .hero-form {
-  &__fieldset {
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    padding: $space-4;
-    margin: 0 0 $space-4;
-    display: flex;
-    flex-direction: column;
-    gap: $space-3;
-
-    legend {
-      padding: 0 $space-2;
-      font-size: $fs-14;
-      font-weight: $k-fw-bold;
-      color: $text-2;
-    }
-  }
-
-  &__grid {
+  // Los cinco atributos en una fila mientras quepan. Columnas FIJAS con
+  // cortes EXPLÍCITOS de container query sobre modal-body (nada de
+  // auto-fit: bailaba al hover en modales largos a DPI fraccionario).
+  &__attributes {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: $space-3;
+    align-items: start;
 
-    &--attributes {
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    > * { min-width: 0; }
+
+    // Por debajo de ~680px de modal-body no caben cinco: pasa a 3 (3+2).
+    @container modal-body (max-width: 679px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    // Modal angosto: una columna, como el resto de filas.
+    @container modal-body (max-width: #{$bp-sm - 1px}) {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 

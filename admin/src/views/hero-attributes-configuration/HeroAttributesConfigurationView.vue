@@ -160,8 +160,9 @@ onMounted(load)
       :cancel-label="t('common.cancel')"
       @submit="save"
     >
-      <!-- Campos a dos columnas mientras quepan (en estrecho, una) -->
-      <div class="hero-attributes-config__modal-grid">
+      <!-- Fila del sistema compartido: dos columnas FIJAS (los campos
+           fluyen en filas de dos; en modal angosto apilan a una) -->
+      <div class="form-row">
         <NumericInput
           v-for="field in modalFields"
           :key="field.key"

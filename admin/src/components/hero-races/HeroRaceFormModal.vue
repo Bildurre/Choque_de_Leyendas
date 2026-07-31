@@ -107,19 +107,22 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('heroRaces.fields.name')"
-      required
-      :error="errors.name"
-    />
-    <!-- Femenino opcional: se muestra solo junto a heroínas (HasGenderedName) -->
-    <TranslatableInput
-      v-model="form.name_female"
-      :locales="locales.locales"
-      :label="t('heroRaces.fields.nameFemale')"
-      :error="errors.name_female"
-    />
+    <!-- Fila del sistema compartido: los dos nombres en columnas -->
+    <div class="form-row">
+      <TranslatableInput
+        v-model="form.name"
+        :locales="locales.locales"
+        :label="t('heroRaces.fields.name')"
+        required
+        :error="errors.name"
+      />
+      <!-- Femenino opcional: se muestra solo junto a heroínas (HasGenderedName) -->
+      <TranslatableInput
+        v-model="form.name_female"
+        :locales="locales.locales"
+        :label="t('heroRaces.fields.nameFemale')"
+        :error="errors.name_female"
+      />
+    </div>
   </EditModal>
 </template>

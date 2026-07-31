@@ -161,6 +161,13 @@
     "sections": {
       "details": "Detalles",
       "collection": "Colección"
+    },
+    "form": {
+      "sheet": "Ficha",
+      "content": "Contenido",
+      "presentation": "Presentación",
+      "settings": "Ajustes",
+      "seo": "SEO"
     }
   },
   "login": {
@@ -389,6 +396,10 @@
       "appearance": "Apariencia",
       "indexBackgrounds": "Fondos",
       "footer": "Pie de página"
+    },
+    "form": {
+      "accent": "Acento",
+      "typography": "Tipografía"
     },
     "indexBackgrounds": {
       "hint": "Imagen de fondo de las herramientas y de la página de error de la web pública (vacío = sin fondo).",

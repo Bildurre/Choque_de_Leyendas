@@ -110,14 +110,16 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('equipmentTypes.fields.name')"
-      required
-      :error="errors.name"
-    />
-
-    <BaseCheckbox v-model="form.uses_hands" :label="t('equipmentTypes.fields.usesHands')" />
+    <!-- Fila del sistema compartido: nombre y flag de manos en columnas -->
+    <div class="form-row">
+      <TranslatableInput
+        v-model="form.name"
+        :locales="locales.locales"
+        :label="t('equipmentTypes.fields.name')"
+        required
+        :error="errors.name"
+      />
+      <BaseCheckbox v-model="form.uses_hands" :label="t('equipmentTypes.fields.usesHands')" />
+    </div>
   </EditModal>
 </template>

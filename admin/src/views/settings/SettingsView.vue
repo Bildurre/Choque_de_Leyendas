@@ -581,7 +581,8 @@ onMounted(async () => {
           type="textarea"
           :rows="2"
         />
-        <div class="settings-view__uploads">
+        <!-- Fila del sistema compartido: logo y favicon en columnas -->
+        <div class="form-row">
           <!-- Logo por idioma (fallback al por defecto en la web): DIFERIDO,
                la subida real no viaja hasta el guardar. -->
           <TranslatableImage
@@ -601,95 +602,107 @@ onMounted(async () => {
         </div>
       </template>
 
-      <!-- Apariencia -->
+      <!-- Apariencia: grupos del sistema compartido (acento / tipografía /
+           fuentes propias) con filas de columnas fijas. -->
       <template v-else-if="editing === 'appearance'">
-        <BaseSelect
-          v-model="form.accentMode"
-          :label="t('settings.fields.accentMode')"
-          :options="[
-            { value: 'fixed', label: t('settings.accentModes.fixed') },
-            { value: 'random', label: t('settings.accentModes.random') },
-          ]"
-        />
+        <fieldset class="form-fieldset">
+          <legend>{{ t('settings.form.accent') }}</legend>
+          <!-- Modo fijo: el picker comparte fila con el select; en modo
+               aleatorio el select va solo (sin celda huérfana). -->
+          <div :class="{ 'form-row': form.accentMode === 'fixed' }">
+            <BaseSelect
+              v-model="form.accentMode"
+              :label="t('settings.fields.accentMode')"
+              :options="[
+                { value: 'fixed', label: t('settings.accentModes.fixed') },
+                { value: 'random', label: t('settings.accentModes.random') },
+              ]"
+            />
+            <PaletteColorPicker
+              v-if="form.accentMode === 'fixed'"
+              v-model="form.accentColor"
+              :label="t('settings.fields.accentColor')"
+            />
+          </div>
 
-        <PaletteColorPicker
-          v-if="form.accentMode === 'fixed'"
-          v-model="form.accentColor"
-          :label="t('settings.fields.accentColor')"
-        />
+          <template v-if="form.accentMode === 'random'">
+            <p class="settings-view__hint">{{ t('settings.fields.accentColorsHint') }}</p>
+            <!-- Candidatos como etiquetas en fila (con wrap) -->
+            <ul v-if="form.accentColors.length" class="settings-view__colors">
+              <li v-for="(color, index) in form.accentColors" :key="color">
+                <span class="settings-view__swatch" :style="{ background: color }" />
+                <code>{{ color }}</code>
+                <button
+                  type="button"
+                  class="settings-view__chip-remove"
+                  :title="t('common.actions.delete')"
+                  @click="removeColor(index)"
+                >
+                  <X :size="12" />
+                </button>
+              </li>
+            </ul>
+            <div class="settings-view__add-color">
+              <PaletteColorPicker v-model="candidate" :label="t('settings.fields.accentColors')" />
+              <BaseButton variant="text" @click="addColor">
+                <template #icon><Plus :size="14" /></template>
+                {{ t('settings.addColor') }}
+              </BaseButton>
+            </div>
+          </template>
+        </fieldset>
 
-        <template v-else>
-          <p class="settings-view__hint">{{ t('settings.fields.accentColorsHint') }}</p>
-          <!-- Candidatos como etiquetas en fila (con wrap) -->
-          <ul v-if="form.accentColors.length" class="settings-view__colors">
-            <li v-for="(color, index) in form.accentColors" :key="color">
-              <span class="settings-view__swatch" :style="{ background: color }" />
-              <code>{{ color }}</code>
-              <button
-                type="button"
-                class="settings-view__chip-remove"
-                :title="t('common.actions.delete')"
-                @click="removeColor(index)"
+        <fieldset class="form-fieldset">
+          <legend>{{ t('settings.form.typography') }}</legend>
+          <!-- Los tres selectores de fuente (con su vista previa) en fila
+               de 3 columnas fijas; apilan en modal angosto. -->
+          <div class="form-row form-row--3">
+            <div>
+              <BaseSelect
+                v-model="form.fontHeadings"
+                :label="t('settings.fields.fontHeadings')"
+                :options="fontOptions"
+              />
+              <p
+                class="settings-view__font-preview"
+                :style="{ fontFamily: fonts[form.fontHeadings]?.stack }"
               >
-                <X :size="12" />
-              </button>
-            </li>
-          </ul>
-          <div class="settings-view__add-color">
-            <PaletteColorPicker v-model="candidate" :label="t('settings.fields.accentColors')" />
-            <BaseButton variant="text" @click="addColor">
-              <template #icon><Plus :size="14" /></template>
-              {{ t('settings.addColor') }}
-            </BaseButton>
+                {{ t('settings.fontPreviewHeading') }}
+              </p>
+            </div>
+            <div>
+              <BaseSelect
+                v-model="form.fontBody"
+                :label="t('settings.fields.fontBody')"
+                :options="fontOptions"
+              />
+              <p
+                class="settings-view__font-preview"
+                :style="{ fontFamily: fonts[form.fontBody]?.stack }"
+              >
+                {{ t('settings.fontPreviewBody') }}
+              </p>
+            </div>
+            <!-- Fuente "especial": acentos puntuales (hoy, el bloque cita) -->
+            <div>
+              <BaseSelect
+                v-model="form.fontSpecial"
+                :label="t('settings.fields.fontSpecial')"
+                :options="fontOptions"
+              />
+              <p
+                class="settings-view__font-preview"
+                :style="{ fontFamily: fonts[form.fontSpecial]?.stack }"
+              >
+                {{ t('settings.fontPreviewSpecial') }}
+              </p>
+            </div>
           </div>
-        </template>
-
-        <div class="settings-view__fonts">
-          <div>
-            <BaseSelect
-              v-model="form.fontHeadings"
-              :label="t('settings.fields.fontHeadings')"
-              :options="fontOptions"
-            />
-            <p
-              class="settings-view__font-preview"
-              :style="{ fontFamily: fonts[form.fontHeadings]?.stack }"
-            >
-              {{ t('settings.fontPreviewHeading') }}
-            </p>
-          </div>
-          <div>
-            <BaseSelect
-              v-model="form.fontBody"
-              :label="t('settings.fields.fontBody')"
-              :options="fontOptions"
-            />
-            <p
-              class="settings-view__font-preview"
-              :style="{ fontFamily: fonts[form.fontBody]?.stack }"
-            >
-              {{ t('settings.fontPreviewBody') }}
-            </p>
-          </div>
-          <!-- Fuente "especial": acentos puntuales (hoy, el bloque cita) -->
-          <div>
-            <BaseSelect
-              v-model="form.fontSpecial"
-              :label="t('settings.fields.fontSpecial')"
-              :options="fontOptions"
-            />
-            <p
-              class="settings-view__font-preview"
-              :style="{ fontFamily: fonts[form.fontSpecial]?.stack }"
-            >
-              {{ t('settings.fontPreviewSpecial') }}
-            </p>
-          </div>
-        </div>
+        </fieldset>
 
         <!-- Fuentes propias: subir un fichero la hace elegible arriba -->
-        <div class="settings-view__custom-fonts">
-          <span class="form-field__label">{{ t('settings.fields.customFonts') }}</span>
+        <fieldset class="form-fieldset">
+          <legend>{{ t('settings.fields.customFonts') }}</legend>
           <ul v-if="form.customFonts.length" class="settings-view__colors">
             <li v-for="font in form.customFonts" :key="font.key">
               <code>{{ font.name }}</code>
@@ -703,7 +716,7 @@ onMounted(async () => {
               </button>
             </li>
           </ul>
-          <div class="settings-view__font-upload">
+          <div class="form-row">
             <BaseInput v-model="fontName" :label="t('settings.fields.fontName')" />
             <FontUpload
               v-model="fontFile"
@@ -712,16 +725,17 @@ onMounted(async () => {
               :too-large-text="t('common.fileTooLarge')"
               :invalid-type-text="t('common.fileType')"
             />
-            <BaseButton
-              variant="text"
-              :disabled="uploadingFont || !fontName.trim() || !fontFile"
-              @click="uploadFont"
-            >
-              <template #icon><Upload :size="14" /></template>
-              {{ t('settings.uploadFont') }}
-            </BaseButton>
           </div>
-        </div>
+          <BaseButton
+            variant="text"
+            class="settings-view__upload-font"
+            :disabled="uploadingFont || !fontName.trim() || !fontFile"
+            @click="uploadFont"
+          >
+            <template #icon><Upload :size="14" /></template>
+            {{ t('settings.uploadFont') }}
+          </BaseButton>
+        </fieldset>
       </template>
 
       <!-- Pie de página -->
@@ -740,7 +754,9 @@ onMounted(async () => {
            borra hasta el guardar. -->
       <template v-else-if="editing === 'indexBackgrounds'">
         <p class="settings-view__hint">{{ t('settings.indexBackgrounds.hint') }}</p>
-        <div class="settings-view__index-bgs">
+        <!-- Los tres fondos en fila de 3 columnas fijas del sistema
+             compartido; apilan en modal angosto. -->
+        <div class="form-row form-row--3">
           <ImageUpload
             v-for="(labelKey, key) in INDEX_BACKGROUND_KEYS"
             :key="key"

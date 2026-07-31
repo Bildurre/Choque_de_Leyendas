@@ -165,43 +165,55 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('counters.fields.name')"
-      required
-      :error="errors.name"
-    />
+    <!-- Grupos del sistema compartido: la ficha (nombre + tipo en fila,
+         efecto wysiwyg a doble columna) y la presentación (fila de imagen
+         con el interruptor de publicación al lado). -->
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.sheet') }}</legend>
+      <div class="form-row">
+        <TranslatableInput
+          v-model="form.name"
+          :locales="locales.locales"
+          :label="t('counters.fields.name')"
+          required
+          :error="errors.name"
+        />
+        <BaseSelect
+          v-model="form.type"
+          :label="t('counters.fields.type')"
+          :options="typeOptions"
+          :placeholder="t('counters.selectType')"
+          required
+          :error="errors.type"
+        />
+      </div>
+      <TranslatableInput
+        v-model="form.effect"
+        :locales="locales.locales"
+        :label="t('counters.fields.effect')"
+        type="wysiwyg"
+        :icons="iconList"
+        :rich-labels="editorLabels"
+      />
+    </fieldset>
 
-    <BaseSelect
-      v-model="form.type"
-      :label="t('counters.fields.type')"
-      :options="typeOptions"
-      :placeholder="t('counters.selectType')"
-      required
-      :error="errors.type"
-    />
-
-    <TranslatableInput
-      v-model="form.effect"
-      :locales="locales.locales"
-      :label="t('counters.fields.effect')"
-      type="wysiwyg"
-      :icons="iconList"
-      :rich-labels="editorLabels"
-    />
-
-    <ImageUpload
-      v-model="image"
-      :current-url="currentImage"
-      :label="t('counters.fields.image')"
-      :drag-text="t('common.imageDrag')"
-      :hint-text="t('common.imageHint')"
-      :too-large-text="t('common.fileTooLarge')"
-      :invalid-type-text="t('common.fileType')"
-      @remove="onRemoveImage"
-    />
-
-    <BaseCheckbox v-model="form.is_published" :label="t('counters.fields.published')" />
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.presentation') }}</legend>
+      <div class="form-row form-row--media">
+        <ImageUpload
+          v-model="image"
+          :current-url="currentImage"
+          :label="t('counters.fields.image')"
+          :drag-text="t('common.imageDrag')"
+          :hint-text="t('common.imageHint')"
+          :too-large-text="t('common.fileTooLarge')"
+          :invalid-type-text="t('common.fileType')"
+          @remove="onRemoveImage"
+        />
+        <div class="form-row__stack">
+          <BaseCheckbox v-model="form.is_published" :label="t('counters.fields.published')" />
+        </div>
+      </div>
+    </fieldset>
   </EditModal>
 </template>

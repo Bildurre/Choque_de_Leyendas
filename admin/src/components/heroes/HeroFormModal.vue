@@ -421,17 +421,18 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <!-- Básicos -->
-    <fieldset class="hero-form__fieldset">
+    <!-- Ficha: identidad del héroe en filas del sistema compartido
+         (.form-fieldset + .form-row) y fila de imagen al final. -->
+    <fieldset class="form-fieldset">
       <legend>{{ t('heroes.sections.basic') }}</legend>
-      <TranslatableInput
-        v-model="form.name"
-        :locales="locales.locales"
-        :label="t('heroes.fields.name')"
-        required
-        :error="errors.name"
-      />
-      <div class="hero-form__grid">
+      <div class="form-row">
+        <TranslatableInput
+          v-model="form.name"
+          :locales="locales.locales"
+          :label="t('heroes.fields.name')"
+          required
+          :error="errors.name"
+        />
         <BaseSelect
           v-model="form.faction_id"
           :label="t('heroes.fields.faction')"
@@ -440,6 +441,8 @@ async function submit() {
           required
           :error="errors.faction_id"
         />
+      </div>
+      <div class="form-row form-row--3">
         <BaseSelect
           v-model="form.hero_race_id"
           :label="t('heroes.fields.race')"
@@ -464,23 +467,30 @@ async function submit() {
           :error="errors.gender"
         />
       </div>
-      <BaseCheckbox v-model="form.is_published" :label="t('heroes.fields.published')" />
-      <ImageUpload
-        v-model="image"
-        :current-url="currentImage"
-        :label="t('heroes.fields.image')"
-        :drag-text="t('common.imageDrag')"
-        :hint-text="t('common.imageHint')"
-        :too-large-text="t('common.fileTooLarge')"
-        :invalid-type-text="t('common.fileType')"
-        @remove="onRemoveImage"
-      />
+      <!-- Fila de imagen: el input a todo el alto a la izquierda; el
+           interruptor de publicación apilado a la derecha. -->
+      <div class="form-row form-row--media">
+        <ImageUpload
+          v-model="image"
+          :current-url="currentImage"
+          :label="t('heroes.fields.image')"
+          :drag-text="t('common.imageDrag')"
+          :hint-text="t('common.imageHint')"
+          :too-large-text="t('common.fileTooLarge')"
+          :invalid-type-text="t('common.fileType')"
+          @remove="onRemoveImage"
+        />
+        <div class="form-row__stack">
+          <BaseCheckbox v-model="form.is_published" :label="t('heroes.fields.published')" />
+        </div>
+      </div>
     </fieldset>
 
-    <!-- Atributos -->
-    <fieldset class="hero-form__fieldset">
+    <!-- Atributos: los cinco en fila mientras quepan (columnas FIJAS con
+         cortes explícitos de container query en _heroes.scss) -->
+    <fieldset class="form-fieldset">
       <legend>{{ t('heroes.sections.attributes') }}</legend>
-      <div class="hero-form__grid hero-form__grid--attributes">
+      <div class="hero-form__attributes">
         <NumericInput
           v-model="form.agility"
           :label="t('heroes.attributes.agility')"
@@ -531,28 +541,31 @@ async function submit() {
       </p>
     </fieldset>
 
-    <!-- Pasiva -->
-    <fieldset class="hero-form__fieldset">
+    <!-- Pasiva: el wysiwyg en la columna ancha (izquierda) con su campo
+         pequeño natural (el nombre) al lado. -->
+    <fieldset class="form-fieldset">
       <legend>{{ t('heroes.sections.passive') }}</legend>
-      <TranslatableInput
-        v-model="form.passive_name"
-        :locales="locales.locales"
-        :label="t('heroes.fields.passiveName')"
-        :error="errors.passive_name"
-      />
-      <TranslatableInput
-        v-model="form.passive_description"
-        :locales="locales.locales"
-        :label="t('heroes.fields.passiveDescription')"
-        type="wysiwyg"
-        :icons="iconList"
-        :rich-labels="editorLabels"
-        :error="errors.passive_description"
-      />
+      <div class="form-row form-row--wide-left">
+        <TranslatableInput
+          v-model="form.passive_description"
+          :locales="locales.locales"
+          :label="t('heroes.fields.passiveDescription')"
+          type="wysiwyg"
+          :icons="iconList"
+          :rich-labels="editorLabels"
+          :error="errors.passive_description"
+        />
+        <TranslatableInput
+          v-model="form.passive_name"
+          :locales="locales.locales"
+          :label="t('heroes.fields.passiveName')"
+          :error="errors.passive_name"
+        />
+      </div>
     </fieldset>
 
     <!-- Habilidades activas (ordenables) -->
-    <fieldset class="hero-form__fieldset">
+    <fieldset class="form-fieldset">
       <legend>{{ t('heroes.sections.abilities') }}</legend>
       <!-- Combobox con búsqueda: al elegir, la habilidad se añade a la lista -->
       <SearchCombobox
@@ -632,8 +645,8 @@ async function submit() {
       </ol>
     </fieldset>
 
-    <!-- Trasfondo -->
-    <fieldset class="hero-form__fieldset">
+    <!-- Trasfondo: wysiwyg a doble columna (ancho completo) -->
+    <fieldset class="form-fieldset">
       <legend>{{ t('heroes.sections.lore') }}</legend>
       <TranslatableInput
         v-model="form.lore_text"

@@ -3,37 +3,8 @@
 // Cartas: el listado reutiliza los bloques genéricos (.card-art, .card-enter);
 // aquí solo el formulario por fieldsets y el detalle (single).
 
-// Formulario de carta (modal grande por fieldsets, como el form del viejo).
-.card-form {
-  &__fieldset {
-    border: 1px solid $border;
-    border-radius: $radius-md;
-    padding: $space-4;
-    margin: 0 0 $space-4;
-    display: flex;
-    flex-direction: column;
-    gap: $space-3;
-
-    legend {
-      padding: 0 $space-2;
-      font-size: $fs-14;
-      font-weight: $k-fw-bold;
-      color: $text-2;
-    }
-  }
-
-  &__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: $space-3;
-  }
-
-  &__checks {
-    display: flex;
-    gap: $space-4;
-    flex-wrap: wrap;
-  }
-}
+// El formulario de carta usa los grupos y filas del sistema compartido del
+// motor (.form-fieldset + .form-row): sin estilos propios.
 
 // Detalle de carta (single).
 .card-single {

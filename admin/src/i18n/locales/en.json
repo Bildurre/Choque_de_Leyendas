@@ -161,6 +161,13 @@
     "sections": {
       "details": "Details",
       "collection": "Collection"
+    },
+    "form": {
+      "sheet": "Details",
+      "content": "Content",
+      "presentation": "Presentation",
+      "settings": "Settings",
+      "seo": "SEO"
     }
   },
   "login": {
@@ -467,6 +474,10 @@
       "appearance": "Appearance",
       "indexBackgrounds": "Backgrounds",
       "footer": "Footer"
+    },
+    "form": {
+      "accent": "Accent",
+      "typography": "Typography"
     },
     "indexBackgrounds": {
       "hint": "Background image for the public site tools and error page (empty = no background).",

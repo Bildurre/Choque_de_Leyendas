@@ -193,57 +193,66 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('heroAbilities.fields.name')"
-      required
-      :error="errors.name"
-    />
-
-    <CostInput
-      v-model="form.cost"
-      :label="t('heroAbilities.fields.cost')"
-      :max="5"
-      :error="errors.cost"
-      :remove-label="t('heroAbilities.fields.removeDie')"
-      :die-labels="{
-        red: t('common.dice.red'),
-        green: t('common.dice.green'),
-        blue: t('common.dice.blue'),
-      }"
-    />
+    <!-- Grupos del sistema compartido: la ficha (nombre + coste en fila,
+         descripción wysiwyg a doble columna) y el ataque. -->
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.sheet') }}</legend>
+      <div class="form-row">
+        <TranslatableInput
+          v-model="form.name"
+          :locales="locales.locales"
+          :label="t('heroAbilities.fields.name')"
+          required
+          :error="errors.name"
+        />
+        <CostInput
+          v-model="form.cost"
+          :label="t('heroAbilities.fields.cost')"
+          :max="5"
+          :error="errors.cost"
+          :remove-label="t('heroAbilities.fields.removeDie')"
+          :die-labels="{
+            red: t('common.dice.red'),
+            green: t('common.dice.green'),
+            blue: t('common.dice.blue'),
+          }"
+        />
+      </div>
+      <TranslatableInput
+        v-model="form.description"
+        :locales="locales.locales"
+        :label="t('heroAbilities.fields.description')"
+        type="wysiwyg"
+        :icons="iconList"
+        :rich-labels="editorLabels"
+        :error="errors.description"
+      />
+    </fieldset>
 
     <!-- Metadatos de ataque en orden canónico: rango → tipo → subtipo -->
-    <BaseSelect
-      v-model="form.attack_range_id"
-      :label="t('heroAbilities.fields.attackRange')"
-      :options="attackRangeOptions"
-      :error="errors.attack_range_id"
-    />
-    <BaseSelect
-      v-model="form.attack_type"
-      :label="t('heroAbilities.fields.attackType')"
-      :options="attackTypeOptions"
-      :error="errors.attack_type"
-    />
-    <BaseSelect
-      v-model="form.attack_subtype_id"
-      :label="t('heroAbilities.fields.attackSubtype')"
-      :options="attackSubtypeOptions"
-      :error="errors.attack_subtype_id"
-    />
-
-    <BaseCheckbox v-model="form.area" :label="t('heroAbilities.fields.area')" />
-
-    <TranslatableInput
-      v-model="form.description"
-      :locales="locales.locales"
-      :label="t('heroAbilities.fields.description')"
-      type="wysiwyg"
-      :icons="iconList"
-      :rich-labels="editorLabels"
-      :error="errors.description"
-    />
+    <fieldset class="form-fieldset">
+      <legend>{{ t('cards.sections.attack') }}</legend>
+      <div class="form-row form-row--3">
+        <BaseSelect
+          v-model="form.attack_range_id"
+          :label="t('heroAbilities.fields.attackRange')"
+          :options="attackRangeOptions"
+          :error="errors.attack_range_id"
+        />
+        <BaseSelect
+          v-model="form.attack_type"
+          :label="t('heroAbilities.fields.attackType')"
+          :options="attackTypeOptions"
+          :error="errors.attack_type"
+        />
+        <BaseSelect
+          v-model="form.attack_subtype_id"
+          :label="t('heroAbilities.fields.attackSubtype')"
+          :options="attackSubtypeOptions"
+          :error="errors.attack_subtype_id"
+        />
+      </div>
+      <BaseCheckbox v-model="form.area" :label="t('heroAbilities.fields.area')" />
+    </fieldset>
   </EditModal>
 </template>

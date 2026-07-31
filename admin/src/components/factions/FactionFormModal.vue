@@ -167,43 +167,54 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('factions.fields.name')"
-      required
-      :error="errors.name"
-    />
-    <TranslatableInput
-      v-model="form.lore_text"
-      :locales="locales.locales"
-      :label="t('factions.fields.loreText')"
-      type="wysiwyg"
-      :icons="iconList"
-      :rich-labels="editorLabels"
-    />
-    <TranslatableInput
-      v-model="form.epic_quote"
-      :locales="locales.locales"
-      :label="t('factions.fields.epicQuote')"
-      type="wysiwyg"
-      :icons="iconList"
-      :rich-labels="editorLabels"
-    />
+    <!-- Grupos del sistema compartido: la ficha (nombre + wysiwyg a doble
+         columna) y la presentación (fila de imagen: input a todo el alto a
+         la izquierda; color y publicación apilados a la derecha). -->
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.sheet') }}</legend>
+      <TranslatableInput
+        v-model="form.name"
+        :locales="locales.locales"
+        :label="t('factions.fields.name')"
+        required
+        :error="errors.name"
+      />
+      <TranslatableInput
+        v-model="form.lore_text"
+        :locales="locales.locales"
+        :label="t('factions.fields.loreText')"
+        type="wysiwyg"
+        :icons="iconList"
+        :rich-labels="editorLabels"
+      />
+      <TranslatableInput
+        v-model="form.epic_quote"
+        :locales="locales.locales"
+        :label="t('factions.fields.epicQuote')"
+        type="wysiwyg"
+        :icons="iconList"
+        :rich-labels="editorLabels"
+      />
+    </fieldset>
 
-    <PaletteColorPicker v-model="form.color" :label="t('factions.fields.color')" />
-
-    <ImageUpload
-      v-model="image"
-      :current-url="currentImage"
-      :label="t('factions.fields.image')"
-      :drag-text="t('common.imageDrag')"
-      :hint-text="t('common.imageHint')"
-      :too-large-text="t('common.fileTooLarge')"
-      :invalid-type-text="t('common.fileType')"
-      @remove="onRemoveImage"
-    />
-
-    <BaseCheckbox v-model="form.is_published" :label="t('factions.fields.published')" />
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.presentation') }}</legend>
+      <div class="form-row form-row--media">
+        <ImageUpload
+          v-model="image"
+          :current-url="currentImage"
+          :label="t('factions.fields.image')"
+          :drag-text="t('common.imageDrag')"
+          :hint-text="t('common.imageHint')"
+          :too-large-text="t('common.fileTooLarge')"
+          :invalid-type-text="t('common.fileType')"
+          @remove="onRemoveImage"
+        />
+        <div class="form-row__stack">
+          <PaletteColorPicker v-model="form.color" :label="t('factions.fields.color')" />
+          <BaseCheckbox v-model="form.is_published" :label="t('factions.fields.published')" />
+        </div>
+      </div>
+    </fieldset>
   </EditModal>
 </template>

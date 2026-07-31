@@ -129,28 +129,34 @@ async function save() {
     @update:model-value="(v) => emit('update:modelValue', v)"
     @submit="save"
   >
-    <BaseInput v-model="name" :label="t('users.fields.name')" required :error="errors.name" />
-    <BaseInput
-      v-model="email"
-      type="email"
-      :label="t('users.fields.email')"
-      required
-      :error="errors.email"
-    />
-    <BaseInput
-      v-model="password"
-      :type="passwordFieldType"
-      :label="user ? t('users.fields.passwordOptional') : t('users.fields.password')"
-      :required="!user"
-      :error="errors.password"
-    />
-    <BaseInput
-      v-model="passwordConfirm"
-      :type="passwordFieldType"
-      :label="t('users.fields.passwordConfirm')"
-      :required="!user"
-      :error="errors.password_confirm"
-    />
+    <!-- Filas del sistema compartido (.form-row): identidad y contraseñas
+         en columnas mientras quepan (en un modal angosto apilan). -->
+    <div class="form-row">
+      <BaseInput v-model="name" :label="t('users.fields.name')" required :error="errors.name" />
+      <BaseInput
+        v-model="email"
+        type="email"
+        :label="t('users.fields.email')"
+        required
+        :error="errors.email"
+      />
+    </div>
+    <div class="form-row">
+      <BaseInput
+        v-model="password"
+        :type="passwordFieldType"
+        :label="user ? t('users.fields.passwordOptional') : t('users.fields.password')"
+        :required="!user"
+        :error="errors.password"
+      />
+      <BaseInput
+        v-model="passwordConfirm"
+        :type="passwordFieldType"
+        :label="t('users.fields.passwordConfirm')"
+        :required="!user"
+        :error="errors.password_confirm"
+      />
+    </div>
     <BaseButton variant="text" class="user-form__generate" @click="generatePassword">
       <template #icon><Wand2 :size="14" /></template>
       {{ t('users.actions.generatePassword') }}

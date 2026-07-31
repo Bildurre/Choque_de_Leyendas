@@ -415,17 +415,20 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <!-- Básicos -->
-    <fieldset class="card-form__fieldset">
+    <!-- Ficha: identidad y clasificación de la carta, en filas del sistema
+         compartido (.form-fieldset + .form-row). Los campos condicionales
+         (subtipo, equipo, manos) condicionan la CLASE de su fila para no
+         dejar celdas huérfanas cuando su compañero desaparece. -->
+    <fieldset class="form-fieldset">
       <legend>{{ t('cards.sections.basic') }}</legend>
-      <TranslatableInput
-        v-model="form.name"
-        :locales="locales.locales"
-        :label="t('cards.fields.name')"
-        required
-        :error="errors.name"
-      />
-      <div class="card-form__grid">
+      <div class="form-row">
+        <TranslatableInput
+          v-model="form.name"
+          :locales="locales.locales"
+          :label="t('cards.fields.name')"
+          required
+          :error="errors.name"
+        />
         <BaseSelect
           v-model="form.faction_id"
           :label="t('cards.fields.faction')"
@@ -434,24 +437,10 @@ async function submit() {
           required
           :error="errors.faction_id"
         />
-        <CostInput
-          v-model="form.cost"
-          :label="t('cards.fields.cost')"
-          :remove-label="t('cards.fields.removeDie')"
-          :die-labels="{
-            red: t('common.dice.red'),
-            green: t('common.dice.green'),
-            blue: t('common.dice.blue'),
-          }"
-          :error="errors.cost"
-        />
       </div>
-      <div class="card-form__checks">
-        <BaseCheckbox v-model="form.is_published" :label="t('cards.fields.published')" />
-        <BaseCheckbox v-model="form.is_unique" :label="t('cards.fields.isUnique')" />
-      </div>
-
-      <div class="card-form__grid">
+      <!-- Sin subtipo (el tipo elegido no los admite) el tipo va solo, a
+           ancho completo: sin fila con celda huérfana. -->
+      <div :class="{ 'form-row': allowsSubtypes }">
         <BaseSelect
           v-model="form.card_type_id"
           :label="t('cards.fields.type')"
@@ -468,32 +457,46 @@ async function submit() {
           :options="cardSubtypeOptions"
           :error="errors.card_subtype_id"
         />
-        <!-- Equipo (tipo → subtipo) + manos: solo si el tipo es equipamiento -->
-        <template v-if="isEquipment">
-          <BaseSelect
-            v-model="form.equipment_type_id"
-            :label="t('cards.fields.equipmentType')"
-            :options="equipmentTypeOptions"
-            required
-            :error="errors.equipment_type_id"
-          />
-          <BaseSelect
-            v-model="form.equipment_subtype_id"
-            :label="t('cards.fields.equipmentSubtype')"
-            :options="equipmentSubtypeOptions"
-            required
-            :error="errors.equipment_subtype_id"
-          />
-          <!-- Manos: solo tipos de equipo que las llevan (armas) -->
-          <BaseSelect
-            v-if="handsApply"
-            v-model="form.hands"
-            :label="t('cards.fields.hands')"
-            :options="handsOptions"
-            required
-            :error="errors.hands"
-          />
-        </template>
+      </div>
+      <!-- Equipo (tipo → subtipo) + manos: solo si el tipo es equipamiento.
+           Con manos (armas) son tres campos pequeños: fila de 3. -->
+      <div v-if="isEquipment" :class="handsApply ? 'form-row form-row--3' : 'form-row'">
+        <BaseSelect
+          v-model="form.equipment_type_id"
+          :label="t('cards.fields.equipmentType')"
+          :options="equipmentTypeOptions"
+          required
+          :error="errors.equipment_type_id"
+        />
+        <BaseSelect
+          v-model="form.equipment_subtype_id"
+          :label="t('cards.fields.equipmentSubtype')"
+          :options="equipmentSubtypeOptions"
+          required
+          :error="errors.equipment_subtype_id"
+        />
+        <!-- Manos: solo tipos de equipo que las llevan (armas) -->
+        <BaseSelect
+          v-if="handsApply"
+          v-model="form.hands"
+          :label="t('cards.fields.hands')"
+          :options="handsOptions"
+          required
+          :error="errors.hands"
+        />
+      </div>
+      <div class="form-row">
+        <CostInput
+          v-model="form.cost"
+          :label="t('cards.fields.cost')"
+          :remove-label="t('cards.fields.removeDie')"
+          :die-labels="{
+            red: t('common.dice.red'),
+            green: t('common.dice.green'),
+            blue: t('common.dice.blue'),
+          }"
+          :error="errors.cost"
+        />
         <!-- Combobox con búsqueda: nombre — coste en cada opción -->
         <SearchCombobox
           v-model="form.hero_ability_id"
@@ -512,8 +515,12 @@ async function submit() {
           </template>
         </SearchCombobox>
       </div>
+    </fieldset>
 
-      <div class="card-form__grid">
+    <!-- Ataque: metadatos en orden canónico rango → tipo → subtipo -->
+    <fieldset class="form-fieldset">
+      <legend>{{ t('cards.sections.attack') }}</legend>
+      <div class="form-row form-row--3">
         <BaseSelect
           v-model="form.attack_range_id"
           :label="t('cards.fields.attackRange')"
@@ -534,21 +541,11 @@ async function submit() {
         />
       </div>
       <BaseCheckbox v-model="form.area" :label="t('cards.fields.area')" />
-
-      <ImageUpload
-        v-model="image"
-        :current-url="currentImage"
-        :label="t('cards.fields.image')"
-        :drag-text="t('common.imageDrag')"
-        :hint-text="t('common.imageHint')"
-        :too-large-text="t('common.fileTooLarge')"
-        :invalid-type-text="t('common.fileType')"
-        @remove="onRemoveImage"
-      />
     </fieldset>
 
-    <!-- Efectos: la restricción PRIMERO (así se pinta en la carta) -->
-    <fieldset class="card-form__fieldset">
+    <!-- Efectos: la restricción PRIMERO (así se pinta en la carta); los
+         wysiwyg van a doble columna (ancho completo). -->
+    <fieldset class="form-fieldset">
       <legend>{{ t('cards.sections.effects') }}</legend>
       <TranslatableInput
         v-model="form.restriction"
@@ -571,7 +568,7 @@ async function submit() {
     </fieldset>
 
     <!-- Trasfondo -->
-    <fieldset class="card-form__fieldset">
+    <fieldset class="form-fieldset">
       <legend>{{ t('cards.sections.lore') }}</legend>
       <TranslatableInput
         v-model="form.lore_text"
@@ -591,6 +588,28 @@ async function submit() {
         :rich-labels="editorLabels"
         :error="errors.epic_quote"
       />
+    </fieldset>
+
+    <!-- Presentación: fila de imagen (el input a todo el alto a la
+         izquierda; los interruptores de publicación apilados a la derecha) -->
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.presentation') }}</legend>
+      <div class="form-row form-row--media">
+        <ImageUpload
+          v-model="image"
+          :current-url="currentImage"
+          :label="t('cards.fields.image')"
+          :drag-text="t('common.imageDrag')"
+          :hint-text="t('common.imageHint')"
+          :too-large-text="t('common.fileTooLarge')"
+          :invalid-type-text="t('common.fileType')"
+          @remove="onRemoveImage"
+        />
+        <div class="form-row__stack">
+          <BaseCheckbox v-model="form.is_published" :label="t('cards.fields.published')" />
+          <BaseCheckbox v-model="form.is_unique" :label="t('cards.fields.isUnique')" />
+        </div>
+      </div>
     </fieldset>
   </EditModal>
 </template>

@@ -144,22 +144,26 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('cardTypes.fields.name')"
-      required
-      :error="errors.name"
-    />
+    <!-- Filas del sistema compartido: nombre + superclase y los dos flags -->
+    <div class="form-row">
+      <TranslatableInput
+        v-model="form.name"
+        :locales="locales.locales"
+        :label="t('cardTypes.fields.name')"
+        required
+        :error="errors.name"
+      />
+      <BaseSelect
+        v-model="form.hero_superclass_id"
+        :options="superclassOptions"
+        :label="t('cardTypes.fields.heroSuperclass')"
+        :error="errors.hero_superclass_id"
+      />
+    </div>
 
-    <BaseSelect
-      v-model="form.hero_superclass_id"
-      :options="superclassOptions"
-      :label="t('cardTypes.fields.heroSuperclass')"
-      :error="errors.hero_superclass_id"
-    />
-
-    <BaseCheckbox v-model="form.allows_subtypes" :label="t('cardTypes.fields.allowsSubtypes')" />
-    <BaseCheckbox v-model="form.is_equipment" :label="t('cardTypes.fields.isEquipment')" />
+    <div class="form-row">
+      <BaseCheckbox v-model="form.allows_subtypes" :label="t('cardTypes.fields.allowsSubtypes')" />
+      <BaseCheckbox v-model="form.is_equipment" :label="t('cardTypes.fields.isEquipment')" />
+    </div>
   </EditModal>
 </template>

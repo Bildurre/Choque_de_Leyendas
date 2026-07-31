@@ -127,21 +127,23 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('equipmentSubtypes.fields.name')"
-      required
-      :error="errors.name"
-    />
-
-    <BaseSelect
-      v-model="form.equipment_type_id"
-      :options="typeOptions"
-      :label="t('equipmentSubtypes.fields.type')"
-      :placeholder="t('equipmentSubtypes.selectType')"
-      required
-      :error="errors.equipment_type_id"
-    />
+    <!-- Fila del sistema compartido: nombre y tipo de equipo en columnas -->
+    <div class="form-row">
+      <TranslatableInput
+        v-model="form.name"
+        :locales="locales.locales"
+        :label="t('equipmentSubtypes.fields.name')"
+        required
+        :error="errors.name"
+      />
+      <BaseSelect
+        v-model="form.equipment_type_id"
+        :options="typeOptions"
+        :label="t('equipmentSubtypes.fields.type')"
+        :placeholder="t('equipmentSubtypes.selectType')"
+        required
+        :error="errors.equipment_type_id"
+      />
+    </div>
   </EditModal>
 </template>

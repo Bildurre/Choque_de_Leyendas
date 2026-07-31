@@ -156,63 +156,74 @@ async function submit() {
     @update:model-value="(v: boolean) => emit('update:modelValue', v)"
     @submit="submit"
   >
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('gameModes.fields.name')"
-      required
-      :error="errors.name"
-    />
+    <!-- Ficha: nombre y descripción (textarea a doble columna, ancho
+         completo) en un grupo del sistema compartido. -->
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.sheet') }}</legend>
+      <TranslatableInput
+        v-model="form.name"
+        :locales="locales.locales"
+        :label="t('gameModes.fields.name')"
+        required
+        :error="errors.name"
+      />
+      <TranslatableInput
+        v-model="form.description"
+        :locales="locales.locales"
+        :label="t('gameModes.fields.description')"
+        type="textarea"
+        :rows="4"
+        :error="errors.description"
+      />
+    </fieldset>
 
-    <TranslatableInput
-      v-model="form.description"
-      :locales="locales.locales"
-      :label="t('gameModes.fields.description')"
-      type="textarea"
-      :rows="4"
-      :error="errors.description"
-    />
+    <!-- Configuración de mazos del modo (antes entidad aparte, fusionada):
+         los cuatro enteros en filas de dos columnas fijas. -->
+    <fieldset class="form-fieldset">
+      <legend>{{ t('gameModes.sections.config') }}</legend>
+      <div class="form-row">
+        <NumericInput
+          v-model="form.min_cards"
+          :label="t('gameModes.fields.minCards')"
+          :min="1"
+          :max="200"
+          :error="errors.min_cards"
+        />
+        <NumericInput
+          v-model="form.max_cards"
+          :label="t('gameModes.fields.maxCards')"
+          :min="1"
+          :max="200"
+          :error="errors.max_cards"
+        />
+      </div>
+      <div class="form-row">
+        <NumericInput
+          v-model="form.max_copies_per_card"
+          :label="t('gameModes.fields.maxCopiesPerCard')"
+          :min="1"
+          :max="20"
+          :error="errors.max_copies_per_card"
+        />
+        <NumericInput
+          v-model="form.required_heroes"
+          :label="t('gameModes.fields.requiredHeroes')"
+          :min="0"
+          :max="20"
+          :hint="t('gameModes.hints.requiredHeroes')"
+          :error="errors.required_heroes"
+        />
+      </div>
 
-    <!-- Configuración de mazos del modo (antes entidad aparte, fusionada) -->
-    <h3 class="game-modes__form-section">{{ t('gameModes.sections.config') }}</h3>
-    <div class="game-modes__config-grid">
-      <NumericInput
-        v-model="form.min_cards"
-        :label="t('gameModes.fields.minCards')"
-        :min="1"
-        :max="200"
-        :error="errors.min_cards"
-      />
-      <NumericInput
-        v-model="form.max_cards"
-        :label="t('gameModes.fields.maxCards')"
-        :min="1"
-        :max="200"
-        :error="errors.max_cards"
-      />
-      <NumericInput
-        v-model="form.max_copies_per_card"
-        :label="t('gameModes.fields.maxCopiesPerCard')"
-        :min="1"
-        :max="20"
-        :error="errors.max_copies_per_card"
-      />
-      <NumericInput
-        v-model="form.required_heroes"
-        :label="t('gameModes.fields.requiredHeroes')"
-        :min="0"
-        :max="20"
-        :hint="t('gameModes.hints.requiredHeroes')"
-        :error="errors.required_heroes"
-      />
-    </div>
-
-    <BaseCheckbox
-      v-model="form.is_default"
-      :label="t('gameModes.fields.isDefault')"
-      :disabled="isCurrentDefault"
-    />
-    <p class="game-modes__default-hint">{{ t('gameModes.hints.isDefault') }}</p>
-    <p v-if="errors.is_default" class="game-modes__default-error">{{ errors.is_default }}</p>
+      <div>
+        <BaseCheckbox
+          v-model="form.is_default"
+          :label="t('gameModes.fields.isDefault')"
+          :disabled="isCurrentDefault"
+        />
+        <p class="game-modes__default-hint">{{ t('gameModes.hints.isDefault') }}</p>
+        <p v-if="errors.is_default" class="game-modes__default-error">{{ errors.is_default }}</p>
+      </div>
+    </fieldset>
   </EditModal>
 </template>

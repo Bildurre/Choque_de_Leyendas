@@ -43,24 +43,12 @@
     }
   }
 
-  // Logo + favicon del modal de identidad, a dos columnas mientras quepan.
-  &__uploads {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
-    gap: $space-4;
-  }
-
+  // Las rejillas de los modales (logo + favicon, fuentes, fondos) son ya
+  // filas del sistema compartido del motor (.form-row y variantes).
   &__hint {
     margin: 0;
     color: $text-3;
     font-size: $fs-13;
-  }
-
-  // Fondos de los índices (modal): los 8 uploads en rejilla fluida.
-  &__index-bgs {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: $space-4;
   }
 
   // Candidatos del modo aleatorio: etiquetas compactas en fila con wrap
@@ -119,31 +107,15 @@
     justify-items: start;
   }
 
-  // Selectores de fuente del modal de apariencia, en rejilla fluida.
-  &__fonts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
-    gap: $space-4;
-  }
-
   &__font-preview {
     margin: $space-2 0 0;
     color: $text-2;
     font-size: $fs-16;
   }
 
-  // Subida de fuentes propias.
-  &__custom-fonts {
-    display: grid;
-    gap: $space-2;
-    border-top: 1px dashed $border;
-    padding-top: $space-4;
-  }
-
-  &__font-upload {
-    display: grid;
-    gap: $space-3;
-
-    .edc-button { justify-self: start; }
+  // Botón de subida de fuentes propias: alineado al inicio, no a todo lo
+  // ancho (es celda directa de la rejilla del fieldset).
+  &__upload-font {
+    justify-self: start;
   }
 }

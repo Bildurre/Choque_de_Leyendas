@@ -241,70 +241,87 @@ async function submit() {
       <li v-for="(err, i) in publishErrors" :key="i">{{ t(err.key, err.params ?? {}) }}</li>
     </ul>
 
-    <TranslatableInput
-      v-model="form.name"
-      :locales="locales.locales"
-      :label="t('factionDecks.fields.name')"
-      required
-      :error="errors.name"
-    />
+    <!-- Grupos del sistema compartido: ficha (nombre + modo en fila,
+         facciones a ancho completo), contenido (wysiwyg a doble columna) y
+         presentación (fila de imagen con la publicación al lado). -->
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.sheet') }}</legend>
+      <div class="form-row">
+        <TranslatableInput
+          v-model="form.name"
+          :locales="locales.locales"
+          :label="t('factionDecks.fields.name')"
+          required
+          :error="errors.name"
+        />
+        <BaseSelect
+          v-model="form.game_mode_id"
+          :label="t('factionDecks.fields.gameMode')"
+          :options="gameModeOptions"
+          :placeholder="t('factionDecks.fields.selectGameMode')"
+          required
+          :error="errors.game_mode_id"
+        />
+      </div>
 
-    <BaseSelect
-      v-model="form.game_mode_id"
-      :label="t('factionDecks.fields.gameMode')"
-      :options="gameModeOptions"
-      :placeholder="t('factionDecks.fields.selectGameMode')"
-      required
-      :error="errors.game_mode_id"
-    />
+      <!-- Facciones del mazo: MULTISELECT (varias a la vez), como los filtros -->
+      <MultiSelect
+        v-model="form.faction_ids"
+        :label="t('factionDecks.fields.factions')"
+        :options="factionOptions"
+        :placeholder="t('factionDecks.fields.selectFactions')"
+        :error="errors.faction_ids"
+      />
+    </fieldset>
 
-    <!-- Facciones del mazo: MULTISELECT (varias a la vez), como los filtros -->
-    <MultiSelect
-      v-model="form.faction_ids"
-      :label="t('factionDecks.fields.factions')"
-      :options="factionOptions"
-      :placeholder="t('factionDecks.fields.selectFactions')"
-      :error="errors.faction_ids"
-    />
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.content') }}</legend>
+      <TranslatableInput
+        v-model="form.description"
+        :locales="locales.locales"
+        :label="t('factionDecks.fields.description')"
+        type="wysiwyg"
+        :icons="iconList"
+        :rich-labels="editorLabels"
+        :error="errors.description"
+      />
+      <TranslatableInput
+        v-model="form.epic_quote"
+        :locales="locales.locales"
+        :label="t('factionDecks.fields.epicQuote')"
+        type="wysiwyg"
+        :icons="iconList"
+        :rich-labels="editorLabels"
+        :error="errors.epic_quote"
+      />
+    </fieldset>
 
-    <TranslatableInput
-      v-model="form.description"
-      :locales="locales.locales"
-      :label="t('factionDecks.fields.description')"
-      type="wysiwyg"
-      :icons="iconList"
-      :rich-labels="editorLabels"
-      :error="errors.description"
-    />
-    <TranslatableInput
-      v-model="form.epic_quote"
-      :locales="locales.locales"
-      :label="t('factionDecks.fields.epicQuote')"
-      type="wysiwyg"
-      :icons="iconList"
-      :rich-labels="editorLabels"
-      :error="errors.epic_quote"
-    />
-
-    <ImageUpload
-      v-model="image"
-      :current-url="currentImage"
-      :label="t('factionDecks.fields.image')"
-      :drag-text="t('common.imageDrag')"
-      :hint-text="t('common.imageHint')"
-      :too-large-text="t('common.fileTooLarge')"
-      :invalid-type-text="t('common.fileType')"
-      @remove="onRemoveImage"
-    />
-
-    <!-- Publicado solo en EDICIÓN: un mazo recién creado no puede cumplir
-         los límites del modo (sus cartas y héroes se añaden después, en el
-         editor del mazo) — ofrecer el check aquí era un callejón sin salida. -->
-    <BaseCheckbox
-      v-if="mode === 'edit'"
-      v-model="form.is_published"
-      :label="t('factionDecks.fields.published')"
-    />
-    <p v-else class="faction-decks__draft-hint">{{ t('factionDecks.fields.draftHint') }}</p>
+    <fieldset class="form-fieldset">
+      <legend>{{ t('common.form.presentation') }}</legend>
+      <div class="form-row form-row--media">
+        <ImageUpload
+          v-model="image"
+          :current-url="currentImage"
+          :label="t('factionDecks.fields.image')"
+          :drag-text="t('common.imageDrag')"
+          :hint-text="t('common.imageHint')"
+          :too-large-text="t('common.fileTooLarge')"
+          :invalid-type-text="t('common.fileType')"
+          @remove="onRemoveImage"
+        />
+        <div class="form-row__stack">
+          <!-- Publicado solo en EDICIÓN: un mazo recién creado no puede
+               cumplir los límites del modo (sus cartas y héroes se añaden
+               después, en el editor del mazo) — ofrecer el check aquí era un
+               callejón sin salida. -->
+          <BaseCheckbox
+            v-if="mode === 'edit'"
+            v-model="form.is_published"
+            :label="t('factionDecks.fields.published')"
+          />
+          <p v-else class="faction-decks__draft-hint">{{ t('factionDecks.fields.draftHint') }}</p>
+        </div>
+      </div>
+    </fieldset>
   </EditModal>
 </template>

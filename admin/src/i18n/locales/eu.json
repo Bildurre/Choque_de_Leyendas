@@ -161,6 +161,13 @@
     "sections": {
       "details": "Xehetasunak",
       "collection": "Bilduma"
+    },
+    "form": {
+      "sheet": "Fitxa",
+      "content": "Edukia",
+      "presentation": "Aurkezpena",
+      "settings": "Ezarpenak",
+      "seo": "SEO"
     }
   },
   "login": {
@@ -467,6 +474,10 @@
       "appearance": "Itxura",
       "indexBackgrounds": "Atzeko planoak",
       "footer": "Orri-oina"
+    },
+    "form": {
+      "accent": "Azentua",
+      "typography": "Tipografia"
     },
     "indexBackgrounds": {
       "hint": "Web publikoko tresnen eta errore-orriaren atzeko planoko irudia (hutsik = atzeko planorik ez).",

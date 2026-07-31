@@ -19,12 +19,6 @@
     color: $text-2;
   }
 
-  // Campos del modal de edición: dos columnas mientras quepan (auto-fit);
-  // en modales estrechos caen solos a una columna.
-  &__modal-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr));
-    gap: $space-4;
-    align-items: start;
-  }
+  // Los campos del modal de edición usan la fila del sistema compartido del
+  // motor (.form-row): dos columnas fijas que apilan en modal angosto.
 }
