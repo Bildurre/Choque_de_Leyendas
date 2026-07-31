@@ -15,9 +15,9 @@ import { useLocalesStore } from '@/stores/locales'
 // cáscara: canónica + SEO + IndexHeader) para que también lo monte el bloque
 // «Índice de entidad» del CRM: patrón unificado de los índices (IndexToolbar
 // del motor: búsqueda multi-campo con debounce y toggles de orden) y los
-// filtros de modo de juego y facción en CatalogFilters (en ancho, panel
-// plegable bajo la búsqueda; en estrecho, la barra derecha off-canvas del
-// motor). Ambos son MULTISELECT (opciones de GET /api/faction-decks/filters;
+// filtros de modo de juego y facción en CatalogFilters (chips encima de la
+// búsqueda; selects siempre en el drawer derecho superpuesto del motor,
+// abierto por su asa). Ambos son MULTISELECT (opciones de GET /api/faction-decks/filters;
 // unión: la API filtra con whereIn y recibe `game_mode_id[]=` /
 // `faction_id[]=`, y en la URL viajan como listas separadas por comas).
 // Sin pestañas: salen SIEMPRE todos los mazos y cada tarjeta ya lleva el
@@ -88,12 +88,6 @@ function toSelect(options: FilterOption[]) {
 
 const modeSelect = computed(() => toSelect(modeOptions.value))
 const factionSelect = computed(() => toSelect(factionOptions.value))
-
-// Nº de filtros activos (badge del botón «Filtros» y visibilidad del
-// "Quitar filtros"; la búsqueda y el orden no cuentan).
-const activeFilters = computed(
-  () => [modeIds.value, factionIds.value].filter((values) => values.length > 0).length,
-)
 
 // --- Chips de selección (CatalogFilters) ---
 // Pares filtro+valor+label del estado vivo; el ORDEN cronológico global lo
@@ -187,15 +181,10 @@ watch(() => locales.current, loadFilters, { immediate: true })
 </script>
 
 <template>
-  <!-- Chips de las elegidas encima de la búsqueda; el botón «Filtros» a la
-       derecha del orden (misma fila); panel suelto debajo en ancho y barra
-       derecha off-canvas en estrecho. Aplican en vivo, multivalor -->
-  <CatalogFilters
-    :active-count="activeFilters"
-    :selections="selections"
-    @remove="removeSelection"
-    @clear="clearFilters"
-  >
+  <!-- Chips de las elegidas encima de la búsqueda; los selects, en el
+       drawer derecho superpuesto del motor (se abre con su asa, en todas
+       las anchuras). Aplican en vivo, multivalor -->
+  <CatalogFilters :selections="selections" @remove="removeSelection" @clear="clearFilters">
     <template #toolbar>
       <IndexToolbar
         v-model="search"

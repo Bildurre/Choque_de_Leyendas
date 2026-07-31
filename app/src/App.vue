@@ -49,14 +49,15 @@ onMounted(async () => {
        arriba. La barra derecha contextual es FIJA (fuera del flujo), de
        justo bajo la cabecera hasta abajo: cada vista registra sus filtros
        con useAppRightSidebar() y Teleport a #app-right-sidebar-target; se
-       abre/cierra con el asa anclada a la propia barra, y desplegada en
-       ancho contenido y pie le hacen hueco (padding-right sobre
-       .app-right-sidebar--docked, ver scss). -->
+       abre/cierra SOLO con el asa anclada a la propia barra. Con
+       `overlay-always` es drawer SUPERPUESTO en todas las anchuras (telón
+       incluido): nunca le roba ancho al contenido. -->
   <div v-if="!bare" class="site-main">
     <div class="site-content">
       <RouterView />
     </div>
     <AppRightSidebar
+      overlay-always
       :open-label="t('nav.filters')"
       :close-label="t('nav.closeFilters')"
       :fallback-title="t('nav.filters')"

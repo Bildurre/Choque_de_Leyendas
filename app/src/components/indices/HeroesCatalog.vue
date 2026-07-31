@@ -23,9 +23,9 @@ import { useLocalesStore } from '@/stores/locales'
 // «Índice de entidad» del CRM: rejilla de previews sobre GET /api/heroes con
 // el patrón unificado de los índices (IndexToolbar del motor: búsqueda
 // multi-campo con debounce y toggles de orden) y los filtros de
-// facción/superclase/clase/raza en CatalogFilters (en ancho, panel
-// plegable bajo la búsqueda; en estrecho, la barra derecha off-canvas del
-// motor). Opciones ya localizadas de GET /api/heroes/filters, aplican
+// facción/superclase/clase/raza en CatalogFilters (chips encima de la
+// búsqueda; selects siempre en el drawer derecho superpuesto del motor,
+// abierto por su asa). Opciones ya localizadas de GET /api/heroes/filters, aplican
 // en vivo y son MULTISELECT: cada filtro admite varios valores (unión; la
 // API filtra con whereIn y recibe `clave[]=`). Marcar superclases acota el
 // select de clases a las de CUALQUIERA de ellas (client-side con el
@@ -123,15 +123,6 @@ watch([superclassIds, classOptions], () => {
   )
   if (valid.length !== classIds.value.length) classIds.value = valid
 })
-
-// Nº de filtros activos (badge del botón «Filtros» y visibilidad del
-// "Quitar filtros"; la búsqueda y el orden no cuentan).
-const activeFilters = computed(
-  () =>
-    [factionIds.value, superclassIds.value, classIds.value, raceIds.value].filter(
-      (values) => values.length > 0,
-    ).length,
-)
 
 // --- Chips de selección (CatalogFilters) ---
 // Pares filtro+valor+label del estado vivo; el ORDEN cronológico global lo
@@ -258,15 +249,10 @@ watch(() => locales.current, loadFilters, { immediate: true })
 </script>
 
 <template>
-  <!-- Chips de las elegidas encima de la búsqueda; el botón «Filtros» a la
-       derecha del orden (misma fila); panel suelto debajo en ancho y barra
-       derecha off-canvas en estrecho. Aplican en vivo, multivalor -->
-  <CatalogFilters
-    :active-count="activeFilters"
-    :selections="selections"
-    @remove="removeSelection"
-    @clear="clearFilters"
-  >
+  <!-- Chips de las elegidas encima de la búsqueda; los selects, en el
+       drawer derecho superpuesto del motor (se abre con su asa, en todas
+       las anchuras). Aplican en vivo, multivalor -->
+  <CatalogFilters :selections="selections" @remove="removeSelection" @clear="clearFilters">
     <template #toolbar>
       <IndexToolbar
         v-model="search"
