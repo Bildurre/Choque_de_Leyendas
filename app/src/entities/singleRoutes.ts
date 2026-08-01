@@ -8,13 +8,21 @@ import { entitySections } from './registry'
 
 /** Ruta al índice de una sección: su PÁGINA del CRM (el slug de la página
  *  índice coincide con el segmento de la sección en cada locale, p. ej.
- *  /es/mazos — ya no hay ruta dedicada `entity-index`). */
-export function sectionIndexRoute(sectionKey: string, locale: string): RouteLocationRaw | null {
+ *  /es/mazos — ya no hay ruta dedicada `entity-index`). `query` (opcional)
+ *  precarga filtros del catálogo: las MISMAS claves de query string que
+ *  escribe useFiltersQuery (p. ej. { race: '3' } en héroes), así el enlace
+ *  aterriza en el índice ya filtrado, con su chip. */
+export function sectionIndexRoute(
+  sectionKey: string,
+  locale: string,
+  query?: Record<string, string>,
+): RouteLocationRaw | null {
   const section = entitySections.find((s) => s.key === sectionKey)
   if (!section) return null
   return {
     name: 'page',
     params: { locale, slug: section.paths[locale] ?? Object.values(section.paths)[0] },
+    ...(query ? { query } : {}),
   }
 }
 

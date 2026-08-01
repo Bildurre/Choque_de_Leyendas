@@ -30,11 +30,16 @@ class PublicHeroResource extends JsonResource
             'preview' => $this->previewUrl($locale, 'hero'),
             'faction' => PublicFactionItemResource::ref($this->faction, $locale),
             // Nombres de taxonomía con el género del héroe (HasGenderedName)
+            // + sus ids: el single enlaza raza/clase/superclase al índice de
+            // héroes FILTRADO (query params del catálogo público)
             'race' => $this->heroRace?->nameForGender($this->gender, $locale),
+            'race_id' => $this->heroRace?->id,
             // La clave (male|female) se localiza en el front
             'gender' => $this->gender,
             'class' => $this->heroClass?->nameForGender($this->gender, $locale),
+            'class_id' => $this->heroClass?->id,
             'superclass' => $this->heroClass?->heroSuperclass?->nameForGender($this->gender, $locale),
+            'superclass_id' => $this->heroClass?->heroSuperclass?->id,
             'attributes' => [
                 'agility' => (int) $this->agility,
                 'mental' => (int) $this->mental,

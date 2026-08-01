@@ -12,10 +12,12 @@ beforeEach(function () {
 
 it('muestra el héroe publicado con atributos, pasivas y habilidades', function () {
     $faction = publicFaction();
+    $race = publicHeroRace(['name' => ['es' => 'Humano', 'en' => 'Human']]);
+    $class = publicHeroClass();
     $hero = publicHero([
         'faction_id' => $faction->id,
-        'hero_race_id' => publicHeroRace(['name' => ['es' => 'Humano', 'en' => 'Human']])->id,
-        'hero_class_id' => publicHeroClass()->id,
+        'hero_race_id' => $race->id,
+        'hero_class_id' => $class->id,
     ]);
     $hero->setTranslations('passive_name', ['es' => 'Instinto', 'en' => 'Instinct']);
     $hero->setTranslations('passive_description', ['es' => 'Repite un dado.', 'en' => 'Reroll a die.']);
@@ -33,6 +35,10 @@ it('muestra el héroe publicado con atributos, pasivas y habilidades', function 
         ->and($data['gender'])->toBe('male')
         ->and($data['class'])->toBe('Guerrero')
         ->and($data['superclass'])->toBe('Luchador')
+        // Ids de la taxonomía: el single enlaza al índice filtrado con ellos
+        ->and($data['race_id'])->toBe($race->id)
+        ->and($data['class_id'])->toBe($class->id)
+        ->and($data['superclass_id'])->toBe($class->hero_superclass_id)
         ->and($data['class_passive'])->toBe(['name' => 'Guerrero', 'description' => 'Pasiva de clase'])
         ->and($data['passive'])->toBe(['name' => 'Instinto', 'description' => 'Repite un dado.'])
         ->and($data['faction'])->toMatchArray(['name' => 'Alianza', 'slug' => 'alianza', 'color' => '#336699'])

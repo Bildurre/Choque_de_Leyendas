@@ -35,11 +35,19 @@ it('muestra la carta publicada con coste parseado y campos según flags del tipo
     expect($data['name'])->toMatchArray(['es' => 'Espada corta', 'en' => 'Short sword'])
         ->and($data['slug'])->toMatchArray(['es' => 'espada-corta', 'en' => 'short-sword'])
         ->and($data['faction'])->toMatchArray(['name' => 'Alianza', 'slug' => 'alianza', 'color' => '#336699'])
-        ->and($data['type'])->toMatchArray(['name' => 'Equipo', 'allows_subtypes' => false, 'is_equipment' => true])
+        // Con el id del tipo: el single enlaza al índice filtrado con él
+        ->and($data['type'])->toMatchArray(['id' => $type->id, 'name' => 'Equipo', 'allows_subtypes' => false, 'is_equipment' => true])
         // El tipo no admite subtipos → subtype null; es equipo → hands presentes
         ->and($data['subtype'])->toBeNull()
-        // Tipado completo del equipo: tipo, subtipo y manos
-        ->and($data['equipment'])->toBe(['type' => 'Arma', 'subtype' => 'Espada', 'hands' => 2])
+        ->and($data['subtype_id'])->toBeNull()
+        // Tipado completo del equipo: tipo, subtipo y manos, con sus ids
+        ->and($data['equipment'])->toBe([
+            'type' => 'Arma',
+            'type_id' => $weapon->id,
+            'subtype' => 'Espada',
+            'subtype_id' => $sword->id,
+            'hands' => 2,
+        ])
         ->and($data['cost'])->toBe('RRG')
         ->and($data['cost_parsed'])->toBe([
             ['color' => 'red', 'letter' => 'R'],
@@ -56,6 +64,21 @@ it('muestra la carta publicada con coste parseado y campos según flags del tipo
         ])
         ->and($data['preview'])->toBeNull()
         ->and($data['lore_text'])->toBe('<p>Forjada en EdC.</p>');
+});
+
+it('expone los ids del ataque para los enlaces filtrados del single', function () {
+    $melee = publicAttackRange(); // 'Cuerpo a cuerpo' / 'Melee'
+    publicCard([
+        'attack_type' => 'physical',
+        'attack_range_id' => $melee->id,
+    ]);
+
+    $data = $this->getJson('/api/cards/espada-corta')->assertOk()->json('data');
+
+    expect($data['attack']['type'])->toBe('physical')
+        ->and($data['attack']['range'])->toBe('Cuerpo a cuerpo')
+        ->and($data['attack']['range_id'])->toBe($melee->id)
+        ->and($data['attack']['subtype_id'])->toBeNull();
 });
 
 it('localiza la ficha con ?locale', function () {
