@@ -24,11 +24,14 @@ const props = withDefaults(
   defineProps<{
     kind: 'faction' | 'deck'
     excludeId: number
-    subtitle: string
+    /** Título (h2) de la cabecera, como el bloque related del CRM. */
+    title?: string
+    /** Subtítulo (p) opcional bajo el título. */
+    subtitle?: string
     buttonLabel: string
     count?: number
   }>(),
-  { count: 4 },
+  { title: '', subtitle: '', count: 4 },
 )
 
 const locales = useLocalesStore()
@@ -65,12 +68,13 @@ watch([() => props.excludeId, () => locales.current], load, { immediate: true })
 <template>
   <BlockShell
     v-if="items.length"
-    :settings="{ align: 'left', width: 'wide' }"
+    :settings="{ align: 'justify', width: 'wide' }"
     class="block--related block--css-related"
   >
     <div class="block__related-header">
       <div class="block__related-titles">
-        <p class="block__subtitle">{{ subtitle }}</p>
+        <h2 v-if="title" class="block__title">{{ title }}</h2>
+        <p v-if="subtitle" class="block__subtitle">{{ subtitle }}</p>
       </div>
       <RouterLink
         v-if="indexRoute"

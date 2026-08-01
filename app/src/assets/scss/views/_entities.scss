@@ -74,6 +74,21 @@
     gap: $space-6;
   }
 
+  // Single migrado al lenguaje de bloques del CRM (blockHeader del
+  // registry): el cuerpo va a ANCHO COMPLETO y sin aire propio — cada
+  // sección de la ficha es un `section.block` que gestiona su anchura
+  // (block__inner) y su ritmo vertical (padding-block), como en PageView.
+  // Se declara además el contenedor `content` (en PageView lo pone
+  // .page-view) para que respondan las container queries de _blocks.scss
+  // y del ui-kit (tabs).
+  &__body--blocks {
+    max-width: none;
+    padding: 0;
+    display: block;
+    container-type: inline-size;
+    container-name: content;
+  }
+
   // La ficha: preview/carta + panel de datos, en dos columnas cuando cabe.
   &__layout {
     display: grid;

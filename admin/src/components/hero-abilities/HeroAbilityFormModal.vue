@@ -186,6 +186,7 @@ async function submit() {
 <template>
   <EditModal
     :model-value="modelValue"
+    size="wide"
     :title="title"
     :loading="saving"
     :submit-label="t('common.save')"

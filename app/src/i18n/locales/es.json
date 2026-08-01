@@ -330,7 +330,7 @@
       "noHeroes": "Esta facción no tiene héroes",
       "noCards": "Esta facción no tiene cartas",
       "noDecks": "Esta facción no tiene mazos",
-      "relatedSubtitle": "Explora más facciones del juego",
+      "relatedTitle": "Explora las facciones disponibles",
       "relatedButton": "Ver todas las facciones"
     },
     "deck": {

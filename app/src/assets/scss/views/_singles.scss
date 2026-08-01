@@ -5,10 +5,11 @@
 // pestañas y rejillas. Se montan dentro de .entity-single__body (banner y
 // fondo los pone EntityDetailView). Mobile-first.
 
-// Contenedores de cada single: apilan ficha, cita y relateds.
+// Contenedores de cada single: apilan ficha, cita y relateds. El de
+// FACCIÓN ya no está aquí: apila BLOQUES del CRM (cada `block` trae su
+// propio ritmo vertical por padding-block) y no necesita grid ni gap.
 .card-single,
 .hero-single,
-.faction-single,
 .deck-single {
   display: grid;
   gap: $space-6;
