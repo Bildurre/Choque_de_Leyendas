@@ -5,14 +5,18 @@ import { api } from '@/lib/api'
 import { useLocalesStore } from '@/stores/locales'
 
 // "Relateds" de los singles de carta y héroe: mismo componente BlockRelated
-// del motor (los enlaces salen del catalogRoutes provisto en main.ts), con
-// los datos resueltos aquí contra el catálogo público en modo random y
-// excluyendo la entidad actual — aleatorio por visita, patrón del viejo.
+// del motor — idéntico markup y ajustes que el bloque related del CRM
+// (título h2 + botón secundario al índice, justificado, ancho wide; los
+// enlaces salen del catalogRoutes provisto en main.ts) — con los datos
+// resueltos aquí contra el catálogo público en modo random y excluyendo la
+// entidad actual — ALEATORIO por visita, mismo criterio que el endpoint del
+// motor (inRandomOrder + exclude, patrón del viejo).
 const props = withDefaults(
   defineProps<{
     catalogKey: string
     excludeId: number
-    subtitle: string
+    /** Título (h2) de la cabecera, como el bloque related del CRM. */
+    title: string
     buttonLabel: string
     count?: number
   }>(),
@@ -40,7 +44,13 @@ watch([() => props.excludeId, () => locales.current], load, { immediate: true })
 <template>
   <BlockRelated
     v-if="items.length"
-    :settings="{ subtitle, with_button: true, button_label: buttonLabel, align: 'left' }"
+    :settings="{
+      title,
+      with_button: true,
+      button_label: buttonLabel,
+      align: 'justify',
+      width: 'wide',
+    }"
     :data="{ key: catalogKey, items }"
   />
 </template>

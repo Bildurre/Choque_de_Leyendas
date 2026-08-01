@@ -4,6 +4,7 @@ import { useI18n } from 'vue-i18n'
 import {
   BaseTabs,
   BlockQuote,
+  BlockShell,
   PreviewGrid,
   type CatalogItem,
   type PreviewGridItem,
@@ -16,14 +17,18 @@ import InfoBlock from '@/components/singles/InfoBlock.vue'
 import { applyOgMeta } from '@/entities/singleOg'
 import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 
-// Single de mazo (portado de public/faction-decks/show.blade.php del viejo):
-// cabecera con la tarjeta CSS del mazo + descripción, pestañas
-// info | héroes | cartas — info con la rejilla de estadísticas del viejo
-// (básica, coste de las cartas, distribución de dados con sus iconos, tipos
-// de carta, clases y superclases de héroe), cartas con su badge "xN" de
-// copias (los héroes no llevan copias: asignado = 1) —, cita épica y
-// relateds de mazos (tarjetas CSS). Lo monta EntityDetailView (banner,
-// fondo, head SEO). El botón de descarga de PDF del viejo no se porta: no
+// Single de mazo (portado de public/faction-decks/show.blade.php del viejo),
+// ya en el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
+// EntityDetailView, que pinta el header-bloque (título = nombre, tinte GRIS
+// por defecto — un mazo mezcla facciones — y volver dentro; sin añadir: los
+// mazos no son coleccionables) y el fondo/head SEO. Aquí cada sección es un
+// `block` a lo ancho: ficha con la tarjeta CSS del mazo + la rejilla de
+// info-blocks del viejo A LA DERECHA (básica, coste, dados, tipos, clases;
+// antes vivía en la pestaña «Información», ya retirada), pestañas héroes |
+// cartas (cartas con su badge "xN" de copias; los héroes no llevan copias:
+// asignado = 1), descripción/lore tras las pestañas, cita épica (bloque
+// quote del CRM, tinte gris) y relateds de mazos (tarjetas CSS, bloque
+// related del CRM). El botón de descarga de PDF del viejo no se porta: no
 // hay endpoint público equivalente (desviación).
 interface FactionRef {
   id: number
@@ -73,8 +78,8 @@ const props = defineProps<{ item: DeckPayload; locale: string }>()
 
 const { t } = useI18n()
 
-type Tab = 'info' | 'heroes' | 'cards'
-const tab = ref<Tab>('info')
+type Tab = 'heroes' | 'cards'
+const tab = ref<Tab>('heroes')
 
 const name = computed(
   () => props.item.name[props.locale] || Object.values(props.item.name)[0] || '',
@@ -104,9 +109,9 @@ const SYMBOLS: Array<{ key: 'R' | 'G' | 'B'; type: 'red' | 'green' | 'blue' }> =
 ]
 const symbols = computed(() => SYMBOLS.filter(({ key }) => props.item.stats.symbols[key] > 0))
 
-// Pestañas del BaseTabs del motor (mismo patrón que el single de facción).
+// Pestañas del BaseTabs del motor: héroes | cartas (la vieja pestaña de
+// información desapareció — sus info-blocks viven en la ficha superior).
 const tabs = computed<Array<{ key: Tab; label: string; count?: number }>>(() => [
-  { key: 'info', label: t('singles.deck.tabs.info') },
   { key: 'heroes', label: t('singles.deck.tabs.heroes'), count: props.item.stats.total_heroes },
   { key: 'cards', label: t('singles.deck.tabs.cards'), count: props.item.stats.total_cards },
 ])
@@ -142,11 +147,11 @@ const quoteHtml = computed(() => {
 })
 
 // og:* tras el head de EntityDetailView; al cambiar de mazo se vuelve a la
-// pestaña de información (patrón del viejo).
+// primera pestaña (héroes).
 watch(
   () => props.item,
   async () => {
-    tab.value = 'info'
+    tab.value = 'heroes'
     await nextTick()
     applyOgMeta({ image: props.item.image, type: 'article' })
   },
@@ -157,191 +162,207 @@ watch(
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="deck-single">
-    <!-- Cabecera: tarjeta CSS del mazo + descripción -->
-    <section class="deck-single__header">
-      <div class="deck-single__emblem">
-        <FactionDeckCard :deck="deckCardData" />
-      </div>
-      <div v-if="description" class="deck-single__lore rich-content" v-html="description" />
-    </section>
+    <!-- Ficha: tarjeta CSS del mazo a la izquierda + la rejilla de
+         info-blocks del viejo a la derecha (columnas fijas, cortes
+         explícitos en _singles.scss), al ancho wide de bloque -->
+    <BlockShell :settings="{ width: 'wide', align: 'left' }">
+      <div class="deck-single__layout">
+        <div class="deck-single__emblem">
+          <FactionDeckCard :deck="deckCardData" />
+        </div>
 
-    <!-- Pestañas info | héroes | cartas -->
-    <BaseTabs
-      class="deck-single__tabs"
-      :tabs="tabs"
-      :model-value="tab"
-      @update:model-value="setTab"
+        <div class="info-blocks-grid">
+          <InfoBlock :title="t('singles.deck.basicInfo')">
+            <dl class="info-list">
+              <dt>{{ t('singles.deck.name') }}</dt>
+              <dd>{{ name }}</dd>
+
+              <template v-if="item.factions.length">
+                <dt>{{ t('singles.deck.factions') }}</dt>
+                <dd>
+                  <template v-for="(faction, i) in item.factions" :key="faction.id">
+                    <RouterLink
+                      v-if="factionRoute(faction)"
+                      class="info-link"
+                      :to="factionRoute(faction)!"
+                    >
+                      {{ faction.name }}
+                    </RouterLink>
+                    <template v-else>{{ faction.name }}</template>
+                    <template v-if="i < item.factions.length - 1">, </template>
+                  </template>
+                </dd>
+              </template>
+
+              <template v-if="item.game_mode">
+                <dt>{{ t('singles.deck.gameMode') }}</dt>
+                <dd>
+                  <RouterLink v-if="decksIndexRoute" class="info-link" :to="decksIndexRoute">
+                    {{ item.game_mode.name }}
+                  </RouterLink>
+                  <template v-else>{{ item.game_mode.name }}</template>
+                </dd>
+              </template>
+
+              <dt>{{ t('singles.deck.heroes') }}</dt>
+              <dd>
+                {{
+                  t('singles.deck.uniqueHeroes', {
+                    total: stats.total_heroes,
+                    unique: stats.unique_heroes,
+                  })
+                }}
+              </dd>
+
+              <dt>{{ t('singles.deck.cards') }}</dt>
+              <dd>
+                {{
+                  t('singles.deck.uniqueCards', {
+                    total: stats.total_cards,
+                    unique: stats.unique_cards,
+                  })
+                }}
+              </dd>
+            </dl>
+          </InfoBlock>
+
+          <InfoBlock v-if="stats.cards_by_dice.length" :title="t('singles.deck.diceDistribution')">
+            <dl class="info-list">
+              <template v-for="row in stats.cards_by_dice" :key="row.dice">
+                <dt>
+                  {{
+                    row.dice === 0
+                      ? t('singles.deck.noDice')
+                      : t('singles.deck.dice', { count: row.dice }, row.dice)
+                  }}
+                </dt>
+                <dd>{{ row.copies }}</dd>
+              </template>
+
+              <dt>{{ t('singles.deck.average') }}</dt>
+              <dd>{{ stats.average_dice.toFixed(2) }}</dd>
+            </dl>
+          </InfoBlock>
+
+          <InfoBlock v-if="symbols.length" :title="t('singles.deck.symbolDistribution')">
+            <dl class="info-list">
+              <template v-for="symbol in symbols" :key="symbol.key">
+                <dt><DiceIcon :type="symbol.type" size="sm" /></dt>
+                <dd>{{ stats.symbols[symbol.key] }}</dd>
+              </template>
+            </dl>
+          </InfoBlock>
+
+          <InfoBlock v-if="stats.cards_by_type.length" :title="t('singles.deck.cardTypes')">
+            <dl class="info-list">
+              <template v-for="row in stats.cards_by_type" :key="row.name">
+                <dt>{{ row.name }}</dt>
+                <dd>{{ row.copies }}</dd>
+              </template>
+            </dl>
+          </InfoBlock>
+
+          <InfoBlock
+            v-if="stats.heroes_by_superclass.length"
+            :title="t('singles.deck.heroSuperclasses')"
+          >
+            <dl class="info-list">
+              <template v-for="row in stats.heroes_by_superclass" :key="row.name">
+                <dt>{{ row.name }}</dt>
+                <dd>{{ row.count }}</dd>
+              </template>
+            </dl>
+          </InfoBlock>
+
+          <InfoBlock v-if="stats.heroes_by_class.length" :title="t('singles.deck.heroClasses')">
+            <dl class="info-list">
+              <template v-for="row in stats.heroes_by_class" :key="row.name">
+                <dt>{{ row.name }}</dt>
+                <dd>{{ row.count }}</dd>
+              </template>
+            </dl>
+          </InfoBlock>
+        </div>
+      </div>
+    </BlockShell>
+
+    <!-- Pestañas héroes | cartas con contadores, al ancho de bloque -->
+    <BlockShell :settings="{ width: 'wide', align: 'left' }">
+      <BaseTabs
+        class="deck-single__tabs"
+        :tabs="tabs"
+        :model-value="tab"
+        @update:model-value="setTab"
+      />
+
+      <!-- Héroes del mazo (sin copias: asignado = 1, sin badge) -->
+      <PreviewGrid
+        v-if="tab === 'heroes'"
+        :items="heroItems"
+        :empty-text="t('singles.deck.noHeroes')"
+        class="single-grid"
+      >
+        <template #item="{ item: hero }">
+          <img
+            v-if="hero.preview"
+            class="preview-grid__image"
+            :src="hero.preview"
+            :alt="hero.name"
+            loading="lazy"
+          />
+          <span v-else class="preview-grid__fallback">{{ hero.name }}</span>
+        </template>
+        <template #actions="{ item: hero }">
+          <AddToCollection :id="hero.id" class="single-grid__add" entity="hero" />
+        </template>
+      </PreviewGrid>
+
+      <!-- Cartas del mazo, con el badge de copias del viejo -->
+      <PreviewGrid
+        v-else
+        :items="cardItems"
+        :empty-text="t('singles.deck.noCards')"
+        class="single-grid"
+      >
+        <template #item="{ item: card }">
+          <img
+            v-if="card.preview"
+            class="preview-grid__image"
+            :src="card.preview"
+            :alt="card.name"
+            loading="lazy"
+          />
+          <span v-else class="preview-grid__fallback">{{ card.name }}</span>
+          <span class="deck-single__copies">
+            {{ t('singles.deck.copies', { count: (card as DeckCard).copies }) }}
+          </span>
+        </template>
+        <template #actions="{ item: card }">
+          <AddToCollection :id="card.id" class="single-grid__add" entity="card" />
+        </template>
+      </PreviewGrid>
+    </BlockShell>
+
+    <!-- Descripción/lore del mazo, DEBAJO de las pestañas (antes iba junto
+         al emblema): sección rich-content a lo ancho -->
+    <BlockShell v-if="description" :settings="{ width: 'wide', align: 'left' }">
+      <h2 class="block__title">{{ t('singles.deck.descriptionTitle') }}</h2>
+      <div class="single-lore rich-content" v-html="description" />
+    </BlockShell>
+
+    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte
+         gris por defecto del CRM al 15%) -->
+    <BlockQuote
+      v-if="quoteHtml"
+      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: '#64748B' }"
     />
 
-    <!-- Información: la rejilla de estadísticas del viejo -->
-    <div v-if="tab === 'info'" class="info-blocks-grid">
-      <InfoBlock :title="t('singles.deck.basicInfo')">
-        <dl class="info-list">
-          <dt>{{ t('singles.deck.name') }}</dt>
-          <dd>{{ name }}</dd>
-
-          <template v-if="item.factions.length">
-            <dt>{{ t('singles.deck.factions') }}</dt>
-            <dd>
-              <template v-for="(faction, i) in item.factions" :key="faction.id">
-                <RouterLink
-                  v-if="factionRoute(faction)"
-                  class="info-link"
-                  :to="factionRoute(faction)!"
-                >
-                  {{ faction.name }}
-                </RouterLink>
-                <template v-else>{{ faction.name }}</template>
-                <template v-if="i < item.factions.length - 1">, </template>
-              </template>
-            </dd>
-          </template>
-
-          <template v-if="item.game_mode">
-            <dt>{{ t('singles.deck.gameMode') }}</dt>
-            <dd>
-              <RouterLink v-if="decksIndexRoute" class="info-link" :to="decksIndexRoute">
-                {{ item.game_mode.name }}
-              </RouterLink>
-              <template v-else>{{ item.game_mode.name }}</template>
-            </dd>
-          </template>
-
-          <dt>{{ t('singles.deck.heroes') }}</dt>
-          <dd>
-            {{
-              t('singles.deck.uniqueHeroes', {
-                total: stats.total_heroes,
-                unique: stats.unique_heroes,
-              })
-            }}
-          </dd>
-
-          <dt>{{ t('singles.deck.cards') }}</dt>
-          <dd>
-            {{
-              t('singles.deck.uniqueCards', {
-                total: stats.total_cards,
-                unique: stats.unique_cards,
-              })
-            }}
-          </dd>
-        </dl>
-      </InfoBlock>
-
-      <InfoBlock v-if="stats.cards_by_dice.length" :title="t('singles.deck.diceDistribution')">
-        <dl class="info-list">
-          <template v-for="row in stats.cards_by_dice" :key="row.dice">
-            <dt>
-              {{
-                row.dice === 0
-                  ? t('singles.deck.noDice')
-                  : t('singles.deck.dice', { count: row.dice }, row.dice)
-              }}
-            </dt>
-            <dd>{{ row.copies }}</dd>
-          </template>
-
-          <dt>{{ t('singles.deck.average') }}</dt>
-          <dd>{{ stats.average_dice.toFixed(2) }}</dd>
-        </dl>
-      </InfoBlock>
-
-      <InfoBlock v-if="symbols.length" :title="t('singles.deck.symbolDistribution')">
-        <dl class="info-list">
-          <template v-for="symbol in symbols" :key="symbol.key">
-            <dt><DiceIcon :type="symbol.type" size="sm" /></dt>
-            <dd>{{ stats.symbols[symbol.key] }}</dd>
-          </template>
-        </dl>
-      </InfoBlock>
-
-      <InfoBlock v-if="stats.cards_by_type.length" :title="t('singles.deck.cardTypes')">
-        <dl class="info-list">
-          <template v-for="row in stats.cards_by_type" :key="row.name">
-            <dt>{{ row.name }}</dt>
-            <dd>{{ row.copies }}</dd>
-          </template>
-        </dl>
-      </InfoBlock>
-
-      <InfoBlock
-        v-if="stats.heroes_by_superclass.length"
-        :title="t('singles.deck.heroSuperclasses')"
-      >
-        <dl class="info-list">
-          <template v-for="row in stats.heroes_by_superclass" :key="row.name">
-            <dt>{{ row.name }}</dt>
-            <dd>{{ row.count }}</dd>
-          </template>
-        </dl>
-      </InfoBlock>
-
-      <InfoBlock v-if="stats.heroes_by_class.length" :title="t('singles.deck.heroClasses')">
-        <dl class="info-list">
-          <template v-for="row in stats.heroes_by_class" :key="row.name">
-            <dt>{{ row.name }}</dt>
-            <dd>{{ row.count }}</dd>
-          </template>
-        </dl>
-      </InfoBlock>
-    </div>
-
-    <!-- Héroes del mazo (sin copias: asignado = 1, sin badge) -->
-    <PreviewGrid
-      v-else-if="tab === 'heroes'"
-      :items="heroItems"
-      :empty-text="t('singles.deck.noHeroes')"
-      class="single-grid"
-    >
-      <template #item="{ item: hero }">
-        <img
-          v-if="hero.preview"
-          class="preview-grid__image"
-          :src="hero.preview"
-          :alt="hero.name"
-          loading="lazy"
-        />
-        <span v-else class="preview-grid__fallback">{{ hero.name }}</span>
-      </template>
-      <template #actions="{ item: hero }">
-        <AddToCollection :id="hero.id" class="single-grid__add" entity="hero" />
-      </template>
-    </PreviewGrid>
-
-    <!-- Cartas del mazo, con el badge de copias del viejo -->
-    <PreviewGrid
-      v-else
-      :items="cardItems"
-      :empty-text="t('singles.deck.noCards')"
-      class="single-grid"
-    >
-      <template #item="{ item: card }">
-        <img
-          v-if="card.preview"
-          class="preview-grid__image"
-          :src="card.preview"
-          :alt="card.name"
-          loading="lazy"
-        />
-        <span v-else class="preview-grid__fallback">{{ card.name }}</span>
-        <span class="deck-single__copies">
-          {{ t('singles.deck.copies', { count: (card as DeckCard).copies }) }}
-        </span>
-      </template>
-      <template #actions="{ item: card }">
-        <AddToCollection :id="card.id" class="single-grid__add" entity="card" />
-      </template>
-    </PreviewGrid>
-
-    <!-- Cita épica (bloque quote del motor, centrado como el viejo) -->
-    <BlockQuote v-if="quoteHtml" :settings="{ quote: quoteHtml, align: 'center' }" />
-
-    <!-- Relateds de mazos (tarjetas CSS), excluyendo el actual -->
+    <!-- Relateds de mazos (tarjetas CSS), excluyendo el actual: bloque
+         related del CRM, con título (h2) y botón al índice -->
     <CssCardsRelated
       kind="deck"
       :exclude-id="item.id"
-      :subtitle="t('singles.deck.relatedSubtitle')"
+      :title="t('singles.deck.relatedTitle')"
       :button-label="t('singles.deck.relatedButton')"
     />
   </div>

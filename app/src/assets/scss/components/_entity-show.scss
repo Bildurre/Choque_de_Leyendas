@@ -5,13 +5,21 @@
 // _effect-section/_cost-display/_icon-dice — adaptado a los tokens del
 // motor). Mobile-first; los colores de acento salen de la paleta del tema.
 
-// Rejilla de info-blocks (pestaña de información del mazo)
+// Rejilla de info-blocks (ficha del mazo, a la derecha del emblema).
+// Columnas FIJAS con cortes EXPLÍCITOS de container query sobre `content`
+// (nada de auto-fit: re-resuelve pistas y tiembla — criterio .form-row).
 .info-blocks-grid {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: $space-4;
+  align-items: start;
 
-  @media (min-width: $bp-sm) {
-    grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  @container content (min-width: #{$bp-sm}) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @container content (min-width: #{$bp-lg}) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -30,11 +38,6 @@
     line-height: $k-lh-tight;
     color: $accent-500;
     font-family: var(--font-headings, inherit);
-  }
-
-  // El bloque de habilidades ocupa todo el ancho de la ficha
-  &--abilities {
-    grid-column: 1 / -1;
   }
 }
 
@@ -207,40 +210,39 @@
   }
 }
 
-// Rejilla de atributos del héroe. El viejo llevaba icono por atributo; la
-// API pública no expone esos iconos, así que etiqueta + valor.
-.attributes-grid {
+// Atributos del héroe "estilo admin": la lista compacta del panel del CRM
+// (heroes__stats de admin/_heroes.scss, misma estética replicada aquí — el
+// scss del admin no se importa): ul en rejilla de DOS columnas fijas, cada
+// li en flex space-between con la etiqueta en strong y el valor en span.
+// El viejo llevaba icono por atributo; la API pública no los expone.
+.attributes-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: $space-3;
+  gap: $space-1 $space-3;
+  font-size: 0.85rem;
 
+  li {
+    display: flex;
+    justify-content: space-between;
+    gap: $space-2;
+    color: $text-2;
+
+    strong { font-weight: $k-fw-medium; }
+  }
+
+  // La salud derivada, destacada con el acento (rasgo del single público)
+  &__health span {
+    color: $accent-500;
+    font-weight: $k-fw-semibold;
+  }
+
+  // Card angosta: una columna (corte explícito sobre el propio info-block,
+  // que es container; mismo umbral que la rejilla vieja)
   @container (max-width: 18rem) {
     grid-template-columns: 1fr;
-  }
-}
-
-.attribute-item {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: $space-2;
-  border-bottom: 1px dashed $border;
-  padding-bottom: $space-1;
-
-  &__label {
-    font-size: $fs-14;
-    color: $text-2;
-  }
-
-  &__value {
-    font-size: $fs-18;
-    font-weight: $k-fw-semibold;
-    color: $text-1;
-  }
-
-  // La salud derivada, destacada con el acento
-  &--health .attribute-item__value {
-    color: $accent-500;
   }
 }
 

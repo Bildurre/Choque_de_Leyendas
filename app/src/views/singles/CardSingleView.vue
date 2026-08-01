@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { BlockQuote } from '@edc-motor/ui'
+import { BlockQuote, BlockShell } from '@edc-motor/ui'
 import AbilityCard, { type AbilityAttack } from '@/components/singles/AbilityCard.vue'
 import CatalogRelated from '@/components/singles/CatalogRelated.vue'
 import DiceCost, { type CostDie } from '@/components/singles/DiceCost.vue'
@@ -9,12 +9,16 @@ import InfoBlock from '@/components/singles/InfoBlock.vue'
 import { applyOgMeta } from '@/entities/singleOg'
 import { sectionDetailRoute } from '@/entities/singleRoutes'
 
-// Single de carta (portado de public/cards/show.blade.php del viejo): PNG
-// grande + info-blocks ("Detalles de la Carta", "Detalles del Ataque",
-// "Efectos"), cita épica y relateds de cartas. Lo monta EntityDetailView
-// (banner, fondo de página, añadir a la colección y head SEO); aquí solo la
-// ficha + og. Los enlaces a índices filtrados del viejo se portan como
-// texto plano (el catálogo nuevo no tiene esos filtros, CONVENTIONS2 §9.1).
+// Single de carta (portado de public/cards/show.blade.php del viejo), ya en
+// el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
+// EntityDetailView, que pinta el header-bloque (título = nombre, tinte del
+// color de la facción, volver + añadir dentro) y el fondo/head SEO; aquí
+// cada sección es un `block` a lo ancho: ficha en fila (preview | detalles +
+// ataque apilados | efectos, con cortes explícitos de container query),
+// lore, cita épica (bloque quote del CRM, tinte gris) y relateds de cartas
+// ALEATORIAS (bloque related del CRM). Los enlaces a índices filtrados del
+// viejo se portan como texto plano (el catálogo nuevo no tiene esos
+// filtros, CONVENTIONS2 §9.1).
 interface FactionRef {
   id: number
   name: string
@@ -54,6 +58,7 @@ interface CardPayload {
   effect: string
   restriction: string
   granted_ability: GrantedAbility | null
+  lore_text: string
   epic_quote: string
 }
 
@@ -99,15 +104,19 @@ watch(
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="card-single">
-    <section class="single-detail">
-      <!-- Preview grande (PNG del render); fallback con el nombre si no hay -->
-      <div class="single-detail__preview">
-        <img v-if="item.preview" class="single-detail__image" :src="item.preview" :alt="name" />
-        <span v-else class="single-detail__fallback">{{ name }}</span>
-      </div>
+    <!-- Ficha EN FILA mientras quepa (columnas fijas, cortes explícitos en
+         _singles.scss): preview | detalles + ataque apilados | efectos — el
+         ataque acompaña a los detalles (ambos son listas cortas) y los
+         efectos, más largos, ganan columna propia -->
+    <BlockShell :settings="{ width: 'wide', align: 'left' }">
+      <div class="single-detail single-detail--card">
+        <!-- Preview grande (PNG del render); fallback con el nombre si no hay -->
+        <div class="single-detail__preview">
+          <img v-if="item.preview" class="single-detail__image" :src="item.preview" :alt="name" />
+          <span v-else class="single-detail__fallback">{{ name }}</span>
+        </div>
 
-      <div class="single-detail__info">
-        <InfoBlock :title="t('singles.card.basicInfo')">
+        <InfoBlock class="single-detail__basic" :title="t('singles.card.basicInfo')">
           <dl class="info-list">
             <dt>{{ t('singles.card.name') }}</dt>
             <dd>{{ name }}</dd>
@@ -166,7 +175,11 @@ watch(
           </dl>
         </InfoBlock>
 
-        <InfoBlock v-if="hasAttack" :title="t('singles.card.attackInfo')">
+        <InfoBlock
+          v-if="hasAttack"
+          class="single-detail__attack"
+          :title="t('singles.card.attackInfo')"
+        >
           <dl class="info-list">
             <template v-if="item.attack.range">
               <dt>{{ t('singles.card.attackRange') }}</dt>
@@ -190,7 +203,11 @@ watch(
           </dl>
         </InfoBlock>
 
-        <InfoBlock v-if="hasEffects" :title="t('singles.card.effects')">
+        <InfoBlock
+          v-if="hasEffects"
+          class="single-detail__effects"
+          :title="t('singles.card.effects')"
+        >
           <div v-if="item.restriction" class="effect-section">
             <div class="effect-section__content rich-content" v-html="item.restriction" />
           </div>
@@ -212,16 +229,27 @@ watch(
           </div>
         </InfoBlock>
       </div>
-    </section>
+    </BlockShell>
 
-    <!-- Cita épica (bloque quote del motor, centrado como el viejo) -->
-    <BlockQuote v-if="quoteHtml" :settings="{ quote: quoteHtml, align: 'center' }" />
+    <!-- Lore de la carta (wysiwyg): sección rich-content a lo ancho -->
+    <BlockShell v-if="item.lore_text" :settings="{ width: 'wide', align: 'left' }">
+      <h2 class="block__title">{{ t('singles.loreTitle') }}</h2>
+      <div class="single-lore rich-content" v-html="item.lore_text" />
+    </BlockShell>
 
-    <!-- Relateds de cartas, excluyendo la actual -->
+    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte
+         gris por defecto del CRM al 15%) -->
+    <BlockQuote
+      v-if="quoteHtml"
+      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: '#64748B' }"
+    />
+
+    <!-- Relateds de cartas ALEATORIAS (bloque related del CRM), excluyendo
+         la actual -->
     <CatalogRelated
       catalog-key="card"
       :exclude-id="item.id"
-      :subtitle="t('singles.card.relatedSubtitle')"
+      :title="t('singles.card.relatedTitle')"
       :button-label="t('singles.card.relatedButton')"
     />
   </div>

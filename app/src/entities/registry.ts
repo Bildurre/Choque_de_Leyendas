@@ -30,8 +30,14 @@ export interface EntitySection {
    *  «volver» dentro) en vez del banner genérico, y el cuerpo a lo ancho
    *  para que la ficha apile bloques. Devuelve el tinte del fondo a partir
    *  del ítem cargado (p. ej. el color de la entidad; null = gris del
-   *  bloque por defecto). Migración single a single: de momento facción. */
+   *  bloque por defecto). Ya lo declaran las cuatro secciones. */
   blockHeader?: (item: Record<string, unknown>) => { tint?: string | null }
+}
+
+/** Tinte del header: el color de la facción anidada del ítem (héroe/carta). */
+function factionTint(item: Record<string, unknown>): { tint: string | null } {
+  const faction = item.faction as { color?: unknown } | null | undefined
+  return { tint: typeof faction?.color === 'string' ? faction.color : null }
 }
 
 // Secciones públicas del juego. Los segmentos por locale casan con el
@@ -45,6 +51,8 @@ export const entitySections: EntitySection[] = [
     paths: { es: 'cartas', en: 'cards' }, // eu: 'kartak' al activar el locale
     detail: CardSingleView,
     collectible: 'card',
+    // Header-bloque del CRM tintado con el color de la facción de la carta.
+    blockHeader: factionTint,
   },
   {
     key: 'heroes',
@@ -52,6 +60,8 @@ export const entitySections: EntitySection[] = [
     paths: { es: 'heroes', en: 'heroes' }, // eu: 'heroiak'
     detail: HeroSingleView,
     collectible: 'hero',
+    // Header-bloque del CRM tintado con el color de la facción del héroe.
+    blockHeader: factionTint,
   },
   {
     key: 'factions',
@@ -66,6 +76,9 @@ export const entitySections: EntitySection[] = [
     endpoint: '/faction-decks',
     paths: { es: 'mazos', en: 'decks' }, // eu: 'sortak'
     detail: FactionDeckSingleView,
+    // Header-bloque del CRM con el tinte GRIS por defecto: un mazo puede
+    // mezclar varias facciones, así que no se fuerza el color de ninguna.
+    blockHeader: () => ({ tint: null }),
   },
 ]
 
