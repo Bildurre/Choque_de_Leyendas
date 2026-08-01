@@ -11,12 +11,13 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 
 // Single de héroe (portado de public/heroes/show.blade.php del viejo), ya en
 // el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
-// EntityDetailView, que pinta el header-bloque (título = nombre, tinte del
-// color de la facción, volver + añadir dentro) y el fondo/head SEO; aquí
-// cada sección es un `block` a lo ancho: ficha en fila (preview |
-// información básica | atributos, con cortes explícitos de container
-// query), habilidades (pasivas de clase y propia + activas con dados de
-// coste), lore, cita épica (bloque quote del CRM, tinte gris) y relateds de
+// EntityDetailView, que pinta el header-bloque (título = nombre, SUBTÍTULO
+// = trasfondo en texto plano, tinte del color de la facción, volver +
+// añadir dentro) y el fondo/head SEO; aquí cada sección es un `block` a lo
+// ancho: ficha en fila (preview | información básica | atributos, con
+// cortes explícitos de container query), habilidades (pasivas de clase y
+// propia + activas con dados de coste), cita épica (bloque quote del CRM,
+// tinte gris — el lore ya no tiene sección: vive en el subtítulo) y relateds de
 // héroes ALEATORIOS (bloque related del CRM). Los atributos van sin icono:
 // la API pública no expone los iconos del juego (desviación anotada).
 interface FactionRef {
@@ -110,7 +111,6 @@ watch(
 )
 </script>
 
-<!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="hero-single single-sections">
     <!-- Ficha: preview | información básica | atributos, EN FILA mientras
@@ -230,13 +230,6 @@ watch(
           />
         </div>
       </InfoBlock>
-    </BlockShell>
-
-    <!-- Lore del héroe (wysiwyg): sección rich-content a lo ancho — con el
-         header nuevo ya no hay subtítulo en el banner, el lore vive aquí -->
-    <BlockShell v-if="item.lore_text" :settings="{ width: 'wide', align: 'left' }">
-      <h2 class="block__title">{{ t('singles.loreTitle') }}</h2>
-      <div class="single-lore rich-content" v-html="item.lore_text" />
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte

@@ -6,6 +6,30 @@
 // del héroe usan el propio .info-list, mismo formato que la card de
 // información). Mobile-first; los acentos salen de la paleta del tema.
 
+// Ficha del mazo en masonry: columnas CSS (multicol, no grid) — las seis
+// tarjetas fluyen de arriba abajo por columnas sin huecos entre alturas
+// dispares. Recuento FIJO de columnas con cortes EXPLÍCITOS de container
+// query sobre `content`: 1 en estrecho → 2 en medio ($bp-md) → 3 en ancho
+// ($bp-lg); nada de column-width automático (mismo criterio anti-temblor
+// que .form-row).
+.info-blocks-masonry {
+  column-count: 1;
+  column-gap: $space-4;
+
+  > * {
+    break-inside: avoid;
+    margin-bottom: $space-4;
+  }
+
+  @container content (min-width: #{$bp-md}) {
+    column-count: 2;
+  }
+
+  @container content (min-width: #{$bp-lg}) {
+    column-count: 3;
+  }
+}
+
 // Bloque de información: tarjeta semitransparente sobre el fondo de página
 .info-block {
   background: color-mix(in srgb, $surface 72%, transparent);
@@ -13,7 +37,6 @@
   border: 1px solid $border;
   border-radius: $radius-lg;
   padding: $space-5;
-  container-type: inline-size;
 
   &__title {
     margin: 0 0 $space-4;
@@ -21,29 +44,6 @@
     line-height: $k-lh-tight;
     color: $accent-500;
     font-family: var(--font-headings, inherit);
-  }
-
-  // Subtítulo interno de una card FUSIONADA (dos listas bajo un título,
-  // ficha del mazo): un escalón por debajo del título de la card.
-  &__subtitle {
-    margin: 0 0 $space-3;
-    font-size: $fs-16;
-    font-weight: $k-fw-semibold;
-    color: $text-1;
-    font-family: var(--font-headings, inherit);
-  }
-
-  // Sublistas de una card fusionada EN HORIZONTAL mientras quepan dentro de
-  // la card (el info-block es container): dos columnas fijas con corte
-  // explícito; en angosto, apiladas.
-  &__columns {
-    display: grid;
-    gap: $space-5;
-    align-items: start;
-
-    @container (min-width: 24rem) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
 }
 

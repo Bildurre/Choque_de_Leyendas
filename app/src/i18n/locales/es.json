@@ -267,7 +267,6 @@
   },
   "singles": {
     "yes": "Sí",
-    "loreTitle": "Trasfondo",
     "attackTypes": {
       "physical": "Físico",
       "magical": "Mágico"
@@ -340,7 +339,6 @@
         "cards": "Cartas"
       },
       "basicInfo": "Información básica",
-      "descriptionTitle": "Descripción",
       "name": "Nombre",
       "factions": "Facciones",
       "gameMode": "Modo de juego",
@@ -348,12 +346,10 @@
       "cards": "Cartas",
       "uniqueHeroes": "{total} ({unique} únicos)",
       "uniqueCards": "{total} ({unique} únicas)",
-      "costAndDice": "Coste y dados",
       "diceDistribution": "Coste de las cartas",
       "symbolDistribution": "Distribución de dados",
       "cardTypes": "Tipos de cartas",
-      "bySuperclass": "Por superclase",
-      "byClass": "Por clase",
+      "heroSuperclasses": "Superclases de héroes",
       "heroClasses": "Clases de héroes",
       "average": "Promedio",
       "dice": "{count} dado | {count} dados",

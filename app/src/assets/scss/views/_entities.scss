@@ -16,6 +16,16 @@
     padding: $space-8 0;
   }
 
+  // Fila superior del header-bloque (slot `top` del IndexHeader): el
+  // «volver» a la izquierda y la acción de añadir a la derecha, en la
+  // MISMA fila.
+  &__topbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: $space-3;
+  }
+
   &__back {
     display: inline-flex;
     align-items: center;
@@ -23,13 +33,18 @@
     color: $text-3;
     text-decoration: none;
     font-size: $fs-13;
-    justify-self: start;
     cursor: pointer;
 
     &:hover { color: $accent-500; }
   }
 
-  &__action { justify-self: start; }
+  // En ESTRECHO el botón de añadir pierde el texto y queda solo el icono
+  // (corte explícito de container query sobre `content`, como el resto de
+  // cortes de los singles); el nombre accesible lo conservan el
+  // aria-label/title del propio botón.
+  @container content (max-width: #{$bp-md - 1px}) {
+    &__action span { display: none; }
+  }
 
   // El cuerpo va a ANCHO COMPLETO y sin aire propio — cada sección de la
   // ficha es un `section.block` que gestiona su anchura (block__inner) y su

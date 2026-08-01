@@ -11,14 +11,16 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 
 // Single de carta (portado de public/cards/show.blade.php del viejo), ya en
 // el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
-// EntityDetailView, que pinta el header-bloque (título = nombre, tinte del
-// color de la facción, volver + añadir dentro) y el fondo/head SEO; aquí
-// cada sección es un `block` a lo ancho: ficha en fila (preview | detalles |
-// ataque, con cortes explícitos de container query), efectos DEBAJO a todo
-// el ancho, lore, cita épica (bloque quote del CRM, tinte gris) y relateds
-// de cartas ALEATORIAS (bloque related del CRM). Los values con filtro en el
-// catálogo de cartas enlazan al índice FILTRADO (query params de
-// useFiltersQuery, patrón del viejo recuperado).
+// EntityDetailView, que pinta el header-bloque (título = nombre, SUBTÍTULO
+// = trasfondo en texto plano, tinte del color de la facción, volver +
+// añadir dentro) y el fondo/head SEO; aquí cada sección es un `block` a lo
+// ancho: ficha en fila (preview | detalles | ataque, con cortes explícitos
+// de container query), efectos DEBAJO a todo el ancho, cita épica (bloque
+// quote del CRM, tinte gris — el lore ya no tiene sección: vive en el
+// subtítulo) y relateds de cartas ALEATORIAS (bloque related del CRM). Los
+// values con filtro en el catálogo de cartas enlazan al índice FILTRADO
+// (query params de useFiltersQuery, patrón del viejo recuperado); la
+// superclase del tipo enlaza al índice de HÉROES filtrado por ella.
 interface FactionRef {
   id: number
   name: string
@@ -47,6 +49,7 @@ interface CardPayload {
     id: number
     name: string
     superclass: string | null
+    superclass_id: number | null
     allows_subtypes: boolean
     is_equipment: boolean
   } | null
@@ -95,9 +98,12 @@ const factionRoute = computed(() =>
 // filtro aplicado y su chip. Los filtros condicionales del catálogo (equipo
 // y ataque solo salen con un tipo que los permita marcado) viajan SIEMPRE
 // acompañados del tipo de la carta: sin él, el saneo del catálogo los
-// limpiaría al aterrizar. Sin filtro correspondiente no hay enlace:
-// superclase del tipo, manos, coste (gráfico de dados), única y la
-// habilidad otorgada (no hay índice público de habilidades).
+// limpiaría al aterrizar. Sin filtro correspondiente no hay enlace: manos,
+// coste (gráfico de dados), única y la habilidad otorgada (no hay índice
+// público de habilidades). La superclase del tipo es la excepción: no hay
+// filtro en el catálogo de CARTAS, así que enlaza al índice de HÉROES
+// filtrado por esa superclase (query `superclass`, la misma clave que usan
+// los enlaces del single de héroe).
 const cardsIndexRoute = (query: Record<string, string>) =>
   sectionIndexRoute('cards', props.locale, query)
 
@@ -112,6 +118,12 @@ const subtypeRoute = computed(() =>
     ? cardsIndexRoute({ subtype: String(props.item.subtype_id) })
     : null,
 )
+
+// La superclase del tipo → índice de héroes filtrado por ella.
+const superclassRoute = computed(() => {
+  const id = props.item.type?.superclass_id
+  return id != null ? sectionIndexRoute('heroes', props.locale, { superclass: String(id) }) : null
+})
 
 /** Enlace a un filtro condicional (equipo/ataque): siempre con el tipo. */
 const conditionalRoute = (key: string, value: string | number | null) =>
@@ -212,11 +224,16 @@ watch(
               </dd>
             </template>
 
-            <!-- La superclase del tipo no enlaza: el catálogo de cartas no
-                 tiene filtro de superclase -->
+            <!-- La superclase del tipo enlaza al índice de HÉROES filtrado
+                 por ella (el catálogo de cartas no tiene ese filtro) -->
             <template v-if="item.type?.superclass">
               <dt>{{ t('singles.card.superclass') }}</dt>
-              <dd>{{ item.type.superclass }}</dd>
+              <dd>
+                <RouterLink v-if="superclassRoute" class="info-link" :to="superclassRoute">
+                  {{ item.type.superclass }}
+                </RouterLink>
+                <template v-else>{{ item.type.superclass }}</template>
+              </dd>
             </template>
 
             <template v-if="item.equipment?.type">
@@ -332,12 +349,6 @@ watch(
           />
         </div>
       </InfoBlock>
-    </BlockShell>
-
-    <!-- Lore de la carta (wysiwyg): sección rich-content a lo ancho -->
-    <BlockShell v-if="item.lore_text" :settings="{ width: 'wide', align: 'left' }">
-      <h2 class="block__title">{{ t('singles.loreTitle') }}</h2>
-      <div class="single-lore rich-content" v-html="item.lore_text" />
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte

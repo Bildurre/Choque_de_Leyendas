@@ -33,6 +33,9 @@ class PublicCardResource extends JsonResource
                 'id' => $type->id,
                 'name' => $type->getTranslation('name', $locale),
                 'superclass' => $type->heroSuperclass?->getTranslation('name', $locale),
+                // Con el id: el single enlaza la superclase al índice de
+                // HÉROES filtrado por ella (query `superclass`)
+                'superclass_id' => $type->heroSuperclass?->id,
                 'allows_subtypes' => (bool) $type->allows_subtypes,
                 'is_equipment' => (bool) $type->is_equipment,
             ] : null,
