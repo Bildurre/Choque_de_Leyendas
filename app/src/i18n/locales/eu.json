@@ -15,6 +15,8 @@
   },
   "detail": {
     "back": "Itzuli",
+    "downloadPdf": "Bere PDFa deskargatu",
+    "editInAdmin": "Administrazioan editatu",
     "schemes": "Etxearen amarruak",
     "info": "Fitxa",
     "color": "Kolorea",

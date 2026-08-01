@@ -6,7 +6,8 @@ import { useLocalesStore } from '@/stores/locales'
 
 // "Relateds" de los singles de carta y héroe: mismo componente BlockRelated
 // del motor — idéntico markup y ajustes que el bloque related del CRM
-// (título h2 + botón secundario al índice, justificado, ancho wide; los
+// (título h2 + botón secundario al índice, justificado, ancho wide, fondo
+// de tarjeta DINÁMICO token:surface resuelto por BlockShell; los
 // enlaces salen del catalogRoutes provisto en main.ts) — con los datos
 // resueltos aquí contra el catálogo público en modo random y excluyendo la
 // entidad actual — ALEATORIO por visita, mismo criterio que el endpoint del
@@ -52,6 +53,7 @@ watch([() => props.excludeId, () => locales.current], load, { immediate: true })
       button_label: buttonLabel,
       align: 'justify',
       width: 'wide',
+      background: 'token:surface',
     }"
     :data="{ key: catalogKey, items }"
   />

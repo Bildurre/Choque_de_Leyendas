@@ -46,6 +46,32 @@ it('muestra la facción publicada con sus listas de contenido publicado', functi
         ->and($data['decks'][0]['game_mode']['name'])->toBe('Escaramuza');
 });
 
+it('expone el PDF permanente generado de la facción (y prefiere el del locale)', function () {
+    $faction = publicFaction();
+
+    // Sin PDF generado: el campo viaja como null (el single no pinta botón)
+    expect($this->getJson('/api/factions/alianza')->json('data.pdf'))->toBeNull();
+
+    $en = publicPermanentPdf($faction, 'faction', ['locale' => 'en']);
+    $es = publicPermanentPdf($faction, 'faction', ['locale' => 'es']);
+    // Un pendiente de OTRO mazo/facción o sin terminar no cuenta
+    publicPermanentPdf($faction, 'faction', ['locale' => 'es', 'status' => 'pending']);
+
+    $data = $this->getJson('/api/factions/alianza')->json('data.pdf');
+    expect($data['id'])->toBe($es->id)
+        ->and($data['url'])->toContain("/api/pdfs/{$es->id}/download");
+
+    // En inglés, el del locale inglés
+    expect($this->getJson('/api/factions/alianza?locale=en')->json('data.pdf.id'))->toBe($en->id);
+});
+
+it('cae a otro locale si el pedido no tiene PDF generado', function () {
+    $faction = publicFaction();
+    $en = publicPermanentPdf($faction, 'faction', ['locale' => 'en']);
+
+    expect($this->getJson('/api/factions/alianza')->json('data.pdf.id'))->toBe($en->id);
+});
+
 it('resuelve el slug en cualquier locale', function () {
     publicFaction();
 

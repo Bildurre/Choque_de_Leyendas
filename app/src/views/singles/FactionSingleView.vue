@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, type Component } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
+import { Layers, Swords, WalletCards } from '@lucide/vue'
 import {
   BaseTabs,
   BlockQuote,
@@ -24,10 +25,12 @@ import { sectionDetailRoute } from '@/entities/singleRoutes'
 // sección es un `block` a lo ancho (block--w-wide + block__inner, como en
 // PageView): emblema en su marco de color + lore completo, pestañas héroes
 // / cartas / mazos con contadores de publicados (en cliente: la API entrega
-// las tres listas completas), cita épica (bloque quote del CRM, tinte gris)
-// y relateds de facciones (tarjetas CSS, sin catálogo de previews, bloque
-// related del CRM). El botón de descarga de PDF del viejo no se porta: no
-// hay endpoint público equivalente (desviación).
+// las tres listas completas), cita épica (bloque quote del CRM, fondo de
+// tarjeta DINÁMICO token:surface) y relateds de facciones (tarjetas CSS,
+// sin catálogo de previews, bloque related del CRM). El botón de descarga
+// del PDF permanente de la facción (si está generado, campo `pdf` del
+// payload) vive en la fila superior del header, junto al volver
+// (EntityDetailView).
 interface DeckRow extends FactionDeckCardData {
   id: number
   slug: string
@@ -67,11 +70,29 @@ const style = computed(() => ({
   '--faction-text': props.item.text_is_dark ? '#000000' : '#ffffff',
 }))
 
-// Pestañas del BaseTabs del motor, con los contadores de publicados.
-const tabs = computed<Array<{ key: Tab; label: string; count: number }>>(() => [
-  { key: 'heroes', label: t('singles.faction.tabs.heroes'), count: props.item.heroes_count },
-  { key: 'cards', label: t('singles.faction.tabs.cards'), count: props.item.cards_count },
-  { key: 'decks', label: t('singles.faction.tabs.decks'), count: props.item.decks_count },
+// Pestañas del BaseTabs del motor, con los contadores de publicados y la
+// iconografía del admin de CdL (héroes → Swords, cartas → Layers, mazos →
+// WalletCards); en estrecho el motor deja solo el icono (texto
+// visually-hidden + title).
+const tabs = computed<Array<{ key: Tab; label: string; count: number; icon?: Component }>>(() => [
+  {
+    key: 'heroes',
+    label: t('singles.faction.tabs.heroes'),
+    count: props.item.heroes_count,
+    icon: Swords,
+  },
+  {
+    key: 'cards',
+    label: t('singles.faction.tabs.cards'),
+    count: props.item.cards_count,
+    icon: Layers,
+  },
+  {
+    key: 'decks',
+    label: t('singles.faction.tabs.decks'),
+    count: props.item.decks_count,
+    icon: WalletCards,
+  },
 ])
 
 function setTab(key: string) {
@@ -181,11 +202,11 @@ watch(
       </template>
     </BlockShell>
 
-    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte
-         gris por defecto del CRM al 15%) -->
+    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
+         de tarjeta DINÁMICO del tema: token:surface resuelto por BlockShell) -->
     <BlockQuote
       v-if="quoteHtml"
-      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: '#64748B' }"
+      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: 'token:surface' }"
     />
 
     <!-- Relateds de facciones (tarjetas CSS), excluyendo la actual: bloque

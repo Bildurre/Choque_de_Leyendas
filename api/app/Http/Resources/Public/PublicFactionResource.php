@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Public;
 
+use App\Http\Resources\Public\Concerns\HasPermanentPdf;
 use App\Support\PublicCatalogItem;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -14,6 +15,8 @@ use Illuminate\Http\Resources\Json\JsonResource;
  */
 class PublicFactionResource extends JsonResource
 {
+    use HasPermanentPdf;
+
     public function toArray(Request $request): array
     {
         $locale = app()->getLocale();
@@ -30,6 +33,9 @@ class PublicFactionResource extends JsonResource
             'image' => $this->imageUrl(),
             'lore_text' => $this->getTranslation('lore_text', $locale),
             'epic_quote' => $this->getTranslation('epic_quote', $locale),
+            // PDF permanente de la facción (export 'faction' del gestor del
+            // admin), si está generado: {id, url} — botón de descarga del single.
+            'pdf' => $this->permanentPdf('faction', $locale),
             'heroes_count' => (int) ($this->heroes_count ?? $this->heroes->count()),
             'cards_count' => (int) ($this->cards_count ?? $this->cards->count()),
             'decks_count' => (int) ($this->decks_count ?? $this->factionDecks->count()),

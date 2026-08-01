@@ -47,6 +47,15 @@
     right: 0;
     z-index: 2;
   }
+
+  // Editar en administración (solo editor/admin logueado), a la izquierda
+  // del añadir flotante.
+  &__admin {
+    position: absolute;
+    top: -31px;
+    right: 44px;
+    z-index: 2;
+  }
 }
 
 // --- Base común de los índices de tarjetas CSS (facciones y mazos) ---
@@ -85,6 +94,13 @@
     }
   }
 
+  // Cada tarjeta en su slot relativo: ancla del botón de editar en
+  // administración que flota en su esquina (el equivalente del añadir
+  // flotante de los catálogos de previews).
+  &__slot {
+    position: relative;
+  }
+
   // El enlace envuelve la tarjeta: al pasar, SOLO un glow sutil del color
   // de acento por los cuatro lados (sin desplazarse), el MISMO hover que
   // el .preview-grid; el foco por teclado conserva su halo de acento.
@@ -106,6 +122,28 @@
         0 0 0 2px color-mix(in srgb, $accent-500 55%, transparent),
         0 8px 24px color-mix(in srgb, $accent-500 25%, transparent);
     }
+  }
+}
+
+// Botón de editar en administración SOBRE una tarjeta CSS (facciones y
+// mazos): chip oscuro en la esquina superior derecha de la tarjeta — las
+// tarjetas llevan colores propios de facción, así que el chip garantiza el
+// contraste en vez del color de texto del tema.
+.admin-edit.css-card-admin {
+  position: absolute;
+  top: $space-2;
+  right: $space-2;
+  z-index: 2;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  color: #fff;
+  background: rgb(0 0 0 / 55%);
+  border-radius: $radius-pill;
+
+  &:hover {
+    color: #fff;
+    background: rgb(0 0 0 / 75%);
   }
 }
 

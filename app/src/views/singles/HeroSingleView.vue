@@ -11,15 +11,17 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 
 // Single de héroe (portado de public/heroes/show.blade.php del viejo), ya en
 // el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
-// EntityDetailView, que pinta el header-bloque (título = nombre, SUBTÍTULO
-// = trasfondo en texto plano, tinte del color de la facción, volver +
-// añadir dentro) y el fondo/head SEO; aquí cada sección es un `block` a lo
-// ancho: ficha en fila (preview | información básica | atributos, con
-// cortes explícitos de container query), habilidades (pasivas de clase y
-// propia + activas con dados de coste), cita épica (bloque quote del CRM,
-// tinte gris — el lore ya no tiene sección: vive en el subtítulo) y relateds de
-// héroes ALEATORIOS (bloque related del CRM). Los atributos van sin icono:
-// la API pública no expone los iconos del juego (desviación anotada).
+// EntityDetailView, que pinta el header-bloque (título = nombre, tinte del
+// color de la facción, volver + acciones dentro) y el fondo/head SEO; aquí
+// cada sección es un `block` a lo ancho: ficha en grid (preview a la
+// izquierda; a su derecha ARRIBA la tarjeta SIN título con el trasfondo
+// rich del wysiwyg a las dos columnas, y debajo información básica |
+// atributos, con cortes explícitos de container query), habilidades
+// (pasivas de clase y propia + activas con dados de coste), cita épica
+// (bloque quote del CRM, fondo de tarjeta DINÁMICO token:surface) y
+// relateds de héroes ALEATORIOS (bloque related del CRM). Los atributos van
+// sin icono: la API pública no expone los iconos del juego (desviación
+// anotada).
 interface FactionRef {
   id: number
   name: string
@@ -94,6 +96,10 @@ const superclassRoute = computed(() => indexFilterRoute('superclass', props.item
 
 const hasPassives = computed(() => Boolean(props.item.class_passive || props.item.passive))
 
+// Trasfondo del wysiwyg TAL CUAL (rich, saneado en servidor): tarjeta sin
+// título arriba a la derecha de la preview.
+const loreHtml = computed(() => props.item.lore_text?.trim() ?? '')
+
 const quoteHtml = computed(() => {
   const quote = props.item.epic_quote?.trim() ?? ''
   if (!quote) return ''
@@ -111,17 +117,28 @@ watch(
 )
 </script>
 
+<!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="hero-single single-sections">
-    <!-- Ficha: preview | información básica | atributos, EN FILA mientras
-         quepan (columnas fijas, cortes explícitos en _singles.scss) -->
+    <!-- Ficha: preview a la izquierda; a su derecha el trasfondo (tarjeta
+         sin título, dos columnas) y debajo información básica | atributos
+         (columnas fijas, cortes explícitos en _singles.scss) -->
     <BlockShell :settings="{ width: 'wide', align: 'left' }">
-      <div class="single-detail single-detail--hero">
+      <div
+        class="single-detail single-detail--hero"
+        :class="{ 'single-detail--with-lore': loreHtml }"
+      >
         <!-- Preview grande (PNG del render); fallback con el nombre si no hay -->
         <div class="single-detail__preview">
           <img v-if="item.preview" class="single-detail__image" :src="item.preview" :alt="name" />
           <span v-else class="single-detail__fallback">{{ name }}</span>
         </div>
+
+        <!-- Trasfondo: tarjeta SIN título con el rich del wysiwyg, arriba a
+             la derecha de la imagen ocupando las dos columnas -->
+        <InfoBlock v-if="loreHtml" class="single-detail__lore">
+          <div class="rich-content" v-html="loreHtml" />
+        </InfoBlock>
 
         <InfoBlock class="single-detail__basic" :title="t('singles.hero.basicInfo')">
           <dl class="info-list">
@@ -232,11 +249,11 @@ watch(
       </InfoBlock>
     </BlockShell>
 
-    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte
-         gris por defecto del CRM al 15%) -->
+    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
+         de tarjeta DINÁMICO del tema: token:surface resuelto por BlockShell) -->
     <BlockQuote
       v-if="quoteHtml"
-      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: '#64748B' }"
+      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: 'token:surface' }"
     />
 
     <!-- Relateds de héroes ALEATORIOS (bloque related del CRM), excluyendo

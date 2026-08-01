@@ -5,6 +5,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { ChevronDown, FileDown, LayoutDashboard, LogIn, LogOut, Menu } from '@lucide/vue'
 import { LocaleSelector, MotorBadge, ThemeSelector } from '@edc-motor/ui'
+import { adminUrl } from '@/lib/adminUrl'
 import { api } from '@/lib/api'
 import { DOWNLOAD_PATHS } from '@/router/downloads'
 import { DICE_ROLLER_PATHS, LIFE_COUNTER_PATHS, TOOLS_PATHS } from '@/router/tools'
@@ -166,8 +167,8 @@ function isActive(entry: NavEntry): boolean {
 
 const userInitial = computed(() => auth.user?.name?.charAt(0)?.toUpperCase() ?? '?')
 
-// Enlace a la administración (solo admin/editor). URL por env (kontuan).
-const adminUrl = (import.meta.env.VITE_ADMIN_URL as string | undefined) || 'http://localhost:5174'
+// Enlace a la administración (solo admin/editor). URL por env (kontuan),
+// compartida con los botones "editar en administración" (lib/adminUrl).
 const canAccessAdmin = computed(() => auth.user?.can_access_admin === true)
 
 /**

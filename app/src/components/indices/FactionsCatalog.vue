@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { IndexToolbar } from '@edc-motor/ui'
 import { api } from '@/lib/api'
+import AdminEditButton from '@/components/AdminEditButton.vue'
 import FactionCard from '@/components/FactionCard.vue'
 import type { EntitySection } from '@/entities/registry'
 import { useFiltersQuery } from '@/entities/filtersQuery'
@@ -113,16 +114,21 @@ watch(
   <p v-else-if="!items.length" class="factions-index__empty">{{ t('list.empty') }}</p>
 
   <div v-else class="factions-index__grid">
-    <RouterLink
-      v-for="faction in items"
-      :key="faction.id"
-      class="factions-index__item"
-      :to="{
-        name: 'entity-detail',
-        params: { locale: locales.current, section: segment, slug: faction.slug },
-      }"
-    >
-      <FactionCard :faction="faction" />
-    </RouterLink>
+    <!-- Cada tarjeta en su slot relativo: el botón de editar en
+         administración (solo editor/admin logueado) flota en su esquina
+         superior derecha, el equivalente del añadir flotante de los
+         catálogos de previews -->
+    <div v-for="faction in items" :key="faction.id" class="factions-index__slot">
+      <RouterLink
+        class="factions-index__item"
+        :to="{
+          name: 'entity-detail',
+          params: { locale: locales.current, section: segment, slug: faction.slug },
+        }"
+      >
+        <FactionCard :faction="faction" />
+      </RouterLink>
+      <AdminEditButton :section="section.key" :slug="faction.slug" class="css-card-admin" />
+    </div>
   </div>
 </template>

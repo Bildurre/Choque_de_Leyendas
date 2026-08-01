@@ -438,6 +438,12 @@
       "right": "Eskuinera",
       "justify": "Justifikatuta"
     },
+    "background": {
+      "token:surface": "Txartelaren hondoa",
+      "token:surface-2": "2. gainazala",
+      "token:surface-3": "3. gainazala",
+      "token:accent-500": "Azentua"
+    },
     "order": {
       "recent": "Berrienak",
       "cost": "Kostuaren arabera",

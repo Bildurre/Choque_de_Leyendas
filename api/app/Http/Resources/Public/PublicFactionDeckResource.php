@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Public;
 
+use App\Http\Resources\Public\Concerns\HasPermanentPdf;
 use App\Models\Card;
 use App\Models\Hero;
 use App\Support\PublicCatalogItem;
@@ -19,6 +20,8 @@ use Illuminate\Support\Collection;
  */
 class PublicFactionDeckResource extends JsonResource
 {
+    use HasPermanentPdf;
+
     public function toArray(Request $request): array
     {
         $locale = app()->getLocale();
@@ -37,6 +40,9 @@ class PublicFactionDeckResource extends JsonResource
             // Fondo de página: icono del mazo o el de su facción primaria
             'image' => $this->imageUrl() ?: $this->factions->first()?->imageUrl(),
             'epic_quote' => $this->getTranslation('epic_quote', $locale),
+            // PDF permanente del mazo (export 'faction-deck' del gestor del
+            // admin), si está generado: {id, url} — botón de descarga del single.
+            'pdf' => $this->permanentPdf('faction-deck', $locale),
             'game_mode' => $this->gameMode ? [
                 'id' => $this->gameMode->id,
                 'name' => $this->gameMode->getTranslation('name', $locale),

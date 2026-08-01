@@ -2,11 +2,12 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { ArrowLeft } from '@lucide/vue'
+import { ArrowLeft, FileDown } from '@lucide/vue'
 import { PageBackground, useHead } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { sectionFor } from '@/entities/registry'
 import AddToCollection from '@/components/AddToCollection.vue'
+import AdminEditButton from '@/components/AdminEditButton.vue'
 import IndexHeader from '@/components/IndexHeader.vue'
 import { useLocalesStore } from '@/stores/locales'
 import { useSiteStore } from '@/stores/site'
@@ -58,6 +59,13 @@ const headerBlock = computed(() =>
     ? section.value.blockHeader(item.value, locales.current)
     : null,
 )
+
+// PDF permanente de la entidad (facción/mazo lo exponen si su export está
+// generado en el gestor del admin): botón de descarga en la fila superior.
+const pdf = computed(() => (item.value?.pdf as { id: number; url: string } | null) ?? null)
+
+// Slug del locale activo para el botón "editar en administración".
+const itemSlug = computed(() => item.value?.slug[locales.current] ?? null)
 
 /** La descripción sin HTML: solo alimenta la meta description del head. */
 const description = computed(() => {
@@ -156,10 +164,13 @@ watch(
           :background="headerBlock?.tint || undefined"
         >
           <template #top>
-            <!-- Fila superior: el «volver» a la izquierda y, si la sección
-                 es coleccionable, el añadir a la colección a la derecha (en
-                 estrecho el botón pierde el texto por CSS y queda el icono,
-                 con su aria-label/title) -->
+            <!-- Fila superior: el «volver» a la izquierda y las acciones a
+                 la derecha — añadir a la colección (secciones
+                 coleccionables), descargar su PDF permanente (facción/mazo,
+                 solo si está generado) y editar en administración (solo
+                 editor/admin logueado, pestaña nueva). En estrecho los
+                 botones pierden el texto por CSS y queda el icono, con su
+                 aria-label/title -->
             <div class="entity-single__topbar">
               <!-- Volver al índice: la página del CRM cuyo slug es el segmento -->
               <RouterLink
@@ -168,13 +179,35 @@ watch(
               >
                 <ArrowLeft :size="14" /> {{ t('detail.back') }}
               </RouterLink>
-              <AddToCollection
-                v-if="section.collectible"
-                :id="item.id"
-                class="entity-single__action"
-                :entity="section.collectible"
-                label
-              />
+              <div class="entity-single__actions">
+                <AddToCollection
+                  v-if="section.collectible"
+                  :id="item.id"
+                  class="entity-single__action"
+                  :entity="section.collectible"
+                  label
+                />
+                <!-- Descarga directa (Content-Disposition attachment) en
+                     pestaña nueva: no se abandona la SPA -->
+                <a
+                  v-if="pdf"
+                  class="entity-single__action entity-single__pdf"
+                  :href="pdf.url"
+                  target="_blank"
+                  rel="noopener"
+                  :title="t('detail.downloadPdf')"
+                  :aria-label="t('detail.downloadPdf')"
+                >
+                  <FileDown :size="20" />
+                  <span>{{ t('detail.downloadPdf') }}</span>
+                </a>
+                <AdminEditButton
+                  :section="section.key"
+                  :slug="itemSlug"
+                  class="entity-single__action"
+                  label
+                />
+              </div>
             </div>
           </template>
         </IndexHeader>

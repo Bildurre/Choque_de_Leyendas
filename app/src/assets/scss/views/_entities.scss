@@ -17,13 +17,35 @@
   }
 
   // Fila superior del header-bloque (slot `top` del IndexHeader): el
-  // «volver» a la izquierda y la acción de añadir a la derecha, en la
-  // MISMA fila.
+  // «volver» a la izquierda y las acciones (añadir / descargar PDF /
+  // editar en admin) a la derecha, en la MISMA fila.
   &__topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: $space-3;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-4;
+  }
+
+  // Descarga del PDF permanente (facción/mazo): mismo lenguaje que el
+  // .add-to-collection de al lado — icono en color de texto, acento al
+  // hover, sin caja.
+  &__pdf {
+    display: inline-flex;
+    align-items: center;
+    gap: $space-1;
+    color: $text-2;
+    text-decoration: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover { color: $accent-500; }
   }
 
   &__back {
@@ -38,10 +60,11 @@
     &:hover { color: $accent-500; }
   }
 
-  // En ESTRECHO el botón de añadir pierde el texto y queda solo el icono
-  // (corte explícito de container query sobre `content`, como el resto de
-  // cortes de los singles); el nombre accesible lo conservan el
-  // aria-label/title del propio botón.
+  // En ESTRECHO los botones de acción (añadir / descargar PDF / editar en
+  // admin) pierden el texto y queda solo el icono (corte explícito de
+  // container query sobre `content`, como el resto de cortes de los
+  // singles); el nombre accesible lo conservan el aria-label/title de cada
+  // botón.
   @container content (max-width: #{$bp-md - 1px}) {
     &__action span { display: none; }
   }
@@ -56,4 +79,22 @@
     container-type: inline-size;
     container-name: content;
   }
+}
+
+// Botón "editar en administración" (AdminEditButton, solo editor/admin
+// logueado): junto al añadir/descargar de los headers de single y flotante
+// sobre las tarjetas de los índices. Mismo lenguaje que .add-to-collection:
+// icono en color de texto, acento al hover, sin caja.
+.admin-edit {
+  display: inline-flex;
+  align-items: center;
+  gap: $space-1;
+  color: $text-2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.15s ease;
+
+  &:hover { color: $accent-500; }
+
+  &.has-label { font-weight: 600; }
 }

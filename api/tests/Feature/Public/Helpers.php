@@ -16,6 +16,8 @@ use App\Models\HeroAbility;
 use App\Models\HeroClass;
 use App\Models\HeroRace;
 use App\Models\HeroSuperclass;
+use Edc\Core\Pdf\Models\GeneratedPdf;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -256,6 +258,27 @@ if (! function_exists('ensurePublicApiRoutes')) {
         $mode->save();
 
         return $mode;
+    }
+
+    /**
+     * PDF PERMANENTE generado (listo) de una entidad, como lo deja el gestor
+     * de PDF del admin: registro ready con fichero ficticio. Para probar el
+     * campo `pdf` de las fichas públicas sin encolar la generación real.
+     */
+    function publicPermanentPdf(Model $source, string $type, array $overrides = []): GeneratedPdf
+    {
+        return GeneratedPdf::create([
+            'type' => $type,
+            'source_type' => $source->getMorphClass(),
+            'source_id' => $source->getKey(),
+            'locale' => $overrides['locale'] ?? 'es',
+            'layout' => 'card',
+            'path' => $overrides['path'] ?? 'pdfs/test.pdf',
+            'filename' => $overrides['filename'] ?? 'test',
+            'status' => $overrides['status'] ?? GeneratedPdf::STATUS_READY,
+            'is_permanent' => $overrides['is_permanent'] ?? true,
+            'generated_at' => now(),
+        ]);
     }
 
     /** Mazo mínimo (publicado por defecto). */

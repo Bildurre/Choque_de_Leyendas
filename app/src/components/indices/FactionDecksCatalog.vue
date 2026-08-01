@@ -4,6 +4,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import { IndexToolbar, MultiSelect } from '@edc-motor/ui'
 import { api } from '@/lib/api'
+import AdminEditButton from '@/components/AdminEditButton.vue'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
 import CatalogFilters, { type CatalogSelection } from '@/components/indices/CatalogFilters.vue'
 import type { EntitySection } from '@/entities/registry'
@@ -217,16 +218,21 @@ watch(() => locales.current, loadFilters, { immediate: true })
   <p v-else-if="!items.length" class="decks-index__empty">{{ t('list.empty') }}</p>
 
   <div v-else class="decks-index__grid">
-    <RouterLink
-      v-for="deck in items"
-      :key="deck.id"
-      class="decks-index__item"
-      :to="{
-        name: 'entity-detail',
-        params: { locale: locales.current, section: segment, slug: deck.slug },
-      }"
-    >
-      <FactionDeckCard :deck="deck" />
-    </RouterLink>
+    <!-- Cada tarjeta en su slot relativo: el botón de editar en
+         administración (solo editor/admin logueado) flota en su esquina
+         superior derecha, el equivalente del añadir flotante de los
+         catálogos de previews -->
+    <div v-for="deck in items" :key="deck.id" class="decks-index__slot">
+      <RouterLink
+        class="decks-index__item"
+        :to="{
+          name: 'entity-detail',
+          params: { locale: locales.current, section: segment, slug: deck.slug },
+        }"
+      >
+        <FactionDeckCard :deck="deck" />
+      </RouterLink>
+      <AdminEditButton :section="section.key" :slug="deck.slug" class="css-card-admin" />
+    </div>
   </div>
 </template>

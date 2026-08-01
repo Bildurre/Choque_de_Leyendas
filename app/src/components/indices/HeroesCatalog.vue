@@ -12,6 +12,7 @@ import {
 } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import AddToCollection from '@/components/AddToCollection.vue'
+import AdminEditButton from '@/components/AdminEditButton.vue'
 import CatalogFilters, { type CatalogSelection } from '@/components/indices/CatalogFilters.vue'
 import type { EntitySection } from '@/entities/registry'
 import { csvField, useFiltersQuery } from '@/entities/filtersQuery'
@@ -313,9 +314,16 @@ watch(() => locales.current, loadFilters, { immediate: true })
     {{ t('catalog.loading') }}
   </p>
   <PreviewGrid v-else :items="items" :loading="loading" :empty-text="t('catalog.empty')">
-    <!-- Añadir a la colección "para imprimir", flotante sobre la carta -->
-    <template v-if="section.collectible" #actions="{ item }">
-      <AddToCollection :id="item.id" class="catalog-index__add" :entity="section.collectible" />
+    <!-- Añadir a la colección "para imprimir" y editar en administración
+         (solo editor/admin logueado), flotantes sobre la carta -->
+    <template #actions="{ item }">
+      <AddToCollection
+        v-if="section.collectible"
+        :id="item.id"
+        class="catalog-index__add"
+        :entity="section.collectible"
+      />
+      <AdminEditButton :section="section.key" :slug="item.slug" class="catalog-index__admin" />
     </template>
   </PreviewGrid>
 

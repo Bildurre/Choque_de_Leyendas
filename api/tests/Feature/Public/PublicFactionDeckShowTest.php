@@ -63,6 +63,21 @@ it('muestra el mazo publicado con cartas (copias), héroes y estadísticas', fun
         ->and($data['stats']['heroes_by_superclass'])->toBe([['name' => 'Luchador', 'count' => 1]]);
 });
 
+it('expone el PDF permanente generado del mazo', function () {
+    $deck = publicDeck();
+
+    // Sin PDF generado: null (el single no pinta botón de descarga)
+    expect($this->getJson('/api/faction-decks/mazo-inicial')->json('data.pdf'))->toBeNull();
+
+    $pdf = publicPermanentPdf($deck, 'faction-deck', ['locale' => 'es']);
+    // Los temporales (colecciones a la carta) no cuentan
+    publicPermanentPdf($deck, 'faction-deck', ['locale' => 'es', 'is_permanent' => false]);
+
+    $data = $this->getJson('/api/faction-decks/mazo-inicial')->json('data.pdf');
+    expect($data['id'])->toBe($pdf->id)
+        ->and($data['url'])->toContain("/api/pdfs/{$pdf->id}/download");
+});
+
 it('resuelve el slug en cualquier locale', function () {
     publicDeck();
 

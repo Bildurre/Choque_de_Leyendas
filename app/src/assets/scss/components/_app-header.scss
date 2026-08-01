@@ -23,8 +23,15 @@ $header-row2: 46px;
   // justo bajo el techo de la barra).
   --app-right-sidebar-top: var(--header-row1);
 
+  // Techo de la imagen de fondo de página (PageBackground de @edc-motor/ui):
+  // su top queda justo bajo la cabecera fija. La altura del header es
+  // ESTABLE por CSS (fila 1 siempre; + la fila de navegación en ancho), así
+  // que basta definir la variable aquí — sin medir nada con JS.
+  --page-background-top: var(--header-row1);
+
   @media (min-width: 900px) {
     --app-right-sidebar-top: calc(var(--header-row1) + #{$header-row2});
+    --page-background-top: calc(var(--header-row1) + #{$header-row2});
   }
 }
 

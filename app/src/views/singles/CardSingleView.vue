@@ -11,13 +11,14 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 
 // Single de carta (portado de public/cards/show.blade.php del viejo), ya en
 // el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
-// EntityDetailView, que pinta el header-bloque (título = nombre, SUBTÍTULO
-// = trasfondo en texto plano, tinte del color de la facción, volver +
-// añadir dentro) y el fondo/head SEO; aquí cada sección es un `block` a lo
-// ancho: ficha en fila (preview | detalles | ataque, con cortes explícitos
-// de container query), efectos DEBAJO a todo el ancho, cita épica (bloque
-// quote del CRM, tinte gris — el lore ya no tiene sección: vive en el
-// subtítulo) y relateds de cartas ALEATORIAS (bloque related del CRM). Los
+// EntityDetailView, que pinta el header-bloque (título = nombre, tinte del
+// color de la facción, volver + acciones dentro) y el fondo/head SEO; aquí
+// cada sección es un `block` a lo ancho: ficha en grid (preview a la
+// izquierda; a su derecha ARRIBA la tarjeta SIN título con el trasfondo
+// rich del wysiwyg a las dos columnas, y debajo detalles | ataque, con
+// cortes explícitos de container query), efectos DEBAJO a todo el ancho,
+// cita épica (bloque quote del CRM, fondo de tarjeta DINÁMICO
+// token:surface) y relateds de cartas ALEATORIAS (bloque related del CRM). Los
 // values con filtro en el catálogo de cartas enlazan al índice FILTRADO
 // (query params de useFiltersQuery, patrón del viejo recuperado); la
 // superclase del tipo enlaza al índice de HÉROES filtrado por ella.
@@ -151,6 +152,10 @@ const hasEffects = computed(() =>
   Boolean(props.item.restriction || props.item.effect || props.item.granted_ability),
 )
 
+// Trasfondo del wysiwyg TAL CUAL (rich, saneado en servidor): tarjeta sin
+// título arriba a la derecha de la preview.
+const loreHtml = computed(() => props.item.lore_text?.trim() ?? '')
+
 // La cita puede llegar como texto plano (el viejo la envolvía en <p>).
 const quoteHtml = computed(() => {
   const quote = props.item.epic_quote?.trim() ?? ''
@@ -172,17 +177,27 @@ watch(
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="card-single single-sections">
-    <!-- Ficha EN FILA mientras quepa (columnas fijas, cortes explícitos en
-         _singles.scss): preview | detalles | ataque — a la derecha de la
-         imagen SOLO esas dos cards; los efectos bajan a su propio bloque -->
+    <!-- Ficha en grid (columnas fijas, cortes explícitos en _singles.scss):
+         preview a la izquierda; a su derecha el trasfondo (tarjeta sin
+         título, dos columnas) y debajo detalles | ataque; los efectos bajan
+         a su propio bloque -->
 
     <BlockShell :settings="{ width: 'wide', align: 'left' }">
-      <div class="single-detail single-detail--card">
+      <div
+        class="single-detail single-detail--card"
+        :class="{ 'single-detail--with-lore': loreHtml }"
+      >
         <!-- Preview grande (PNG del render); fallback con el nombre si no hay -->
         <div class="single-detail__preview">
           <img v-if="item.preview" class="single-detail__image" :src="item.preview" :alt="name" />
           <span v-else class="single-detail__fallback">{{ name }}</span>
         </div>
+
+        <!-- Trasfondo: tarjeta SIN título con el rich del wysiwyg, arriba a
+             la derecha de la imagen ocupando las dos columnas -->
+        <InfoBlock v-if="loreHtml" class="single-detail__lore">
+          <div class="rich-content" v-html="loreHtml" />
+        </InfoBlock>
 
         <InfoBlock class="single-detail__basic" :title="t('singles.card.basicInfo')">
           <dl class="info-list">
@@ -351,11 +366,11 @@ watch(
       </InfoBlock>
     </BlockShell>
 
-    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte
-         gris por defecto del CRM al 15%) -->
+    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
+         de tarjeta DINÁMICO del tema: token:surface resuelto por BlockShell) -->
     <BlockQuote
       v-if="quoteHtml"
-      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: '#64748B' }"
+      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: 'token:surface' }"
     />
 
     <!-- Relateds de cartas ALEATORIAS (bloque related del CRM), excluyendo

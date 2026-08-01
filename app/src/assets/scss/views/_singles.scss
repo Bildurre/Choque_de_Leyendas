@@ -12,28 +12,48 @@
 // re-resuelve pistas y tiembla (mismo criterio que .form-row del motor).
 // Mobile-first.
 
-// --- Ritmo vertical compacto de la ficha ---
-// Entre el header-bloque y la cita todo (ficha, pestañas+grids,
-// habilidades, lore…) se percibe como UN único bloque: los `block`
-// intermedios del single reducen su padding vertical a la MITAD del ritmo
-// de _blocks.scss del motor (56px → 28px; 40px → 20px en estrecho). La cita
-// (block--quote) y los relateds (block--related) conservan el ritmo normal.
-// La clase la llevan los contenedores de los cuatro singles.
+// --- Ritmo vertical de la ficha: todo lo de entre el header y la cita se
+// comporta como UN único bloque ---
+// Los `block` intermedios del single llevan de padding vertical la MITAD
+// del gap de los grids internos ($space-6 → 12px por lado): el salto entre
+// dos secciones (2×12 = 24px) iguala el gap entre cards de un mismo grid,
+// homogéneo también en estrecho. El "bloque único" recupera el ritmo
+// completo de bloque del CRM (_blocks.scss: 56px; 40px en estrecho) en sus
+// bordes: padding-top en la PRIMERA sección tras el header y
+// padding-bottom en la ÚLTIMA antes de la cita/relateds. La cita
+// (block--quote) y los relateds (block--related) conservan su ritmo normal.
 .single-sections > .block:not(.block--quote):not(.block--related) {
-  padding-block: ($space-8 + $space-6) * 0.5; // 28px
+  padding-block: $space-6 * 0.5; // 12px = mitad del gap de los grids
 
-  @container content (max-width: #{$bp-sm - 1px}) {
-    padding-block: ($space-8 + $space-2) * 0.5; // 20px
+  // Primera sección tras el header-bloque
+  &:first-child {
+    padding-top: $space-8 + $space-6; // 56px, ritmo de bloque del CRM
+
+    @container content (max-width: #{$bp-sm - 1px}) {
+      padding-top: $space-8 + $space-2; // 40px
+    }
+  }
+
+  // Última sección intermedia (la que no va seguida de OTRA intermedia:
+  // detrás solo quedan cita/relateds, ambos condicionales — por eso el
+  // :has, que aguanta cualquier combinación de bloques presentes)
+  &:not(:has(~ .block:not(.block--quote):not(.block--related))) {
+    padding-bottom: $space-8 + $space-6; // 56px
+
+    @container content (max-width: #{$bp-sm - 1px}) {
+      padding-bottom: $space-8 + $space-2; // 40px
+    }
   }
 }
 
-// --- Ficha de carta / héroe: preview + info-blocks en fila mientras quepan ---
-// (La ficha del mazo va aparte, en masonry: .info-blocks-masonry de
-// _entity-show.scss.)
+// --- Ficha de carta / héroe: preview + trasfondo + info-blocks en grid ---
+// (La ficha del mazo va aparte: .deck-detail-grid de _entity-show.scss.)
 .single-detail {
   display: grid;
   gap: $space-6;
-  align-items: start;
+  // stretch (default explícito): las cards de una misma fila igualan
+  // altura; la preview no es card (su flex interno ancla la imagen arriba).
+  align-items: stretch;
 
   &__preview {
     grid-area: preview;
@@ -43,6 +63,7 @@
   }
 
   // Áreas de los info-blocks (las reparten los modificadores de abajo)
+  &__lore { grid-area: lore; }
   &__basic { grid-area: basic; }
   &__attrs { grid-area: attrs; }
   &__attack { grid-area: attack; }
@@ -80,9 +101,10 @@
   }
 }
 
-// Héroe: preview | información básica | atributos. Tres columnas fijas de
-// $bp-lg para arriba; en el tramo medio la preview manda a la izquierda y
-// las dos cards apilan a su derecha; en estrecho, todo apilado.
+// Héroe: preview a la izquierda; información básica | atributos a su
+// derecha. Tres columnas fijas de $bp-lg para arriba; en el tramo medio la
+// preview manda a la izquierda y las dos cards apilan a su derecha; en
+// estrecho, todo apilado.
 .single-detail--hero {
   grid-template-areas:
     'preview'
@@ -100,11 +122,38 @@
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
     grid-template-areas: 'preview basic attrs';
   }
+
+  // Con trasfondo: la tarjeta (sin título) va ARRIBA a la derecha de la
+  // imagen ocupando las dos columnas; debajo, básica | atributos. En el
+  // tramo medio apila a la derecha (trasfondo primero) y en estrecho va
+  // justo tras la preview.
+  &.single-detail--with-lore {
+    grid-template-areas:
+      'preview'
+      'lore'
+      'basic'
+      'attrs';
+
+    @container content (min-width: #{$bp-md}) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas:
+        'preview lore'
+        'preview basic'
+        'preview attrs';
+    }
+
+    @container content (min-width: #{$bp-lg}) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+      grid-template-areas:
+        'preview lore lore'
+        'preview basic attrs';
+    }
+  }
 }
 
-// Carta: preview | detalles | ataque — a la derecha de la imagen quedan
-// SOLO esas dos cards (los efectos bajan a su propio bloque a todo el
-// ancho, como las habilidades del héroe). Mismos cortes que el héroe.
+// Carta: preview a la izquierda; detalles | ataque a su derecha — SOLO esas
+// dos cards (los efectos bajan a su propio bloque a todo el ancho, como las
+// habilidades del héroe). Mismos cortes que el héroe.
 .single-detail--card {
   grid-template-areas:
     'preview'
@@ -121,6 +170,31 @@
   @container content (min-width: #{$bp-lg}) {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
     grid-template-areas: 'preview basic attack';
+  }
+
+  // Con trasfondo: tarjeta sin título arriba a la derecha, dos columnas
+  // (mismos cortes que el héroe).
+  &.single-detail--with-lore {
+    grid-template-areas:
+      'preview'
+      'lore'
+      'basic'
+      'attack';
+
+    @container content (min-width: #{$bp-md}) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas:
+        'preview lore'
+        'preview basic'
+        'preview attack';
+    }
+
+    @container content (min-width: #{$bp-lg}) {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+      grid-template-areas:
+        'preview lore lore'
+        'preview basic attack';
+    }
   }
 }
 

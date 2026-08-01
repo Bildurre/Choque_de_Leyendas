@@ -1,6 +1,7 @@
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, ref, watch, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { Layers, Swords } from '@lucide/vue'
 import {
   BaseTabs,
   BlockQuote,
@@ -18,21 +19,21 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 
 // Single de mazo (portado de public/faction-decks/show.blade.php del viejo),
 // ya en el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
-// EntityDetailView, que pinta el header-bloque (título = nombre, SUBTÍTULO
-// = descripción en texto plano, tinte GRIS por defecto — un mazo mezcla
-// facciones — y volver dentro; sin añadir: los mazos no son coleccionables)
-// y el fondo/head SEO. Aquí cada sección es un `block` a lo ancho: ficha en
-// MASONRY (columnas CSS 3 → 2 → 1 con cortes explícitos de container
-// query, .info-blocks-masonry) con las SEIS cards sin fusionar —
-// información básica, coste de las cartas, distribución de dados, tipos de
-// cartas, superclases de héroes y clases de héroes — y sin la tarjeta CSS
-// del mazo, pestañas héroes | cartas (cartas con su badge "xN" de copias;
-// los héroes no llevan copias: asignado = 1), cita épica (bloque quote del
-// CRM, tinte gris — la descripción ya no tiene sección: vive en el
-// subtítulo) y relateds de mazos (tarjetas CSS, bloque related del CRM).
-// El modo de juego enlaza al ÍNDICE de mazos FILTRADO por ese modo (query
-// `mode` de useFiltersQuery). El botón de descarga de PDF del viejo no se
-// porta: no hay endpoint público equivalente (desviación).
+// EntityDetailView, que pinta el header-bloque (título = nombre, tinte GRIS
+// por defecto — un mazo mezcla facciones — y volver + acciones dentro; sin
+// añadir: los mazos no son coleccionables; SÍ descarga de su PDF permanente
+// si está generado, campo `pdf` del payload) y el fondo/head SEO. Aquí cada
+// sección es un `block` a lo ancho: ficha en GRID de TRES columnas fijas
+// (.deck-detail-grid, cortes explícitos de container query a 2 → 1) con
+// filas fijas — fila 1 la DESCRIPCIÓN (tarjeta sin título, rich del
+// wysiwyg, a las tres columnas), fila 2 información básica | coste de las
+// cartas | tipos de cartas, fila 3 distribución de dados | clases de héroes
+// | superclases de héroes —, pestañas héroes | cartas CON icono (cartas con
+// su badge "xN" de copias; los héroes no llevan copias: asignado = 1), cita
+// épica (bloque quote del CRM, fondo de tarjeta DINÁMICO token:surface) y
+// relateds de mazos (tarjetas CSS, bloque related del CRM). El modo de
+// juego enlaza al ÍNDICE de mazos FILTRADO por ese modo (query `mode` de
+// useFiltersQuery).
 interface FactionRef {
   id: number
   name: string
@@ -98,12 +99,30 @@ const SYMBOLS: Array<{ key: 'R' | 'G' | 'B'; type: 'red' | 'green' | 'blue' }> =
 ]
 const symbols = computed(() => SYMBOLS.filter(({ key }) => props.item.stats.symbols[key] > 0))
 
-// Pestañas del BaseTabs del motor: héroes | cartas (la vieja pestaña de
-// información desapareció — sus info-blocks viven en la ficha superior).
-const tabs = computed<Array<{ key: Tab; label: string; count?: number }>>(() => [
-  { key: 'heroes', label: t('singles.deck.tabs.heroes'), count: props.item.stats.total_heroes },
-  { key: 'cards', label: t('singles.deck.tabs.cards'), count: props.item.stats.total_cards },
+// Pestañas del BaseTabs del motor: héroes | cartas, con la iconografía del
+// admin de CdL (héroes → Swords, cartas → Layers); en estrecho el motor
+// deja solo el icono (texto visually-hidden + title).
+const tabs = computed<Array<{ key: Tab; label: string; count?: number; icon?: Component }>>(() => [
+  {
+    key: 'heroes',
+    label: t('singles.deck.tabs.heroes'),
+    count: props.item.stats.total_heroes,
+    icon: Swords,
+  },
+  {
+    key: 'cards',
+    label: t('singles.deck.tabs.cards'),
+    count: props.item.stats.total_cards,
+    icon: Layers,
+  },
 ])
+
+// Descripción del wysiwyg TAL CUAL (rich, saneada en servidor): tarjeta sin
+// título en la primera fila de la ficha, a las tres columnas.
+const descriptionHtml = computed(() => {
+  const map = props.item.description ?? {}
+  return (map[props.locale] || Object.values(map)[0] || '').trim()
+})
 
 function setTab(key: string) {
   tab.value = key as Tab
@@ -154,14 +173,21 @@ watch(
 )
 </script>
 
+<!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="deck-single single-sections">
-    <!-- Ficha en MASONRY: columnas CSS (multicol, no grid) con las SEIS
-         cards sin fusionar fluyendo de arriba abajo (3 → 2 → 1 columnas,
-         cortes explícitos en _entity-show.scss), sin la tarjeta CSS del
-         mazo, al ancho wide de bloque -->
+    <!-- Ficha en GRID de tres columnas fijas con filas fijas (cortes
+         explícitos a 2 → 1 en _entity-show.scss): fila 1 la descripción a
+         las tres columnas; fila 2 información básica | coste de las cartas
+         | tipos de cartas; fila 3 distribución de dados | clases |
+         superclases. Al ancho wide de bloque -->
     <BlockShell :settings="{ width: 'wide', align: 'left' }">
-      <div class="info-blocks-masonry">
+      <div class="deck-detail-grid">
+        <!-- Descripción: tarjeta SIN título con el rich del wysiwyg -->
+        <InfoBlock v-if="descriptionHtml" class="deck-detail-grid__description">
+          <div class="rich-content" v-html="descriptionHtml" />
+        </InfoBlock>
+
         <InfoBlock :title="t('singles.deck.basicInfo')">
           <dl class="info-list">
             <dt>{{ t('singles.deck.name') }}</dt>
@@ -234,6 +260,15 @@ watch(
           </dl>
         </InfoBlock>
 
+        <InfoBlock v-if="stats.cards_by_type.length" :title="t('singles.deck.cardTypes')">
+          <dl class="info-list">
+            <template v-for="row in stats.cards_by_type" :key="row.name">
+              <dt>{{ row.name }}</dt>
+              <dd>{{ row.copies }}</dd>
+            </template>
+          </dl>
+        </InfoBlock>
+
         <InfoBlock v-if="symbols.length" :title="t('singles.deck.symbolDistribution')">
           <dl class="info-list">
             <template v-for="symbol in symbols" :key="symbol.key">
@@ -243,11 +278,11 @@ watch(
           </dl>
         </InfoBlock>
 
-        <InfoBlock v-if="stats.cards_by_type.length" :title="t('singles.deck.cardTypes')">
+        <InfoBlock v-if="stats.heroes_by_class.length" :title="t('singles.deck.heroClasses')">
           <dl class="info-list">
-            <template v-for="row in stats.cards_by_type" :key="row.name">
+            <template v-for="row in stats.heroes_by_class" :key="row.name">
               <dt>{{ row.name }}</dt>
-              <dd>{{ row.copies }}</dd>
+              <dd>{{ row.count }}</dd>
             </template>
           </dl>
         </InfoBlock>
@@ -258,15 +293,6 @@ watch(
         >
           <dl class="info-list">
             <template v-for="row in stats.heroes_by_superclass" :key="row.name">
-              <dt>{{ row.name }}</dt>
-              <dd>{{ row.count }}</dd>
-            </template>
-          </dl>
-        </InfoBlock>
-
-        <InfoBlock v-if="stats.heroes_by_class.length" :title="t('singles.deck.heroClasses')">
-          <dl class="info-list">
-            <template v-for="row in stats.heroes_by_class" :key="row.name">
               <dt>{{ row.name }}</dt>
               <dd>{{ row.count }}</dd>
             </template>
@@ -332,11 +358,11 @@ watch(
       </PreviewGrid>
     </BlockShell>
 
-    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte
-         gris por defecto del CRM al 15%) -->
+    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
+         de tarjeta DINÁMICO del tema: token:surface resuelto por BlockShell) -->
     <BlockQuote
       v-if="quoteHtml"
-      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: '#64748B' }"
+      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: 'token:surface' }"
     />
 
     <!-- Relateds de mazos (tarjetas CSS), excluyendo el actual: bloque

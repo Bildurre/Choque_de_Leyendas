@@ -6,33 +6,36 @@
 // del héroe usan el propio .info-list, mismo formato que la card de
 // información). Mobile-first; los acentos salen de la paleta del tema.
 
-// Ficha del mazo en masonry: columnas CSS (multicol, no grid) — las seis
-// tarjetas fluyen de arriba abajo por columnas sin huecos entre alturas
-// dispares. Recuento FIJO de columnas con cortes EXPLÍCITOS de container
-// query sobre `content`: 1 en estrecho → 2 en medio ($bp-md) → 3 en ancho
-// ($bp-lg); nada de column-width automático (mismo criterio anti-temblor
-// que .form-row).
-.info-blocks-masonry {
-  column-count: 1;
-  column-gap: $space-4;
+// Ficha del mazo: GRID de tres columnas fijas con filas fijas — fila 1 la
+// descripción (a las tres columnas), fila 2 información básica | coste de
+// las cartas | tipos de cartas, fila 3 distribución de dados | clases |
+// superclases. Cortes EXPLÍCITOS de container query sobre `content` (3 →
+// 2 en medio → 1 en estrecho, con reflow natural del grid; nada de
+// auto-fit, criterio anti-temblor de .form-row). Las cards de una misma
+// fila igualan altura (stretch).
+.deck-detail-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: $space-6;
+  align-items: stretch;
 
-  > * {
-    break-inside: avoid;
-    margin-bottom: $space-4;
-  }
+  // La descripción (tarjeta sin título) siempre a todo el ancho del grid
+  &__description { grid-column: 1 / -1; }
 
   @container content (min-width: #{$bp-md}) {
-    column-count: 2;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   @container content (min-width: #{$bp-lg}) {
-    column-count: 3;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
 // Bloque de información: tarjeta semitransparente sobre el fondo de página
+// (transparencia alta: la imagen de fondo se ve a través; el blur mantiene
+// la legibilidad)
 .info-block {
-  background: color-mix(in srgb, $surface 72%, transparent);
+  background: color-mix(in srgb, $surface 58%, transparent);
   backdrop-filter: blur(8px);
   border: 1px solid $border;
   border-radius: $radius-lg;
@@ -130,10 +133,11 @@
   }
 }
 
-// Tarjeta de habilidad (pasiva o activa)
+// Tarjeta de habilidad (pasiva o activa), con la misma transparencia
+// ganada que el .info-block que la envuelve
 .ability-item {
   padding: $space-4;
-  background: color-mix(in srgb, $surface-2 82%, transparent);
+  background: color-mix(in srgb, $surface-2 68%, transparent);
   border-radius: $radius-md;
 
   &:not(:last-child) {
