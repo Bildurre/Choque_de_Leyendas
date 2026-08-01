@@ -26,6 +26,12 @@ export interface EntitySection {
   /** Clave del PreviewRegistry si la entidad puede añadirse a la colección
    *  "para imprimir" (botón ＋ en el índice y el detalle). */
   collectible?: string
+  /** Cabecera del single como BLOQUE header del CRM (solo el título, con el
+   *  «volver» dentro) en vez del banner genérico, y el cuerpo a lo ancho
+   *  para que la ficha apile bloques. Devuelve el tinte del fondo a partir
+   *  del ítem cargado (p. ej. el color de la entidad; null = gris del
+   *  bloque por defecto). Migración single a single: de momento facción. */
+  blockHeader?: (item: Record<string, unknown>) => { tint?: string | null }
 }
 
 // Secciones públicas del juego. Los segmentos por locale casan con el
@@ -52,6 +58,8 @@ export const entitySections: EntitySection[] = [
     endpoint: '/factions',
     paths: { es: 'facciones', en: 'factions' }, // eu: 'fakzioak'
     detail: FactionSingleView,
+    // Header-bloque del CRM tintado con el color de la propia facción.
+    blockHeader: (item) => ({ tint: typeof item.color === 'string' ? item.color : null }),
   },
   {
     key: 'decks',

@@ -7,6 +7,7 @@ import { PageBackground, useHead } from '@edc-motor/ui'
 import { api } from '@/lib/api'
 import { sectionFor } from '@/entities/registry'
 import AddToCollection from '@/components/AddToCollection.vue'
+import IndexHeader from '@/components/IndexHeader.vue'
 import { useLocalesStore } from '@/stores/locales'
 import { useSiteStore } from '@/stores/site'
 
@@ -15,6 +16,15 @@ import { useSiteStore } from '@/stores/site'
 // acción de añadir a la colección, y debajo la ficha (el componente de
 // detalle de la sección). El slug vale en cualquier locale y se redirige a
 // la canónica (DC-12).
+//
+// Las secciones que declaran `blockHeader` en el registry (migración al
+// lenguaje de bloques del CRM, single a single; hoy facción) sustituyen ese
+// banner por el bloque header del CRM (IndexHeader: mismo markup que
+// BlockHeader del motor) con SOLO el título (sin subtítulo), el «volver»
+// dentro y el tinte que devuelva la sección (p. ej. el color de la
+// facción); el cuerpo pasa a ancho completo (modificador --blocks) para que
+// la ficha apile secciones `block` que gestionan su propia anchura, igual
+// que una página del CRM.
 interface EntityPayload {
   id: number
   name?: Record<string, string>
@@ -41,6 +51,12 @@ const name = computed(() => {
   const map = item.value?.name ?? {}
   return map[locales.current] || Object.values(map)[0] || ''
 })
+
+// Cabecera de bloque del CRM (si la sección la declara): su tinte de fondo
+// sale del ítem ya cargado; null deja el gris por defecto de IndexHeader.
+const headerBlock = computed(() =>
+  item.value && section.value?.blockHeader ? section.value.blockHeader(item.value) : null,
+)
 
 /** Subtítulo del banner: la descripción sin HTML, ENTERA (sin truncar). */
 const subtitle = computed(() => {
@@ -109,10 +125,13 @@ watch([segment, slug, () => locales.current], load, { immediate: true })
       <!-- La imagen de la entidad, de fondo de página (patrón CDL) -->
       <PageBackground :image="(item.image as string) ?? null" />
 
-      <!-- Banner: volver + nombre + subtítulo, y la acción de añadir -->
-      <header class="entity-single__banner">
-        <div class="entity-single__banner-inner">
-          <div class="entity-single__heading">
+      <!-- Sección migrada al lenguaje de bloques: header-bloque del CRM
+           (solo título, volver dentro, tinte de la sección) y cuerpo a lo
+           ancho — cada sección de la ficha es un `block` que gestiona su
+           propia anchura, como en PageView. -->
+      <main v-if="headerBlock" class="entity-single__body entity-single__body--blocks">
+        <IndexHeader :title="name" :background="headerBlock.tint || undefined">
+          <template #top>
             <!-- Volver al índice: la página del CRM cuyo slug es el segmento -->
             <RouterLink
               class="entity-single__back"
@@ -120,9 +139,7 @@ watch([segment, slug, () => locales.current], load, { immediate: true })
             >
               <ArrowLeft :size="14" /> {{ t('detail.back') }}
             </RouterLink>
-            <h1 class="entity-single__title">{{ name }}</h1>
-            <p v-if="subtitle" class="entity-single__subtitle">{{ subtitle }}</p>
-          </div>
+          </template>
           <AddToCollection
             v-if="section.collectible"
             :id="item.id"
@@ -130,13 +147,41 @@ watch([segment, slug, () => locales.current], load, { immediate: true })
             :entity="section.collectible"
             label
           />
-        </div>
-      </header>
-
-      <!-- La ficha: el componente de detalle de la sección -->
-      <main class="entity-single__body">
+        </IndexHeader>
         <component :is="section.detail" :item="item" :locale="locales.current" />
       </main>
+
+      <!-- Resto de secciones: banner genérico + cuerpo acotado -->
+      <template v-else>
+        <!-- Banner: volver + nombre + subtítulo, y la acción de añadir -->
+        <header class="entity-single__banner">
+          <div class="entity-single__banner-inner">
+            <div class="entity-single__heading">
+              <!-- Volver al índice: la página del CRM cuyo slug es el segmento -->
+              <RouterLink
+                class="entity-single__back"
+                :to="{ name: 'page', params: { locale: locales.current, slug: segment } }"
+              >
+                <ArrowLeft :size="14" /> {{ t('detail.back') }}
+              </RouterLink>
+              <h1 class="entity-single__title">{{ name }}</h1>
+              <p v-if="subtitle" class="entity-single__subtitle">{{ subtitle }}</p>
+            </div>
+            <AddToCollection
+              v-if="section.collectible"
+              :id="item.id"
+              class="entity-single__action"
+              :entity="section.collectible"
+              label
+            />
+          </div>
+        </header>
+
+        <!-- La ficha: el componente de detalle de la sección -->
+        <main class="entity-single__body">
+          <component :is="section.detail" :item="item" :locale="locales.current" />
+        </main>
+      </template>
     </template>
   </div>
 </template>

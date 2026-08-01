@@ -5,6 +5,7 @@ import { useI18n } from 'vue-i18n'
 import {
   BaseTabs,
   BlockQuote,
+  BlockShell,
   PreviewGrid,
   type CatalogItem,
   type PreviewGridItem,
@@ -16,13 +17,17 @@ import CssCardsRelated from '@/components/singles/CssCardsRelated.vue'
 import { applyOgMeta } from '@/entities/singleOg'
 import { sectionDetailRoute } from '@/entities/singleRoutes'
 
-// Single de facción (portado de public/factions/show.blade.php del viejo):
-// cabecera con el emblema en su marco de color + lore completo, pestañas
-// héroes / cartas / mazos con contadores de publicados (aquí en cliente:
-// la API entrega las tres listas completas), cita épica y relateds de
-// facciones (tarjetas CSS, sin catálogo de previews). Lo monta
-// EntityDetailView (banner, fondo, head SEO). El botón de descarga de PDF
-// del viejo no se porta: no hay endpoint público equivalente (desviación).
+// Single de facción (portado de public/factions/show.blade.php del viejo),
+// ya en el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
+// EntityDetailView, que pinta el header-bloque (título = nombre, tinte del
+// color de la facción, volver dentro) y el fondo/head SEO; aquí cada
+// sección es un `block` a lo ancho (block--w-wide + block__inner, como en
+// PageView): emblema en su marco de color + lore completo, pestañas héroes
+// / cartas / mazos con contadores de publicados (en cliente: la API entrega
+// las tres listas completas), cita épica (bloque quote del CRM, tinte gris)
+// y relateds de facciones (tarjetas CSS, sin catálogo de previews, bloque
+// related del CRM). El botón de descarga de PDF del viejo no se porta: no
+// hay endpoint público equivalente (desviación).
 interface DeckRow extends FactionDeckCardData {
   id: number
   slug: string
@@ -109,75 +114,86 @@ watch(
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="faction-single" :style="style">
-    <!-- Cabecera: emblema con el marco del color de la facción + lore -->
-    <section class="faction-single__header">
-      <div class="faction-single__emblem">
-        <FactionCard
-          :faction="{ name, color: item.color, text_is_dark: item.text_is_dark, icon: item.icon }"
+    <!-- Emblema con el marco del color de la facción + lore: mismo
+         contenido de siempre, al ancho del sistema de bloques del CRM -->
+    <BlockShell :settings="{ width: 'wide', align: 'left' }">
+      <div class="faction-single__header">
+        <div class="faction-single__emblem">
+          <FactionCard
+            :faction="{ name, color: item.color, text_is_dark: item.text_is_dark, icon: item.icon }"
+          />
+        </div>
+        <div
+          v-if="item.lore_text"
+          class="faction-single__lore rich-content"
+          v-html="item.lore_text"
         />
       </div>
-      <div
-        v-if="item.lore_text"
-        class="faction-single__lore rich-content"
-        v-html="item.lore_text"
-      />
-    </section>
+    </BlockShell>
 
-    <!-- Pestañas héroes / cartas / mazos con contadores (BaseTabs del motor) -->
-    <BaseTabs
-      class="faction-single__tabs"
-      :tabs="tabs"
-      :model-value="tab"
-      @update:model-value="setTab"
+    <!-- Pestañas héroes / cartas / mazos con contadores (BaseTabs del
+         motor), también al ancho de bloque -->
+    <BlockShell :settings="{ width: 'wide', align: 'left' }">
+      <BaseTabs
+        class="faction-single__tabs"
+        :tabs="tabs"
+        :model-value="tab"
+        @update:model-value="setTab"
+      />
+
+      <PreviewGrid
+        v-if="tab === 'heroes'"
+        :items="heroItems"
+        :empty-text="t('singles.faction.noHeroes')"
+        class="single-grid"
+      >
+        <template #actions="{ item: hero }">
+          <AddToCollection :id="hero.id" class="single-grid__add" entity="hero" />
+        </template>
+      </PreviewGrid>
+
+      <PreviewGrid
+        v-else-if="tab === 'cards'"
+        :items="cardItems"
+        :empty-text="t('singles.faction.noCards')"
+        class="single-grid"
+      >
+        <template #actions="{ item: card }">
+          <AddToCollection :id="card.id" class="single-grid__add" entity="card" />
+        </template>
+      </PreviewGrid>
+
+      <template v-else>
+        <p v-if="!item.decks.length" class="faction-single__empty">
+          {{ t('singles.faction.noDecks') }}
+        </p>
+        <div v-else class="css-related-grid faction-single__decks">
+          <component
+            :is="deckRoute(deck) ? RouterLink : 'div'"
+            v-for="deck in item.decks"
+            :key="deck.id"
+            class="css-related-grid__item"
+            v-bind="deckRoute(deck) ? { to: deckRoute(deck) } : {}"
+          >
+            <FactionDeckCard :deck="deck" />
+          </component>
+        </div>
+      </template>
+    </BlockShell>
+
+    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte
+         gris por defecto del CRM al 15%) -->
+    <BlockQuote
+      v-if="quoteHtml"
+      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: '#64748B' }"
     />
 
-    <PreviewGrid
-      v-if="tab === 'heroes'"
-      :items="heroItems"
-      :empty-text="t('singles.faction.noHeroes')"
-      class="single-grid"
-    >
-      <template #actions="{ item: hero }">
-        <AddToCollection :id="hero.id" class="single-grid__add" entity="hero" />
-      </template>
-    </PreviewGrid>
-
-    <PreviewGrid
-      v-else-if="tab === 'cards'"
-      :items="cardItems"
-      :empty-text="t('singles.faction.noCards')"
-      class="single-grid"
-    >
-      <template #actions="{ item: card }">
-        <AddToCollection :id="card.id" class="single-grid__add" entity="card" />
-      </template>
-    </PreviewGrid>
-
-    <template v-else>
-      <p v-if="!item.decks.length" class="faction-single__empty">
-        {{ t('singles.faction.noDecks') }}
-      </p>
-      <div v-else class="css-related-grid faction-single__decks">
-        <component
-          :is="deckRoute(deck) ? RouterLink : 'div'"
-          v-for="deck in item.decks"
-          :key="deck.id"
-          class="css-related-grid__item"
-          v-bind="deckRoute(deck) ? { to: deckRoute(deck) } : {}"
-        >
-          <FactionDeckCard :deck="deck" />
-        </component>
-      </div>
-    </template>
-
-    <!-- Cita épica (bloque quote del motor, centrado como el viejo) -->
-    <BlockQuote v-if="quoteHtml" :settings="{ quote: quoteHtml, align: 'center' }" />
-
-    <!-- Relateds de facciones (tarjetas CSS), excluyendo la actual -->
+    <!-- Relateds de facciones (tarjetas CSS), excluyendo la actual: bloque
+         related del CRM, con título (h2) y botón al índice -->
     <CssCardsRelated
       kind="faction"
       :exclude-id="item.id"
-      :subtitle="t('singles.faction.relatedSubtitle')"
+      :title="t('singles.faction.relatedTitle')"
       :button-label="t('singles.faction.relatedButton')"
     />
   </div>
