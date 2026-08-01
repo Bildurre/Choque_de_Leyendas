@@ -267,6 +267,7 @@
   },
   "singles": {
     "yes": "Sí",
+    "loreTitle": "Trasfondo",
     "attackTypes": {
       "physical": "Físico",
       "magical": "Mágico"
@@ -291,7 +292,7 @@
       "attackSubtype": "Subtipo de ataque",
       "area": "Área",
       "grantedAbility": "Habilidad",
-      "relatedSubtitle": "Descubre más cartas del juego",
+      "relatedTitle": "Descubre más cartas del juego",
       "relatedButton": "Ver todas las cartas"
     },
     "hero": {
@@ -318,7 +319,7 @@
       "abilities": "Habilidades",
       "passiveAbilities": "Habilidades pasivas",
       "activeAbilities": "Habilidades activas",
-      "relatedSubtitle": "Descubre más héroes del juego",
+      "relatedTitle": "Descubre más héroes del juego",
       "relatedButton": "Ver todos los héroes"
     },
     "faction": {
@@ -335,11 +336,11 @@
     },
     "deck": {
       "tabs": {
-        "info": "Información",
         "heroes": "Héroes",
         "cards": "Cartas"
       },
       "basicInfo": "Información básica",
+      "descriptionTitle": "Descripción",
       "name": "Nombre",
       "factions": "Facciones",
       "gameMode": "Modo de juego",
@@ -358,7 +359,7 @@
       "copies": "x{count}",
       "noHeroes": "Este mazo no tiene héroes",
       "noCards": "Este mazo no tiene cartas",
-      "relatedSubtitle": "Explora otros mazos del juego",
+      "relatedTitle": "Explora otros mazos del juego",
       "relatedButton": "Ver todos los mazos"
     }
   },

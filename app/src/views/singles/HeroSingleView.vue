@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { BlockQuote } from '@edc-motor/ui'
+import { BlockQuote, BlockShell } from '@edc-motor/ui'
 import AbilityCard, { type AbilityAttack } from '@/components/singles/AbilityCard.vue'
 import CatalogRelated from '@/components/singles/CatalogRelated.vue'
 import type { CostDie } from '@/components/singles/DiceCost.vue'
@@ -9,12 +9,16 @@ import InfoBlock from '@/components/singles/InfoBlock.vue'
 import { applyOgMeta } from '@/entities/singleOg'
 import { sectionDetailRoute } from '@/entities/singleRoutes'
 
-// Single de héroe (portado de public/heroes/show.blade.php del viejo): PNG
-// grande + "Información del Héroe", rejilla de atributos (+salud derivada),
-// habilidades (pasivas de clase y propia + activas con dados de coste),
-// cita épica y relateds de héroes. Lo monta EntityDetailView (banner, fondo,
-// añadir a la colección y head SEO). Los atributos van sin icono: la API
-// pública no expone los iconos del juego (desviación anotada).
+// Single de héroe (portado de public/heroes/show.blade.php del viejo), ya en
+// el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
+// EntityDetailView, que pinta el header-bloque (título = nombre, tinte del
+// color de la facción, volver + añadir dentro) y el fondo/head SEO; aquí
+// cada sección es un `block` a lo ancho: ficha en fila (preview |
+// información básica | atributos, con cortes explícitos de container
+// query), habilidades (pasivas de clase y propia + activas con dados de
+// coste), lore, cita épica (bloque quote del CRM, tinte gris) y relateds de
+// héroes ALEATORIOS (bloque related del CRM). Los atributos van sin icono:
+// la API pública no expone los iconos del juego (desviación anotada).
 interface FactionRef {
   id: number
   name: string
@@ -53,6 +57,7 @@ interface HeroPayload {
   class_passive: Passive | null
   passive: Passive | null
   abilities: HeroAbility[]
+  lore_text: string
   epic_quote: string
 }
 
@@ -60,7 +65,7 @@ const props = defineProps<{ item: HeroPayload; locale: string }>()
 
 const { t } = useI18n()
 
-// Orden de la rejilla del viejo: agilidad, mente, voluntad, fuerza,
+// Orden de la lista del viejo: agilidad, mente, voluntad, fuerza,
 // armadura y la salud derivada al final.
 const ATTRIBUTE_KEYS = ['agility', 'mental', 'will', 'strength', 'armor'] as const
 
@@ -91,17 +96,20 @@ watch(
 )
 </script>
 
+<!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="hero-single">
-    <section class="single-detail">
-      <!-- Preview grande (PNG del render); fallback con el nombre si no hay -->
-      <div class="single-detail__preview">
-        <img v-if="item.preview" class="single-detail__image" :src="item.preview" :alt="name" />
-        <span v-else class="single-detail__fallback">{{ name }}</span>
-      </div>
+    <!-- Ficha: preview | información básica | atributos, EN FILA mientras
+         quepan (columnas fijas, cortes explícitos en _singles.scss) -->
+    <BlockShell :settings="{ width: 'wide', align: 'left' }">
+      <div class="single-detail single-detail--hero">
+        <!-- Preview grande (PNG del render); fallback con el nombre si no hay -->
+        <div class="single-detail__preview">
+          <img v-if="item.preview" class="single-detail__image" :src="item.preview" :alt="name" />
+          <span v-else class="single-detail__fallback">{{ name }}</span>
+        </div>
 
-      <div class="single-detail__info">
-        <InfoBlock :title="t('singles.hero.basicInfo')">
+        <InfoBlock class="single-detail__basic" :title="t('singles.hero.basicInfo')">
           <dl class="info-list">
             <dt>{{ t('singles.hero.name') }}</dt>
             <dd>{{ name }}</dd>
@@ -138,26 +146,29 @@ watch(
           </dl>
         </InfoBlock>
 
-        <InfoBlock :title="t('singles.hero.attributes')">
-          <div class="attributes-grid">
-            <div v-for="key in ATTRIBUTE_KEYS" :key="key" class="attribute-item">
-              <span class="attribute-item__label">{{ t(`singles.hero.attribute.${key}`) }}</span>
-              <span class="attribute-item__value">{{ item.attributes[key] }}</span>
-            </div>
-            <div class="attribute-item attribute-item--health">
-              <span class="attribute-item__label">{{ t('singles.hero.attribute.health') }}</span>
-              <span class="attribute-item__value">{{ item.health }}</span>
-            </div>
-          </div>
+        <!-- Atributos "estilo admin": la lista compacta del panel del CRM
+             (heroes__stats), etiqueta + valor en dos columnas -->
+        <InfoBlock class="single-detail__attrs" :title="t('singles.hero.attributes')">
+          <ul class="attributes-list">
+            <li v-for="key in ATTRIBUTE_KEYS" :key="key">
+              <strong>{{ t(`singles.hero.attribute.${key}`) }}</strong
+              ><span>{{ item.attributes[key] }}</span>
+            </li>
+            <li class="attributes-list__health">
+              <strong>{{ t('singles.hero.attribute.health') }}</strong
+              ><span>{{ item.health }}</span>
+            </li>
+          </ul>
         </InfoBlock>
       </div>
+    </BlockShell>
 
-      <!-- Habilidades a todo el ancho (info-block--abilities del viejo) -->
-      <InfoBlock
-        v-if="hasPassives || item.abilities.length"
-        class="info-block--abilities"
-        :title="t('singles.hero.abilities')"
-      >
+    <!-- Habilidades (contenido intacto), al ancho wide de bloque -->
+    <BlockShell
+      v-if="hasPassives || item.abilities.length"
+      :settings="{ width: 'wide', align: 'left' }"
+    >
+      <InfoBlock :title="t('singles.hero.abilities')">
         <div v-if="hasPassives" class="abilities-section">
           <h3 class="abilities-section__subtitle">{{ t('singles.hero.passiveAbilities') }}</h3>
 
@@ -190,16 +201,28 @@ watch(
           />
         </div>
       </InfoBlock>
-    </section>
+    </BlockShell>
 
-    <!-- Cita épica (bloque quote del motor, centrado como el viejo) -->
-    <BlockQuote v-if="quoteHtml" :settings="{ quote: quoteHtml, align: 'center' }" />
+    <!-- Lore del héroe (wysiwyg): sección rich-content a lo ancho — con el
+         header nuevo ya no hay subtítulo en el banner, el lore vive aquí -->
+    <BlockShell v-if="item.lore_text" :settings="{ width: 'wide', align: 'left' }">
+      <h2 class="block__title">{{ t('singles.loreTitle') }}</h2>
+      <div class="single-lore rich-content" v-html="item.lore_text" />
+    </BlockShell>
 
-    <!-- Relateds de héroes, excluyendo el actual -->
+    <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, tinte
+         gris por defecto del CRM al 15%) -->
+    <BlockQuote
+      v-if="quoteHtml"
+      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: '#64748B' }"
+    />
+
+    <!-- Relateds de héroes ALEATORIOS (bloque related del CRM), excluyendo
+         el actual -->
     <CatalogRelated
       catalog-key="hero"
       :exclude-id="item.id"
-      :subtitle="t('singles.hero.relatedSubtitle')"
+      :title="t('singles.hero.relatedTitle')"
       :button-label="t('singles.hero.relatedButton')"
     />
   </div>

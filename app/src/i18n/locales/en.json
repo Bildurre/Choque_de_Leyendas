@@ -267,6 +267,7 @@
   },
   "singles": {
     "yes": "Yes",
+    "loreTitle": "Lore",
     "attackTypes": {
       "physical": "Physical",
       "magical": "Magical"
@@ -291,7 +292,7 @@
       "attackSubtype": "Attack subtype",
       "area": "Area",
       "grantedAbility": "Ability",
-      "relatedSubtitle": "Discover more game cards",
+      "relatedTitle": "Discover more game cards",
       "relatedButton": "View all cards"
     },
     "hero": {
@@ -318,7 +319,7 @@
       "abilities": "Abilities",
       "passiveAbilities": "Passive abilities",
       "activeAbilities": "Active abilities",
-      "relatedSubtitle": "Discover more game heroes",
+      "relatedTitle": "Discover more game heroes",
       "relatedButton": "View all heroes"
     },
     "faction": {
@@ -335,11 +336,11 @@
     },
     "deck": {
       "tabs": {
-        "info": "Information",
         "heroes": "Heroes",
         "cards": "Cards"
       },
       "basicInfo": "Basic Information",
+      "descriptionTitle": "Description",
       "name": "Name",
       "factions": "Factions",
       "gameMode": "Game mode",
@@ -358,7 +359,7 @@
       "copies": "x{count}",
       "noHeroes": "This deck has no heroes",
       "noCards": "This deck has no cards",
-      "relatedSubtitle": "Explore other game decks",
+      "relatedTitle": "Explore other game decks",
       "relatedButton": "View all decks"
     }
   },

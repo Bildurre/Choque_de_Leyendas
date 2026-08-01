@@ -267,6 +267,7 @@
   },
   "singles": {
     "yes": "Bai",
+    "loreTitle": "Kondaira",
     "attackTypes": {
       "physical": "Fisikoa",
       "magical": "Magikoa"
@@ -291,7 +292,7 @@
       "attackSubtype": "Erasoaren azpimota",
       "area": "Eremua",
       "grantedAbility": "Trebetasuna",
-      "relatedSubtitle": "Ezagutu jokoko karta gehiago",
+      "relatedTitle": "Ezagutu jokoko karta gehiago",
       "relatedButton": "Ikusi karta guztiak"
     },
     "hero": {
@@ -318,7 +319,7 @@
       "abilities": "Trebetasunak",
       "passiveAbilities": "Trebetasun pasiboak",
       "activeAbilities": "Trebetasun aktiboak",
-      "relatedSubtitle": "Ezagutu jokoko heroi gehiago",
+      "relatedTitle": "Ezagutu jokoko heroi gehiago",
       "relatedButton": "Ikusi heroi guztiak"
     },
     "faction": {
@@ -335,11 +336,11 @@
     },
     "deck": {
       "tabs": {
-        "info": "Informazioa",
         "heroes": "Heroiak",
         "cards": "Kartak"
       },
       "basicInfo": "Oinarrizko informazioa",
+      "descriptionTitle": "Deskribapena",
       "name": "Izena",
       "factions": "Fakzioak",
       "gameMode": "Joko modua",
@@ -358,7 +359,7 @@
       "copies": "x{count}",
       "noHeroes": "Sorta honek ez du heroirik",
       "noCards": "Sorta honek ez du kartarik",
-      "relatedSubtitle": "Arakatu jokoko beste sorta batzuk",
+      "relatedTitle": "Arakatu jokoko beste sorta batzuk",
       "relatedButton": "Ikusi sorta guztiak"
     }
   },

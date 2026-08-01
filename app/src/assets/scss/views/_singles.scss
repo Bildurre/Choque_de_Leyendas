@@ -1,37 +1,35 @@
 @use "tokens" as *;
 
-// Singles públicos del juego (cluster app-singles): ficha de carta y héroe
-// (_card-detail/_hero-detail del viejo), cabeceras de facción y mazo,
-// pestañas y rejillas. Se montan dentro de .entity-single__body (banner y
-// fondo los pone EntityDetailView). Mobile-first.
+// Singles públicos del juego (cluster app-singles): fichas de carta, héroe,
+// facción y mazo, pestañas y rejillas. Se montan dentro de
+// .entity-single__body (header-bloque y fondo los pone EntityDetailView).
+// Los CUATRO singles hablan ya el lenguaje de bloques del CRM: apilan
+// secciones `block` (cada una trae su ritmo vertical por padding-block y su
+// anchura por block__inner), así que sus contenedores no necesitan grid ni
+// gap propios. Las columnas internas van SIEMPRE con pistas fijas y cortes
+// EXPLÍCITOS de container query sobre el contenedor `content` (lo declara
+// .entity-single__body, como .page-view en el CRM): nada de auto-fit, que
+// re-resuelve pistas y tiembla (mismo criterio que .form-row del motor).
+// Mobile-first.
 
-// Contenedores de cada single: apilan ficha, cita y relateds. El de
-// FACCIÓN ya no está aquí: apila BLOQUES del CRM (cada `block` trae su
-// propio ritmo vertical por padding-block) y no necesita grid ni gap.
-.card-single,
-.hero-single,
-.deck-single {
-  display: grid;
-  gap: $space-6;
-}
-
-// --- Ficha de carta / héroe: preview + info en dos columnas en tablet ---
+// --- Ficha de carta / héroe: preview + info-blocks en fila mientras quepan ---
 .single-detail {
   display: grid;
-  grid-template-columns: 1fr;
   gap: $space-6;
   align-items: start;
 
-  @media (min-width: $bp-md) {
-    grid-template-columns: 1fr 2fr;
-    gap: $space-8;
-  }
-
   &__preview {
+    grid-area: preview;
     display: flex;
     justify-content: center;
     align-items: start;
   }
+
+  // Áreas de los info-blocks (las reparten los modificadores de abajo)
+  &__basic { grid-area: basic; }
+  &__attrs { grid-area: attrs; }
+  &__attack { grid-area: attack; }
+  &__effects { grid-area: effects; }
 
   // El PNG del render, grande (20rem → 25rem en tablet, como el viejo)
   &__image {
@@ -40,7 +38,7 @@
     height: auto;
     border-radius: $radius-md;
 
-    @media (min-width: $bp-md) {
+    @container content (min-width: #{$bp-md}) {
       max-width: 25rem;
     }
   }
@@ -60,39 +58,81 @@
     border: 1px dashed $border-strong;
     border-radius: $radius-md;
 
-    @media (min-width: $bp-md) {
+    @container content (min-width: #{$bp-md}) {
       max-width: 25rem;
     }
   }
+}
 
-  &__info {
-    display: flex;
-    flex-direction: column;
-    gap: $space-6;
-    min-width: 0;
+// Héroe: preview | información básica | atributos. Tres columnas fijas de
+// $bp-lg para arriba; en el tramo medio la preview manda a la izquierda y
+// las dos cards apilan a su derecha; en estrecho, todo apilado.
+.single-detail--hero {
+  grid-template-areas:
+    'preview'
+    'basic'
+    'attrs';
+
+  @container content (min-width: #{$bp-md}) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas:
+      'preview basic'
+      'preview attrs';
   }
 
-  // Las habilidades del héroe, a todo el ancho bajo las dos columnas
-  > .info-block--abilities {
-    grid-column: 1 / -1;
+  @container content (min-width: #{$bp-lg}) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
+    grid-template-areas: 'preview basic attrs';
+  }
+}
+
+// Carta: preview | detalles + ataque apilados | efectos. Los efectos (más
+// largos) ganan columna propia en ancho; el ataque, lista corta, acompaña a
+// los detalles. Mismos cortes que el héroe.
+.single-detail--card {
+  grid-template-areas:
+    'preview'
+    'basic'
+    'attack'
+    'effects';
+
+  @container content (min-width: #{$bp-md}) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    grid-template-areas:
+      'preview basic'
+      'preview attack'
+      'preview effects';
+  }
+
+  @container content (min-width: #{$bp-lg}) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr) minmax(0, 1.1fr);
+    grid-template-areas:
+      'preview basic effects'
+      'preview attack effects';
   }
 }
 
 // --- Pestañas de los singles (BaseTabs del motor) ---
-// El .tabs del ui-kit se adapta con container queries al contenedor "content":
-// aquí lo declaran los propios singles (fuera del admin no existe).
-.faction-single,
-.deck-single {
-  container-type: inline-size;
-  container-name: content;
-}
-
-// El gap del grid ya separa: sin el margen inferior propio del ui-kit.
+// El gap del block__inner ya separa: sin el margen inferior propio del ui-kit.
 .faction-single__tabs,
 .deck-single__tabs {
   margin-bottom: 0;
 }
 
+// Lore/trasfondo como sección propia (héroe, carta y mazo): texto del
+// wysiwyg a lo ancho del bloque.
+.single-lore {
+  color: $text-1;
+  line-height: $k-lh-body;
+
+  p {
+    margin: 0;
+
+    &:not(:last-child) {
+      margin-bottom: $space-3;
+    }
+  }
+}
 
 // --- Rejillas de previews dentro de los singles ---
 .single-grid {
@@ -143,9 +183,8 @@
   }
 }
 
-// --- Cabeceras de facción y mazo: emblema CSS + lore/descripción ---
-.faction-single,
-.deck-single {
+// --- Cabecera de facción: emblema CSS + lore ---
+.faction-single {
   &__header {
     display: grid;
     grid-template-columns: 1fr;
@@ -187,6 +226,31 @@
     padding: $space-8 0;
     text-align: center;
     color: $text-3;
+  }
+}
+
+// --- Ficha del mazo: tarjeta CSS a la izquierda + info-blocks a la derecha ---
+.deck-single {
+  &__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: $space-6;
+    align-items: start;
+
+    @container content (min-width: #{$bp-md}) {
+      grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
+      gap: $space-8;
+    }
+  }
+
+  &__emblem {
+    justify-self: center;
+    width: 100%;
+    max-width: 260px;
+
+    @container content (min-width: #{$bp-md}) {
+      justify-self: start;
+    }
   }
 }
 
