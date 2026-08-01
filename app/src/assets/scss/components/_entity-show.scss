@@ -1,32 +1,10 @@
 @use "tokens" as *;
 
 // Piezas de las fichas públicas de los singles (port del entity-show del
-// viejo — _info-block/_info-list/_info-link/_ability-card/_attribute-item/
-// _effect-section/_cost-display/_icon-dice — adaptado a los tokens del
-// motor). Mobile-first; los colores de acento salen de la paleta del tema.
-
-// Ficha del mazo en masonry: columnas CSS (multicol, no grid) — las
-// tarjetas (la foto del mazo incluida) fluyen de arriba abajo por columnas
-// sin huecos entre alturas dispares. Recuento FIJO de columnas con cortes
-// EXPLÍCITOS de container query sobre `content` (nada de column-width
-// automático: mismo criterio anti-temblor que .form-row).
-.info-blocks-masonry {
-  column-count: 1;
-  column-gap: $space-4;
-
-  > * {
-    break-inside: avoid;
-    margin-bottom: $space-4;
-  }
-
-  @container content (min-width: #{$bp-sm}) {
-    column-count: 2;
-  }
-
-  @container content (min-width: #{$bp-lg}) {
-    column-count: 3;
-  }
-}
+// viejo — _info-block/_info-list/_info-link/_ability-card/_effect-section/
+// _cost-display/_icon-dice — adaptado a los tokens del motor; los atributos
+// del héroe usan el propio .info-list, mismo formato que la card de
+// información). Mobile-first; los acentos salen de la paleta del tema.
 
 // Bloque de información: tarjeta semitransparente sobre el fondo de página
 .info-block {
@@ -43,6 +21,29 @@
     line-height: $k-lh-tight;
     color: $accent-500;
     font-family: var(--font-headings, inherit);
+  }
+
+  // Subtítulo interno de una card FUSIONADA (dos listas bajo un título,
+  // ficha del mazo): un escalón por debajo del título de la card.
+  &__subtitle {
+    margin: 0 0 $space-3;
+    font-size: $fs-16;
+    font-weight: $k-fw-semibold;
+    color: $text-1;
+    font-family: var(--font-headings, inherit);
+  }
+
+  // Sublistas de una card fusionada EN HORIZONTAL mientras quepan dentro de
+  // la card (el info-block es container): dos columnas fijas con corte
+  // explícito; en angosto, apiladas.
+  &__columns {
+    display: grid;
+    gap: $space-5;
+    align-items: start;
+
+    @container (min-width: 24rem) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 }
 
@@ -139,11 +140,9 @@
     margin-bottom: $space-4;
   }
 
-  // Los acentos del viejo (secundario/terciario) → acento y semántico info
-  &--passive {
-    border-left: 3px solid $info;
-  }
-
+  // Pasivas y activas con el MISMO borde de acento (el semántico info de
+  // las pasivas desentonaba con la paleta del tema)
+  &--passive,
   &--active {
     border-left: 3px solid $accent-500;
   }
@@ -212,42 +211,6 @@
     font-size: $fs-18;
     color: $text-1;
     font-family: var(--font-headings, inherit);
-  }
-}
-
-// Atributos del héroe "estilo admin": la lista compacta del panel del CRM
-// (heroes__stats de admin/_heroes.scss, misma estética replicada aquí — el
-// scss del admin no se importa): ul en rejilla de DOS columnas fijas, cada
-// li en flex space-between con la etiqueta en strong y el valor en span.
-// El viejo llevaba icono por atributo; la API pública no los expone.
-.attributes-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: $space-1 $space-3;
-  font-size: 0.85rem;
-
-  li {
-    display: flex;
-    justify-content: space-between;
-    gap: $space-2;
-    color: $text-2;
-
-    strong { font-weight: $k-fw-medium; }
-  }
-
-  // La salud derivada, destacada con el acento (rasgo del single público)
-  &__health span {
-    color: $accent-500;
-    font-weight: $k-fw-semibold;
-  }
-
-  // Card angosta: una columna (corte explícito sobre el propio info-block,
-  // que es container; mismo umbral que la rejilla vieja)
-  @container (max-width: 18rem) {
-    grid-template-columns: 1fr;
   }
 }
 

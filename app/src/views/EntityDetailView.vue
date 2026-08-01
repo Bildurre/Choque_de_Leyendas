@@ -69,16 +69,23 @@ const metaDescription = computed(() =>
   description.value.length > 180 ? `${description.value.slice(0, 180)}…` : description.value,
 )
 
+// Token de petición: si mientras carga una entidad el usuario ya navegó a
+// otra, la respuesta rezagada se descarta (no pisa a la vigente).
+let requestId = 0
+
 async function load() {
   if (!section.value) return
   const current = section.value
+  const request = ++requestId
   failed.value = false
 
   try {
     await site.load() // el head usa documentTitle: sin carreras en el prerender
     const { data } = await api.get(`${current.endpoint}/${slug.value}`)
+    if (request !== requestId) return
     item.value = data.data
   } catch {
+    if (request !== requestId) return
     failed.value = true
     return
   }
@@ -106,7 +113,19 @@ async function load() {
   })
 }
 
-watch([segment, slug, () => locales.current], load, { immediate: true })
+watch(
+  [segment, slug, () => locales.current],
+  ([newSegment, newSlug], old) => {
+    // Al cambiar de ENTIDAD (segmento o slug) se retira YA el payload viejo:
+    // la ruta cambia de sección al momento pero el fetch tarda, y el
+    // componente de detalle nuevo no debe renderizar ni un tick con el ítem
+    // de otra entidad (crash cruzado facción→héroe). El template cae al
+    // estado sin ficha hasta que llega el payload correcto.
+    if (!old || newSegment !== old[0] || newSlug !== old[1]) item.value = null
+    load()
+  },
+  { immediate: true },
+)
 </script>
 
 <template>
@@ -143,7 +162,10 @@ watch([segment, slug, () => locales.current], load, { immediate: true })
             label
           />
         </IndexHeader>
-        <component :is="section.detail" :item="item" :locale="locales.current" />
+        <!-- Keyado por sección: al saltar de un single a otro (facción →
+             héroe…) el componente de detalle se REMONTA limpio en vez de
+             reutilizarse con estado de la entidad anterior. -->
+        <component :is="section.detail" :key="section.key" :item="item" :locale="locales.current" />
       </main>
     </template>
   </div>

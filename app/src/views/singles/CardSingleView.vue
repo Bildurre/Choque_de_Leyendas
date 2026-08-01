@@ -7,18 +7,18 @@ import CatalogRelated from '@/components/singles/CatalogRelated.vue'
 import DiceCost, { type CostDie } from '@/components/singles/DiceCost.vue'
 import InfoBlock from '@/components/singles/InfoBlock.vue'
 import { applyOgMeta } from '@/entities/singleOg'
-import { sectionDetailRoute } from '@/entities/singleRoutes'
+import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 
 // Single de carta (portado de public/cards/show.blade.php del viejo), ya en
 // el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
 // EntityDetailView, que pinta el header-bloque (título = nombre, tinte del
 // color de la facción, volver + añadir dentro) y el fondo/head SEO; aquí
-// cada sección es un `block` a lo ancho: ficha en fila (preview | detalles +
-// ataque apilados | efectos, con cortes explícitos de container query),
-// lore, cita épica (bloque quote del CRM, tinte gris) y relateds de cartas
-// ALEATORIAS (bloque related del CRM). Los enlaces a índices filtrados del
-// viejo se portan como texto plano (el catálogo nuevo no tiene esos
-// filtros, CONVENTIONS2 §9.1).
+// cada sección es un `block` a lo ancho: ficha en fila (preview | detalles |
+// ataque, con cortes explícitos de container query), efectos DEBAJO a todo
+// el ancho, lore, cita épica (bloque quote del CRM, tinte gris) y relateds
+// de cartas ALEATORIAS (bloque related del CRM). Los values con filtro en el
+// catálogo de cartas enlazan al índice FILTRADO (query params de
+// useFiltersQuery, patrón del viejo recuperado).
 interface FactionRef {
   id: number
   name: string
@@ -44,17 +44,32 @@ interface CardPayload {
   preview: string | null
   faction: FactionRef | null
   type: {
+    id: number
     name: string
     superclass: string | null
     allows_subtypes: boolean
     is_equipment: boolean
   } | null
   subtype: string | null
-  equipment: { type: string | null; subtype: string | null; hands: number | null } | null
+  subtype_id: number | null
+  equipment: {
+    type: string | null
+    type_id: number | null
+    subtype: string | null
+    subtype_id: number | null
+    hands: number | null
+  } | null
   cost: string | null
   cost_parsed: CostDie[]
   is_unique: boolean
-  attack: { type: string | null; range: string | null; subtype: string | null; area: boolean }
+  attack: {
+    type: string | null
+    range: string | null
+    range_id: number | null
+    subtype: string | null
+    subtype_id: number | null
+    area: boolean
+  }
   effect: string
   restriction: string
   granted_ability: GrantedAbility | null
@@ -73,6 +88,47 @@ const name = computed(
 const factionRoute = computed(() =>
   props.item.faction ? sectionDetailRoute('factions', props.item.faction.slug, props.locale) : null,
 )
+
+// Los values de detalles y ataque enlazan al ÍNDICE de cartas FILTRADO: las
+// claves de query (type/subtype/equip/esub/range/atk/asub/area) son las que
+// lee el CardsCatalog vía useFiltersQuery, así el índice aterriza con el
+// filtro aplicado y su chip. Los filtros condicionales del catálogo (equipo
+// y ataque solo salen con un tipo que los permita marcado) viajan SIEMPRE
+// acompañados del tipo de la carta: sin él, el saneo del catálogo los
+// limpiaría al aterrizar. Sin filtro correspondiente no hay enlace:
+// superclase del tipo, manos, coste (gráfico de dados), única y la
+// habilidad otorgada (no hay índice público de habilidades).
+const cardsIndexRoute = (query: Record<string, string>) =>
+  sectionIndexRoute('cards', props.locale, query)
+
+const typeId = computed(() => props.item.type?.id ?? null)
+
+const typeRoute = computed(() =>
+  typeId.value != null ? cardsIndexRoute({ type: String(typeId.value) }) : null,
+)
+
+const subtypeRoute = computed(() =>
+  props.item.subtype_id != null
+    ? cardsIndexRoute({ subtype: String(props.item.subtype_id) })
+    : null,
+)
+
+/** Enlace a un filtro condicional (equipo/ataque): siempre con el tipo. */
+const conditionalRoute = (key: string, value: string | number | null) =>
+  typeId.value != null && value != null
+    ? cardsIndexRoute({ type: String(typeId.value), [key]: String(value) })
+    : null
+
+const equipmentTypeRoute = computed(() =>
+  conditionalRoute('equip', props.item.equipment?.type_id ?? null),
+)
+const equipmentSubtypeRoute = computed(() =>
+  conditionalRoute('esub', props.item.equipment?.subtype_id ?? null),
+)
+const attackRangeRoute = computed(() => conditionalRoute('range', props.item.attack.range_id))
+const attackTypeRoute = computed(() => conditionalRoute('atk', props.item.attack.type))
+const attackSubtypeRoute = computed(() => conditionalRoute('asub', props.item.attack.subtype_id))
+const areaRoute = computed(() => conditionalRoute('area', props.item.attack.area ? '1' : null))
 
 const hasAttack = computed(() => {
   const attack = props.item.attack
@@ -103,11 +159,11 @@ watch(
 
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
-  <div class="card-single">
+  <div class="card-single single-sections">
     <!-- Ficha EN FILA mientras quepa (columnas fijas, cortes explícitos en
-         _singles.scss): preview | detalles + ataque apilados | efectos — el
-         ataque acompaña a los detalles (ambos son listas cortas) y los
-         efectos, más largos, ganan columna propia -->
+         _singles.scss): preview | detalles | ataque — a la derecha de la
+         imagen SOLO esas dos cards; los efectos bajan a su propio bloque -->
+
     <BlockShell :settings="{ width: 'wide', align: 'left' }">
       <div class="single-detail single-detail--card">
         <!-- Preview grande (PNG del render); fallback con el nombre si no hay -->
@@ -138,14 +194,26 @@ watch(
 
             <template v-if="item.type">
               <dt>{{ t('singles.card.type') }}</dt>
-              <dd>{{ item.type.name }}</dd>
+              <dd>
+                <RouterLink v-if="typeRoute" class="info-link" :to="typeRoute">
+                  {{ item.type.name }}
+                </RouterLink>
+                <template v-else>{{ item.type.name }}</template>
+              </dd>
             </template>
 
             <template v-if="item.type?.allows_subtypes && item.subtype">
               <dt>{{ t('singles.card.subtype') }}</dt>
-              <dd>{{ item.subtype }}</dd>
+              <dd>
+                <RouterLink v-if="subtypeRoute" class="info-link" :to="subtypeRoute">
+                  {{ item.subtype }}
+                </RouterLink>
+                <template v-else>{{ item.subtype }}</template>
+              </dd>
             </template>
 
+            <!-- La superclase del tipo no enlaza: el catálogo de cartas no
+                 tiene filtro de superclase -->
             <template v-if="item.type?.superclass">
               <dt>{{ t('singles.card.superclass') }}</dt>
               <dd>{{ item.type.superclass }}</dd>
@@ -153,12 +221,26 @@ watch(
 
             <template v-if="item.equipment?.type">
               <dt>{{ t('singles.card.equipmentType') }}</dt>
-              <dd>{{ item.equipment.type }}</dd>
+              <dd>
+                <RouterLink v-if="equipmentTypeRoute" class="info-link" :to="equipmentTypeRoute">
+                  {{ item.equipment.type }}
+                </RouterLink>
+                <template v-else>{{ item.equipment.type }}</template>
+              </dd>
             </template>
 
             <template v-if="item.equipment?.subtype">
               <dt>{{ t('singles.card.equipmentSubtype') }}</dt>
-              <dd>{{ item.equipment.subtype }}</dd>
+              <dd>
+                <RouterLink
+                  v-if="equipmentSubtypeRoute"
+                  class="info-link"
+                  :to="equipmentSubtypeRoute"
+                >
+                  {{ item.equipment.subtype }}
+                </RouterLink>
+                <template v-else>{{ item.equipment.subtype }}</template>
+              </dd>
             </template>
 
             <template v-if="item.equipment?.hands">
@@ -183,52 +265,73 @@ watch(
           <dl class="info-list">
             <template v-if="item.attack.range">
               <dt>{{ t('singles.card.attackRange') }}</dt>
-              <dd>{{ item.attack.range }}</dd>
+              <dd>
+                <RouterLink v-if="attackRangeRoute" class="info-link" :to="attackRangeRoute">
+                  {{ item.attack.range }}
+                </RouterLink>
+                <template v-else>{{ item.attack.range }}</template>
+              </dd>
             </template>
 
             <template v-if="item.attack.type">
               <dt>{{ t('singles.card.attackType') }}</dt>
-              <dd>{{ t(`singles.attackTypes.${item.attack.type}`) }}</dd>
+              <dd>
+                <RouterLink v-if="attackTypeRoute" class="info-link" :to="attackTypeRoute">
+                  {{ t(`singles.attackTypes.${item.attack.type}`) }}
+                </RouterLink>
+                <template v-else>{{ t(`singles.attackTypes.${item.attack.type}`) }}</template>
+              </dd>
             </template>
 
             <template v-if="item.attack.subtype">
               <dt>{{ t('singles.card.attackSubtype') }}</dt>
-              <dd>{{ item.attack.subtype }}</dd>
+              <dd>
+                <RouterLink v-if="attackSubtypeRoute" class="info-link" :to="attackSubtypeRoute">
+                  {{ item.attack.subtype }}
+                </RouterLink>
+                <template v-else>{{ item.attack.subtype }}</template>
+              </dd>
             </template>
 
             <template v-if="item.attack.area">
               <dt>{{ t('singles.card.area') }}</dt>
-              <dd>{{ t('singles.yes') }}</dd>
+              <dd>
+                <RouterLink v-if="areaRoute" class="info-link" :to="areaRoute">
+                  {{ t('singles.yes') }}
+                </RouterLink>
+                <template v-else>{{ t('singles.yes') }}</template>
+              </dd>
             </template>
           </dl>
         </InfoBlock>
-
-        <InfoBlock
-          v-if="hasEffects"
-          class="single-detail__effects"
-          :title="t('singles.card.effects')"
-        >
-          <div v-if="item.restriction" class="effect-section">
-            <div class="effect-section__content rich-content" v-html="item.restriction" />
-          </div>
-
-          <div v-if="item.effect" class="effect-section">
-            <div class="effect-section__content rich-content" v-html="item.effect" />
-          </div>
-
-          <div v-if="item.granted_ability" class="effect-section">
-            <h3 class="effect-section__title">{{ t('singles.card.grantedAbility') }}</h3>
-            <AbilityCard
-              variant="active"
-              :name="item.granted_ability.name"
-              :description="item.granted_ability.description"
-              :cost="item.granted_ability.cost_parsed"
-              :attack="item.granted_ability.attack"
-              :area="item.granted_ability.area"
-            />
-          </div>
-        </InfoBlock>
       </div>
+    </BlockShell>
+
+    <!-- Efectos DEBAJO de la ficha, a todo el ancho (como las habilidades
+         en el single de héroe): a la derecha de la imagen quedan solo
+         detalles y ataque -->
+    <BlockShell v-if="hasEffects" :settings="{ width: 'wide', align: 'left' }">
+      <InfoBlock :title="t('singles.card.effects')">
+        <div v-if="item.restriction" class="effect-section">
+          <div class="effect-section__content rich-content" v-html="item.restriction" />
+        </div>
+
+        <div v-if="item.effect" class="effect-section">
+          <div class="effect-section__content rich-content" v-html="item.effect" />
+        </div>
+
+        <div v-if="item.granted_ability" class="effect-section">
+          <h3 class="effect-section__title">{{ t('singles.card.grantedAbility') }}</h3>
+          <AbilityCard
+            variant="active"
+            :name="item.granted_ability.name"
+            :description="item.granted_ability.description"
+            :cost="item.granted_ability.cost_parsed"
+            :attack="item.granted_ability.attack"
+            :area="item.granted_ability.area"
+          />
+        </div>
+      </InfoBlock>
     </BlockShell>
 
     <!-- Lore de la carta (wysiwyg): sección rich-content a lo ancho -->

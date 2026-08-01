@@ -26,7 +26,11 @@ class PublicCardResource extends JsonResource
             'image' => $this->imageUrl(),
             'preview' => $this->previewUrl($locale, 'card'),
             'faction' => PublicFactionItemResource::ref($this->faction, $locale),
+            // Los ids acompañan a los nombres: el single enlaza cada value
+            // con filtro al índice de cartas FILTRADO (query params del
+            // catálogo público)
             'type' => $type ? [
+                'id' => $type->id,
                 'name' => $type->getTranslation('name', $locale),
                 'superclass' => $type->heroSuperclass?->getTranslation('name', $locale),
                 'allows_subtypes' => (bool) $type->allows_subtypes,
@@ -36,9 +40,12 @@ class PublicCardResource extends JsonResource
             'subtype' => $type?->allows_subtypes
                 ? $this->cardSubtype?->getTranslation('name', $locale)
                 : null,
+            'subtype_id' => $type?->allows_subtypes ? $this->cardSubtype?->id : null,
             'equipment' => $type?->is_equipment ? [
                 'type' => $this->equipmentType?->getTranslation('name', $locale),
+                'type_id' => $this->equipmentType?->id,
                 'subtype' => $this->equipmentSubtype?->getTranslation('name', $locale),
+                'subtype_id' => $this->equipmentSubtype?->id,
                 'hands' => $this->hands,
             ] : null,
             'cost' => $this->cost,
@@ -48,7 +55,9 @@ class PublicCardResource extends JsonResource
                 // La clave (physical|magical) se localiza en el front
                 'type' => $this->attack_type,
                 'range' => $this->attackRange?->getTranslation('name', $locale),
+                'range_id' => $this->attackRange?->id,
                 'subtype' => $this->attackSubtype?->getTranslation('name', $locale),
+                'subtype_id' => $this->attackSubtype?->id,
                 'area' => (bool) $this->area,
             ],
             'effect' => $this->getTranslation('effect', $locale),

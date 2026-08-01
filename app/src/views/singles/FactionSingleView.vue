@@ -113,7 +113,7 @@ watch(
 
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
-  <div class="faction-single" :style="style">
+  <div class="faction-single single-sections" :style="style">
     <!-- Emblema con el marco del color de la facción + lore: mismo
          contenido de siempre, al ancho del sistema de bloques del CRM -->
     <BlockShell :settings="{ width: 'wide', align: 'left' }">

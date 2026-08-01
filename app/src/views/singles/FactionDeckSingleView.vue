@@ -22,14 +22,18 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 // EntityDetailView, que pinta el header-bloque (título = nombre, tinte GRIS
 // por defecto — un mazo mezcla facciones — y volver dentro; sin añadir: los
 // mazos no son coleccionables) y el fondo/head SEO. Aquí cada sección es un
-// `block` a lo ancho: ficha con la tarjeta CSS del mazo + la rejilla de
-// info-blocks del viejo A LA DERECHA (básica, coste, dados, tipos, clases;
-// antes vivía en la pestaña «Información», ya retirada), pestañas héroes |
-// cartas (cartas con su badge "xN" de copias; los héroes no llevan copias:
-// asignado = 1), descripción/lore tras las pestañas, cita épica (bloque
-// quote del CRM, tinte gris) y relateds de mazos (tarjetas CSS, bloque
-// related del CRM). El botón de descarga de PDF del viejo no se porta: no
-// hay endpoint público equivalente (desviación).
+// `block` a lo ancho: ficha en GRID como el resto de singles (tarjeta CSS
+// del mazo | información básica | tipos de cartas, cortes explícitos de
+// container query) con la fila de cards FUSIONADAS debajo («Coste y dados» =
+// coste de las cartas + distribución de dados; «Clases de héroes» =
+// superclases + clases, cada una con subtítulos internos sobre el patrón
+// InfoBlock), pestañas héroes | cartas (cartas con su badge "xN" de copias;
+// los héroes no llevan copias: asignado = 1), descripción/lore tras las
+// pestañas, cita épica (bloque quote del CRM, tinte gris) y relateds de
+// mazos (tarjetas CSS, bloque related del CRM). El modo de juego enlaza al
+// ÍNDICE de mazos FILTRADO por ese modo (query `mode` de useFiltersQuery).
+// El botón de descarga de PDF del viejo no se porta: no hay endpoint
+// público equivalente (desviación).
 interface FactionRef {
   id: number
   name: string
@@ -120,7 +124,13 @@ function setTab(key: string) {
   tab.value = key as Tab
 }
 
-const decksIndexRoute = computed(() => sectionIndexRoute('decks', props.locale))
+// El modo de juego enlaza al índice de mazos FILTRADO por ese modo (clave
+// de query `mode`, la que lee el FactionDecksCatalog vía useFiltersQuery).
+const gameModeRoute = computed(() =>
+  props.item.game_mode
+    ? sectionIndexRoute('decks', props.locale, { mode: String(props.item.game_mode.id) })
+    : null,
+)
 
 function factionRoute(faction: FactionRef) {
   return sectionDetailRoute('factions', faction.slug, props.locale)
@@ -161,16 +171,21 @@ watch(
 
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
-  <div class="deck-single">
-    <!-- Ficha en masonry: columnas CSS (no grid) con la foto del mazo como
-         primera tarjeta y los info-blocks fluyendo detrás, al ancho wide
-         de bloque -->
+  <div class="deck-single single-sections">
+    <!-- Ficha en GRID como el resto de singles: tarjeta CSS del mazo |
+         información básica | tipos de cartas (columnas fijas, cortes
+         explícitos en _singles.scss), y DEBAJO la fila de cards fusionadas
+         («Coste y dados» y «Clases de héroes», dos columnas mientras
+         quepan), todo al ancho wide de bloque -->
     <BlockShell :settings="{ width: 'wide', align: 'left' }">
-      <div class="info-blocks-masonry">
-        <div class="deck-single__emblem">
-          <FactionDeckCard :deck="deckCardData" />
+      <div class="single-detail single-detail--deck">
+        <div class="single-detail__preview">
+          <div class="deck-single__emblem">
+            <FactionDeckCard :deck="deckCardData" />
+          </div>
         </div>
-        <InfoBlock :title="t('singles.deck.basicInfo')">
+
+        <InfoBlock class="single-detail__basic" :title="t('singles.deck.basicInfo')">
           <dl class="info-list">
             <dt>{{ t('singles.deck.name') }}</dt>
             <dd>{{ name }}</dd>
@@ -195,7 +210,7 @@ watch(
             <template v-if="item.game_mode">
               <dt>{{ t('singles.deck.gameMode') }}</dt>
               <dd>
-                <RouterLink v-if="decksIndexRoute" class="info-link" :to="decksIndexRoute">
+                <RouterLink v-if="gameModeRoute" class="info-link" :to="gameModeRoute">
                   {{ item.game_mode.name }}
                 </RouterLink>
                 <template v-else>{{ item.game_mode.name }}</template>
@@ -224,34 +239,11 @@ watch(
           </dl>
         </InfoBlock>
 
-        <InfoBlock v-if="stats.cards_by_dice.length" :title="t('singles.deck.diceDistribution')">
-          <dl class="info-list">
-            <template v-for="row in stats.cards_by_dice" :key="row.dice">
-              <dt>
-                {{
-                  row.dice === 0
-                    ? t('singles.deck.noDice')
-                    : t('singles.deck.dice', { count: row.dice }, row.dice)
-                }}
-              </dt>
-              <dd>{{ row.copies }}</dd>
-            </template>
-
-            <dt>{{ t('singles.deck.average') }}</dt>
-            <dd>{{ stats.average_dice.toFixed(2) }}</dd>
-          </dl>
-        </InfoBlock>
-
-        <InfoBlock v-if="symbols.length" :title="t('singles.deck.symbolDistribution')">
-          <dl class="info-list">
-            <template v-for="symbol in symbols" :key="symbol.key">
-              <dt><DiceIcon :type="symbol.type" size="sm" /></dt>
-              <dd>{{ stats.symbols[symbol.key] }}</dd>
-            </template>
-          </dl>
-        </InfoBlock>
-
-        <InfoBlock v-if="stats.cards_by_type.length" :title="t('singles.deck.cardTypes')">
+        <InfoBlock
+          v-if="stats.cards_by_type.length"
+          class="single-detail__types"
+          :title="t('singles.deck.cardTypes')"
+        >
           <dl class="info-list">
             <template v-for="row in stats.cards_by_type" :key="row.name">
               <dt>{{ row.name }}</dt>
@@ -259,26 +251,76 @@ watch(
             </template>
           </dl>
         </InfoBlock>
+      </div>
 
+      <!-- Cards fusionadas, en fila mientras quepan (2 columnas fijas con
+           corte explícito): coste + dados y superclases + clases, cada
+           sublista con su subtítulo interno (patrón InfoBlock) -->
+      <div
+        v-if="stats.cards_by_dice.length || symbols.length || stats.heroes_by_superclass.length"
+        class="deck-single__merged"
+      >
         <InfoBlock
-          v-if="stats.heroes_by_superclass.length"
-          :title="t('singles.deck.heroSuperclasses')"
+          v-if="stats.cards_by_dice.length || symbols.length"
+          :title="t('singles.deck.costAndDice')"
         >
-          <dl class="info-list">
-            <template v-for="row in stats.heroes_by_superclass" :key="row.name">
-              <dt>{{ row.name }}</dt>
-              <dd>{{ row.count }}</dd>
-            </template>
-          </dl>
+          <div class="info-block__columns">
+            <section v-if="stats.cards_by_dice.length">
+              <h3 class="info-block__subtitle">{{ t('singles.deck.diceDistribution') }}</h3>
+              <dl class="info-list">
+                <template v-for="row in stats.cards_by_dice" :key="row.dice">
+                  <dt>
+                    {{
+                      row.dice === 0
+                        ? t('singles.deck.noDice')
+                        : t('singles.deck.dice', { count: row.dice }, row.dice)
+                    }}
+                  </dt>
+                  <dd>{{ row.copies }}</dd>
+                </template>
+
+                <dt>{{ t('singles.deck.average') }}</dt>
+                <dd>{{ stats.average_dice.toFixed(2) }}</dd>
+              </dl>
+            </section>
+
+            <section v-if="symbols.length">
+              <h3 class="info-block__subtitle">{{ t('singles.deck.symbolDistribution') }}</h3>
+              <dl class="info-list">
+                <template v-for="symbol in symbols" :key="symbol.key">
+                  <dt><DiceIcon :type="symbol.type" size="sm" /></dt>
+                  <dd>{{ stats.symbols[symbol.key] }}</dd>
+                </template>
+              </dl>
+            </section>
+          </div>
         </InfoBlock>
 
-        <InfoBlock v-if="stats.heroes_by_class.length" :title="t('singles.deck.heroClasses')">
-          <dl class="info-list">
-            <template v-for="row in stats.heroes_by_class" :key="row.name">
-              <dt>{{ row.name }}</dt>
-              <dd>{{ row.count }}</dd>
-            </template>
-          </dl>
+        <InfoBlock
+          v-if="stats.heroes_by_superclass.length || stats.heroes_by_class.length"
+          :title="t('singles.deck.heroClasses')"
+        >
+          <div class="info-block__columns">
+            <section v-if="stats.heroes_by_superclass.length">
+              <h3 class="info-block__subtitle">{{ t('singles.deck.bySuperclass') }}</h3>
+              <dl class="info-list">
+                <template v-for="row in stats.heroes_by_superclass" :key="row.name">
+                  <dt>{{ row.name }}</dt>
+                  <dd>{{ row.count }}</dd>
+                </template>
+              </dl>
+            </section>
+
+            <section v-if="stats.heroes_by_class.length">
+              <h3 class="info-block__subtitle">{{ t('singles.deck.byClass') }}</h3>
+              <dl class="info-list">
+                <template v-for="row in stats.heroes_by_class" :key="row.name">
+                  <dt>{{ row.name }}</dt>
+                  <dd>{{ row.count }}</dd>
+                </template>
+              </dl>
+            </section>
+          </div>
         </InfoBlock>
       </div>
     </BlockShell>

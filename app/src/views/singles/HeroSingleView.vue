@@ -7,7 +7,7 @@ import CatalogRelated from '@/components/singles/CatalogRelated.vue'
 import type { CostDie } from '@/components/singles/DiceCost.vue'
 import InfoBlock from '@/components/singles/InfoBlock.vue'
 import { applyOgMeta } from '@/entities/singleOg'
-import { sectionDetailRoute } from '@/entities/singleRoutes'
+import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 
 // Single de héroe (portado de public/heroes/show.blade.php del viejo), ya en
 // el LENGUAJE DE BLOQUES del CRM (blockHeader del registry): lo monta
@@ -49,9 +49,12 @@ interface HeroPayload {
   preview: string | null
   faction: FactionRef | null
   race: string | null
+  race_id: number | null
   gender: string | null
   class: string | null
+  class_id: number | null
   superclass: string | null
+  superclass_id: number | null
   attributes: { agility: number; mental: number; will: number; strength: number; armor: number }
   health: number
   class_passive: Passive | null
@@ -77,6 +80,17 @@ const factionRoute = computed(() =>
   props.item.faction ? sectionDetailRoute('factions', props.item.faction.slug, props.locale) : null,
 )
 
+// Raza / clase / superclase enlazan al ÍNDICE de héroes FILTRADO por su id:
+// las claves de query (race/class/superclass) son las que lee el
+// HeroesCatalog vía useFiltersQuery, así el índice aterriza con el filtro
+// aplicado y su chip. Género y nombre no enlazan (no son filtros).
+const indexFilterRoute = (key: string, id: number | null) =>
+  id != null ? sectionIndexRoute('heroes', props.locale, { [key]: String(id) }) : null
+
+const raceRoute = computed(() => indexFilterRoute('race', props.item.race_id))
+const classRoute = computed(() => indexFilterRoute('class', props.item.class_id))
+const superclassRoute = computed(() => indexFilterRoute('superclass', props.item.superclass_id))
+
 const hasPassives = computed(() => Boolean(props.item.class_passive || props.item.passive))
 
 const quoteHtml = computed(() => {
@@ -98,7 +112,7 @@ watch(
 
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
-  <div class="hero-single">
+  <div class="hero-single single-sections">
     <!-- Ficha: preview | información básica | atributos, EN FILA mientras
          quepan (columnas fijas, cortes explícitos en _singles.scss) -->
     <BlockShell :settings="{ width: 'wide', align: 'left' }">
@@ -126,7 +140,12 @@ watch(
 
             <template v-if="item.race">
               <dt>{{ t('singles.hero.race') }}</dt>
-              <dd>{{ item.race }}</dd>
+              <dd>
+                <RouterLink v-if="raceRoute" class="info-link" :to="raceRoute">
+                  {{ item.race }}
+                </RouterLink>
+                <template v-else>{{ item.race }}</template>
+              </dd>
             </template>
 
             <template v-if="item.gender">
@@ -136,29 +155,39 @@ watch(
 
             <template v-if="item.class">
               <dt>{{ t('singles.hero.class') }}</dt>
-              <dd>{{ item.class }}</dd>
+              <dd>
+                <RouterLink v-if="classRoute" class="info-link" :to="classRoute">
+                  {{ item.class }}
+                </RouterLink>
+                <template v-else>{{ item.class }}</template>
+              </dd>
             </template>
 
             <template v-if="item.superclass">
               <dt>{{ t('singles.hero.superclass') }}</dt>
-              <dd>{{ item.superclass }}</dd>
+              <dd>
+                <RouterLink v-if="superclassRoute" class="info-link" :to="superclassRoute">
+                  {{ item.superclass }}
+                </RouterLink>
+                <template v-else>{{ item.superclass }}</template>
+              </dd>
             </template>
           </dl>
         </InfoBlock>
 
-        <!-- Atributos "estilo admin": la lista compacta del panel del CRM
-             (heroes__stats), etiqueta + valor en dos columnas -->
+        <!-- Atributos con el MISMO formato label→value que la card de
+             Información (dl .info-list, sin alinear el valor a la derecha);
+             la salud derivada cierra la lista, sin acento -->
         <InfoBlock class="single-detail__attrs" :title="t('singles.hero.attributes')">
-          <ul class="attributes-list">
-            <li v-for="key in ATTRIBUTE_KEYS" :key="key">
-              <strong>{{ t(`singles.hero.attribute.${key}`) }}</strong
-              ><span>{{ item.attributes[key] }}</span>
-            </li>
-            <li class="attributes-list__health">
-              <strong>{{ t('singles.hero.attribute.health') }}</strong
-              ><span>{{ item.health }}</span>
-            </li>
-          </ul>
+          <dl class="info-list">
+            <template v-for="key in ATTRIBUTE_KEYS" :key="key">
+              <dt>{{ t(`singles.hero.attribute.${key}`) }}</dt>
+              <dd>{{ item.attributes[key] }}</dd>
+            </template>
+
+            <dt>{{ t('singles.hero.attribute.health') }}</dt>
+            <dd>{{ item.health }}</dd>
+          </dl>
         </InfoBlock>
       </div>
     </BlockShell>
