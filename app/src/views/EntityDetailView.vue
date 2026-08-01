@@ -14,13 +14,15 @@ import { useSiteStore } from '@/stores/site'
 // Single público estándar (doc 10), inspirado en CDL, ya ENTERO en el
 // lenguaje de bloques del CRM: la imagen de la entidad de fondo de página,
 // el bloque header del CRM (IndexHeader: mismo markup que BlockHeader del
-// motor) con SOLO el título (sin subtítulo), el «volver» dentro, la acción
-// de añadir a la colección si la sección es coleccionable y el tinte que
-// devuelva `blockHeader` del registry (p. ej. el color de la facción; null
-// = gris por defecto); debajo, la ficha (el componente de detalle de la
-// sección) apila secciones `block` que gestionan su propia anchura, igual
-// que una página del CRM. El slug vale en cualquier locale y se redirige a
-// la canónica (DC-12).
+// motor) con el título, el subtítulo que devuelva `blockHeader` del
+// registry (el trasfondo en héroe/carta, la descripción en mazo, ya en
+// texto plano; facción no lleva), la fila superior con el «volver» a la
+// izquierda y la acción de añadir a la colección a la derecha si la
+// sección es coleccionable, y el tinte que devuelva `blockHeader` (p. ej.
+// el color de la facción; null = gris por defecto); debajo, la ficha (el
+// componente de detalle de la sección) apila secciones `block` que
+// gestionan su propia anchura, igual que una página del CRM. El slug vale
+// en cualquier locale y se redirige a la canónica (DC-12).
 interface EntityPayload {
   id: number
   name?: Record<string, string>
@@ -48,10 +50,13 @@ const name = computed(() => {
   return map[locales.current] || Object.values(map)[0] || ''
 })
 
-// Cabecera de bloque del CRM: su tinte de fondo sale del ítem ya cargado;
-// null deja el gris por defecto de IndexHeader.
+// Cabecera de bloque del CRM: tinte de fondo y subtítulo salen del ítem ya
+// cargado (y el locale activo); tinte null deja el gris por defecto de
+// IndexHeader y subtítulo null/vacío no pinta el `block__subtitle`.
 const headerBlock = computed(() =>
-  item.value && section.value?.blockHeader ? section.value.blockHeader(item.value) : null,
+  item.value && section.value?.blockHeader
+    ? section.value.blockHeader(item.value, locales.current)
+    : null,
 )
 
 /** La descripción sin HTML: solo alimenta la meta description del head. */
@@ -140,27 +145,38 @@ watch(
       <!-- La imagen de la entidad, de fondo de página (patrón CDL) -->
       <PageBackground :image="(item.image as string) ?? null" />
 
-      <!-- Header-bloque del CRM (solo título, volver dentro, tinte de la
-           sección) y cuerpo a lo ancho — cada sección de la ficha es un
-           `block` que gestiona su propia anchura, como en PageView. -->
+      <!-- Header-bloque del CRM (título, subtítulo del registry, volver y
+           añadir en la fila superior, tinte de la sección) y cuerpo a lo
+           ancho — cada sección de la ficha es un `block` que gestiona su
+           propia anchura, como en PageView. -->
       <main class="entity-single__body">
-        <IndexHeader :title="name" :background="headerBlock?.tint || undefined">
+        <IndexHeader
+          :title="name"
+          :subtitle="headerBlock?.subtitle || undefined"
+          :background="headerBlock?.tint || undefined"
+        >
           <template #top>
-            <!-- Volver al índice: la página del CRM cuyo slug es el segmento -->
-            <RouterLink
-              class="entity-single__back"
-              :to="{ name: 'page', params: { locale: locales.current, slug: segment } }"
-            >
-              <ArrowLeft :size="14" /> {{ t('detail.back') }}
-            </RouterLink>
+            <!-- Fila superior: el «volver» a la izquierda y, si la sección
+                 es coleccionable, el añadir a la colección a la derecha (en
+                 estrecho el botón pierde el texto por CSS y queda el icono,
+                 con su aria-label/title) -->
+            <div class="entity-single__topbar">
+              <!-- Volver al índice: la página del CRM cuyo slug es el segmento -->
+              <RouterLink
+                class="entity-single__back"
+                :to="{ name: 'page', params: { locale: locales.current, slug: segment } }"
+              >
+                <ArrowLeft :size="14" /> {{ t('detail.back') }}
+              </RouterLink>
+              <AddToCollection
+                v-if="section.collectible"
+                :id="item.id"
+                class="entity-single__action"
+                :entity="section.collectible"
+                label
+              />
+            </div>
           </template>
-          <AddToCollection
-            v-if="section.collectible"
-            :id="item.id"
-            class="entity-single__action"
-            :entity="section.collectible"
-            label
-          />
         </IndexHeader>
         <!-- Keyado por sección: al saltar de un single a otro (facción →
              héroe…) el componente de detalle se REMONTA limpio en vez de

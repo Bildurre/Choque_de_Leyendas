@@ -2,6 +2,8 @@
 
 // GET /api/cards/{slug} — ficha pública de carta.
 
+use App\Models\HeroSuperclass;
+
 require_once __DIR__.'/Helpers.php';
 
 beforeEach(function () {
@@ -13,6 +15,13 @@ beforeEach(function () {
 it('muestra la carta publicada con coste parseado y campos según flags del tipo', function () {
     $faction = publicFaction();
     $type = publicCardType(['name' => ['es' => 'Equipo', 'en' => 'Equipment'], 'is_equipment' => true]);
+    // Superclase asociada al tipo: el single enlaza su value al índice de
+    // héroes filtrado por ella (necesita el id junto al nombre)
+    $superclass = new HeroSuperclass;
+    $superclass->setTranslations('name', ['es' => 'Luchador', 'en' => 'Fighter']);
+    $superclass->save();
+    $type->hero_superclass_id = $superclass->id;
+    $type->save();
     $ability = publicAbility();
     $weapon = publicEquipmentType(); // 'Arma' / 'Weapon'
     $sword = publicEquipmentSubtype(['equipment_type_id' => $weapon->id]); // 'Espada' / 'Sword'
@@ -35,8 +44,9 @@ it('muestra la carta publicada con coste parseado y campos según flags del tipo
     expect($data['name'])->toMatchArray(['es' => 'Espada corta', 'en' => 'Short sword'])
         ->and($data['slug'])->toMatchArray(['es' => 'espada-corta', 'en' => 'short-sword'])
         ->and($data['faction'])->toMatchArray(['name' => 'Alianza', 'slug' => 'alianza', 'color' => '#336699'])
-        // Con el id del tipo: el single enlaza al índice filtrado con él
-        ->and($data['type'])->toMatchArray(['id' => $type->id, 'name' => 'Equipo', 'allows_subtypes' => false, 'is_equipment' => true])
+        // Con los ids del tipo Y de su superclase: el single enlaza el tipo
+        // al índice de cartas filtrado y la superclase al de héroes
+        ->and($data['type'])->toMatchArray(['id' => $type->id, 'name' => 'Equipo', 'superclass' => 'Luchador', 'superclass_id' => $superclass->id, 'allows_subtypes' => false, 'is_equipment' => true])
         // El tipo no admite subtipos → subtype null; es equipo → hands presentes
         ->and($data['subtype'])->toBeNull()
         ->and($data['subtype_id'])->toBeNull()

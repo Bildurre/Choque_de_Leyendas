@@ -26,18 +26,38 @@ export interface EntitySection {
   /** Clave del PreviewRegistry si la entidad puede añadirse a la colección
    *  "para imprimir" (botón ＋ en el índice y el detalle). */
   collectible?: string
-  /** Cabecera del single como BLOQUE header del CRM (solo el título, con el
-   *  «volver» dentro) en vez del banner genérico, y el cuerpo a lo ancho
-   *  para que la ficha apile bloques. Devuelve el tinte del fondo a partir
-   *  del ítem cargado (p. ej. el color de la entidad; null = gris del
-   *  bloque por defecto). Ya lo declaran las cuatro secciones. */
-  blockHeader?: (item: Record<string, unknown>) => { tint?: string | null }
+  /** Cabecera del single como BLOQUE header del CRM (título con el «volver»
+   *  dentro) en vez del banner genérico, y el cuerpo a lo ancho para que la
+   *  ficha apile bloques. Devuelve, a partir del ítem cargado y el locale,
+   *  el tinte del fondo (p. ej. el color de la entidad; null = gris del
+   *  bloque por defecto) y el SUBTÍTULO del header (`block__subtitle`, como
+   *  en el CRM): el trasfondo en héroe/carta y la descripción en mazo, ya
+   *  en texto plano; null/ausente = sin subtítulo (facción). Ya lo declaran
+   *  las cuatro secciones. */
+  blockHeader?: (
+    item: Record<string, unknown>,
+    locale: string,
+  ) => { tint?: string | null; subtitle?: string | null }
 }
 
 /** Tinte del header: el color de la facción anidada del ítem (héroe/carta). */
 function factionTint(item: Record<string, unknown>): { tint: string | null } {
   const faction = item.faction as { color?: unknown } | null | undefined
   return { tint: typeof faction?.color === 'string' ? faction.color : null }
+}
+
+/** Subtítulo del header: el campo `description` del payload (mapa por
+ *  locales — el trasfondo en héroe/carta, la descripción en mazo) pisado a
+ *  TEXTO PLANO: viene de un wysiwyg, así que se quitan las etiquetas y se
+ *  colapsan los espacios (mismo saneo que el subtítulo del banner viejo). */
+function plainDescription(item: Record<string, unknown>, locale: string): string | null {
+  const map = (item.description ?? {}) as Record<string, string>
+  const html = map[locale] || Object.values(map)[0] || ''
+  const text = html
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+  return text || null
 }
 
 // Secciones públicas del juego. Los segmentos por locale casan con el
@@ -51,8 +71,12 @@ export const entitySections: EntitySection[] = [
     paths: { es: 'cartas', en: 'cards' }, // eu: 'kartak' al activar el locale
     detail: CardSingleView,
     collectible: 'card',
-    // Header-bloque del CRM tintado con el color de la facción de la carta.
-    blockHeader: factionTint,
+    // Header-bloque del CRM tintado con el color de la facción de la carta
+    // y el trasfondo de subtítulo.
+    blockHeader: (item, locale) => ({
+      ...factionTint(item),
+      subtitle: plainDescription(item, locale),
+    }),
   },
   {
     key: 'heroes',
@@ -60,8 +84,12 @@ export const entitySections: EntitySection[] = [
     paths: { es: 'heroes', en: 'heroes' }, // eu: 'heroiak'
     detail: HeroSingleView,
     collectible: 'hero',
-    // Header-bloque del CRM tintado con el color de la facción del héroe.
-    blockHeader: factionTint,
+    // Header-bloque del CRM tintado con el color de la facción del héroe
+    // y el trasfondo de subtítulo.
+    blockHeader: (item, locale) => ({
+      ...factionTint(item),
+      subtitle: plainDescription(item, locale),
+    }),
   },
   {
     key: 'factions',
@@ -76,9 +104,10 @@ export const entitySections: EntitySection[] = [
     endpoint: '/faction-decks',
     paths: { es: 'mazos', en: 'decks' }, // eu: 'sortak'
     detail: FactionDeckSingleView,
-    // Header-bloque del CRM con el tinte GRIS por defecto: un mazo puede
-    // mezclar varias facciones, así que no se fuerza el color de ninguna.
-    blockHeader: () => ({ tint: null }),
+    // Header-bloque del CRM con el tinte GRIS por defecto (un mazo puede
+    // mezclar varias facciones, así que no se fuerza el color de ninguna) y
+    // la descripción del mazo de subtítulo.
+    blockHeader: (item, locale) => ({ tint: null, subtitle: plainDescription(item, locale) }),
   },
 ]
 

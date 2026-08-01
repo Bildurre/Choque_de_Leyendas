@@ -33,6 +33,7 @@ async function add() {
     :class="{ 'is-added': added, 'has-label': label }"
     type="button"
     :title="added ? t('collection.inCollection') : t('collection.add')"
+    :aria-label="added ? t('collection.inCollection') : t('collection.add')"
     :disabled="busy"
     @click.prevent.stop="add"
   >

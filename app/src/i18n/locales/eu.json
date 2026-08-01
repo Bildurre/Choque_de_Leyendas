@@ -267,7 +267,6 @@
   },
   "singles": {
     "yes": "Bai",
-    "loreTitle": "Kondaira",
     "attackTypes": {
       "physical": "Fisikoa",
       "magical": "Magikoa"
@@ -340,7 +339,6 @@
         "cards": "Kartak"
       },
       "basicInfo": "Oinarrizko informazioa",
-      "descriptionTitle": "Deskribapena",
       "name": "Izena",
       "factions": "Fakzioak",
       "gameMode": "Joko modua",
@@ -348,12 +346,10 @@
       "cards": "Kartak",
       "uniqueHeroes": "{total} ({unique} bakar)",
       "uniqueCards": "{total} ({unique} bakar)",
-      "costAndDice": "Kostua eta dadoak",
       "diceDistribution": "Karten kostua",
       "symbolDistribution": "Dadoen banaketa",
       "cardTypes": "Karta motak",
-      "bySuperclass": "Superklasearen arabera",
-      "byClass": "Klasearen arabera",
+      "heroSuperclasses": "Heroien superklaseak",
       "heroClasses": "Heroien klaseak",
       "average": "Batezbestekoa",
       "dice": "Dado {count} | {count} dado",

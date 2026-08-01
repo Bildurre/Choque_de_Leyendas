@@ -27,7 +27,9 @@
   }
 }
 
-// --- Ficha de carta / héroe / mazo: preview + info-blocks en fila mientras quepan ---
+// --- Ficha de carta / héroe: preview + info-blocks en fila mientras quepan ---
+// (La ficha del mazo va aparte, en masonry: .info-blocks-masonry de
+// _entity-show.scss.)
 .single-detail {
   display: grid;
   gap: $space-6;
@@ -44,7 +46,6 @@
   &__basic { grid-area: basic; }
   &__attrs { grid-area: attrs; }
   &__attack { grid-area: attack; }
-  &__types { grid-area: types; }
 
   // El PNG del render, grande (20rem → 25rem en tablet, como el viejo)
   &__image {
@@ -123,48 +124,11 @@
   }
 }
 
-// Mazo: tarjeta CSS | información básica | tipos de cartas — mismo ritmo y
-// cortes que carta y héroe (la fila de cards fusionadas va aparte, en
-// .deck-single__merged).
-.single-detail--deck {
-  grid-template-areas:
-    'preview'
-    'basic'
-    'types';
-
-  @container content (min-width: #{$bp-md}) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    grid-template-areas:
-      'preview basic'
-      'preview types';
-  }
-
-  @container content (min-width: #{$bp-lg}) {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr);
-    grid-template-areas: 'preview basic types';
-  }
-}
-
 // --- Pestañas de los singles (BaseTabs del motor) ---
 // El gap del block__inner ya separa: sin el margen inferior propio del ui-kit.
 .faction-single__tabs,
 .deck-single__tabs {
   margin-bottom: 0;
-}
-
-// Lore/trasfondo como sección propia (héroe, carta y mazo): texto del
-// wysiwyg a lo ancho del bloque.
-.single-lore {
-  color: $text-1;
-  line-height: $k-lh-body;
-
-  p {
-    margin: 0;
-
-    &:not(:last-child) {
-      margin-bottom: $space-3;
-    }
-  }
 }
 
 // --- Rejillas de previews dentro de los singles ---
@@ -296,29 +260,6 @@
     padding: $space-8 0;
     text-align: center;
     color: $text-3;
-  }
-}
-
-// --- Ficha del mazo: tarjeta CSS a la izquierda + info-blocks a la derecha ---
-.deck-single {
-  // La tarjeta CSS del mazo en el área preview del grid: acotada y centrada.
-  &__emblem {
-    width: 100%;
-    max-width: 260px;
-    margin-inline: auto;
-  }
-
-  // Fila de cards fusionadas («Coste y dados» | «Clases de héroes»), bajo la
-  // ficha: DOS columnas fijas con corte explícito (nada de auto-fit); en
-  // estrecho, apiladas.
-  &__merged {
-    display: grid;
-    gap: $space-6;
-    align-items: start;
-
-    @container content (min-width: #{$bp-md}) {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
   }
 }
 
