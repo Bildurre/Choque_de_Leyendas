@@ -5,21 +5,26 @@
 // _effect-section/_cost-display/_icon-dice — adaptado a los tokens del
 // motor). Mobile-first; los colores de acento salen de la paleta del tema.
 
-// Rejilla de info-blocks (ficha del mazo, a la derecha del emblema).
-// Columnas FIJAS con cortes EXPLÍCITOS de container query sobre `content`
-// (nada de auto-fit: re-resuelve pistas y tiembla — criterio .form-row).
-.info-blocks-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: $space-4;
-  align-items: start;
+// Ficha del mazo en masonry: columnas CSS (multicol, no grid) — las
+// tarjetas (la foto del mazo incluida) fluyen de arriba abajo por columnas
+// sin huecos entre alturas dispares. Recuento FIJO de columnas con cortes
+// EXPLÍCITOS de container query sobre `content` (nada de column-width
+// automático: mismo criterio anti-temblor que .form-row).
+.info-blocks-masonry {
+  column-count: 1;
+  column-gap: $space-4;
+
+  > * {
+    break-inside: avoid;
+    margin-bottom: $space-4;
+  }
 
   @container content (min-width: #{$bp-sm}) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-count: 2;
   }
 
   @container content (min-width: #{$bp-lg}) {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    column-count: 3;
   }
 }
 
