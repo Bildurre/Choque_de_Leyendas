@@ -30,10 +30,12 @@ const locales = useLocalesStore()
 
 const isFaction = computed(() => props.data?.key === 'faction')
 
-// Como en CssCardsRelated: 4 tarjetas (la api manda hasta 6, como el resto
-// de entidades del related; aquí la rejilla CSS enseña 4).
+// Las 6 que manda la api (como el resto de entidades del related): es la
+// rejilla CSS en contexto related quien decide cuántas enseña por tramo
+// (4 en 2×2 → 6 en 3×2 → 4 en 4×1 → 5 en 5×1, contrato del preview-grid
+// compact del motor).
 const factions = computed(
-  () => (isFaction.value ? (props.data?.items ?? []).slice(0, 4) : []) as FactionItem[],
+  () => (isFaction.value ? (props.data?.items ?? []).slice(0, 6) : []) as FactionItem[],
 )
 
 const indexRoute = computed(() =>

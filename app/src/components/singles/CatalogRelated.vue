@@ -20,7 +20,9 @@ const props = withDefaults(
     buttonLabel: string
     count?: number
   }>(),
-  { count: 4 },
+  // 6 como el bloque related del CRM: la rejilla compact del motor decide
+  // cuántos enseña por tramo (4 en 2×2 → 6 en 3×2 → 4 en 4×1 → 5 en 5×1).
+  { count: 6 },
 )
 
 const locales = useLocalesStore()

@@ -183,6 +183,37 @@
   }
 }
 
+// En contexto RELATED (block--css-related: relateds de los singles y bloque
+// related de facciones del CRM), el related «carga» SIEMPRE 6 tarjetas y es
+// la rejilla quien decide cuántas enseña para salir siempre completa, sin
+// filas cojas — mismo contrato que la variante compact del preview-grid del
+// motor: 4 en 2×2 → 6 en 3×2 (md) → 4 en 4×1 (lg) → 5 en 5×1 (xl). Las
+// rejillas de pestañas (mazos de una facción…) NO ocultan nada: enseñan
+// todo lo que hay.
+.block--css-related .css-related-grid {
+  @media (min-width: $bp-xl) {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  .css-related-grid__item:nth-child(n + 5) {
+    display: none;
+
+    @media (min-width: $bp-md) {
+      display: block;
+    }
+
+    @media (min-width: $bp-lg) {
+      display: none;
+    }
+  }
+
+  .css-related-grid__item:nth-child(5) {
+    @media (min-width: $bp-xl) {
+      display: block;
+    }
+  }
+}
+
 // --- Cabecera de facción: emblema CSS + lore ---
 .faction-single {
   &__header {
@@ -231,26 +262,12 @@
 
 // --- Ficha del mazo: tarjeta CSS a la izquierda + info-blocks a la derecha ---
 .deck-single {
-  &__layout {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: $space-6;
-    align-items: start;
-
-    @container content (min-width: #{$bp-md}) {
-      grid-template-columns: minmax(200px, 260px) minmax(0, 1fr);
-      gap: $space-8;
-    }
-  }
-
+  // La foto del mazo es una tarjeta más del masonry (.info-blocks-masonry):
+  // acotada y centrada en su columna.
   &__emblem {
-    justify-self: center;
     width: 100%;
     max-width: 260px;
-
-    @container content (min-width: #{$bp-md}) {
-      justify-self: start;
-    }
+    margin-inline: auto;
   }
 }
 

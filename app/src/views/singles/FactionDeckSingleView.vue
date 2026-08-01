@@ -162,127 +162,124 @@ watch(
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="deck-single">
-    <!-- Ficha: tarjeta CSS del mazo a la izquierda + la rejilla de
-         info-blocks del viejo a la derecha (columnas fijas, cortes
-         explícitos en _singles.scss), al ancho wide de bloque -->
+    <!-- Ficha en masonry: columnas CSS (no grid) con la foto del mazo como
+         primera tarjeta y los info-blocks fluyendo detrás, al ancho wide
+         de bloque -->
     <BlockShell :settings="{ width: 'wide', align: 'left' }">
-      <div class="deck-single__layout">
+      <div class="info-blocks-masonry">
         <div class="deck-single__emblem">
           <FactionDeckCard :deck="deckCardData" />
         </div>
+        <InfoBlock :title="t('singles.deck.basicInfo')">
+          <dl class="info-list">
+            <dt>{{ t('singles.deck.name') }}</dt>
+            <dd>{{ name }}</dd>
 
-        <div class="info-blocks-grid">
-          <InfoBlock :title="t('singles.deck.basicInfo')">
-            <dl class="info-list">
-              <dt>{{ t('singles.deck.name') }}</dt>
-              <dd>{{ name }}</dd>
-
-              <template v-if="item.factions.length">
-                <dt>{{ t('singles.deck.factions') }}</dt>
-                <dd>
-                  <template v-for="(faction, i) in item.factions" :key="faction.id">
-                    <RouterLink
-                      v-if="factionRoute(faction)"
-                      class="info-link"
-                      :to="factionRoute(faction)!"
-                    >
-                      {{ faction.name }}
-                    </RouterLink>
-                    <template v-else>{{ faction.name }}</template>
-                    <template v-if="i < item.factions.length - 1">, </template>
-                  </template>
-                </dd>
-              </template>
-
-              <template v-if="item.game_mode">
-                <dt>{{ t('singles.deck.gameMode') }}</dt>
-                <dd>
-                  <RouterLink v-if="decksIndexRoute" class="info-link" :to="decksIndexRoute">
-                    {{ item.game_mode.name }}
+            <template v-if="item.factions.length">
+              <dt>{{ t('singles.deck.factions') }}</dt>
+              <dd>
+                <template v-for="(faction, i) in item.factions" :key="faction.id">
+                  <RouterLink
+                    v-if="factionRoute(faction)"
+                    class="info-link"
+                    :to="factionRoute(faction)!"
+                  >
+                    {{ faction.name }}
                   </RouterLink>
-                  <template v-else>{{ item.game_mode.name }}</template>
-                </dd>
-              </template>
-
-              <dt>{{ t('singles.deck.heroes') }}</dt>
-              <dd>
-                {{
-                  t('singles.deck.uniqueHeroes', {
-                    total: stats.total_heroes,
-                    unique: stats.unique_heroes,
-                  })
-                }}
+                  <template v-else>{{ faction.name }}</template>
+                  <template v-if="i < item.factions.length - 1">, </template>
+                </template>
               </dd>
+            </template>
 
-              <dt>{{ t('singles.deck.cards') }}</dt>
+            <template v-if="item.game_mode">
+              <dt>{{ t('singles.deck.gameMode') }}</dt>
               <dd>
-                {{
-                  t('singles.deck.uniqueCards', {
-                    total: stats.total_cards,
-                    unique: stats.unique_cards,
-                  })
-                }}
+                <RouterLink v-if="decksIndexRoute" class="info-link" :to="decksIndexRoute">
+                  {{ item.game_mode.name }}
+                </RouterLink>
+                <template v-else>{{ item.game_mode.name }}</template>
               </dd>
-            </dl>
-          </InfoBlock>
+            </template>
 
-          <InfoBlock v-if="stats.cards_by_dice.length" :title="t('singles.deck.diceDistribution')">
-            <dl class="info-list">
-              <template v-for="row in stats.cards_by_dice" :key="row.dice">
-                <dt>
-                  {{
-                    row.dice === 0
-                      ? t('singles.deck.noDice')
-                      : t('singles.deck.dice', { count: row.dice }, row.dice)
-                  }}
-                </dt>
-                <dd>{{ row.copies }}</dd>
-              </template>
+            <dt>{{ t('singles.deck.heroes') }}</dt>
+            <dd>
+              {{
+                t('singles.deck.uniqueHeroes', {
+                  total: stats.total_heroes,
+                  unique: stats.unique_heroes,
+                })
+              }}
+            </dd>
 
-              <dt>{{ t('singles.deck.average') }}</dt>
-              <dd>{{ stats.average_dice.toFixed(2) }}</dd>
-            </dl>
-          </InfoBlock>
+            <dt>{{ t('singles.deck.cards') }}</dt>
+            <dd>
+              {{
+                t('singles.deck.uniqueCards', {
+                  total: stats.total_cards,
+                  unique: stats.unique_cards,
+                })
+              }}
+            </dd>
+          </dl>
+        </InfoBlock>
 
-          <InfoBlock v-if="symbols.length" :title="t('singles.deck.symbolDistribution')">
-            <dl class="info-list">
-              <template v-for="symbol in symbols" :key="symbol.key">
-                <dt><DiceIcon :type="symbol.type" size="sm" /></dt>
-                <dd>{{ stats.symbols[symbol.key] }}</dd>
-              </template>
-            </dl>
-          </InfoBlock>
+        <InfoBlock v-if="stats.cards_by_dice.length" :title="t('singles.deck.diceDistribution')">
+          <dl class="info-list">
+            <template v-for="row in stats.cards_by_dice" :key="row.dice">
+              <dt>
+                {{
+                  row.dice === 0
+                    ? t('singles.deck.noDice')
+                    : t('singles.deck.dice', { count: row.dice }, row.dice)
+                }}
+              </dt>
+              <dd>{{ row.copies }}</dd>
+            </template>
 
-          <InfoBlock v-if="stats.cards_by_type.length" :title="t('singles.deck.cardTypes')">
-            <dl class="info-list">
-              <template v-for="row in stats.cards_by_type" :key="row.name">
-                <dt>{{ row.name }}</dt>
-                <dd>{{ row.copies }}</dd>
-              </template>
-            </dl>
-          </InfoBlock>
+            <dt>{{ t('singles.deck.average') }}</dt>
+            <dd>{{ stats.average_dice.toFixed(2) }}</dd>
+          </dl>
+        </InfoBlock>
 
-          <InfoBlock
-            v-if="stats.heroes_by_superclass.length"
-            :title="t('singles.deck.heroSuperclasses')"
-          >
-            <dl class="info-list">
-              <template v-for="row in stats.heroes_by_superclass" :key="row.name">
-                <dt>{{ row.name }}</dt>
-                <dd>{{ row.count }}</dd>
-              </template>
-            </dl>
-          </InfoBlock>
+        <InfoBlock v-if="symbols.length" :title="t('singles.deck.symbolDistribution')">
+          <dl class="info-list">
+            <template v-for="symbol in symbols" :key="symbol.key">
+              <dt><DiceIcon :type="symbol.type" size="sm" /></dt>
+              <dd>{{ stats.symbols[symbol.key] }}</dd>
+            </template>
+          </dl>
+        </InfoBlock>
 
-          <InfoBlock v-if="stats.heroes_by_class.length" :title="t('singles.deck.heroClasses')">
-            <dl class="info-list">
-              <template v-for="row in stats.heroes_by_class" :key="row.name">
-                <dt>{{ row.name }}</dt>
-                <dd>{{ row.count }}</dd>
-              </template>
-            </dl>
-          </InfoBlock>
-        </div>
+        <InfoBlock v-if="stats.cards_by_type.length" :title="t('singles.deck.cardTypes')">
+          <dl class="info-list">
+            <template v-for="row in stats.cards_by_type" :key="row.name">
+              <dt>{{ row.name }}</dt>
+              <dd>{{ row.copies }}</dd>
+            </template>
+          </dl>
+        </InfoBlock>
+
+        <InfoBlock
+          v-if="stats.heroes_by_superclass.length"
+          :title="t('singles.deck.heroSuperclasses')"
+        >
+          <dl class="info-list">
+            <template v-for="row in stats.heroes_by_superclass" :key="row.name">
+              <dt>{{ row.name }}</dt>
+              <dd>{{ row.count }}</dd>
+            </template>
+          </dl>
+        </InfoBlock>
+
+        <InfoBlock v-if="stats.heroes_by_class.length" :title="t('singles.deck.heroClasses')">
+          <dl class="info-list">
+            <template v-for="row in stats.heroes_by_class" :key="row.name">
+              <dt>{{ row.name }}</dt>
+              <dd>{{ row.count }}</dd>
+            </template>
+          </dl>
+        </InfoBlock>
       </div>
     </BlockShell>
 
