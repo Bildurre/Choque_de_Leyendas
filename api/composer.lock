@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "60f1bb0660bedc7fa0871ebbe724e2d6",
+    "content-hash": "9c8d87af3f724ba7aff9df7821096637",
     "packages": [
         {
             "name": "barryvdh/laravel-dompdf",
@@ -751,16 +751,16 @@
         },
         {
             "name": "edc-motor/core",
-            "version": "0.5.7",
+            "version": "0.5.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Bildurre/edc-core.git",
-                "reference": "b172bd097357a4d9cc1df0c419b51a011427d2f7"
+                "reference": "8e8abecb2ac95f8979fb89dc1b568a64e2571315"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Bildurre/edc-core/zipball/b172bd097357a4d9cc1df0c419b51a011427d2f7",
-                "reference": "b172bd097357a4d9cc1df0c419b51a011427d2f7",
+                "url": "https://api.github.com/repos/Bildurre/edc-core/zipball/8e8abecb2ac95f8979fb89dc1b568a64e2571315",
+                "reference": "8e8abecb2ac95f8979fb89dc1b568a64e2571315",
                 "shasum": ""
             },
             "require": {
@@ -802,7 +802,7 @@
                 "issues": "https://github.com/bildurre/boardgame_motor/issues",
                 "source": "https://github.com/bildurre/edc-core"
             },
-            "time": "2026-08-01T07:16:13+00:00"
+            "time": "2026-08-02T21:34:12+00:00"
         },
         {
             "name": "egulias/email-validator",
