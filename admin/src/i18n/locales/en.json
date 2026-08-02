@@ -439,10 +439,10 @@
       "justify": "Justify"
     },
     "background": {
-      "token:surface": "Card background",
-      "token:surface-2": "Surface 2",
-      "token:surface-3": "Surface 3",
-      "token:accent-500": "Accent"
+      "token:neutral-soft": "Soft gray",
+      "token:neutral": "Gray",
+      "token:neutral-strong": "Strong gray",
+      "token:accent-soft": "Accent"
     },
     "order": {
       "recent": "Most recent",

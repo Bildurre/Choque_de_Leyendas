@@ -222,6 +222,15 @@
     right: 0;
     z-index: 2;
   }
+
+  // Editar en administración (solo editor/admin logueado), a la izquierda
+  // del añadir flotante (mismo patrón que .catalog-index__admin).
+  &__admin {
+    position: absolute;
+    top: -31px;
+    right: 44px;
+    z-index: 2;
+  }
 }
 
 // Rejilla de tarjetas CSS (mazos de una facción y relateds de facción/mazo):
@@ -230,6 +239,12 @@
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: $space-4;
+
+  // Tarjeta + botón de admin en un slot relativo (pestaña de mazos del
+  // single de facción): ancla del chip .css-card-admin en la esquina.
+  &__slot {
+    position: relative;
+  }
 
   @media (min-width: $bp-md) {
     grid-template-columns: repeat(3, minmax(0, 1fr));

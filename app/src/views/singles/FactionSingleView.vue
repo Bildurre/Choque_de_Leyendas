@@ -12,6 +12,7 @@ import {
   type PreviewGridItem,
 } from '@edc-motor/ui'
 import AddToCollection from '@/components/AddToCollection.vue'
+import AdminEditButton from '@/components/AdminEditButton.vue'
 import FactionCard from '@/components/FactionCard.vue'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
 import CssCardsRelated from '@/components/singles/CssCardsRelated.vue'
@@ -28,7 +29,7 @@ import { sectionDetailRoute } from '@/entities/singleRoutes'
 // info-block sin título (como el trasfondo de héroe/carta), pestañas héroes
 // / cartas / mazos con contadores de publicados (en cliente: la API entrega
 // las tres listas completas), cita épica (bloque quote del CRM, fondo de
-// tarjeta DINÁMICO token:surface-3, OPACO) y relateds de facciones (tarjetas CSS,
+// tarjeta GRIS DINÁMICO MEDIO token:neutral) y relateds de facciones (tarjetas CSS,
 // sin catálogo de previews, bloque related del CRM). El botón de descarga
 // del PDF permanente de la facción (si está generado, campo `pdf` del
 // payload) vive en la fila superior del header, junto al volver
@@ -169,8 +170,12 @@ watch(
         :empty-text="t('singles.faction.noHeroes')"
         class="single-grid"
       >
+        <!-- Acciones flotantes por elemento (patrón de los índices):
+             añadir a la colección y, para editor/admin logueado, editar
+             en administración a su izquierda -->
         <template #actions="{ item: hero }">
           <AddToCollection :id="hero.id" class="single-grid__add" entity="hero" />
+          <AdminEditButton section="heroes" :slug="hero.slug" class="single-grid__admin" />
         </template>
       </PreviewGrid>
 
@@ -182,6 +187,7 @@ watch(
       >
         <template #actions="{ item: card }">
           <AddToCollection :id="card.id" class="single-grid__add" entity="card" />
+          <AdminEditButton section="cards" :slug="card.slug" class="single-grid__admin" />
         </template>
       </PreviewGrid>
 
@@ -189,30 +195,36 @@ watch(
         <p v-if="!item.decks.length" class="faction-single__empty">
           {{ t('singles.faction.noDecks') }}
         </p>
+        <!-- Cada tarjeta en su slot relativo: el botón de editar en
+             administración (solo editor/admin logueado) flota como chip en
+             su esquina superior derecha (patrón .css-card-admin de los
+             índices de tarjetas CSS) -->
         <div v-else class="css-related-grid faction-single__decks">
-          <component
-            :is="deckRoute(deck) ? RouterLink : 'div'"
-            v-for="deck in item.decks"
-            :key="deck.id"
-            class="css-related-grid__item"
-            v-bind="deckRoute(deck) ? { to: deckRoute(deck) } : {}"
-          >
-            <FactionDeckCard :deck="deck" />
-          </component>
+          <div v-for="deck in item.decks" :key="deck.id" class="css-related-grid__slot">
+            <component
+              :is="deckRoute(deck) ? RouterLink : 'div'"
+              class="css-related-grid__item"
+              v-bind="deckRoute(deck) ? { to: deckRoute(deck) } : {}"
+            >
+              <FactionDeckCard :deck="deck" />
+            </component>
+            <AdminEditButton section="decks" :slug="deck.slug" class="css-card-admin" />
+          </div>
         </div>
       </template>
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
-         DINÁMICO Y OPACO del tema: token:surface-3 resuelto por BlockShell;
-         surface pelado no contrastaba con la página en claro) -->
+         GRIS DINÁMICO MEDIO del tema: token:neutral resuelto por
+         BlockShell — translúcido, calca al gris estático de la paleta y
+         deja ver la imagen de fondo en claro y en oscuro) -->
     <BlockQuote
       v-if="quoteHtml"
       :settings="{
         quote: quoteHtml,
         align: 'center',
         width: 'wide',
-        background: 'token:surface-3',
+        background: 'token:neutral',
       }"
     />
 

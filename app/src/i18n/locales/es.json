@@ -105,14 +105,16 @@
   "downloads": {
     "empty": "Todavía no hay descargas publicadas.",
     "types": {
-      "characters": "Personajes",
-      "schemes": "Argucias",
-      "house-schemes": "Argucias por casa",
-      "house-tokens": "Tokens de casa",
-      "house-counters": "Contadores de casa",
-      "pages": "Documentos"
+      "pages": "Documentos",
+      "counters": "Contadores",
+      "faction": "Facciones",
+      "faction-deck": "Mazos",
+      "cards-catalog": "Cartas",
+      "heroes-catalog": "Héroes"
     },
-    "language": "Idioma"
+    "language": "Idioma",
+    "view": "Ver",
+    "download": "Descargar"
   },
   "tools": {
     "lifeCounter": {
@@ -337,6 +339,7 @@
     },
     "deck": {
       "tabs": {
+        "info": "Información",
         "heroes": "Héroes",
         "cards": "Cartas"
       },

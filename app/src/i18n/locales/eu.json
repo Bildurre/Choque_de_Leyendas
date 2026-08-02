@@ -105,14 +105,16 @@
   "downloads": {
     "empty": "Oraindik ez dago deskargarik argitaratuta.",
     "types": {
-      "characters": "Pertsonaiak",
-      "schemes": "Amarruak",
-      "house-schemes": "Amarruak etxeka",
-      "house-tokens": "Etxeen fitxak",
-      "house-counters": "Etxeen kontagailuak",
-      "pages": "Dokumentuak"
+      "pages": "Dokumentuak",
+      "counters": "Kontagailuak",
+      "faction": "Fakzioak",
+      "faction-deck": "Sortak",
+      "cards-catalog": "Kartak",
+      "heroes-catalog": "Heroiak"
     },
-    "language": "Hizkuntza"
+    "language": "Hizkuntza",
+    "view": "Ikusi",
+    "download": "Deskargatu"
   },
   "tools": {
     "lifeCounter": {
@@ -337,6 +339,7 @@
     },
     "deck": {
       "tabs": {
+        "info": "Informazioa",
         "heroes": "Heroiak",
         "cards": "Kartak"
       },

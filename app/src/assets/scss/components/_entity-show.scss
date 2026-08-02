@@ -6,14 +6,15 @@
 // del héroe usan el propio .info-list, mismo formato que la card de
 // información). Mobile-first; los acentos salen de la paleta del tema.
 
-// Ficha del mazo: GRID de tres columnas fijas con filas fijas — fila 1 la
-// card de imagen (1 columna, si el mazo tiene imagen) + la descripción (2
-// columnas; a las tres sin imagen), fila 2 información básica | coste de
-// las cartas | tipos de cartas, fila 3 distribución de dados | clases |
-// superclases. Cortes EXPLÍCITOS de container query sobre `content` (3 →
-// 2 en medio → 1 en estrecho, con reflow natural del grid; nada de
-// auto-fit, criterio anti-temblor de .form-row). Las cards de una misma
-// fila igualan altura (stretch).
+// Ficha del mazo: GRID de tres columnas fijas con filas fijas, usado en
+// DOS sitios del single — la fila superior (card de imagen, 1 columna si
+// el mazo tiene imagen, + la descripción, 2 columnas; a las tres sin
+// imagen) y, dentro de la pestaña «Información», las 6 cards de la ficha
+// (información básica | coste de las cartas | tipos de cartas |
+// distribución de dados | clases | superclases). Cortes EXPLÍCITOS de
+// container query sobre `content` (3 → 2 en medio → 1 en estrecho, con
+// reflow natural del grid; nada de auto-fit, criterio anti-temblor de
+// .form-row). Las cards de una misma fila igualan altura (stretch).
 .deck-detail-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -55,6 +56,10 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
+
+      // Al recortar, que se vea siempre la parte SUPERIOR de la imagen
+      // (el cover por defecto centra y comía la cabecera de la ilustración).
+      object-position: top;
     }
   }
 

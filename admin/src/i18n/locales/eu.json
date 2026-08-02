@@ -439,10 +439,10 @@
       "justify": "Justifikatuta"
     },
     "background": {
-      "token:surface": "Txartelaren hondoa",
-      "token:surface-2": "2. gainazala",
-      "token:surface-3": "3. gainazala",
-      "token:accent-500": "Azentua"
+      "token:neutral-soft": "Gris leuna",
+      "token:neutral": "Grisa",
+      "token:neutral-strong": "Gris bizia",
+      "token:accent-soft": "Azentua"
     },
     "order": {
       "recent": "Berrienak",
