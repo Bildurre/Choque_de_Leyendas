@@ -12,10 +12,9 @@ import { useLocalesStore } from '@/stores/locales'
 // mazos): el bloque `related` del motor solo cubre el registry de previews
 // (CONVENTIONS2 §1/§7.3), así que aquí se replica su diseño (cabecera +
 // rejilla + botón al índice, _block-relateds.scss del viejo) con las
-// tarjetas CSS del juego y el fondo de tarjeta DINÁMICO token:surface
-// (resuelto por BlockShell, sigue al tema). Aleatorio EN CLIENTE sobre el
-// índice público, excluyendo la entidad actual (patrón del BlockDataService
-// viejo).
+// tarjetas CSS del juego, SIN fondo de bloque (el fondo dinámico queda
+// solo para la cita). Aleatorio EN CLIENTE sobre el índice público,
+// excluyendo la entidad actual (patrón del BlockDataService viejo).
 interface RelatedRow {
   id: number
   slug: string
@@ -73,7 +72,7 @@ watch([() => props.excludeId, () => locales.current], load, { immediate: true })
 <template>
   <BlockShell
     v-if="items.length"
-    :settings="{ align: 'justify', width: 'wide', background: 'token:surface' }"
+    :settings="{ align: 'justify', width: 'wide' }"
     class="block--related block--css-related"
   >
     <div class="block__related-header">

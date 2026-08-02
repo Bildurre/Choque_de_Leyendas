@@ -7,7 +7,8 @@
 // información). Mobile-first; los acentos salen de la paleta del tema.
 
 // Ficha del mazo: GRID de tres columnas fijas con filas fijas — fila 1 la
-// descripción (a las tres columnas), fila 2 información básica | coste de
+// card de imagen (1 columna, si el mazo tiene imagen) + la descripción (2
+// columnas; a las tres sin imagen), fila 2 información básica | coste de
 // las cartas | tipos de cartas, fila 3 distribución de dados | clases |
 // superclases. Cortes EXPLÍCITOS de container query sobre `content` (3 →
 // 2 en medio → 1 en estrecho, con reflow natural del grid; nada de
@@ -19,8 +20,43 @@
   gap: $space-6;
   align-items: stretch;
 
-  // La descripción (tarjeta sin título) siempre a todo el ancho del grid
+  // La descripción (tarjeta sin título) a todo el ancho del grid…
   &__description { grid-column: 1 / -1; }
+
+  // …salvo con card de imagen: la imagen abre la fila 1 en la PRIMERA
+  // columna y la descripción ocupa el resto (2 columnas en ancho, la
+  // segunda en el tramo medio). En estrecho (1 columna) van apiladas
+  // (imagen encima) y el 1/-1 de arriba vuelve a valer.
+  &--with-media &__description {
+    @container content (min-width: #{$bp-md}) {
+      grid-column: 2 / -1;
+    }
+  }
+
+  // Card de imagen del mazo: info-block SOLO con la imagen llenándola (sin
+  // padding). La imagen va ABSOLUTA (inset 0 + cover): la card nunca manda
+  // en el alto de la fila, así queda RECORTADA al alto de la card de
+  // descripción (stretch de la fila). En 1 columna (apilado) nada impone
+  // alto, así que fija proporción 16/9.
+  &__media {
+    grid-column: 1;
+    position: relative;
+    overflow: hidden;
+    padding: 0;
+    aspect-ratio: 16 / 9;
+
+    @container content (min-width: #{$bp-md}) {
+      aspect-ratio: auto;
+    }
+
+    img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
 
   @container content (min-width: #{$bp-md}) {
     grid-template-columns: repeat(2, minmax(0, 1fr));

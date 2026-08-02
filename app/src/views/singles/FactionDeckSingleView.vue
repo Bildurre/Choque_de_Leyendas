@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Layers, Swords } from '@lucide/vue'
+import { Files, Users } from '@lucide/vue'
 import {
   BaseTabs,
   BlockQuote,
@@ -25,12 +25,14 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 // si está generado, campo `pdf` del payload) y el fondo/head SEO. Aquí cada
 // sección es un `block` a lo ancho: ficha en GRID de TRES columnas fijas
 // (.deck-detail-grid, cortes explícitos de container query a 2 → 1) con
-// filas fijas — fila 1 la DESCRIPCIÓN (tarjeta sin título, rich del
-// wysiwyg, a las tres columnas), fila 2 información básica | coste de las
-// cartas | tipos de cartas, fila 3 distribución de dados | clases de héroes
+// filas fijas — fila 1 la card de IMAGEN del mazo (1 columna, solo si hay
+// imagen; recortada al alto de la descripción) + la DESCRIPCIÓN (tarjeta
+// sin título, rich del wysiwyg, 2 columnas; a las tres sin imagen), fila 2
+// información básica | coste de las cartas | tipos de cartas, fila 3
+// distribución de dados | clases de héroes
 // | superclases de héroes —, pestañas héroes | cartas CON icono (cartas con
 // su badge "xN" de copias; los héroes no llevan copias: asignado = 1), cita
-// épica (bloque quote del CRM, fondo de tarjeta DINÁMICO token:surface) y
+// épica (bloque quote del CRM, fondo DINÁMICO del tema token:surface-3, OPACO) y
 // relateds de mazos (tarjetas CSS, bloque related del CRM). El modo de
 // juego enlaza al ÍNDICE de mazos FILTRADO por ese modo (query `mode` de
 // useFiltersQuery).
@@ -99,26 +101,27 @@ const SYMBOLS: Array<{ key: 'R' | 'G' | 'B'; type: 'red' | 'green' | 'blue' }> =
 ]
 const symbols = computed(() => SYMBOLS.filter(({ key }) => props.item.stats.symbols[key] > 0))
 
-// Pestañas del BaseTabs del motor: héroes | cartas, con la iconografía del
-// admin de CdL (héroes → Swords, cartas → Layers); en estrecho el motor
-// deja solo el icono (texto visually-hidden + title).
+// Pestañas del BaseTabs del motor: héroes | cartas — héroes → Users (tipo
+// usuarios), cartas → Files (tipo archivos); en estrecho el motor deja solo
+// el icono (texto visually-hidden + title).
 const tabs = computed<Array<{ key: Tab; label: string; count?: number; icon?: Component }>>(() => [
   {
     key: 'heroes',
     label: t('singles.deck.tabs.heroes'),
     count: props.item.stats.total_heroes,
-    icon: Swords,
+    icon: Users,
   },
   {
     key: 'cards',
     label: t('singles.deck.tabs.cards'),
     count: props.item.stats.total_cards,
-    icon: Layers,
+    icon: Files,
   },
 ])
 
 // Descripción del wysiwyg TAL CUAL (rich, saneada en servidor): tarjeta sin
-// título en la primera fila de la ficha, a las tres columnas.
+// título en la primera fila de la ficha (2 columnas junto a la card de
+// imagen; a las tres si el mazo no tiene imagen).
 const descriptionHtml = computed(() => {
   const map = props.item.description ?? {}
   return (map[props.locale] || Object.values(map)[0] || '').trim()
@@ -177,12 +180,23 @@ watch(
 <template>
   <div class="deck-single single-sections">
     <!-- Ficha en GRID de tres columnas fijas con filas fijas (cortes
-         explícitos a 2 → 1 en _entity-show.scss): fila 1 la descripción a
-         las tres columnas; fila 2 información básica | coste de las cartas
-         | tipos de cartas; fila 3 distribución de dados | clases |
-         superclases. Al ancho wide de bloque -->
+         explícitos a 2 → 1 en _entity-show.scss): fila 1 la card de IMAGEN
+         (1 columna, solo si hay imagen) + la descripción (2 columnas; a
+         las tres si no hay imagen); fila 2 información básica | coste de
+         las cartas | tipos de cartas; fila 3 distribución de dados |
+         clases | superclases. Al ancho wide de bloque -->
     <BlockShell :settings="{ width: 'wide', align: 'left' }">
-      <div class="deck-detail-grid">
+      <div
+        class="deck-detail-grid"
+        :class="{ 'deck-detail-grid--with-media': item.image && descriptionHtml }"
+      >
+        <!-- Imagen del mazo (la imagen TAL CUAL, no la preview): card SOLO
+             con la imagen llenándola, recortada al alto de la card de
+             descripción (img absoluta + cover, _entity-show.scss) -->
+        <InfoBlock v-if="item.image && descriptionHtml" class="deck-detail-grid__media">
+          <img :src="item.image" :alt="name" />
+        </InfoBlock>
+
         <!-- Descripción: tarjeta SIN título con el rich del wysiwyg -->
         <InfoBlock v-if="descriptionHtml" class="deck-detail-grid__description">
           <div class="rich-content" v-html="descriptionHtml" />
@@ -359,10 +373,16 @@ watch(
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
-         de tarjeta DINÁMICO del tema: token:surface resuelto por BlockShell) -->
+         DINÁMICO Y OPACO del tema: token:surface-3 resuelto por BlockShell;
+         surface pelado no contrastaba con la página en claro) -->
     <BlockQuote
       v-if="quoteHtml"
-      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: 'token:surface' }"
+      :settings="{
+        quote: quoteHtml,
+        align: 'center',
+        width: 'wide',
+        background: 'token:surface-3',
+      }"
     />
 
     <!-- Relateds de mazos (tarjetas CSS), excluyendo el actual: bloque

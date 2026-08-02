@@ -125,8 +125,9 @@
 
   // Con trasfondo: la tarjeta (sin título) va ARRIBA a la derecha de la
   // imagen ocupando las dos columnas; debajo, básica | atributos. En el
-  // tramo medio apila a la derecha (trasfondo primero) y en estrecho va
-  // justo tras la preview.
+  // tramo medio el trasfondo baja a ANCHO COMPLETO bajo la imagen y las
+  // cards de la derecha (apilado junto a la preview quedaba muy por debajo
+  // de la imagen); en estrecho va justo tras la preview.
   &.single-detail--with-lore {
     grid-template-areas:
       'preview'
@@ -137,9 +138,9 @@
     @container content (min-width: #{$bp-md}) {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       grid-template-areas:
-        'preview lore'
         'preview basic'
-        'preview attrs';
+        'preview attrs'
+        'lore lore';
     }
 
     @container content (min-width: #{$bp-lg}) {
@@ -172,8 +173,9 @@
     grid-template-areas: 'preview basic attack';
   }
 
-  // Con trasfondo: tarjeta sin título arriba a la derecha, dos columnas
-  // (mismos cortes que el héroe).
+  // Con trasfondo: tarjeta sin título arriba a la derecha, dos columnas;
+  // en el tramo medio el trasfondo baja a ancho completo (mismos cortes y
+  // criterio que el héroe).
   &.single-detail--with-lore {
     grid-template-areas:
       'preview'
@@ -184,9 +186,9 @@
     @container content (min-width: #{$bp-md}) {
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
       grid-template-areas:
-        'preview lore'
         'preview basic'
-        'preview attack';
+        'preview attack'
+        'lore lore';
     }
 
     @container content (min-width: #{$bp-lg}) {
@@ -309,23 +311,16 @@
     }
   }
 
+  // El lore va en una card info-block SIN título (como el trasfondo de
+  // héroe/carta): la tarjeta pone fondo/borde/padding y .rich-content el
+  // ritmo tipográfico; aquí solo el reparto y el justificado.
   &__lore {
     min-width: 0;
-    color: $text-1;
-    line-height: $k-lh-body;
 
     // Trasfondo JUSTIFICADO solo en anchuras con columna (en estrecho,
     // texto natural): mismo umbral que el grid del header de arriba.
     @media (min-width: $bp-md) {
       text-align: justify;
-    }
-
-    p {
-      margin: 0;
-
-      &:not(:last-child) {
-        margin-bottom: $space-3;
-      }
     }
   }
 

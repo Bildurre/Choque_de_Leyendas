@@ -2,7 +2,7 @@
 import { computed, nextTick, ref, watch, type Component } from 'vue'
 import { RouterLink } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { Layers, Swords, WalletCards } from '@lucide/vue'
+import { Files, Users, WalletCards } from '@lucide/vue'
 import {
   BaseTabs,
   BlockQuote,
@@ -15,6 +15,7 @@ import AddToCollection from '@/components/AddToCollection.vue'
 import FactionCard from '@/components/FactionCard.vue'
 import FactionDeckCard, { type FactionDeckCardData } from '@/components/FactionDeckCard.vue'
 import CssCardsRelated from '@/components/singles/CssCardsRelated.vue'
+import InfoBlock from '@/components/singles/InfoBlock.vue'
 import { applyOgMeta } from '@/entities/singleOg'
 import { sectionDetailRoute } from '@/entities/singleRoutes'
 
@@ -23,10 +24,11 @@ import { sectionDetailRoute } from '@/entities/singleRoutes'
 // EntityDetailView, que pinta el header-bloque (título = nombre, tinte del
 // color de la facción, volver dentro) y el fondo/head SEO; aquí cada
 // sección es un `block` a lo ancho (block--w-wide + block__inner, como en
-// PageView): emblema en su marco de color + lore completo, pestañas héroes
+// PageView): emblema en su marco de color + lore completo en una card
+// info-block sin título (como el trasfondo de héroe/carta), pestañas héroes
 // / cartas / mazos con contadores de publicados (en cliente: la API entrega
 // las tres listas completas), cita épica (bloque quote del CRM, fondo de
-// tarjeta DINÁMICO token:surface) y relateds de facciones (tarjetas CSS,
+// tarjeta DINÁMICO token:surface-3, OPACO) y relateds de facciones (tarjetas CSS,
 // sin catálogo de previews, bloque related del CRM). El botón de descarga
 // del PDF permanente de la facción (si está generado, campo `pdf` del
 // payload) vive en la fila superior del header, junto al volver
@@ -70,22 +72,22 @@ const style = computed(() => ({
   '--faction-text': props.item.text_is_dark ? '#000000' : '#ffffff',
 }))
 
-// Pestañas del BaseTabs del motor, con los contadores de publicados y la
-// iconografía del admin de CdL (héroes → Swords, cartas → Layers, mazos →
-// WalletCards); en estrecho el motor deja solo el icono (texto
+// Pestañas del BaseTabs del motor, con los contadores de publicados:
+// héroes → Users (tipo usuarios), cartas → Files (tipo archivos), mazos →
+// WalletCards; en estrecho el motor deja solo el icono (texto
 // visually-hidden + title).
 const tabs = computed<Array<{ key: Tab; label: string; count: number; icon?: Component }>>(() => [
   {
     key: 'heroes',
     label: t('singles.faction.tabs.heroes'),
     count: props.item.heroes_count,
-    icon: Swords,
+    icon: Users,
   },
   {
     key: 'cards',
     label: t('singles.faction.tabs.cards'),
     count: props.item.cards_count,
-    icon: Layers,
+    icon: Files,
   },
   {
     key: 'decks',
@@ -135,8 +137,9 @@ watch(
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="faction-single single-sections" :style="style">
-    <!-- Emblema con el marco del color de la facción + lore: mismo
-         contenido de siempre, al ancho del sistema de bloques del CRM -->
+    <!-- Emblema con el marco del color de la facción + lore en una card
+         SIN título (como el trasfondo de héroe/carta), al ancho del
+         sistema de bloques del CRM -->
     <BlockShell :settings="{ width: 'wide', align: 'left' }">
       <div class="faction-single__header">
         <div class="faction-single__emblem">
@@ -144,11 +147,9 @@ watch(
             :faction="{ name, color: item.color, text_is_dark: item.text_is_dark, icon: item.icon }"
           />
         </div>
-        <div
-          v-if="item.lore_text"
-          class="faction-single__lore rich-content"
-          v-html="item.lore_text"
-        />
+        <InfoBlock v-if="item.lore_text" class="faction-single__lore">
+          <div class="rich-content" v-html="item.lore_text" />
+        </InfoBlock>
       </div>
     </BlockShell>
 
@@ -203,10 +204,16 @@ watch(
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
-         de tarjeta DINÁMICO del tema: token:surface resuelto por BlockShell) -->
+         DINÁMICO Y OPACO del tema: token:surface-3 resuelto por BlockShell;
+         surface pelado no contrastaba con la página en claro) -->
     <BlockQuote
       v-if="quoteHtml"
-      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: 'token:surface' }"
+      :settings="{
+        quote: quoteHtml,
+        align: 'center',
+        width: 'wide',
+        background: 'token:surface-3',
+      }"
     />
 
     <!-- Relateds de facciones (tarjetas CSS), excluyendo la actual: bloque

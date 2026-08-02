@@ -17,8 +17,8 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 // izquierda; a su derecha ARRIBA la tarjeta SIN título con el trasfondo
 // rich del wysiwyg a las dos columnas, y debajo detalles | ataque, con
 // cortes explícitos de container query), efectos DEBAJO a todo el ancho,
-// cita épica (bloque quote del CRM, fondo de tarjeta DINÁMICO
-// token:surface) y relateds de cartas ALEATORIAS (bloque related del CRM). Los
+// cita épica (bloque quote del CRM, fondo DINÁMICO del tema
+// token:surface-3, OPACO) y relateds de cartas ALEATORIAS (bloque related del CRM). Los
 // values con filtro en el catálogo de cartas enlazan al índice FILTRADO
 // (query params de useFiltersQuery, patrón del viejo recuperado); la
 // superclase del tipo enlaza al índice de HÉROES filtrado por ella.
@@ -367,10 +367,16 @@ watch(
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
-         de tarjeta DINÁMICO del tema: token:surface resuelto por BlockShell) -->
+         DINÁMICO Y OPACO del tema: token:surface-3 resuelto por BlockShell;
+         surface pelado no contrastaba con la página en claro) -->
     <BlockQuote
       v-if="quoteHtml"
-      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: 'token:surface' }"
+      :settings="{
+        quote: quoteHtml,
+        align: 'center',
+        width: 'wide',
+        background: 'token:surface-3',
+      }"
     />
 
     <!-- Relateds de cartas ALEATORIAS (bloque related del CRM), excluyendo

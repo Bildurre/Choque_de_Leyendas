@@ -18,7 +18,7 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 // rich del wysiwyg a las dos columnas, y debajo información básica |
 // atributos, con cortes explícitos de container query), habilidades
 // (pasivas de clase y propia + activas con dados de coste), cita épica
-// (bloque quote del CRM, fondo de tarjeta DINÁMICO token:surface) y
+// (bloque quote del CRM, fondo DINÁMICO del tema token:surface-3, OPACO) y
 // relateds de héroes ALEATORIOS (bloque related del CRM). Los atributos van
 // sin icono: la API pública no expone los iconos del juego (desviación
 // anotada).
@@ -250,10 +250,16 @@ watch(
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
-         de tarjeta DINÁMICO del tema: token:surface resuelto por BlockShell) -->
+         DINÁMICO Y OPACO del tema: token:surface-3 resuelto por BlockShell;
+         surface pelado no contrastaba con la página en claro) -->
     <BlockQuote
       v-if="quoteHtml"
-      :settings="{ quote: quoteHtml, align: 'center', width: 'wide', background: 'token:surface' }"
+      :settings="{
+        quote: quoteHtml,
+        align: 'center',
+        width: 'wide',
+        background: 'token:surface-3',
+      }"
     />
 
     <!-- Relateds de héroes ALEATORIOS (bloque related del CRM), excluyendo
