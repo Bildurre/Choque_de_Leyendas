@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { Check, FilePlus } from '@lucide/vue'
 import { useI18n } from 'vue-i18n'
+import { useToast } from '@edc-motor/ui'
 import { useCollectionStore } from '@/stores/collection'
 
 // Botón "añadir a la colección para imprimir" (doc 02): vive sobre las
@@ -10,6 +11,7 @@ const props = defineProps<{ entity: string; id: number; label?: boolean }>()
 
 const { t } = useI18n()
 const collection = useCollectionStore()
+const toast = useToast()
 const busy = ref(false)
 
 const added = computed(() => collection.has(props.entity, props.id))
@@ -19,8 +21,10 @@ async function add() {
   busy.value = true
   try {
     await collection.add(props.entity, props.id)
+    // Confirmación visible: el botón puede quedar lejos de la colección.
+    toast.success(t('collection.addedToast'))
   } catch {
-    // el gestor de la colección ya avisa de sus errores; aquí basta soltar
+    toast.danger(t('collection.error'))
   } finally {
     busy.value = false
   }

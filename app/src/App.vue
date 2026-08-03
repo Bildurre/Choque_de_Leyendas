@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useI18n } from 'vue-i18n'
-import { AppRightSidebar, PageBackground } from '@edc-motor/ui'
+import { AppRightSidebar, PageBackground, ToastContainer } from '@edc-motor/ui'
 import AppHeader from '@/components/AppHeader.vue'
 import { useAuthStore } from '@/stores/auth'
 import { useLocalesStore } from '@/stores/locales'
@@ -69,4 +69,7 @@ onMounted(async () => {
     <div v-if="site.footerText" class="rich-content" v-html="site.footerText" />
     <span v-else>{{ site.title }}</span>
   </footer>
+  <!-- Toasts del motor (mismo patrón que el admin): los usan la colección
+       "para imprimir" y quien los necesite vía useToast(). -->
+  <ToastContainer />
 </template>

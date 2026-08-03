@@ -1,0 +1,188 @@
+@use "tokens" as *;
+
+// Gestor de la colección "para imprimir" (doc 02), en dos secciones: ARRIBA
+// los PDF temporales ya generados (cards pdf-item de _downloads.scss, con
+// la barra «generando» mientras dura la cola) y DEBAJO el grid de
+// cartas/héroes añadidos. Contenedor propio (`collection`): los cortes
+// funcionan igual en la pestaña «Mi colección» de Descargas y en el panel
+// de usuario.
+.collection-manager {
+  container-type: inline-size;
+  container-name: collection;
+  display: grid;
+  gap: $space-5;
+
+  &__section {
+    display: grid;
+    gap: $space-3;
+
+    // Mismo título de sección que los grupos de descargas.
+    h3 {
+      margin: 0;
+      border-left: 4px solid $accent-500;
+      padding-left: $space-3;
+      font-size: $fs-18;
+    }
+  }
+
+  // Lista de PDFs generados: cortes EXPLÍCITOS 1 → 2 → 3 columnas sobre el
+  // contenedor `collection` (nada de auto-fit), como las descargas.
+  &__pdfs {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-3;
+
+    @container collection (min-width: 600px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @container collection (min-width: 900px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  // Barra «generando» INDETERMINADA (el motor no trae patrón de progreso):
+  // etiqueta + pista con un tramo que va y viene mientras dura la cola.
+  &__progress {
+    display: grid;
+    gap: $space-1;
+  }
+
+  &__progress-label {
+    color: $text-3;
+    font-size: $fs-13;
+  }
+
+  &__progress-track {
+    position: relative;
+    display: block;
+    height: 6px;
+    border-radius: $radius-pill;
+    background: $surface-2;
+    overflow: hidden;
+  }
+
+  &__progress-fill {
+    position: absolute;
+    inset-block: 0;
+    left: -35%;
+    width: 35%;
+    border-radius: inherit;
+    background: $accent-500;
+    animation: collection-progress 1.2s ease-in-out infinite;
+  }
+
+  // Card de vacío a TODO el ancho (patrón info-block: superficie
+  // semitransparente + borde + radio), solo con el texto corto.
+  &__empty {
+    margin: 0;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    background: color-mix(in srgb, $surface 65%, transparent);
+    padding: $space-6 $space-4;
+    text-align: center;
+    color: $text-3;
+  }
+
+  // Generar y Vaciar, ENCIMA del grid.
+  &__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $space-3;
+  }
+
+  // Grid de cards de elementos: cortes EXPLÍCITOS 1 → 2 → 3 → 4 columnas
+  // sobre el contenedor `collection` (nada de auto-fit; calibrados para
+  // ~500/800/1100/1440 de viewport con el bloque «wide» de Descargas).
+  &__grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-3;
+
+    @container collection (min-width: 600px) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @container collection (min-width: 900px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    @container collection (min-width: 1100px) {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+
+  // Card de elemento: fondo de tarjeta (superficie semitransparente +
+  // borde + radio, como las cards de PDF vecinas). Miniatura a la
+  // izquierda ocupando las dos filas; nombre arriba y controles debajo.
+  &__card {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-items: center;
+    column-gap: $space-3;
+    row-gap: $space-2;
+    border: 1px solid $border;
+    border-radius: $radius-md;
+    background: color-mix(in srgb, $surface 65%, transparent);
+    padding: $space-3;
+  }
+
+  &__thumb {
+    grid-row: 1 / span 2;
+    width: 56px;
+    border-radius: $radius-sm;
+  }
+
+  // El nombre se TRUNCA con elipsis a UNA línea (un punto más pequeño que
+  // el cuerpo base).
+  &__label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: $fs-14;
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-2;
+
+    // El NumericInput del motor, compacto: ancho fijo para -/nn/+.
+    .form-field {
+      flex: 0 0 auto;
+      width: 108px;
+    }
+  }
+
+  // Quitar la carta: cubo de basura en ROJO, más intenso en hover.
+  &__remove {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: $space-1;
+    background: none;
+    border: none;
+    color: $danger;
+    cursor: pointer;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: color-mix(in srgb, $danger 65%, red);
+    }
+  }
+}
+
+@keyframes collection-progress {
+  from { left: -35%; }
+  to { left: 100%; }
+}

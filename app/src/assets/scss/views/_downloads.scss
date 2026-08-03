@@ -1,7 +1,8 @@
 @use "tokens" as *;
 
-// Apartado público de Descargas (doc 10): grupos de PDFs permanentes +
-// "tu colección" debajo (gestor compartido con el panel de usuario). Vive
+// Apartado público de Descargas (doc 10), en dos pestañas: los grupos de
+// PDFs permanentes y «Mi colección» (gestor .collection-manager de
+// _collection.scss, compartido con el panel de usuario). Vive
 // DENTRO del bloque «Descargas» del CRM (DownloadsBlock > BlockShell): la
 // anchura, el centrado y el aire horizontal los pone .block__inner según
 // los campos comunes del bloque (block--w-*), así que este contenedor no
@@ -10,14 +11,12 @@
   display: grid;
   gap: $space-5;
 
-  &__intro,
   &__empty {
     margin: 0;
     color: $text-3;
   }
 
-  &__group,
-  &__collection {
+  &__group {
     display: grid;
     gap: $space-3;
 
@@ -158,8 +157,6 @@
 
     &:hover { color: $accent-400; }
   }
-
-  &__collection { margin-top: $space-4; }
 }
 
 // Botón "añadir a la colección" (pdf-add): sin padding ni caja — el icono en

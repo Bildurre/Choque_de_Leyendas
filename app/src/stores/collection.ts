@@ -15,11 +15,18 @@ export interface CollectionItem {
   missing: boolean
 }
 
+// PDF temporal de la colección (clave `generated` del índice del motor):
+// los 'ready' dan el enlace de descarga (persistente tras recargar, hasta
+// caducar); un 'pending' permite retomar el sondeo de la generación.
 export interface CollectionPdf {
   id: number
   status: string
+  filename: string
+  locale: string
   url: string | null
-  error: string | null
+  size: number | null
+  generated_at: string | null
+  expires_at: string | null
 }
 
 const TOKEN_KEY = 'edc_collection_token'
@@ -37,22 +44,40 @@ export const useCollectionStore = defineStore('collection', () => {
   api.defaults.headers.common['X-Collection-Token'] = guestToken()
 
   const items = ref<CollectionItem[]>([])
-  const pdf = ref<CollectionPdf | null>(null)
+  const generated = ref<CollectionPdf[]>([])
   const generating = ref(false)
   const loaded = ref(false)
 
   const count = computed(() => items.value.reduce((sum, item) => sum + item.copies, 0))
 
+  // Los PDF ya listos para descargar (sección superior de «Mi colección»).
+  const readyPdfs = computed(() => generated.value.filter((pdf) => pdf.status === 'ready'))
+
   function has(entity: string, id: number): boolean {
     return items.value.some((i) => i.entity === entity && i.entity_id === id)
+  }
+
+  /** Vuelca la respuesta del índice (items + PDFs generados vigentes). */
+  function apply(data: { data: CollectionItem[]; generated?: CollectionPdf[] }) {
+    items.value = data.data
+    generated.value = data.generated ?? []
   }
 
   async function load() {
     try {
       const { data } = await api.get('/pdf-collection')
-      items.value = data.data
+      apply(data)
+      // Una generación quedó a medias (recarga en pleno sondeo): se retoma.
+      const pending = generated.value.find((pdf) => pdf.status === 'pending')
+      if (pending && !generating.value) {
+        generating.value = true
+        void poll(pending.id).finally(() => {
+          generating.value = false
+        })
+      }
     } catch {
       items.value = []
+      generated.value = []
     } finally {
       loaded.value = true
     }
@@ -60,12 +85,12 @@ export const useCollectionStore = defineStore('collection', () => {
 
   async function add(entity: string, id: number, copies?: number) {
     const { data } = await api.post('/pdf-collection/items', { entity, id, copies })
-    items.value = data.data
+    apply(data)
   }
 
   async function remove(item: CollectionItem) {
     const { data } = await api.delete(`/pdf-collection/items/${item.id}`)
-    items.value = data.data
+    apply(data)
   }
 
   async function clear() {
@@ -73,32 +98,67 @@ export const useCollectionStore = defineStore('collection', () => {
     items.value = []
   }
 
-  /** Genera el PDF temporal (en cola) y sondea hasta ready/failed. */
-  let poll: ReturnType<typeof setInterval> | null = null
-
-  async function generate(locale: string): Promise<void> {
-    if (poll) clearInterval(poll)
-    pdf.value = null
-    generating.value = true
-    const { data } = await api.post('/pdf-collection/generate', { locale })
-    pdf.value = data.data
-    await new Promise<void>((resolve) => {
-      poll = setInterval(async () => {
-        if (!pdf.value) return
+  /** Sondea un PDF temporal hasta ready/failed y refresca el índice. */
+  function poll(id: number): Promise<string> {
+    return new Promise((resolve) => {
+      const timer = setInterval(async () => {
+        let status: string
         try {
-          const { data: status } = await api.get(`/pdf-collection/pdfs/${pdf.value.id}`)
-          pdf.value = status.data
+          const { data } = await api.get(`/pdf-collection/pdfs/${id}`)
+          status = data.data.status
         } catch {
-          if (pdf.value) pdf.value = { ...pdf.value, status: 'failed' }
+          status = 'failed'
         }
-        if (pdf.value?.status !== 'pending') {
-          if (poll) clearInterval(poll)
-          generating.value = false
-          resolve()
+        if (status !== 'pending') {
+          clearInterval(timer)
+          if (status === 'ready') {
+            // Patrón carrito: la colección se vació al pulsar «Generar»;
+            // se vacía también en el servidor para que siga vacía tras
+            // recargar (el PDF ya lleva su propia copia de los items).
+            await api.delete('/pdf-collection').catch(() => {})
+          }
+          // El índice trae el PDF nuevo con su URL (y, si falló, restaura
+          // los items que solo se habían limpiado visualmente).
+          await load()
+          resolve(status)
         }
       }, 1000)
     })
   }
 
-  return { items, pdf, generating, loaded, count, has, load, add, remove, clear, generate }
+  /**
+   * Genera el PDF temporal (202 + cola en el motor): limpia la colección
+   * visualmente, deja `generating` activo mientras dura el sondeo y
+   * devuelve el estado final ('ready' | 'failed').
+   */
+  async function generate(locale: string): Promise<string> {
+    generating.value = true
+    // Se limpia YA visualmente (patrón carrito); si algo falla por el
+    // camino, load() la restaura (los items siguen en el servidor).
+    items.value = []
+    try {
+      const { data } = await api.post('/pdf-collection/generate', { locale })
+      return await poll(data.data.id)
+    } catch {
+      await load().catch(() => {})
+      return 'failed'
+    } finally {
+      generating.value = false
+    }
+  }
+
+  return {
+    items,
+    generated,
+    readyPdfs,
+    generating,
+    loaded,
+    count,
+    has,
+    load,
+    add,
+    remove,
+    clear,
+    generate,
+  }
 })

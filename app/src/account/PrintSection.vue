@@ -14,9 +14,9 @@ const locales = useLocalesStore()
 <template>
   <div class="print-panel">
     <h2>{{ t('account.sections.print') }}</h2>
+    <!-- Solo el enlace a la página del CRM de Descargas (bloque
+         «Descargas») por su slug: el gestor ya explica qué hacer. -->
     <p class="print-panel__intro">
-      {{ t('collection.intro') }}
-      <!-- La página del CRM de Descargas (bloque «Descargas») por su slug -->
       <RouterLink
         :to="{
           name: 'page',
