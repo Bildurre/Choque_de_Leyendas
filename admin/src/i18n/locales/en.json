@@ -439,10 +439,8 @@
       "justify": "Justify"
     },
     "background": {
-      "token:veil-15": "Veil 15%",
-      "token:veil-30": "Veil 30%",
       "token:veil-60": "Veil 60%",
-      "token:veil-85": "Veil 85%",
+      "token:veil-80": "Veil 80%",
       "token:accent-soft": "Accent"
     },
     "order": {

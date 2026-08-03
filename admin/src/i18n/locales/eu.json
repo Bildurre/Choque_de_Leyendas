@@ -439,10 +439,8 @@
       "justify": "Justifikatuta"
     },
     "background": {
-      "token:veil-15": "% 15eko beloa",
-      "token:veil-30": "% 30eko beloa",
       "token:veil-60": "% 60eko beloa",
-      "token:veil-85": "% 85eko beloa",
+      "token:veil-80": "% 80ko beloa",
       "token:accent-soft": "Azentua"
     },
     "order": {
