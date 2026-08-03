@@ -114,7 +114,11 @@
     },
     "language": "Hizkuntza",
     "view": "Ikusi",
-    "download": "Deskargatu"
+    "download": "Deskargatu",
+    "tabs": {
+      "pdfs": "PDFak",
+      "collection": "Nire bilduma"
+    }
   },
   "tools": {
     "lifeCounter": {
@@ -193,19 +197,19 @@
     }
   },
   "collection": {
-    "title": "Zure bilduma",
-    "intro": "Gehitu kartak zerrendetatik eta sortu zure PDF pertsonalizatua; izenik eman gabe ere bai (bilduma nabigatzaile honetan bizi da eta berez iraungitzen da).",
-    "empty": "Zure bilduma hutsik dago: gehitu kartak zerrendetatik.",
-    "copies": "kopia",
+    "empty": "Gehitu kartak edo heroiak PDF pertsonalizatu bat sortzeko",
     "remove": "Kendu",
     "clear": "Hustu",
     "generate": "Sortu PDFa",
     "generating": "Sortzen…",
-    "download": "Deskargatu PDFa",
+    "generated": "Sortutako PDFak",
+    "items": "Gehitutako kartak",
     "failed": "Ezin izan da PDFa sortu.",
     "error": "Ezin izan da bilduma eguneratu.",
     "add": "Gehitu zure PDFra",
-    "inCollection": "Zure bilduman"
+    "inCollection": "Zure bilduman",
+    "addedToast": "Zure bildumara gehitu da",
+    "readyToast": "Zure PDFa deskargatzeko prest dago"
   },
   "catalog": {
     "searchPlaceholder": "Bilatu…",

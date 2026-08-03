@@ -114,7 +114,11 @@
     },
     "language": "Idioma",
     "view": "Ver",
-    "download": "Descargar"
+    "download": "Descargar",
+    "tabs": {
+      "pdfs": "PDFs",
+      "collection": "Mi colección"
+    }
   },
   "tools": {
     "lifeCounter": {
@@ -193,19 +197,19 @@
     }
   },
   "collection": {
-    "title": "Tu colección",
-    "intro": "Añade cartas desde los listados y genera tu PDF personalizado; también sin registrarte (la colección vive en este navegador y caduca sola).",
-    "empty": "Tu colección está vacía: añade cartas desde los listados.",
-    "copies": "copias",
+    "empty": "Agrega cartas o héroes para generar un PDF personalizado",
     "remove": "Quitar",
     "clear": "Vaciar",
     "generate": "Generar PDF",
     "generating": "Generando…",
-    "download": "Descargar PDF",
+    "generated": "PDFs generados",
+    "items": "Cartas añadidas",
     "failed": "No se pudo generar el PDF.",
     "error": "No se pudo actualizar la colección.",
     "add": "Añadir a tu PDF",
-    "inCollection": "En tu colección"
+    "inCollection": "En tu colección",
+    "addedToast": "Añadida a tu colección",
+    "readyToast": "Tu PDF está listo para descargar"
   },
   "catalog": {
     "searchPlaceholder": "Buscar…",
