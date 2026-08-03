@@ -209,6 +209,7 @@
     "add": "Añadir a tu PDF",
     "inCollection": "En tu colección",
     "addedToast": "Añadida a tu colección",
+    "emptyGenerating": "Hay un PDF generándose: puedes seguir navegando por la página, te avisaremos cuando esté listo.",
     "readyToast": "Tu PDF está listo para descargar"
   },
   "catalog": {

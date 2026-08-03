@@ -209,6 +209,7 @@
     "add": "Add to your PDF",
     "inCollection": "In your collection",
     "addedToast": "Added to your collection",
+    "emptyGenerating": "A PDF is being generated: you can keep browsing, we\u2019ll let you know when it\u2019s ready.",
     "readyToast": "Your PDF is ready to download"
   },
   "catalog": {

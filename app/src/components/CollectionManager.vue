@@ -126,7 +126,7 @@ onMounted(() => {
       <h3>{{ t('collection.items') }}</h3>
 
       <p v-if="!collection.items.length" class="collection-manager__empty">
-        {{ t('collection.empty') }}
+        {{ collection.generating ? t('collection.emptyGenerating') : t('collection.empty') }}
       </p>
 
       <template v-else>
@@ -145,16 +145,11 @@ onMounted(() => {
         <ul class="collection-manager__grid">
           <li v-for="item in collection.items" :key="item.id" class="collection-manager__card">
             <img v-if="item.preview" class="collection-manager__thumb" :src="item.preview" alt="" />
-            <span class="collection-manager__label" :title="item.label ?? undefined">
-              {{ item.label ?? '—' }}
-            </span>
-            <div class="collection-manager__controls">
-              <NumericInput
-                :model-value="item.copies"
-                :min="1"
-                :max="99"
-                @update:model-value="(copies) => setCopies(item, copies)"
-              />
+            <!-- Fila superior: nombre + quitar (el cubo va ARRIBA) -->
+            <div class="collection-manager__head">
+              <span class="collection-manager__label" :title="item.label ?? undefined">
+                {{ item.label ?? '—' }}
+              </span>
               <button
                 class="collection-manager__remove"
                 type="button"
@@ -164,6 +159,14 @@ onMounted(() => {
               >
                 <Trash2 :size="18" />
               </button>
+            </div>
+            <div class="collection-manager__controls">
+              <NumericInput
+                :model-value="item.copies"
+                :min="1"
+                :max="99"
+                @update:model-value="(copies) => setCopies(item, copies)"
+              />
             </div>
           </li>
         </ul>

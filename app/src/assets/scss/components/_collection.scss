@@ -141,6 +141,15 @@
     border-radius: $radius-sm;
   }
 
+  // Fila superior de la card: nombre + cubo de quitar (ARRIBA).
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: $space-2;
+    min-width: 0;
+  }
+
   // El nombre se TRUNCA con elipsis a UNA línea (un punto más pequeño que
   // el cuerpo base).
   &__label {
@@ -154,7 +163,6 @@
   &__controls {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: $space-2;
 
     // El NumericInput del motor, compacto: ancho fijo para -/nn/+.

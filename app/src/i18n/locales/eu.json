@@ -209,6 +209,7 @@
     "add": "Gehitu zure PDFra",
     "inCollection": "Zure bilduman",
     "addedToast": "Zure bildumara gehitu da",
+    "emptyGenerating": "PDF bat sortzen ari da: nabigatzen jarrai dezakezu, prest dagoenean jakinaraziko dizugu.",
     "readyToast": "Zure PDFa deskargatzeko prest dago"
   },
   "catalog": {
