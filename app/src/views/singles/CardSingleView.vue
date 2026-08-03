@@ -18,7 +18,7 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 // rich del wysiwyg a las dos columnas, y debajo detalles | ataque, con
 // cortes explícitos de container query), efectos DEBAJO a todo el ancho,
 // cita épica (bloque quote del CRM, fondo DINÁMICO del tema
-// token:neutral, gris translúcido MEDIO) y relateds de cartas ALEATORIAS (bloque related del CRM). Los
+// token:veil-60, velo 60 % del fondo de página) y relateds de cartas ALEATORIAS (bloque related del CRM). Los
 // values con filtro en el catálogo de cartas enlazan al índice FILTRADO
 // (query params de useFiltersQuery, patrón del viejo recuperado); la
 // superclase del tipo enlaza al índice de HÉROES filtrado por ella.
@@ -367,16 +367,16 @@ watch(
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
-         GRIS DINÁMICO MEDIO del tema: token:neutral resuelto por
-         BlockShell — translúcido, calca al gris estático de la paleta y
-         deja ver la imagen de fondo en claro y en oscuro) -->
+         VELO 60 % del fondo de página del tema: token:veil-60 resuelto
+         por BlockShell — translúcido, ennegrece en oscuro y emblanquece
+         en claro, y deja ver la imagen de fondo a través) -->
     <BlockQuote
       v-if="quoteHtml"
       :settings="{
         quote: quoteHtml,
         align: 'center',
         width: 'wide',
-        background: 'token:neutral',
+        background: 'token:veil-60',
       }"
     />
 

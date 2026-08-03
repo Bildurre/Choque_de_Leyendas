@@ -28,8 +28,8 @@ import { sectionDetailRoute } from '@/entities/singleRoutes'
 // PageView): emblema en su marco de color + lore completo en una card
 // info-block sin título (como el trasfondo de héroe/carta), pestañas héroes
 // / cartas / mazos con contadores de publicados (en cliente: la API entrega
-// las tres listas completas), cita épica (bloque quote del CRM, fondo de
-// tarjeta GRIS DINÁMICO MEDIO token:neutral) y relateds de facciones (tarjetas CSS,
+// las tres listas completas), cita épica (bloque quote del CRM, fondo
+// VELO 60 % del fondo de página, token:veil-60) y relateds de facciones (tarjetas CSS,
 // sin catálogo de previews, bloque related del CRM). El botón de descarga
 // del PDF permanente de la facción (si está generado, campo `pdf` del
 // payload) vive en la fila superior del header, junto al volver
@@ -215,16 +215,16 @@ watch(
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
-         GRIS DINÁMICO MEDIO del tema: token:neutral resuelto por
-         BlockShell — translúcido, calca al gris estático de la paleta y
-         deja ver la imagen de fondo en claro y en oscuro) -->
+         VELO 60 % del fondo de página del tema: token:veil-60 resuelto
+         por BlockShell — translúcido, ennegrece en oscuro y emblanquece
+         en claro, y deja ver la imagen de fondo a través) -->
     <BlockQuote
       v-if="quoteHtml"
       :settings="{
         quote: quoteHtml,
         align: 'center',
         width: 'wide',
-        background: 'token:neutral',
+        background: 'token:veil-60',
       }"
     />
 

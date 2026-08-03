@@ -439,9 +439,10 @@
       "justify": "Justifikatuta"
     },
     "background": {
-      "token:neutral-soft": "Gris leuna",
-      "token:neutral": "Grisa",
-      "token:neutral-strong": "Gris bizia",
+      "token:veil-15": "% 15eko beloa",
+      "token:veil-30": "% 30eko beloa",
+      "token:veil-60": "% 60eko beloa",
+      "token:veil-85": "% 85eko beloa",
       "token:accent-soft": "Azentua"
     },
     "order": {
