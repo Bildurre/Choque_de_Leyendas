@@ -105,14 +105,16 @@
   "downloads": {
     "empty": "No downloads published yet.",
     "types": {
-      "characters": "Characters",
-      "schemes": "Schemes",
-      "house-schemes": "Schemes by house",
-      "house-tokens": "House tokens",
-      "house-counters": "House counters",
-      "pages": "Documents"
+      "pages": "Documents",
+      "counters": "Counters",
+      "faction": "Factions",
+      "faction-deck": "Decks",
+      "cards-catalog": "Cards",
+      "heroes-catalog": "Heroes"
     },
-    "language": "Language"
+    "language": "Language",
+    "view": "View",
+    "download": "Download"
   },
   "tools": {
     "lifeCounter": {
@@ -337,6 +339,7 @@
     },
     "deck": {
       "tabs": {
+        "info": "Information",
         "heroes": "Heroes",
         "cards": "Cards"
       },

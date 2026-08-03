@@ -29,12 +29,24 @@
     }
   }
 
+  // Rejilla de cards de PDF: cortes EXPLÍCITOS de container query sobre
+  // `content` (nada de auto-fit) — 1 columna en estrecho, 2 en medio y 3
+  // en ancho.
   &__list {
     list-style: none;
     margin: 0;
     padding: 0;
     display: grid;
-    gap: $space-2;
+    grid-template-columns: minmax(0, 1fr);
+    gap: $space-3;
+
+    @container content (min-width: #{$bp-md}) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @container content (min-width: #{$bp-lg}) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 
   // Filtro de idioma de los PDF.
@@ -69,48 +81,76 @@
     }
   }
 
-  // Tarjeta de PDF. En estrecho: título arriba con el botón de descarga y
-  // los datos debajo; en ancho, todo en una fila.
+  // Card de PDF (patrón pdf-item del CdL viejo): dos columnas — la
+  // izquierda con el título (fila 1, con el chip de idioma pequeño
+  // delante) y el tamaño + fecha en pequeño (fila 2); la derecha con los
+  // botones de ver y descargar, centrados en vertical.
   &__item {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-areas:
-      "name link"
-      "meta meta";
     align-items: center;
-    gap: $space-1 $space-3;
+    gap: $space-3;
     border: 1px solid $border;
     border-radius: $radius-md;
     background: color-mix(in srgb, $surface 65%, transparent);
     padding: $space-2 $space-3;
+  }
 
-    @media (min-width: #{$bp-sm}) {
-      display: flex;
-      gap: $space-3;
-    }
+  &__header {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
   }
 
   &__name {
-    grid-area: name;
-    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    margin: 0;
+    min-width: 0;
+    font-size: $fs-16;
+    font-weight: 400;
+    line-height: 1.4;
+  }
+
+  &__title {
     min-width: 0;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
   }
 
-  &__meta {
-    grid-area: meta;
-    display: inline-flex;
-    align-items: center;
-    gap: $space-2;
-    color: $text-3;
-    font-size: $fs-13;
+  // Chip de idioma DELANTE del nombre: el chip único del motor con el
+  // padding y el cuerpo reducidos.
+  &__chip {
+    padding: 0 $space-1;
+    font-size: $fs-11;
   }
 
-  // Botón de acción "descargar": sin padding ni caja, solo el icono.
+  &__meta {
+    display: flex;
+    align-items: center;
+    gap: $space-1;
+    margin: 0;
+    color: $text-3;
+    font-size: $fs-12;
+
+    span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: $space-3;
+  }
+
+  // Botones de acción "ver" / "descargar": sin padding ni caja, solo el
+  // icono.
   &__link {
-    grid-area: link;
     display: inline-flex;
     align-items: center;
     color: $accent-500;

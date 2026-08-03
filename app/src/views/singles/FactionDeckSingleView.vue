@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, nextTick, ref, watch, type Component } from 'vue'
 import { useI18n } from 'vue-i18n'
-import { Files, Users } from '@lucide/vue'
+import { Files, Info, Users } from '@lucide/vue'
 import {
   BaseTabs,
   BlockQuote,
@@ -11,6 +11,7 @@ import {
   type PreviewGridItem,
 } from '@edc-motor/ui'
 import AddToCollection from '@/components/AddToCollection.vue'
+import AdminEditButton from '@/components/AdminEditButton.vue'
 import CssCardsRelated from '@/components/singles/CssCardsRelated.vue'
 import DiceIcon from '@/components/singles/DiceIcon.vue'
 import InfoBlock from '@/components/singles/InfoBlock.vue'
@@ -23,16 +24,18 @@ import { sectionDetailRoute, sectionIndexRoute } from '@/entities/singleRoutes'
 // por defecto — un mazo mezcla facciones — y volver + acciones dentro; sin
 // añadir: los mazos no son coleccionables; SÍ descarga de su PDF permanente
 // si está generado, campo `pdf` del payload) y el fondo/head SEO. Aquí cada
-// sección es un `block` a lo ancho: ficha en GRID de TRES columnas fijas
-// (.deck-detail-grid, cortes explícitos de container query a 2 → 1) con
-// filas fijas — fila 1 la card de IMAGEN del mazo (1 columna, solo si hay
-// imagen; recortada al alto de la descripción) + la DESCRIPCIÓN (tarjeta
-// sin título, rich del wysiwyg, 2 columnas; a las tres sin imagen), fila 2
-// información básica | coste de las cartas | tipos de cartas, fila 3
-// distribución de dados | clases de héroes
-// | superclases de héroes —, pestañas héroes | cartas CON icono (cartas con
-// su badge "xN" de copias; los héroes no llevan copias: asignado = 1), cita
-// épica (bloque quote del CRM, fondo DINÁMICO del tema token:surface-3, OPACO) y
+// sección es un `block` a lo ancho: ARRIBA (fuera de pestañas) la fila de
+// IMAGEN del mazo (1 columna de .deck-detail-grid, solo si hay imagen;
+// recortada al alto de la descripción y con la parte SUPERIOR siempre
+// visible) + la DESCRIPCIÓN (tarjeta sin título, rich del wysiwyg, 2
+// columnas; a las tres sin imagen); debajo las pestañas información |
+// héroes | cartas CON icono (información PRIMERA y activa por defecto, con
+// las 6 cards de la ficha — información básica | coste de las cartas |
+// tipos de cartas | distribución de dados | clases | superclases — en el
+// mismo grid de TRES columnas fijas de .deck-detail-grid, cortes
+// explícitos de container query a 2 → 1; cartas con su badge "xN" de
+// copias; los héroes no llevan copias: asignado = 1), cita
+// épica (bloque quote del CRM, fondo GRIS DINÁMICO MEDIO del tema, token:neutral) y
 // relateds de mazos (tarjetas CSS, bloque related del CRM). El modo de
 // juego enlaza al ÍNDICE de mazos FILTRADO por ese modo (query `mode` de
 // useFiltersQuery).
@@ -84,8 +87,8 @@ const props = defineProps<{ item: DeckPayload; locale: string }>()
 
 const { t } = useI18n()
 
-type Tab = 'heroes' | 'cards'
-const tab = ref<Tab>('heroes')
+type Tab = 'info' | 'heroes' | 'cards'
+const tab = ref<Tab>('info')
 
 const name = computed(
   () => props.item.name[props.locale] || Object.values(props.item.name)[0] || '',
@@ -101,10 +104,16 @@ const SYMBOLS: Array<{ key: 'R' | 'G' | 'B'; type: 'red' | 'green' | 'blue' }> =
 ]
 const symbols = computed(() => SYMBOLS.filter(({ key }) => props.item.stats.symbols[key] > 0))
 
-// Pestañas del BaseTabs del motor: héroes | cartas — héroes → Users (tipo
+// Pestañas del BaseTabs del motor: información | héroes | cartas —
+// información → Info (la ficha, sin contador), héroes → Users (tipo
 // usuarios), cartas → Files (tipo archivos); en estrecho el motor deja solo
 // el icono (texto visually-hidden + title).
 const tabs = computed<Array<{ key: Tab; label: string; count?: number; icon?: Component }>>(() => [
+  {
+    key: 'info',
+    label: t('singles.deck.tabs.info'),
+    icon: Info,
+  },
   {
     key: 'heroes',
     label: t('singles.deck.tabs.heroes'),
@@ -164,11 +173,11 @@ const quoteHtml = computed(() => {
 })
 
 // og:* tras el head de EntityDetailView; al cambiar de mazo se vuelve a la
-// primera pestaña (héroes).
+// primera pestaña (información).
 watch(
   () => props.item,
   async () => {
-    tab.value = 'heroes'
+    tab.value = 'info'
     await nextTick()
     applyOgMeta({ image: props.item.image, type: 'article' })
   },
@@ -179,20 +188,20 @@ watch(
 <!-- eslint-disable vue/no-v-html -- HTML del wysiwyg propio, saneado en servidor -->
 <template>
   <div class="deck-single single-sections">
-    <!-- Ficha en GRID de tres columnas fijas con filas fijas (cortes
-         explícitos a 2 → 1 en _entity-show.scss): fila 1 la card de IMAGEN
-         (1 columna, solo si hay imagen) + la descripción (2 columnas; a
-         las tres si no hay imagen); fila 2 información básica | coste de
-         las cartas | tipos de cartas; fila 3 distribución de dados |
-         clases | superclases. Al ancho wide de bloque -->
-    <BlockShell :settings="{ width: 'wide', align: 'left' }">
+    <!-- Fila de IMAGEN + DESCRIPCIÓN, ARRIBA y fuera de pestañas (mismo
+         grid de tres columnas fijas de la ficha, _entity-show.scss): la
+         card de imagen (1 columna, solo si hay imagen) + la descripción
+         (2 columnas; a las tres si no hay imagen). Al ancho wide de
+         bloque -->
+    <BlockShell v-if="descriptionHtml" :settings="{ width: 'wide', align: 'left' }">
       <div
         class="deck-detail-grid"
         :class="{ 'deck-detail-grid--with-media': item.image && descriptionHtml }"
       >
         <!-- Imagen del mazo (la imagen TAL CUAL, no la preview): card SOLO
              con la imagen llenándola, recortada al alto de la card de
-             descripción (img absoluta + cover, _entity-show.scss) -->
+             descripción con la parte SUPERIOR siempre visible (img
+             absoluta + cover + object-position top, _entity-show.scss) -->
         <InfoBlock v-if="item.image && descriptionHtml" class="deck-detail-grid__media">
           <img :src="item.image" :alt="name" />
         </InfoBlock>
@@ -201,7 +210,24 @@ watch(
         <InfoBlock v-if="descriptionHtml" class="deck-detail-grid__description">
           <div class="rich-content" v-html="descriptionHtml" />
         </InfoBlock>
+      </div>
+    </BlockShell>
 
+    <!-- Pestañas información | héroes | cartas (información primera y
+         activa por defecto), al ancho de bloque -->
+    <BlockShell :settings="{ width: 'wide', align: 'left' }">
+      <BaseTabs
+        class="deck-single__tabs"
+        :tabs="tabs"
+        :model-value="tab"
+        @update:model-value="setTab"
+      />
+
+      <!-- Las 6 cards de la ficha, en el grid de tres columnas fijas con
+           filas fijas (cortes explícitos a 2 → 1 en _entity-show.scss):
+           información básica | coste de las cartas | tipos de cartas |
+           distribución de dados | clases | superclases -->
+      <div v-if="tab === 'info'" class="deck-detail-grid">
         <InfoBlock :title="t('singles.deck.basicInfo')">
           <dl class="info-list">
             <dt>{{ t('singles.deck.name') }}</dt>
@@ -313,20 +339,10 @@ watch(
           </dl>
         </InfoBlock>
       </div>
-    </BlockShell>
-
-    <!-- Pestañas héroes | cartas con contadores, al ancho de bloque -->
-    <BlockShell :settings="{ width: 'wide', align: 'left' }">
-      <BaseTabs
-        class="deck-single__tabs"
-        :tabs="tabs"
-        :model-value="tab"
-        @update:model-value="setTab"
-      />
 
       <!-- Héroes del mazo (sin copias: asignado = 1, sin badge) -->
       <PreviewGrid
-        v-if="tab === 'heroes'"
+        v-else-if="tab === 'heroes'"
         :items="heroItems"
         :empty-text="t('singles.deck.noHeroes')"
         class="single-grid"
@@ -341,8 +357,12 @@ watch(
           />
           <span v-else class="preview-grid__fallback">{{ hero.name }}</span>
         </template>
+        <!-- Acciones flotantes por elemento (patrón de los índices):
+             añadir a la colección y, para editor/admin logueado, editar
+             en administración a su izquierda -->
         <template #actions="{ item: hero }">
           <AddToCollection :id="hero.id" class="single-grid__add" entity="hero" />
+          <AdminEditButton section="heroes" :slug="hero.slug" class="single-grid__admin" />
         </template>
       </PreviewGrid>
 
@@ -368,20 +388,22 @@ watch(
         </template>
         <template #actions="{ item: card }">
           <AddToCollection :id="card.id" class="single-grid__add" entity="card" />
+          <AdminEditButton section="cards" :slug="card.slug" class="single-grid__admin" />
         </template>
       </PreviewGrid>
     </BlockShell>
 
     <!-- Cita épica: EXACTA al bloque quote del CRM (wide, centrada, fondo
-         DINÁMICO Y OPACO del tema: token:surface-3 resuelto por BlockShell;
-         surface pelado no contrastaba con la página en claro) -->
+         GRIS DINÁMICO MEDIO del tema: token:neutral resuelto por
+         BlockShell — translúcido, calca al gris estático de la paleta y
+         deja ver la imagen de fondo en claro y en oscuro) -->
     <BlockQuote
       v-if="quoteHtml"
       :settings="{
         quote: quoteHtml,
         align: 'center',
         width: 'wide',
-        background: 'token:surface-3',
+        background: 'token:neutral',
       }"
     />
 
